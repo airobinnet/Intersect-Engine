@@ -1279,7 +1279,7 @@ namespace Intersect.Server.Networking
                     {
                         if (!Conditions.MeetsConditionLists(shop.SellingItems[i].Item.UsageRequirements, player, null))
                         {
-                            reqcheck += i + "-";
+                            reqcheck += "-" + i + "-";
                         }
                     }
                 }

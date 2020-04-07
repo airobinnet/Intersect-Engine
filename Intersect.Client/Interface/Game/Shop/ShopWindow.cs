@@ -62,9 +62,9 @@ namespace Intersect.Client.Interface.Game.Shop
             var i = 0;
             for (var j = 0; j < Globals.GameShop.SellingItems.Count; j++)
             {
-                if (!Globals.ShopReqs.Contains(j + "-"))
+                if (!Globals.ShopReqs.Contains("-" + j + "-"))
                 {
-                    Items.Add(new ShopItem(this, i));
+                    Items.Add(new ShopItem(this, j));
                     Items[i].Container = new ImagePanel(mItemContainer, "ShopItem");
                     Items[i].Setup();
 
