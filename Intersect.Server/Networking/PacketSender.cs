@@ -1283,7 +1283,6 @@ namespace Intersect.Server.Networking
                         }
                     }
                 }
-                //selling items i itemid
                 player.SendPacket(new ShopPacket(shop.JsonData, false, reqcheck));
             }
             else
