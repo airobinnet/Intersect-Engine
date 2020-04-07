@@ -1166,6 +1166,7 @@ namespace Intersect.Client.Networking
             {
                 Globals.GameShop = new ShopBase();
                 Globals.GameShop.Load(packet.ShopData);
+                Globals.ShopReqs = packet.ReqCheck;
                 Interface.Interface.GameUi.NotifyOpenShop();
             }
             else

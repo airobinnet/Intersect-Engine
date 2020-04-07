@@ -1270,18 +1270,33 @@ namespace Intersect.Server.Networking
         //ShopPacket
         public static void SendOpenShop(Player player, ShopBase shop)
         {
-            if (shop == null)
+            if (shop != null)
+            {
+                reqcheck = "";
+                for (var i = 0; i < shop?.SellingItems?.Count; ++i)
+                {
+                    if (shop.SellingItems[i].ItemId != null)
+                    {
+                        if (!Conditions.MeetsConditionLists(shop.SellingItems[i].Item.UsageRequirements, player, null))
+                        {
+                            reqcheck += i + "-";
+                        }
+                    }
+                }
+                //selling items i itemid
+                player.SendPacket(new ShopPacket(shop.JsonData, false, reqcheck));
+            }
+            else
             {
                 return;
             }
-
-            player.SendPacket(new ShopPacket(shop.JsonData, false));
+            
         }
 
         //ShopPacket
         public static void SendCloseShop(Player player)
         {
-            player.SendPacket(new ShopPacket(null, true));
+            player.SendPacket(new ShopPacket(null, true, null));
         }
 
         //BankPacket

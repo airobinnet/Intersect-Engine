@@ -26,6 +26,9 @@ namespace Intersect.Client.General
         //ReqCheck
         public static string ActiveCraftingTableReqs;
 
+        //Shop req check
+        public static string ShopReqs;
+
         //Craftcheck
         public static bool canCraftrq = false;
         public static Guid canCraftitem = Guid.Empty;
