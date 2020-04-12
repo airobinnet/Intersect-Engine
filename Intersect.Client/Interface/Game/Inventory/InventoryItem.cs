@@ -39,6 +39,8 @@ namespace Intersect.Client.Interface.Game.Inventory
 
         private ItemDescWindow mDescWindow;
 
+        private ItemCompareWindow mCompWindow;
+
         private Draggable mDragIcon;
 
         private bool mIconCd;
@@ -125,6 +127,11 @@ namespace Intersect.Client.Interface.Game.Inventory
                 mDescWindow.Dispose();
                 mDescWindow = null;
             }
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
         }
 
         void pnl_HoverEnter(Base sender, EventArgs arguments)
@@ -148,6 +155,11 @@ namespace Intersect.Client.Interface.Game.Inventory
                 mDescWindow.Dispose();
                 mDescWindow = null;
             }
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
 
             if (Globals.GameShop == null)
             {
@@ -157,6 +169,21 @@ namespace Intersect.Client.Interface.Game.Inventory
                         Globals.Me.Inventory[mMySlot].Base, Globals.Me.Inventory[mMySlot].Quantity, mInventoryWindow.X,
                         mInventoryWindow.Y, Globals.Me.Inventory[mMySlot].StatBuffs
                     );
+                    if (!Globals.Me.IsEquipped(mMySlot))
+                    {
+                        var i = 0;
+                        foreach (var equip in Globals.Me.Equipment)
+                        {
+                            if (ItemBase.Get(equip)?.EquipmentSlot == Globals.Me.Inventory[mMySlot].Base.EquipmentSlot)
+                            {
+                                mCompWindow = new ItemCompareWindow(
+                                    ItemBase.Get(equip), Globals.Me.Inventory[mMySlot].Base, Globals.Me.Inventory[mMySlot].Quantity, mInventoryWindow.X,
+                                    mInventoryWindow.Y, ItemBase.Get(equip).StatsGiven, Globals.Me.Inventory[mMySlot].StatBuffs
+                                );
+                            }
+                            i++;
+                        }
+                    }
                 }
             }
             else
@@ -309,6 +336,13 @@ namespace Intersect.Client.Interface.Game.Inventory
                 {
                     mDescWindow.Dispose();
                     mDescWindow = null;
+                    pnl_HoverEnter(null, null);
+                }
+                
+                if (mCompWindow != null)
+                {
+                    mCompWindow.Dispose();
+                    mCompWindow = null;
                     pnl_HoverEnter(null, null);
                 }
             }
