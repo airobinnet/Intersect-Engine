@@ -189,6 +189,7 @@ namespace Intersect.Client.Interface.Game
                         for (var i = 0; i < Options.MaxStats; i++)
                         {
                             var flatStat = item.StatsGiven[i] + statBuffs[i];
+                            var originalflatStat = originalitem.StatsGiven[i] + originalstatBuffs[i];
                             var bonus = flatStat.ToString();
 
                             if (item.PercentageStatsGiven[i] > 0)
@@ -204,7 +205,7 @@ namespace Intersect.Client.Interface.Game
 
                                 bonus += item.PercentageStatsGiven[i] + "%";
                             }
-                            var originalflatStat = originalitem.StatsGiven[i] + originalstatBuffs[i];
+                            
                             if (flatStat > originalflatStat)
                             {
                             bonus += " (+" + ((originalflatStat-flatStat)*-1).ToString() + ")";

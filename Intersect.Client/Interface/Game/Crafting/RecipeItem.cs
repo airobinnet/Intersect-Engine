@@ -8,6 +8,7 @@ using Intersect.Client.General;
 using Intersect.Enums;
 using Intersect.GameObjects;
 using Intersect.GameObjects.Crafting;
+using Intersect.Client.Localization;
 
 namespace Intersect.Client.Interface.Game.Crafting
 {
@@ -18,6 +19,8 @@ namespace Intersect.Client.Interface.Game.Crafting
         public ImagePanel Container;
 
         public ItemDescWindow DescWindow;
+
+        public ItemCompareWindow mCompWindow;
 
         public bool IsDragging;
 
@@ -32,6 +35,10 @@ namespace Intersect.Client.Interface.Game.Crafting
         //Slot info
         CraftIngredient mIngredient;
 
+        private bool mshowComp;
+
+        private RecipeItem mCombinedItem;
+
         //Mouse Event Variables
         private bool mMouseOver;
 
@@ -41,10 +48,11 @@ namespace Intersect.Client.Interface.Game.Crafting
 
         public ImagePanel Pnl;
 
-        public RecipeItem(CraftingWindow craftingWindow, CraftIngredient ingredient)
+        public RecipeItem(CraftingWindow craftingWindow, CraftIngredient ingredient, bool showComp)
         {
             mCraftingWindow = craftingWindow;
             mIngredient = ingredient;
+            mshowComp = showComp;
         }
 
         public void Setup(string name)
@@ -92,6 +100,11 @@ namespace Intersect.Client.Interface.Game.Crafting
                 DescWindow.Dispose();
                 DescWindow = null;
             }
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
         }
 
         void pnl_HoverEnter(Base sender, EventArgs arguments)
@@ -115,6 +128,11 @@ namespace Intersect.Client.Interface.Game.Crafting
                 DescWindow.Dispose();
                 DescWindow = null;
             }
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
 
             if (mIngredient != null && ItemBase.Get(mIngredient.ItemId) != null)
             {
@@ -122,6 +140,21 @@ namespace Intersect.Client.Interface.Game.Crafting
                     ItemBase.Get(mIngredient.ItemId), mIngredient.Quantity, mCraftingWindow.X, mCraftingWindow.Y,
                     new int[(int) Stats.StatCount]
                 );
+                if (ItemBase.Get(mIngredient.ItemId).ItemType == Enums.ItemTypes.Equipment && mshowComp)
+                {
+                    var i = 0;
+                    foreach (var equip in Globals.Me.Equipment)
+                    {
+                        if (ItemBase.Get(equip)?.EquipmentSlot == ItemBase.Get(mIngredient.ItemId).EquipmentSlot)
+                        {
+                            mCompWindow = new ItemCompareWindow(
+                                           ItemBase.Get(equip), ItemBase.Get(mIngredient.ItemId), 1, mCraftingWindow.X,
+                                           mCraftingWindow.Y, Globals.Me.Inventory[Globals.Me.MyEquipment[ItemBase.Get(equip).EquipmentSlot]].StatBuffs,ItemBase.Get(mIngredient.ItemId).StatsGiven, "", Strings.ItemDesc.equippeditem
+                                        );
+                            i++;
+                        }
+                    }
+                }
             }
         }
 

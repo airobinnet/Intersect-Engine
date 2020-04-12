@@ -9,6 +9,7 @@ using Intersect.Client.Framework.Input;
 using Intersect.Client.General;
 using Intersect.Client.Networking;
 using Intersect.GameObjects;
+using Intersect.Client.Localization;
 
 namespace Intersect.Client.Interface.Game.Bank
 {
@@ -35,6 +36,8 @@ namespace Intersect.Client.Interface.Game.Bank
         private Guid mCurrentItemId;
 
         private ItemDescWindow mDescWindow;
+
+        private ItemCompareWindow mCompWindow;
 
         private Draggable mDragIcon;
 
@@ -89,6 +92,12 @@ namespace Intersect.Client.Interface.Game.Bank
                 mDescWindow.Dispose();
                 mDescWindow = null;
             }
+
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
         }
 
         void pnl_HoverEnter(Base sender, EventArgs arguments)
@@ -113,12 +122,32 @@ namespace Intersect.Client.Interface.Game.Bank
                 mDescWindow = null;
             }
 
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
             if (Globals.Bank[mMySlot]?.Base != null)
             {
                 mDescWindow = new ItemDescWindow(
                     Globals.Bank[mMySlot].Base, Globals.Bank[mMySlot].Quantity, mBankWindow.X, mBankWindow.Y,
                     Globals.Bank[mMySlot].StatBuffs
                 );
+                if (Globals.Bank[mMySlot]?.Base.ItemType == Enums.ItemTypes.Equipment)
+                {
+                    var i = 0;
+                    foreach (var equip in Globals.Me.Equipment)
+                    {
+                        if (ItemBase.Get(equip)?.EquipmentSlot == Globals.Bank[mMySlot]?.Base.EquipmentSlot)
+                        {
+                            mCompWindow = new ItemCompareWindow(
+                                           ItemBase.Get(equip), Globals.Bank[mMySlot]?.Base, Globals.Me.Inventory[mMySlot].Quantity, mBankWindow.X,
+                                           mBankWindow.Y, Globals.Me.Inventory[Globals.Me.MyEquipment[ItemBase.Get(equip).EquipmentSlot]].StatBuffs, Globals.Bank[mMySlot]?.StatBuffs, "", Strings.ItemDesc.equippeditem
+                                        );
+                            i++;
+                        }
+                    }
+                }
             }
         }
 

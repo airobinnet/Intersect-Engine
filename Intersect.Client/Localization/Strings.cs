@@ -823,6 +823,8 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString effect = @"Bonus Effect: {00}% {01}";
 
+            public static LocalizedString equippeditem = @"Equipped Item";
+
             public static Dictionary<int, LocalizedString> effects = new Dictionary<int, LocalizedString>
             {
                 {0, @"Cooldown Reduction"},

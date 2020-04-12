@@ -137,7 +137,7 @@ namespace Intersect.Client.Interface.Game.Crafting
                 return;
             }
 
-            mCombinedItem = new RecipeItem(this, new CraftIngredient(craft.ItemId, 0))
+            mCombinedItem = new RecipeItem(this, new CraftIngredient(craft.ItemId, 0),true)
             {
                 Container = new ImagePanel(mCraftWindow, "CraftedItem")
             };
@@ -191,7 +191,7 @@ namespace Intersect.Client.Interface.Game.Crafting
 
             for (var i = 0; i < craft.Ingredients.Count; i++)
             {
-                mItems.Add(new RecipeItem(this, craft.Ingredients[i]));
+                mItems.Add(new RecipeItem(this, craft.Ingredients[i], false));
                 mItems[i].Container = new ImagePanel(mItemContainer, "CraftingIngredient");
                 mItems[i].Setup("IngredientItemIcon");
 
