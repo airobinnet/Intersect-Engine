@@ -224,6 +224,9 @@
         //Player Label
         PlayerLabel,
 
+        //Combat Text
+        AddCombatText,
+
     }
 
 }

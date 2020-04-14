@@ -183,6 +183,17 @@ namespace Intersect.GameObjects.Events.Commands
 
     }
 
+    public class AddCombatTextCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.AddCombatText;
+
+        public string Text { get; set; } = "";
+
+        public string Color { get; set; } = "";
+
+    }
+
     public class SetVariableCommand : EventCommand
     {
 

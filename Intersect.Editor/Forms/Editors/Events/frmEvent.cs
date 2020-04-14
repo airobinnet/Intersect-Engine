@@ -531,6 +531,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new AddChatboxTextCommand();
 
                     break;
+                case EventCommandType.AddCombatText:
+                    tmpCommand = new AddCombatTextCommand();
+
+                    break;
                 case EventCommandType.SetVariable:
                     tmpCommand = new SetVariableCommand();
 
@@ -1104,6 +1108,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.AddChatboxText:
                     cmdWindow = new EventCommandChatboxText((AddChatboxTextCommand) command, this);
+
+                    break;
+                case EventCommandType.AddCombatText:
+                    cmdWindow = new EventCommandCombatText((AddCombatTextCommand)command, this);
 
                     break;
                 case EventCommandType.SetVariable:
@@ -1765,6 +1773,10 @@ namespace Intersect.Editor.Forms.Editors.Events
 
         #endregion
 
+        private void lstCommands_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
     }
 
     public class CommandListProperties

@@ -496,6 +496,11 @@ namespace Intersect.Editor.Forms.Editors.Events
             return Strings.EventCommandList.chatboxtext.ToString(channel, command.Color, Truncate(command.Text, 20));
         }
 
+        private static string GetCommandText(AddCombatTextCommand command, MapInstance map)
+        {
+            return Strings.EventCommandList.combattext.ToString(Truncate(command.Text, 20), command.Color);
+        }
+
         private static string GetCommandText(SetVariableCommand command, MapInstance map)
         {
             return GetVariableModText(command, (dynamic) command.Modification);

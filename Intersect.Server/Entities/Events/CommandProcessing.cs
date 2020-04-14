@@ -129,6 +129,21 @@ namespace Intersect.Server.Entities.Events
             }
         }
 
+        //Show Add Combat Text Command
+        private static void ProcessCommand(
+            AddCombatTextCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            var txt = ParseEventText(command.Text, player, instance);
+            var color = Color.FromName(command.Color, Strings.Colors.presets);
+
+            PacketSender.SendActionMsg(player, txt, color);
+        }
+
         //Set Variable Commands
         private static void ProcessCommand(
             SetVariableCommand command,

@@ -1383,6 +1383,23 @@ Tick timer saved in server config.json.";
 
         }
 
+        public struct EventCombatText
+        {
+
+            public static LocalizedString cancel = @"Cancel";
+            
+            public static LocalizedString color = @"Color:";
+
+            public static LocalizedString commands = @"Combat Text Commands";
+
+            public static LocalizedString okay = @"Ok";
+
+            public static LocalizedString text = @"Text:";
+
+            public static LocalizedString title = @"Add Combat Text";
+
+        }
+
         public struct EventCommandList
         {
 
@@ -1409,6 +1426,8 @@ Tick timer saved in server config.json.";
             public static LocalizedString changespells = @"Change Player Spells [{00}]";
 
             public static LocalizedString chatboxtext = @"Show Chatbox Text [Channel: {00}, Color: {01}] - {02}";
+
+            public static LocalizedString combattext = @"Show Combat Text [{00}, Color: {01}]";
 
             public static LocalizedString chatglobal = @"Global";
 
@@ -1719,6 +1738,7 @@ Tick timer saved in server config.json.";
                 {"changenamecolor", @"Change Name Color"},
                 {"inputvariable", @"Input Variable"},
                 {"changeplayerlabel", @"Change Player Label"},
+                {"addcombattext", @"Add Combat Text" },
             };
 
         }

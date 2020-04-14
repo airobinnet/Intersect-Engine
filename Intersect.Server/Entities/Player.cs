@@ -1507,6 +1507,7 @@ namespace Intersect.Server.Entities
                         if (sendUpdate)
                         {
                             PacketSender.SendInventoryItemUpdate(this, i);
+                            PacketSender.SendActionMsg(this, itemBase.Name, Color.Pink);
                         }
 
                         UpdateGatherItemQuests(item.ItemId);
@@ -1527,6 +1528,7 @@ namespace Intersect.Server.Entities
                     if (sendUpdate)
                     {
                         PacketSender.SendInventoryItemUpdate(this, i);
+                        PacketSender.SendActionMsg(this, itemBase.Name, Color.Pink);
                     }
 
                     UpdateGatherItemQuests(item.ItemId);
