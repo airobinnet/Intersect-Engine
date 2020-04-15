@@ -140,8 +140,76 @@ namespace Intersect.Server.Entities.Events
         {
             var txt = ParseEventText(command.Text, player, instance);
             var color = Color.FromName(command.Color, Strings.Colors.presets);
+            bool self = command.self;
+            var mapId = instance.MapId;
+            var tileX = instance.PageInstance.X;
+            var tileY = instance.PageInstance.Y;
+            var targetEntity = (Entity)player;
+            //Next part could probably be rewritten completely by just sending PageInstance.X and PageInstance.Y... but i'm lazy!
+            if (self)
+            {
+                if (mapId != Guid.Empty)
+                {
+                    tileX = instance.PageInstance.X;
+                    tileY = instance.PageInstance.Y;
+                }
+                else
+                {
+                    if (instance.Id != Guid.Empty)
+                    {
+                        foreach (var evt in player.EventLookup)
+                        {
+                            if (evt.Value.MapId != instance.MapId)
+                            {
+                                continue;
+                            }
 
-            PacketSender.SendActionMsg(player, txt, color);
+                            if (evt.Value.BaseEvent.Id == instance.Id)
+                            {
+                                targetEntity = evt.Value.PageInstance;
+
+                                break;
+                            }
+                        }
+                    }
+
+                    if (targetEntity != null)
+                    {
+                        if (instance.X == 0 && instance.Y == 0)
+                        {
+                            //Attach to entity instead of playing on tile
+                            PacketSender.SendActionMsgSelf(
+                                instance, txt, color, 0, 0, targetEntity.Id,
+                                targetEntity.MapId
+                            );
+
+                            return;
+                        }
+
+                        int xDiff = instance.X;
+                        int yDiff = instance.Y;
+
+                        mapId = targetEntity.MapId;
+                        tileX = targetEntity.X + xDiff;
+                        tileY = targetEntity.Y + yDiff;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                var tile = new TileHelper(mapId, tileX, tileY);
+                if (tile.TryFix())
+                {
+                    PacketSender.SendActionMsgSelf(instance, txt, color, tile.GetX(), tile.GetY(), targetEntity.Id,
+                                targetEntity.MapId);
+                }
+            }
+            else
+            {
+                PacketSender.SendActionMsg(player, txt, color);
+            }
         }
 
         //Set Variable Commands
@@ -424,6 +492,25 @@ namespace Intersect.Server.Entities.Events
             callStack.Push(tmpStack);
         }
 
+        //Friendly Spells Command
+        private static void ProcessCommand(
+            FriendlySpellsCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            var spell = SpellBase.Get(command.spell);
+
+            if (spell == null)
+            {
+                return;
+            }
+
+            player.CastSpell(command.spell);
+        }
+
         //Change Items Command
         private static void ProcessCommand(
             ChangeItemsCommand command,
@@ -480,6 +567,25 @@ namespace Intersect.Server.Entities.Events
             }
 
             player.EquipItem(ItemBase.Get(command.ItemId));
+        }
+
+        //UnEquip Items Command
+        private static void ProcessCommand(
+            UnEquipItemCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            var slot = Options.EquipmentSlots[command.Slot];
+
+            if (slot == null)
+            {
+                return;
+            }
+
+            player.UnequipItem(command.Slot);
         }
 
         //Change Sprite Command

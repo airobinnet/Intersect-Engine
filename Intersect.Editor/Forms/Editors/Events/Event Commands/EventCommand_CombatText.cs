@@ -23,6 +23,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mEventEditor = editor;
             InitLocalization();
             txtAddText.Text = mMyCommand.Text;
+            chkShowOnEvent.Checked = refCommand.self;
             cmbColor.Items.Clear();
             foreach (Color.ChatColor color in Enum.GetValues(typeof(Color.ChatColor)))
             {
@@ -42,7 +43,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             lblText.Text = Strings.EventCombatText.text;
             lblColor.Text = Strings.EventCombatText.color;
             lblCommands.Text = Strings.EventCombatText.commands;
-
+            chkShowOnEvent.Text = Strings.EventCombatText.showonevent;
             btnSave.Text = Strings.EventCombatText.okay;
             btnCancel.Text = Strings.EventCombatText.cancel;
         }
@@ -51,6 +52,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         {
             mMyCommand.Text = txtAddText.Text;
             mMyCommand.Color = cmbColor.Text;
+            mMyCommand.self = chkShowOnEvent.Checked;
             mEventEditor.FinishCommandEdit();
         }
 

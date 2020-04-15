@@ -227,6 +227,12 @@
         //Combat Text
         AddCombatText,
 
+        //Unequip Item
+        Unequip,
+
+        //Unequip Item
+        FriendlySpells,
+
     }
 
 }

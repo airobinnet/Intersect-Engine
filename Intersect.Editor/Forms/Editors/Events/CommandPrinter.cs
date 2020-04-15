@@ -498,7 +498,7 @@ namespace Intersect.Editor.Forms.Editors.Events
 
         private static string GetCommandText(AddCombatTextCommand command, MapInstance map)
         {
-            return Strings.EventCommandList.combattext.ToString(Truncate(command.Text, 20), command.Color);
+            return Strings.EventCommandList.combattext.ToString(Truncate(command.Text, 20), command.Color, command.self);
         }
 
         private static string GetCommandText(SetVariableCommand command, MapInstance map)
@@ -1242,6 +1242,16 @@ namespace Intersect.Editor.Forms.Editors.Events
             }
 
             return Strings.EventCommandList.invalid;
+        }
+
+        private static string GetCommandText(UnEquipItemCommand command, MapInstance map)
+        {
+            return Strings.EventCommandList.unequipitem.ToString(Options.EquipmentSlots[command.Slot]);
+        }
+
+        private static string GetCommandText(FriendlySpellsCommand command, MapInstance map)
+        {
+            return Strings.EventCommandList.friendlyspells.ToString(SpellBase.GetName(command.spell));
         }
 
     }

@@ -1574,6 +1574,26 @@ namespace Intersect.Server.Networking
             SendDataToProximity(en.MapId, new ActionMsgPacket(en.MapId, en.X, en.Y, message, color));
         }
 
+        //ActionMsgPacket
+        //public static void SendActionMsgSelf(Event ev, string message, Color color, bool self)
+        //{
+        //    SendDataToProximity(ev.MapId, new ActionMsgPacket(ev.MapId, ev.X, ev.Y, message, color));
+        //}
+
+        //ActionMsgPacketSelf
+        public static void SendActionMsgSelf(
+            Event ev,
+            string message,
+            Color color,
+            byte x,
+            byte y,
+            Guid entityId,
+            Guid mapId
+        )
+        {
+            SendDataToProximity(ev.MapId, new ActionMsgPacket(ev.MapId, x, y, message, color));
+        }
+
         //EnterMapPacket
         public static void SendEnterMap(Client client, Guid mapId)
         {

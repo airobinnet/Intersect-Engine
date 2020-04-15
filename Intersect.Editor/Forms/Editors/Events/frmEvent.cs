@@ -595,6 +595,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new EquipItemCommand();
 
                     break;
+                case EventCommandType.Unequip:
+                    tmpCommand = new UnEquipItemCommand();
+
+                    break;
                 case EventCommandType.ChangeSprite:
                     tmpCommand = new ChangeSpriteCommand();
 
@@ -713,6 +717,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.ShowPlayer:
                     tmpCommand = new ShowPlayerCommand();
+
+                    break;
+                case EventCommandType.FriendlySpells:
+                    tmpCommand = new FriendlySpellsCommand();
 
                     break;
                 default:
@@ -1175,6 +1183,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     cmdWindow = new EventCommandEquipItems((EquipItemCommand) command, this);
 
                     break;
+                case EventCommandType.Unequip:
+                    cmdWindow = new EventCommandUnEquipItems((UnEquipItemCommand)command, this);
+
+                    break;
                 case EventCommandType.ChangeSprite:
                     cmdWindow = new EventCommandChangeSprite((ChangeSpriteCommand) command, this);
 
@@ -1285,6 +1297,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.EndQuest:
                     cmdWindow = new EventCommandEndQuest((EndQuestCommand) command, this);
+
+                    break;
+                case EventCommandType.FriendlySpells:
+                    cmdWindow = new EventCommandFriendlySpells((FriendlySpellsCommand)command, this);
 
                     break;
                 default:

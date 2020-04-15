@@ -1251,6 +1251,32 @@ Tick timer saved in server config.json.";
 
         }
 
+        public struct FriendlySpells
+        {
+
+            public static LocalizedString cancel = @"Cancel";
+
+            public static LocalizedString item = @"Item:";
+
+            public static LocalizedString okay = @"Ok";
+
+            public static LocalizedString title = @"Friendly spell";
+
+        }
+
+        public struct EventUnEquipItems
+        {
+
+            public static LocalizedString cancel = @"Cancel";
+
+            public static LocalizedString item = @"Item:";
+
+            public static LocalizedString okay = @"Ok";
+
+            public static LocalizedString title = @"UnEquip Player Slot";
+
+        }
+
         public struct EventChangeVital
         {
 
@@ -1398,6 +1424,8 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString title = @"Add Combat Text";
 
+            public static LocalizedString showonevent = @"Show on Event?";
+
         }
 
         public struct EventCommandList
@@ -1423,11 +1451,15 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString equipitem = @"Equip Player Item [{00}]";
 
+            public static LocalizedString unequipitem = @"UnEquip Player Slot [{00}]";
+
+            public static LocalizedString friendlyspells = @"Friendly Spell [{00}]";
+
             public static LocalizedString changespells = @"Change Player Spells [{00}]";
 
             public static LocalizedString chatboxtext = @"Show Chatbox Text [Channel: {00}, Color: {01}] - {02}";
 
-            public static LocalizedString combattext = @"Show Combat Text [{00}, Color: {01}]";
+            public static LocalizedString combattext = @"Show Combat Text [{00}, Color: {01}, Self: {02}]";
 
             public static LocalizedString chatglobal = @"Global";
 
@@ -1739,6 +1771,8 @@ Tick timer saved in server config.json.";
                 {"inputvariable", @"Input Variable"},
                 {"changeplayerlabel", @"Change Player Label"},
                 {"addcombattext", @"Add Combat Text" },
+                {"unequipitem", @"UnEquip item" },
+                {"friendlyspells", @"Friendly Spells" },
             };
 
         }

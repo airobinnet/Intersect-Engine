@@ -92,6 +92,18 @@
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_CombatText.Designer.cs">
       <DependentUpon>EventCommand_CombatText.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_FriendlySpells.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_FriendlySpells.Designer.cs">
+      <DependentUpon>EventCommand_FriendlySpells.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_UnEquipItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_UnEquipItem.Designer.cs">
+      <DependentUpon>EventCommand_UnEquipItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Maps\MapGridItem.cs" />
     <Compile Include="Maps\MapSaveState.cs" />
     <Compile Include="Forms\Controls\SearchableDarkTreeView.cs">
@@ -665,6 +677,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_CombatText.resx">
       <DependentUpon>EventCommand_CombatText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_FriendlySpells.resx">
+      <DependentUpon>EventCommand_FriendlySpells.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_UnEquipItem.resx">
+      <DependentUpon>EventCommand_UnEquipItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_EquipItem.resx">
       <DependentUpon>EventCommand_EquipItem.cs</DependentUpon>

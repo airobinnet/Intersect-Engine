@@ -39,6 +39,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             this.lblText = new System.Windows.Forms.Label();
             this.btnCancel = new DarkUI.Controls.DarkButton();
             this.btnSave = new DarkUI.Controls.DarkButton();
+            this.chkShowOnEvent = new DarkUI.Controls.DarkCheckBox();
             this.grpCombatText.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,6 +47,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             // 
             this.grpCombatText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.grpCombatText.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpCombatText.Controls.Add(this.chkShowOnEvent);
             this.grpCombatText.Controls.Add(this.lblCommands);
             this.grpCombatText.Controls.Add(this.cmbColor);
             this.grpCombatText.Controls.Add(this.lblColor);
@@ -137,7 +139,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             this.btnCancel.Location = new System.Drawing.Point(134, 388);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Padding = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.btnCancel.Padding = new System.Windows.Forms.Padding(8);
             this.btnCancel.Size = new System.Drawing.Size(112, 35);
             this.btnCancel.TabIndex = 20;
             this.btnCancel.Text = "Cancel";
@@ -148,11 +150,21 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             this.btnSave.Location = new System.Drawing.Point(10, 388);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Padding = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.btnSave.Padding = new System.Windows.Forms.Padding(8);
             this.btnSave.Size = new System.Drawing.Size(112, 35);
             this.btnSave.TabIndex = 19;
             this.btnSave.Text = "Ok";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // chkShowOnEvent
+            // 
+            this.chkShowOnEvent.AutoSize = true;
+            this.chkShowOnEvent.Location = new System.Drawing.Point(14, 292);
+            this.chkShowOnEvent.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkShowOnEvent.Name = "chkShowOnEvent";
+            this.chkShowOnEvent.Size = new System.Drawing.Size(151, 24);
+            this.chkShowOnEvent.TabIndex = 36;
+            this.chkShowOnEvent.Text = "Show on Event?";
             // 
             // EventCommandCombatText
             // 
@@ -180,5 +192,6 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         private DarkComboBox cmbColor;
         private System.Windows.Forms.Label lblColor;
         private System.Windows.Forms.Label lblCommands;
+        private DarkCheckBox chkShowOnEvent;
     }
 }
