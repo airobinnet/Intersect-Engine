@@ -247,6 +247,16 @@ namespace Intersect.Editor.Forms.Editors
                     mEditorItem.SpawnMapId = MapList.OrderedMaps[0].MapId;
                 }
 
+                if (mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair].Count > 0)
+                {
+                    lstHair.SelectedIndex = 0;
+                } else
+                {
+                    lstHair.SelectedIndex = -1;
+                    cmbHair.SelectedIndex = 0;
+                    rbMale2.Checked = true;
+                }
+
                 nudX.Value = mEditorItem.SpawnX;
                 nudY.Value = mEditorItem.SpawnY;
                 cmbDirection.SelectedIndex = mEditorItem.SpawnDir;
@@ -695,7 +705,12 @@ namespace Intersect.Editor.Forms.Editors
 
             if (saveSpot) {
                 lstHair.SelectedIndex = n;
+            } else if (lstHair.Items.Count > 0)
+            {
+                lstHair.SelectedIndex = 0;
             }
+
+            lstHair_Click(null, null);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -1410,6 +1425,8 @@ namespace Intersect.Editor.Forms.Editors
         }
 
         private void rbMale2_Click(object sender, EventArgs e) {
+            if (lstHair.SelectedIndex == -1) return;
+
             if (lstHair.Items.Count > 0) {
                 mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][lstHair.SelectedIndex].Gender = Gender.Male;
                 RefreshHairList();
@@ -1417,6 +1434,8 @@ namespace Intersect.Editor.Forms.Editors
         }
 
         private void rbFemale2_Click(object sender, EventArgs e) {
+            if (lstHair.SelectedIndex == -1) return;
+
             if (lstHair.Items.Count > 0) {
                 mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][lstHair.SelectedIndex].Gender = Gender.Female;
                 RefreshHairList();
