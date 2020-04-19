@@ -187,6 +187,8 @@ namespace Intersect.Editor.General
                     return "Defense";
                 case (int) Stats.MagicResist:
                     return "Magic Resist";
+                case (int) Stats.MovementSpeed:
+                    return "Movement Speed";
                 case (int) Stats.Speed:
                     return "Speed";
                 default:

@@ -150,7 +150,8 @@ namespace Intersect.Editor.Forms.Editors
                 nudAttack.Value = mEditorItem.BaseStat[(int) Stats.Attack];
                 nudMag.Value = mEditorItem.BaseStat[(int) Stats.AbilityPower];
                 nudDef.Value = mEditorItem.BaseStat[(int) Stats.Defense];
-                nudMR.Value = mEditorItem.BaseStat[(int) Stats.MagicResist];
+                nudMR.Value = mEditorItem.BaseStat[(int)Stats.MagicResist];
+                nudMS.Value = mEditorItem.BaseStat[(int)Stats.MovementSpeed];
                 nudSpd.Value = mEditorItem.BaseStat[(int) Stats.Speed];
                 nudBaseHP.Value = Math.Max(
                     Math.Min(mEditorItem.BaseVital[(int) Vitals.Health], nudBaseHP.Maximum), nudBaseHP.Minimum
@@ -826,6 +827,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudArmorIncrease.Maximum = Options.MaxStatValue;
                 nudMagicIncrease.Maximum = Options.MaxStatValue;
                 nudMagicResistIncrease.Maximum = Options.MaxStatValue;
+                nudMovementSpeedIncrease.Maximum = Options.MaxStatValue;
                 nudSpeedIncrease.Maximum = Options.MaxStatValue;
             }
             else
@@ -835,6 +837,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudStrengthIncrease.Maximum = 100;
                 nudArmorIncrease.Maximum = 100;
                 nudMagicIncrease.Maximum = 100;
+                nudMovementSpeedIncrease.Maximum = 100;
                 nudMagicResistIncrease.Maximum = 100;
                 nudSpeedIncrease.Maximum = 100;
             }
@@ -853,6 +856,10 @@ namespace Intersect.Editor.Forms.Editors
 
             nudMagicResistIncrease.Value = Math.Min(
                 nudMagicResistIncrease.Maximum, mEditorItem.StatIncrease[(int) Stats.MagicResist]
+            );
+
+            nudMovementSpeedIncrease.Value = Math.Min(
+                nudMovementSpeedIncrease.Maximum, mEditorItem.StatIncrease[(int)Stats.MovementSpeed]
             );
 
             nudSpeedIncrease.Value = Math.Min(nudSpeedIncrease.Maximum, mEditorItem.StatIncrease[(int) Stats.Speed]);
@@ -1073,6 +1080,11 @@ namespace Intersect.Editor.Forms.Editors
             mEditorItem.BaseStat[(int) Stats.MagicResist] = (int) nudMR.Value;
         }
 
+        private void nudMS_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.BaseStat[(int)Stats.MovementSpeed] = (int)nudMS.Value;
+        }
+
         private void nudPoints_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.BasePoints = (int) nudPoints.Value;
@@ -1139,6 +1151,12 @@ namespace Intersect.Editor.Forms.Editors
         private void nudMagicResistIncrease_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.StatIncrease[(int) Stats.MagicResist] = (int) nudMagicResistIncrease.Value;
+            UpdateIncreases();
+        }
+
+        private void nudMovementSpeedIncrease_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.StatIncrease[(int)Stats.MovementSpeed] = (int) nudMovementSpeedIncrease.Value;
             UpdateIncreases();
         }
 
