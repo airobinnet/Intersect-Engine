@@ -332,8 +332,7 @@ namespace Intersect.Client.Interface.Game.Character
             mAddSpeedBtn.IsHidden =
                 Globals.Me.StatPoints == 0 || Globals.Me.Stat[(int) Stats.Speed] == Options.MaxStatValue;
 
-            mAddMovementSpeedBtn.IsHidden =
-                Globals.Me.StatPoints == 0 || Globals.Me.Stat[(int) Stats.MovementSpeed] == Options.MaxStatValue;
+            mAddMovementSpeedBtn.IsHidden = true;
 
             for (var i = 0; i < Options.EquipmentSlots.Count; i++)
             {
