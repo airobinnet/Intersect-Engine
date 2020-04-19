@@ -273,7 +273,7 @@ namespace Intersect
         //Values that cannot easily be changed:
         public const int LayerCount = 5;
 
-        public const int MaxStats = 5;
+        public const int MaxStats = 6;
 
         public const int MaxHotbar = 10;
 

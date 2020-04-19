@@ -2879,6 +2879,8 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString magicresistbonus = @"Magic Resist:";
 
+            public static LocalizedString movementspeedbonus = @"Movement Speed:";
+
             public static LocalizedString malepaperdoll = @"Male Paperdoll:";
 
             public static LocalizedString mana = @"Mana:";

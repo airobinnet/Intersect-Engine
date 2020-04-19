@@ -857,7 +857,8 @@ namespace Intersect.Client.Localization
                 {1, @"Ability Power: {00}"},
                 {2, @"Defense: {00}"},
                 {3, @"Magic Resist: {00}"},
-                {4, @"Speed: {00}"}
+                {4, @"Speed: {00}"},
+                {5, @"Movement Speed: {00}"}
             };
 
             public static LocalizedString twohand = @"2H";

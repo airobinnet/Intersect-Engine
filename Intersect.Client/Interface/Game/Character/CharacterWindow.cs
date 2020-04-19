@@ -327,10 +327,13 @@ namespace Intersect.Client.Interface.Game.Character
                                       Globals.Me.Stat[(int) Stats.Defense] == Options.MaxStatValue;
 
             mAddMagicResistBtn.IsHidden = Globals.Me.StatPoints == 0 ||
-                                          Globals.Me.Stat[(int)Stats.MagicResist] == Options.MaxStatValue;
+                                          Globals.Me.Stat[(int) Stats.MagicResist] == Options.MaxStatValue;
 
             mAddSpeedBtn.IsHidden =
                 Globals.Me.StatPoints == 0 || Globals.Me.Stat[(int) Stats.Speed] == Options.MaxStatValue;
+
+            mAddMovementSpeedBtn.IsHidden =
+                Globals.Me.StatPoints == 0 || Globals.Me.Stat[(int) Stats.MovementSpeed] == Options.MaxStatValue;
 
             for (var i = 0; i < Options.EquipmentSlots.Count; i++)
             {

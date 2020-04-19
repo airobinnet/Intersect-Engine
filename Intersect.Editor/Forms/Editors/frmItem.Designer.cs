@@ -87,6 +87,11 @@ namespace Intersect.Editor.Forms.Editors
             this.lblEquipmentAnimation = new System.Windows.Forms.Label();
             this.nudEffectPercent = new DarkUI.Controls.DarkNumericUpDown();
             this.grpStatBonuses = new DarkUI.Controls.DarkGroupBox();
+            this.lblPercentage9 = new System.Windows.Forms.Label();
+            this.nudMSPercentage = new DarkUI.Controls.DarkNumericUpDown();
+            this.lblPlus9 = new System.Windows.Forms.Label();
+            this.nudMS = new DarkUI.Controls.DarkNumericUpDown();
+            this.lblMS = new System.Windows.Forms.Label();
             this.lblPercentage5 = new System.Windows.Forms.Label();
             this.lblPercentage4 = new System.Windows.Forms.Label();
             this.lblPercentage8 = new System.Windows.Forms.Label();
@@ -180,11 +185,6 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemPaste = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripItemUndo = new System.Windows.Forms.ToolStripButton();
-            this.label1 = new System.Windows.Forms.Label();
-            this.nudMSPercentage = new DarkUI.Controls.DarkNumericUpDown();
-            this.lblPlus9 = new System.Windows.Forms.Label();
-            this.nudMS = new DarkUI.Controls.DarkNumericUpDown();
-            this.lblMS = new System.Windows.Forms.Label();
             this.grpItems.SuspendLayout();
             this.grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudCooldown)).BeginInit();
@@ -201,6 +201,8 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudHealthBonus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudEffectPercent)).BeginInit();
             this.grpStatBonuses.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMSPercentage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMS)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpdPercentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMRPercentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDefPercentage)).BeginInit();
@@ -230,8 +232,6 @@ namespace Intersect.Editor.Forms.Editors
             this.grpBags.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBag)).BeginInit();
             this.toolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMSPercentage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMS)).BeginInit();
             this.SuspendLayout();
             // 
             // grpItems
@@ -256,7 +256,7 @@ namespace Intersect.Editor.Forms.Editors
             this.btnClearSearch.Location = new System.Drawing.Point(268, 26);
             this.btnClearSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnClearSearch.Name = "btnClearSearch";
-            this.btnClearSearch.Padding = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.btnClearSearch.Padding = new System.Windows.Forms.Padding(8);
             this.btnClearSearch.Size = new System.Drawing.Size(27, 31);
             this.btnClearSearch.TabIndex = 31;
             this.btnClearSearch.Text = "X";
@@ -310,7 +310,7 @@ namespace Intersect.Editor.Forms.Editors
             this.btnCancel.Location = new System.Drawing.Point(741, 742);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Padding = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.btnCancel.Padding = new System.Windows.Forms.Padding(8);
             this.btnCancel.Size = new System.Drawing.Size(285, 43);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
@@ -321,7 +321,7 @@ namespace Intersect.Editor.Forms.Editors
             this.btnSave.Location = new System.Drawing.Point(447, 742);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Padding = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.btnSave.Padding = new System.Windows.Forms.Padding(8);
             this.btnSave.Size = new System.Drawing.Size(285, 43);
             this.btnSave.TabIndex = 2;
             this.btnSave.Text = "Save";
@@ -369,7 +369,7 @@ namespace Intersect.Editor.Forms.Editors
             this.btnAddFolder.Location = new System.Drawing.Point(270, 89);
             this.btnAddFolder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnAddFolder.Name = "btnAddFolder";
-            this.btnAddFolder.Padding = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.btnAddFolder.Padding = new System.Windows.Forms.Padding(8);
             this.btnAddFolder.Size = new System.Drawing.Size(27, 32);
             this.btnAddFolder.TabIndex = 49;
             this.btnAddFolder.Text = "+";
@@ -484,7 +484,7 @@ namespace Intersect.Editor.Forms.Editors
             this.btnEditRequirements.Location = new System.Drawing.Point(393, 362);
             this.btnEditRequirements.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnEditRequirements.Name = "btnEditRequirements";
-            this.btnEditRequirements.Padding = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.btnEditRequirements.Padding = new System.Windows.Forms.Padding(8);
             this.btnEditRequirements.Size = new System.Drawing.Size(256, 35);
             this.btnEditRequirements.TabIndex = 0;
             this.btnEditRequirements.Text = "Edit Usage Requirements";
@@ -1042,7 +1042,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpStatBonuses.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpStatBonuses.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.grpStatBonuses.Controls.Add(this.label1);
+            this.grpStatBonuses.Controls.Add(this.lblPercentage9);
             this.grpStatBonuses.Controls.Add(this.nudMSPercentage);
             this.grpStatBonuses.Controls.Add(this.lblPlus9);
             this.grpStatBonuses.Controls.Add(this.nudMS);
@@ -1083,6 +1083,75 @@ namespace Intersect.Editor.Forms.Editors
             this.grpStatBonuses.TabIndex = 40;
             this.grpStatBonuses.TabStop = false;
             this.grpStatBonuses.Text = "Stat Bonuses";
+            // 
+            // lblPercentage9
+            // 
+            this.lblPercentage9.AutoSize = true;
+            this.lblPercentage9.Location = new System.Drawing.Point(269, 295);
+            this.lblPercentage9.Name = "lblPercentage9";
+            this.lblPercentage9.Size = new System.Drawing.Size(23, 20);
+            this.lblPercentage9.TabIndex = 87;
+            this.lblPercentage9.Text = "%";
+            // 
+            // nudMSPercentage
+            // 
+            this.nudMSPercentage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudMSPercentage.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudMSPercentage.Location = new System.Drawing.Point(199, 292);
+            this.nudMSPercentage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudMSPercentage.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudMSPercentage.Name = "nudMSPercentage";
+            this.nudMSPercentage.Size = new System.Drawing.Size(64, 26);
+            this.nudMSPercentage.TabIndex = 86;
+            this.nudMSPercentage.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nudMSPercentage.ValueChanged += new System.EventHandler(this.nudMSPercentage_ValueChanged);
+            // 
+            // lblPlus9
+            // 
+            this.lblPlus9.AutoSize = true;
+            this.lblPlus9.Location = new System.Drawing.Point(172, 295);
+            this.lblPlus9.Name = "lblPlus9";
+            this.lblPlus9.Size = new System.Drawing.Size(18, 20);
+            this.lblPlus9.TabIndex = 85;
+            this.lblPlus9.Text = "+";
+            // 
+            // nudMS
+            // 
+            this.nudMS.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudMS.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudMS.Location = new System.Drawing.Point(21, 292);
+            this.nudMS.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudMS.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudMS.Name = "nudMS";
+            this.nudMS.Size = new System.Drawing.Size(147, 26);
+            this.nudMS.TabIndex = 84;
+            this.nudMS.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.nudMS.ValueChanged += new System.EventHandler(this.nudMS_ValueChanged);
+            // 
+            // lblMS
+            // 
+            this.lblMS.AutoSize = true;
+            this.lblMS.Location = new System.Drawing.Point(16, 268);
+            this.lblMS.Name = "lblMS";
+            this.lblMS.Size = new System.Drawing.Size(138, 20);
+            this.lblMS.TabIndex = 83;
+            this.lblMS.Text = "Movement Speed:";
             // 
             // lblPercentage5
             // 
@@ -2477,73 +2546,6 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemUndo.Text = "Undo";
             this.toolStripItemUndo.Click += new System.EventHandler(this.toolStripItemUndo_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(269, 295);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(23, 20);
-            this.label1.TabIndex = 87;
-            this.label1.Text = "%";
-            // 
-            // nudMSPercentage
-            // 
-            this.nudMSPercentage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.nudMSPercentage.ForeColor = System.Drawing.Color.Gainsboro;
-            this.nudMSPercentage.Location = new System.Drawing.Point(199, 292);
-            this.nudMSPercentage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.nudMSPercentage.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.nudMSPercentage.Name = "nudMSPercentage";
-            this.nudMSPercentage.Size = new System.Drawing.Size(64, 26);
-            this.nudMSPercentage.TabIndex = 86;
-            this.nudMSPercentage.Value = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            // 
-            // lblPlus9
-            // 
-            this.lblPlus9.AutoSize = true;
-            this.lblPlus9.Location = new System.Drawing.Point(172, 295);
-            this.lblPlus9.Name = "lblPlus9";
-            this.lblPlus9.Size = new System.Drawing.Size(18, 20);
-            this.lblPlus9.TabIndex = 85;
-            this.lblPlus9.Text = "+";
-            // 
-            // nudMS
-            // 
-            this.nudMS.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.nudMS.ForeColor = System.Drawing.Color.Gainsboro;
-            this.nudMS.Location = new System.Drawing.Point(21, 292);
-            this.nudMS.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.nudMS.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nudMS.Name = "nudMS";
-            this.nudMS.Size = new System.Drawing.Size(147, 26);
-            this.nudMS.TabIndex = 84;
-            this.nudMS.Value = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            // 
-            // lblMS
-            // 
-            this.lblMS.AutoSize = true;
-            this.lblMS.Location = new System.Drawing.Point(16, 268);
-            this.lblMS.Name = "lblMS";
-            this.lblMS.Size = new System.Drawing.Size(138, 20);
-            this.lblMS.TabIndex = 83;
-            this.lblMS.Text = "Movement Speed:";
-            // 
             // FrmItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -2589,6 +2591,8 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudEffectPercent)).EndInit();
             this.grpStatBonuses.ResumeLayout(false);
             this.grpStatBonuses.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMSPercentage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMS)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpdPercentage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMRPercentage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDefPercentage)).EndInit();
@@ -2624,8 +2628,6 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudBag)).EndInit();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMSPercentage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMS)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2777,7 +2779,7 @@ namespace Intersect.Editor.Forms.Editors
     private Label lblHpRegen;
     private Label lblManaRegen;
     private Label lblRegenHint;
-        private Label label1;
+        private Label lblPercentage9;
         private DarkNumericUpDown nudMSPercentage;
         private Label lblPlus9;
         private DarkNumericUpDown nudMS;
