@@ -371,6 +371,8 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString stat4 = @"{00}: {01}";
 
+            public static LocalizedString stat5 = @"{00}: {01}";
+
             public static LocalizedString stats = @"Stats:";
 
             public static LocalizedString title = @"Character";
@@ -493,6 +495,8 @@ namespace Intersect.Client.Localization
             public static LocalizedString stat3 = @"Magic Resist";
 
             public static LocalizedString stat4 = @"Speed";
+
+            public static LocalizedString stat5 = @"Movement Speed";
 
             public static LocalizedString targetoutsiderange = @"Target too far away!";
 

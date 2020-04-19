@@ -150,8 +150,8 @@ namespace Intersect.Editor.Forms.Editors
                 nudAttack.Value = mEditorItem.BaseStat[(int) Stats.Attack];
                 nudMag.Value = mEditorItem.BaseStat[(int) Stats.AbilityPower];
                 nudDef.Value = mEditorItem.BaseStat[(int) Stats.Defense];
-                nudMR.Value = mEditorItem.BaseStat[(int)Stats.MagicResist];
-                nudMS.Value = mEditorItem.BaseStat[(int)Stats.MovementSpeed];
+                nudMR.Value = mEditorItem.BaseStat[(int) Stats.MagicResist];
+                nudMS.Value = mEditorItem.BaseStat[(int) Stats.MovementSpeed];
                 nudSpd.Value = mEditorItem.BaseStat[(int) Stats.Speed];
                 nudBaseHP.Value = Math.Max(
                     Math.Min(mEditorItem.BaseVital[(int) Vitals.Health], nudBaseHP.Maximum), nudBaseHP.Minimum
@@ -357,6 +357,7 @@ namespace Intersect.Editor.Forms.Editors
             lblSpd.Text = Strings.ClassEditor.basespeed;
             lblMag.Text = Strings.ClassEditor.baseabilitypower;
             lblMR.Text = Strings.ClassEditor.basemagicresist;
+            lblMS.Text = Strings.ClassEditor.basemovementspeed;
             lblPoints.Text = Strings.ClassEditor.basepoints;
 
             grpSpells.Text = Strings.ClassEditor.learntspells;
@@ -1702,6 +1703,10 @@ namespace Intersect.Editor.Forms.Editors
 
         #endregion
 
+        private void mnuExpGrid_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
     }
 
 }

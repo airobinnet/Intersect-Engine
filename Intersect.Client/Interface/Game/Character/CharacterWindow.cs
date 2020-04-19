@@ -31,6 +31,8 @@ namespace Intersect.Client.Interface.Game.Character
 
         Button mAddMagicResistBtn;
 
+        Button mAddMovementSpeedBtn;
+
         Button mAddSpeedBtn;
 
         //Stats
@@ -56,6 +58,8 @@ namespace Intersect.Client.Interface.Game.Character
         private int[] mEmptyStatBoost = new int[Options.MaxStats];
 
         Label mMagicRstLabel;
+
+        Label mMovementSpdLabel;
 
         Label mPointsLabel;
 
@@ -122,6 +126,10 @@ namespace Intersect.Client.Interface.Game.Character
             mAddMagicResistBtn = new Button(mCharacterWindow, "IncreaseMagicResistButton");
             mAddMagicResistBtn.Clicked += _addMagicResistBtn_Clicked;
 
+            mMovementSpdLabel = new Label(mCharacterWindow, "MovementSpeedLabel");
+            mAddMovementSpeedBtn = new Button(mCharacterWindow, "IncreaseMovementSpeedButton");
+            mAddMovementSpeedBtn.Clicked += _addMovementSpeedBtn_Clicked;
+
             mPointsLabel = new Label(mCharacterWindow, "PointsLabel");
 
             for (var i = 0; i < Options.EquipmentSlots.Count; i++)
@@ -135,6 +143,11 @@ namespace Intersect.Client.Interface.Game.Character
         }
 
         //Update Button Event Handlers
+        void _addMovementSpeedBtn_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            PacketSender.SendUpgradeStat((int) Stats.MovementSpeed);
+        }
+
         void _addMagicResistBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             PacketSender.SendUpgradeStat((int) Stats.MagicResist);
@@ -297,6 +310,10 @@ namespace Intersect.Client.Interface.Game.Character
 
             mMagicRstLabel.SetText(
                 Strings.Character.stat3.ToString(Strings.Combat.stat3, Globals.Me.Stat[(int) Stats.MagicResist])
+            );
+
+            mMovementSpdLabel.SetText(
+                Strings.Character.stat5.ToString(Strings.Combat.stat5, Globals.Me.Stat[(int) Stats.MovementSpeed])
             );
 
             mPointsLabel.SetText(Strings.Character.points.ToString(Globals.Me.StatPoints));

@@ -694,6 +694,8 @@ namespace Intersect.Editor.Localization
 
             public static LocalizedString basemagicresist = @"Magic Resist:";
 
+            public static LocalizedString basemovementspeed = @"Movement Speed:";
+
             public static LocalizedString basemp = @"Mana:";
 
             public static LocalizedString basepoints = @"Points:";

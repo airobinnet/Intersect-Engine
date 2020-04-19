@@ -455,7 +455,7 @@ namespace Intersect.Client.Entities
         //Returns the amount of time required to traverse 1 tile
         public virtual float GetMovementTime()
         {
-            var time = 1000f / (float) (1 + Math.Log(Stat[(int) Stats.Speed]));
+            var time = 1000f / (float) (1 + Math.Log(Stat[(int) Stats.MovementSpeed]));
             if (Blocking)
             {
                 time += time * (float) Options.BlockingSlow;
@@ -1597,6 +1597,8 @@ namespace Intersect.Client.Entities
             var castSpell = SpellBase.Get(SpellCast);
             if (castSpell != null)
             {
+
+                Console.WriteLine(Animations.Count);
                 var width = Options.TileWidth;
                 var fillratio = (castSpell.CastDuration - (CastTime - Globals.System.GetTimeMs())) /
                                 (float) castSpell.CastDuration;

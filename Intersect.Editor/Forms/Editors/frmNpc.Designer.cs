@@ -2065,6 +2065,7 @@ namespace Intersect.Editor.Forms.Editors
         private DarkComboBox cmbSpell;
         private DarkNumericUpDown nudSpd;
         private DarkNumericUpDown nudMR;
+        private DarkNumericUpDown nudMS;
         private DarkNumericUpDown nudDef;
         private DarkNumericUpDown nudMag;
         private DarkNumericUpDown nudStr;
