@@ -112,6 +112,7 @@ namespace Intersect.Editor.Forms.Editors
             nudMag.Maximum = Options.MaxStatValue;
             nudDef.Maximum = Options.MaxStatValue;
             nudMR.Maximum = Options.MaxStatValue;
+            nudMS.Maximum = 10000;
             nudSpd.Maximum = Options.MaxStatValue;
             InitLocalization();
             UpdateEditor();
@@ -165,6 +166,7 @@ namespace Intersect.Editor.Forms.Editors
             lblSpd.Text = Strings.NpcEditor.speed;
             lblMag.Text = Strings.NpcEditor.abilitypower;
             lblMR.Text = Strings.NpcEditor.magicresist;
+            lblMS.Text = Strings.NpcEditor.movementspeed;
             lblExp.Text = Strings.NpcEditor.exp;
 
             grpRegen.Text = Strings.NpcEditor.regen;

@@ -203,23 +203,23 @@ namespace Intersect.Server.Entities.Events
                 switch (mMovementSpeed)
                 {
                     case EventMovementSpeed.Slowest:
-                        Stat[(int) Stats.Speed].BaseStat = 2;
+                        Stat[(int) Stats.MovementSpeed].BaseStat = 2;
 
                         break;
                     case EventMovementSpeed.Slower:
-                        Stat[(int) Stats.Speed].BaseStat = 5;
+                        Stat[(int) Stats.MovementSpeed].BaseStat = 5;
 
                         break;
                     case EventMovementSpeed.Normal:
-                        Stat[(int) Stats.Speed].BaseStat = 20;
+                        Stat[(int) Stats.MovementSpeed].BaseStat = 20;
 
                         break;
                     case EventMovementSpeed.Faster:
-                        Stat[(int) Stats.Speed].BaseStat = 30;
+                        Stat[(int) Stats.MovementSpeed].BaseStat = 30;
 
                         break;
                     case EventMovementSpeed.Fastest:
-                        Stat[(int) Stats.Speed].BaseStat = 40;
+                        Stat[(int) Stats.MovementSpeed].BaseStat = 40;
 
                         break;
                 }
@@ -288,23 +288,23 @@ namespace Intersect.Server.Entities.Events
             switch (speed)
             {
                 case EventMovementSpeed.Slowest:
-                    Stat[(int) Stats.Speed].BaseStat = 5;
+                    Stat[(int) Stats.MovementSpeed].BaseStat = 5;
 
                     break;
                 case EventMovementSpeed.Slower:
-                    Stat[(int) Stats.Speed].BaseStat = 10;
+                    Stat[(int) Stats.MovementSpeed].BaseStat = 10;
 
                     break;
                 case EventMovementSpeed.Normal:
-                    Stat[(int) Stats.Speed].BaseStat = 20;
+                    Stat[(int) Stats.MovementSpeed].BaseStat = 20;
 
                     break;
                 case EventMovementSpeed.Faster:
-                    Stat[(int) Stats.Speed].BaseStat = 30;
+                    Stat[(int) Stats.MovementSpeed].BaseStat = 30;
 
                     break;
                 case EventMovementSpeed.Fastest:
-                    Stat[(int) Stats.Speed].BaseStat = 40;
+                    Stat[(int) Stats.MovementSpeed].BaseStat = 40;
 
                     break;
             }
