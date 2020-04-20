@@ -1145,7 +1145,7 @@ namespace Intersect.Client.Maps
             {
                 var y = (int) Math.Ceiling(
                     GetY() +
-                    ActionMsgs[n].Y * Options.TileHeight -
+                    ActionMsgs[n].Y * Options.TileHeight + ActionMsgs[n].YOffset -
                     Options.TileHeight *
                     2 *
                     (1000 - (ActionMsgs[n].TransmittionTimer - Globals.System.GetTimeMs())) /

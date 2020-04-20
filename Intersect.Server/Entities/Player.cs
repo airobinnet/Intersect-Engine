@@ -1507,10 +1507,13 @@ namespace Intersect.Server.Entities
                         if (sendUpdate)
                         {
                             PacketSender.SendInventoryItemUpdate(this, i);
-                            PacketSender.SendActionMsg(this, itemBase.Name, Color.Pink);
                         }
 
                         UpdateGatherItemQuests(item.ItemId);
+                        var rarity = CustomColors.Items.Rarities.ContainsKey(itemBase.Rarity)
+                        ? CustomColors.Items.Rarities[itemBase.Rarity]
+                        : Color.White;
+                        PacketSender.SendActionMsg(this, itemBase.Name, rarity);
 
                         return true;
                     }
@@ -1528,10 +1531,13 @@ namespace Intersect.Server.Entities
                     if (sendUpdate)
                     {
                         PacketSender.SendInventoryItemUpdate(this, i);
-                        PacketSender.SendActionMsg(this, itemBase.Name, Color.Pink);
                     }
 
                     UpdateGatherItemQuests(item.ItemId);
+                    var rarity = CustomColors.Items.Rarities.ContainsKey(itemBase.Rarity)
+                        ? CustomColors.Items.Rarities[itemBase.Rarity]
+                        : Color.White;
+                    PacketSender.SendActionMsg(this, itemBase.Name, rarity);
 
                     return true;
                 }
@@ -3797,6 +3803,7 @@ namespace Intersect.Server.Entities
                     if (sendUpdate)
                     {
                         PacketSender.SendPlayerSpellUpdate(this, i);
+                        PacketSender.SendActionMsg(this, "New Skill learned: " + SpellBase.Get(Spells[i].SpellId).Name, Color.LightCoral);
                     }
 
                     return true;
