@@ -233,6 +233,9 @@
         //Unequip Item
         FriendlySpells,
 
+        //Change Hair
+        ChangeHair,
+
     }
 
 }
