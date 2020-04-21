@@ -23,6 +23,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mMyCommand = refCommand;
             mEventEditor = editor;
             cmbHair.Items.Clear();
+            cmbHair.Items.Add(Strings.General.none);
             cmbHair.Items.AddRange(GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Hairs));
             if (cmbHair.Items.IndexOf(mMyCommand.Hair) > -1)
             {

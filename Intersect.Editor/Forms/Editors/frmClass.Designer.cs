@@ -32,9 +32,9 @@ namespace Intersect.Editor.Forms.Editors
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmClass));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.grpClasses = new DarkUI.Controls.DarkGroupBox();
             this.btnClearSearch = new DarkUI.Controls.DarkButton();
             this.txtSearch = new DarkUI.Controls.DarkTextBox();
@@ -93,6 +93,16 @@ namespace Intersect.Editor.Forms.Editors
             this.lblX = new System.Windows.Forms.Label();
             this.lblMap = new System.Windows.Forms.Label();
             this.pnlContainer = new System.Windows.Forms.Panel();
+            this.grpHair = new DarkUI.Controls.DarkGroupBox();
+            this.lblHair = new System.Windows.Forms.Label();
+            this.picHair = new System.Windows.Forms.PictureBox();
+            this.cmbHair = new DarkUI.Controls.DarkComboBox();
+            this.grpGender2 = new DarkUI.Controls.DarkGroupBox();
+            this.rbMale2 = new DarkUI.Controls.DarkRadioButton();
+            this.rbFemale2 = new DarkUI.Controls.DarkRadioButton();
+            this.BtnAddHair = new DarkUI.Controls.DarkButton();
+            this.btnRemoveHair = new DarkUI.Controls.DarkButton();
+            this.lstHair = new System.Windows.Forms.ListBox();
             this.grpSpawnItems = new DarkUI.Controls.DarkGroupBox();
             this.btnSpawnItemRemove = new DarkUI.Controls.DarkButton();
             this.btnSpawnItemAdd = new DarkUI.Controls.DarkButton();
@@ -197,6 +207,9 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudX)).BeginInit();
             this.pnlContainer.SuspendLayout();
+            this.grpHair.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picHair)).BeginInit();
+            this.grpGender2.SuspendLayout();
             this.grpSpawnItems.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpawnItemAmount)).BeginInit();
             this.grpCombat.SuspendLayout();
@@ -1054,6 +1067,7 @@ namespace Intersect.Editor.Forms.Editors
             // pnlContainer
             // 
             this.pnlContainer.AutoScroll = true;
+            this.pnlContainer.Controls.Add(this.grpHair);
             this.pnlContainer.Controls.Add(this.grpSpawnItems);
             this.pnlContainer.Controls.Add(this.grpCombat);
             this.pnlContainer.Controls.Add(this.grpRegen);
@@ -1066,9 +1080,147 @@ namespace Intersect.Editor.Forms.Editors
             this.pnlContainer.Controls.Add(this.grpLeveling);
             this.pnlContainer.Location = new System.Drawing.Point(220, 55);
             this.pnlContainer.Name = "pnlContainer";
-            this.pnlContainer.Size = new System.Drawing.Size(1170, 546);
+            this.pnlContainer.Size = new System.Drawing.Size(1465, 640);
             this.pnlContainer.TabIndex = 28;
             this.pnlContainer.Visible = false;
+            // 
+            // grpHair
+            // 
+            this.grpHair.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpHair.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpHair.Controls.Add(this.lblHair);
+            this.grpHair.Controls.Add(this.picHair);
+            this.grpHair.Controls.Add(this.cmbHair);
+            this.grpHair.Controls.Add(this.grpGender2);
+            this.grpHair.Controls.Add(this.BtnAddHair);
+            this.grpHair.Controls.Add(this.btnRemoveHair);
+            this.grpHair.Controls.Add(this.lstHair);
+            this.grpHair.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpHair.Location = new System.Drawing.Point(1152, 278);
+            this.grpHair.Name = "grpHair";
+            this.grpHair.Size = new System.Drawing.Size(260, 251);
+            this.grpHair.TabIndex = 38;
+            this.grpHair.TabStop = false;
+            this.grpHair.Text = "Hairstyles";
+            // 
+            // lblHair
+            // 
+            this.lblHair.AutoSize = true;
+            this.lblHair.Location = new System.Drawing.Point(99, 78);
+            this.lblHair.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblHair.Name = "lblHair";
+            this.lblHair.Size = new System.Drawing.Size(42, 20);
+            this.lblHair.TabIndex = 27;
+            this.lblHair.Text = "Hair:";
+            // 
+            // picHair
+            // 
+            this.picHair.BackColor = System.Drawing.Color.Black;
+            this.picHair.Location = new System.Drawing.Point(163, 118);
+            this.picHair.Margin = new System.Windows.Forms.Padding(2);
+            this.picHair.Name = "picHair";
+            this.picHair.Size = new System.Drawing.Size(43, 42);
+            this.picHair.TabIndex = 25;
+            this.picHair.TabStop = false;
+            // 
+            // cmbHair
+            // 
+            this.cmbHair.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbHair.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbHair.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbHair.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbHair.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbHair.ButtonIcon")));
+            this.cmbHair.DrawDropdownHoverOutline = false;
+            this.cmbHair.DrawFocusRectangle = false;
+            this.cmbHair.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbHair.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbHair.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbHair.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbHair.FormattingEnabled = true;
+            this.cmbHair.Items.AddRange(new object[] {
+            "None"});
+            this.cmbHair.Location = new System.Drawing.Point(102, 93);
+            this.cmbHair.Margin = new System.Windows.Forms.Padding(2);
+            this.cmbHair.Name = "cmbHair";
+            this.cmbHair.Size = new System.Drawing.Size(104, 27);
+            this.cmbHair.TabIndex = 26;
+            this.cmbHair.Text = "None";
+            this.cmbHair.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbHair.SelectedIndexChanged += new System.EventHandler(this.cmbHair_SelectedIndexChanged);
+            // 
+            // grpGender2
+            // 
+            this.grpGender2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpGender2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpGender2.Controls.Add(this.rbMale2);
+            this.grpGender2.Controls.Add(this.rbFemale2);
+            this.grpGender2.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpGender2.Location = new System.Drawing.Point(102, 11);
+            this.grpGender2.Name = "grpGender2";
+            this.grpGender2.Size = new System.Drawing.Size(76, 62);
+            this.grpGender2.TabIndex = 24;
+            this.grpGender2.TabStop = false;
+            this.grpGender2.Text = "Gender";
+            // 
+            // rbMale2
+            // 
+            this.rbMale2.AutoSize = true;
+            this.rbMale2.Checked = true;
+            this.rbMale2.Location = new System.Drawing.Point(5, 18);
+            this.rbMale2.Margin = new System.Windows.Forms.Padding(2);
+            this.rbMale2.Name = "rbMale2";
+            this.rbMale2.Size = new System.Drawing.Size(68, 24);
+            this.rbMale2.TabIndex = 18;
+            this.rbMale2.TabStop = true;
+            this.rbMale2.Text = "Male";
+            this.rbMale2.Click += new System.EventHandler(this.rbMale2_Click);
+            // 
+            // rbFemale2
+            // 
+            this.rbFemale2.AutoSize = true;
+            this.rbFemale2.Location = new System.Drawing.Point(5, 38);
+            this.rbFemale2.Margin = new System.Windows.Forms.Padding(2);
+            this.rbFemale2.Name = "rbFemale2";
+            this.rbFemale2.Size = new System.Drawing.Size(87, 24);
+            this.rbFemale2.TabIndex = 19;
+            this.rbFemale2.Text = "Female";
+            this.rbFemale2.Click += new System.EventHandler(this.rbFemale2_Click);
+            // 
+            // BtnAddHair
+            // 
+            this.BtnAddHair.Location = new System.Drawing.Point(53, 16);
+            this.BtnAddHair.Margin = new System.Windows.Forms.Padding(2);
+            this.BtnAddHair.Name = "BtnAddHair";
+            this.BtnAddHair.Padding = new System.Windows.Forms.Padding(5);
+            this.BtnAddHair.Size = new System.Drawing.Size(44, 19);
+            this.BtnAddHair.TabIndex = 23;
+            this.BtnAddHair.Text = "+";
+            this.BtnAddHair.Click += new System.EventHandler(this.BtnAddHair_Click);
+            // 
+            // btnRemoveHair
+            // 
+            this.btnRemoveHair.Location = new System.Drawing.Point(5, 16);
+            this.btnRemoveHair.Margin = new System.Windows.Forms.Padding(2);
+            this.btnRemoveHair.Name = "btnRemoveHair";
+            this.btnRemoveHair.Padding = new System.Windows.Forms.Padding(5);
+            this.btnRemoveHair.Size = new System.Drawing.Size(44, 19);
+            this.btnRemoveHair.TabIndex = 22;
+            this.btnRemoveHair.Text = "-";
+            this.btnRemoveHair.Click += new System.EventHandler(this.btnRemoveHair_Click);
+            // 
+            // lstHair
+            // 
+            this.lstHair.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.lstHair.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lstHair.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lstHair.FormattingEnabled = true;
+            this.lstHair.ItemHeight = 20;
+            this.lstHair.Location = new System.Drawing.Point(5, 39);
+            this.lstHair.Margin = new System.Windows.Forms.Padding(2);
+            this.lstHair.Name = "lstHair";
+            this.lstHair.Size = new System.Drawing.Size(91, 122);
+            this.lstHair.TabIndex = 18;
+            this.lstHair.Click += new System.EventHandler(this.lstHair_Click);
             // 
             // grpSpawnItems
             // 
@@ -1734,21 +1886,21 @@ namespace Intersect.Editor.Forms.Editors
             this.expGrid.AllowUserToDeleteRows = false;
             this.expGrid.AllowUserToResizeColumns = false;
             this.expGrid.AllowUserToResizeRows = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(55)))));
-            this.expGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(53)))), ((int)(((byte)(55)))));
+            this.expGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.expGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.expGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.expGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.expGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.expGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Gainsboro;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.expGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.expGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.expGrid.ColumnHeadersHeight = 24;
             this.expGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.expGrid.EnableHeadersVisualStyles = false;
@@ -1757,8 +1909,8 @@ namespace Intersect.Editor.Forms.Editors
             this.expGrid.MultiSelect = false;
             this.expGrid.Name = "expGrid";
             this.expGrid.RowHeadersVisible = false;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
-            this.expGrid.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.expGrid.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.expGrid.Size = new System.Drawing.Size(772, 192);
             this.expGrid.TabIndex = 0;
             this.expGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.expGrid_CellEndEdit);
@@ -2178,7 +2330,7 @@ namespace Intersect.Editor.Forms.Editors
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(1200, 615);
+            this.btnCancel.Location = new System.Drawing.Point(1471, 709);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Padding = new System.Windows.Forms.Padding(8);
             this.btnCancel.Size = new System.Drawing.Size(190, 49);
@@ -2188,7 +2340,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(1004, 615);
+            this.btnSave.Location = new System.Drawing.Point(1275, 709);
             this.btnSave.Name = "btnSave";
             this.btnSave.Padding = new System.Windows.Forms.Padding(8);
             this.btnSave.Size = new System.Drawing.Size(190, 49);
@@ -2216,7 +2368,7 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Padding = new System.Windows.Forms.Padding(8, 0, 2, 0);
-            this.toolStrip.Size = new System.Drawing.Size(1394, 38);
+            this.toolStrip.Size = new System.Drawing.Size(1697, 38);
             this.toolStrip.TabIndex = 42;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -2345,7 +2497,7 @@ namespace Intersect.Editor.Forms.Editors
             this.AutoScroll = true;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.ClientSize = new System.Drawing.Size(1394, 672);
+            this.ClientSize = new System.Drawing.Size(1697, 770);
             this.ControlBox = false;
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.btnCancel);
@@ -2384,6 +2536,11 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudX)).EndInit();
             this.pnlContainer.ResumeLayout(false);
+            this.grpHair.ResumeLayout(false);
+            this.grpHair.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picHair)).EndInit();
+            this.grpGender2.ResumeLayout(false);
+            this.grpGender2.PerformLayout();
             this.grpSpawnItems.ResumeLayout(false);
             this.grpSpawnItems.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpawnItemAmount)).EndInit();
@@ -2574,5 +2731,15 @@ namespace Intersect.Editor.Forms.Editors
         private System.Windows.Forms.Label lblAttackSpeedValue;
         private DarkComboBox cmbAttackSpeedModifier;
         private System.Windows.Forms.Label lblAttackSpeedModifier;
+        private DarkGroupBox grpHair;
+        private System.Windows.Forms.Label lblHair;
+        private System.Windows.Forms.PictureBox picHair;
+        private DarkComboBox cmbHair;
+        private DarkGroupBox grpGender2;
+        private DarkRadioButton rbMale2;
+        private DarkRadioButton rbFemale2;
+        private DarkButton BtnAddHair;
+        private DarkButton btnRemoveHair;
+        private System.Windows.Forms.ListBox lstHair;
     }
 }
