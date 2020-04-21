@@ -1800,7 +1800,7 @@ namespace Intersect.Client.Entities
                     }
 
                     if (spell.SpellType == SpellTypes.CombatSpell &&
-                        spell.Combat.TargetType == SpellTargetTypes.Projectile && AnimatedTextures[SpriteAnimations.Shoot] != null)
+                        spell.Combat.TargetType == SpellTargetTypes.Projectile && AnimatedTextures[SpriteAnimations.Shoot] != null && spell.CastDuration < 50)
                     {
                         SpriteAnimation = SpriteAnimations.Shoot;
                     }
