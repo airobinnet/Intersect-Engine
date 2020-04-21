@@ -781,9 +781,9 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbSprite.FormattingEnabled = true;
             this.cmbSprite.Items.AddRange(new object[] {
             "None"});
-            this.cmbSprite.Location = new System.Drawing.Point(470, 46);
+            this.cmbSprite.Location = new System.Drawing.Point(563, 46);
             this.cmbSprite.Name = "cmbSprite";
-            this.cmbSprite.Size = new System.Drawing.Size(154, 27);
+            this.cmbSprite.Size = new System.Drawing.Size(229, 27);
             this.cmbSprite.TabIndex = 16;
             this.cmbSprite.Text = "None";
             this.cmbSprite.TextPadding = new System.Windows.Forms.Padding(2);
@@ -792,7 +792,7 @@ namespace Intersect.Editor.Forms.Editors
             // lblSprite
             // 
             this.lblSprite.AutoSize = true;
-            this.lblSprite.Location = new System.Drawing.Point(394, 23);
+            this.lblSprite.Location = new System.Drawing.Point(559, 22);
             this.lblSprite.Name = "lblSprite";
             this.lblSprite.Size = new System.Drawing.Size(55, 20);
             this.lblSprite.TabIndex = 15;
@@ -801,9 +801,9 @@ namespace Intersect.Editor.Forms.Editors
             // picSprite
             // 
             this.picSprite.BackColor = System.Drawing.Color.Black;
-            this.picSprite.Location = new System.Drawing.Point(399, 46);
+            this.picSprite.Location = new System.Drawing.Point(453, 25);
             this.picSprite.Name = "picSprite";
-            this.picSprite.Size = new System.Drawing.Size(64, 65);
+            this.picSprite.Size = new System.Drawing.Size(96, 91);
             this.picSprite.TabIndex = 14;
             this.picSprite.TabStop = false;
             // 
@@ -1096,9 +1096,9 @@ namespace Intersect.Editor.Forms.Editors
             this.grpHair.Controls.Add(this.btnRemoveHair);
             this.grpHair.Controls.Add(this.lstHair);
             this.grpHair.ForeColor = System.Drawing.Color.Gainsboro;
-            this.grpHair.Location = new System.Drawing.Point(1152, 278);
+            this.grpHair.Location = new System.Drawing.Point(1152, 260);
             this.grpHair.Name = "grpHair";
-            this.grpHair.Size = new System.Drawing.Size(260, 251);
+            this.grpHair.Size = new System.Drawing.Size(284, 251);
             this.grpHair.TabIndex = 38;
             this.grpHair.TabStop = false;
             this.grpHair.Text = "Hairstyles";
@@ -1106,7 +1106,7 @@ namespace Intersect.Editor.Forms.Editors
             // lblHair
             // 
             this.lblHair.AutoSize = true;
-            this.lblHair.Location = new System.Drawing.Point(99, 78);
+            this.lblHair.Location = new System.Drawing.Point(120, 78);
             this.lblHair.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblHair.Name = "lblHair";
             this.lblHair.Size = new System.Drawing.Size(42, 20);
@@ -1116,10 +1116,10 @@ namespace Intersect.Editor.Forms.Editors
             // picHair
             // 
             this.picHair.BackColor = System.Drawing.Color.Black;
-            this.picHair.Location = new System.Drawing.Point(163, 118);
+            this.picHair.Location = new System.Drawing.Point(157, 131);
             this.picHair.Margin = new System.Windows.Forms.Padding(2);
             this.picHair.Name = "picHair";
-            this.picHair.Size = new System.Drawing.Size(43, 42);
+            this.picHair.Size = new System.Drawing.Size(118, 113);
             this.picHair.TabIndex = 25;
             this.picHair.TabStop = false;
             // 
@@ -1139,10 +1139,10 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbHair.FormattingEnabled = true;
             this.cmbHair.Items.AddRange(new object[] {
             "None"});
-            this.cmbHair.Location = new System.Drawing.Point(102, 93);
+            this.cmbHair.Location = new System.Drawing.Point(123, 100);
             this.cmbHair.Margin = new System.Windows.Forms.Padding(2);
             this.cmbHair.Name = "cmbHair";
-            this.cmbHair.Size = new System.Drawing.Size(104, 27);
+            this.cmbHair.Size = new System.Drawing.Size(152, 27);
             this.cmbHair.TabIndex = 26;
             this.cmbHair.Text = "None";
             this.cmbHair.TextPadding = new System.Windows.Forms.Padding(2);
@@ -1155,9 +1155,9 @@ namespace Intersect.Editor.Forms.Editors
             this.grpGender2.Controls.Add(this.rbMale2);
             this.grpGender2.Controls.Add(this.rbFemale2);
             this.grpGender2.ForeColor = System.Drawing.Color.Gainsboro;
-            this.grpGender2.Location = new System.Drawing.Point(102, 11);
+            this.grpGender2.Location = new System.Drawing.Point(123, 11);
             this.grpGender2.Name = "grpGender2";
-            this.grpGender2.Size = new System.Drawing.Size(76, 62);
+            this.grpGender2.Size = new System.Drawing.Size(152, 68);
             this.grpGender2.TabIndex = 24;
             this.grpGender2.TabStop = false;
             this.grpGender2.Text = "Gender";
@@ -1188,7 +1188,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             // BtnAddHair
             // 
-            this.BtnAddHair.Location = new System.Drawing.Point(53, 16);
+            this.BtnAddHair.Location = new System.Drawing.Point(72, 31);
             this.BtnAddHair.Margin = new System.Windows.Forms.Padding(2);
             this.BtnAddHair.Name = "BtnAddHair";
             this.BtnAddHair.Padding = new System.Windows.Forms.Padding(5);
@@ -1199,7 +1199,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             // btnRemoveHair
             // 
-            this.btnRemoveHair.Location = new System.Drawing.Point(5, 16);
+            this.btnRemoveHair.Location = new System.Drawing.Point(5, 30);
             this.btnRemoveHair.Margin = new System.Windows.Forms.Padding(2);
             this.btnRemoveHair.Name = "btnRemoveHair";
             this.btnRemoveHair.Padding = new System.Windows.Forms.Padding(5);
@@ -1215,10 +1215,10 @@ namespace Intersect.Editor.Forms.Editors
             this.lstHair.ForeColor = System.Drawing.Color.Gainsboro;
             this.lstHair.FormattingEnabled = true;
             this.lstHair.ItemHeight = 20;
-            this.lstHair.Location = new System.Drawing.Point(5, 39);
+            this.lstHair.Location = new System.Drawing.Point(5, 59);
             this.lstHair.Margin = new System.Windows.Forms.Padding(2);
             this.lstHair.Name = "lstHair";
-            this.lstHair.Size = new System.Drawing.Size(91, 122);
+            this.lstHair.Size = new System.Drawing.Size(111, 182);
             this.lstHair.TabIndex = 18;
             this.lstHair.Click += new System.EventHandler(this.lstHair_Click);
             // 
@@ -1772,7 +1772,7 @@ namespace Intersect.Editor.Forms.Editors
             this.grpSprite.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpSprite.Name = "grpSprite";
             this.grpSprite.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpSprite.Size = new System.Drawing.Size(756, 251);
+            this.grpSprite.Size = new System.Drawing.Size(1052, 251);
             this.grpSprite.TabIndex = 28;
             this.grpSprite.TabStop = false;
             this.grpSprite.Text = "Sprite and Face";
@@ -1780,7 +1780,7 @@ namespace Intersect.Editor.Forms.Editors
             // lblFace
             // 
             this.lblFace.AutoSize = true;
-            this.lblFace.Location = new System.Drawing.Point(394, 115);
+            this.lblFace.Location = new System.Drawing.Point(565, 112);
             this.lblFace.Name = "lblFace";
             this.lblFace.Size = new System.Drawing.Size(49, 20);
             this.lblFace.TabIndex = 22;
@@ -1789,7 +1789,7 @@ namespace Intersect.Editor.Forms.Editors
             // picFace
             // 
             this.picFace.BackColor = System.Drawing.Color.Black;
-            this.picFace.Location = new System.Drawing.Point(399, 135);
+            this.picFace.Location = new System.Drawing.Point(453, 132);
             this.picFace.Name = "picFace";
             this.picFace.Size = new System.Drawing.Size(96, 98);
             this.picFace.TabIndex = 21;
@@ -1821,9 +1821,9 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbFace.FormattingEnabled = true;
             this.cmbFace.Items.AddRange(new object[] {
             "None"});
-            this.cmbFace.Location = new System.Drawing.Point(501, 135);
+            this.cmbFace.Location = new System.Drawing.Point(563, 135);
             this.cmbFace.Name = "cmbFace";
-            this.cmbFace.Size = new System.Drawing.Size(122, 27);
+            this.cmbFace.Size = new System.Drawing.Size(229, 27);
             this.cmbFace.TabIndex = 23;
             this.cmbFace.Text = "None";
             this.cmbFace.TextPadding = new System.Windows.Forms.Padding(2);
