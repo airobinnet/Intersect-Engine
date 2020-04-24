@@ -42,6 +42,8 @@ namespace Intersect.Editor.Forms.Editors
             this.btnCancel = new DarkUI.Controls.DarkButton();
             this.btnSave = new DarkUI.Controls.DarkButton();
             this.grpGeneral = new DarkUI.Controls.DarkGroupBox();
+            this.lblTag = new System.Windows.Forms.Label();
+            this.txtTag = new DarkUI.Controls.DarkTextBox();
             this.btnAddFolder = new DarkUI.Controls.DarkButton();
             this.lblFolder = new System.Windows.Forms.Label();
             this.cmbFolder = new DarkUI.Controls.DarkComboBox();
@@ -331,6 +333,8 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpGeneral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpGeneral.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpGeneral.Controls.Add(this.lblTag);
+            this.grpGeneral.Controls.Add(this.txtTag);
             this.grpGeneral.Controls.Add(this.btnAddFolder);
             this.grpGeneral.Controls.Add(this.lblFolder);
             this.grpGeneral.Controls.Add(this.cmbFolder);
@@ -364,9 +368,31 @@ namespace Intersect.Editor.Forms.Editors
             this.grpGeneral.TabStop = false;
             this.grpGeneral.Text = "General";
             // 
+            // lblTag
+            // 
+            this.lblTag.AutoSize = true;
+            this.lblTag.Location = new System.Drawing.Point(12, 334);
+            this.lblTag.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTag.Name = "lblTag";
+            this.lblTag.Size = new System.Drawing.Size(40, 20);
+            this.lblTag.TabIndex = 51;
+            this.lblTag.Text = "Tag:";
+            // 
+            // txtTag
+            // 
+            this.txtTag.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.txtTag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTag.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.txtTag.Location = new System.Drawing.Point(80, 330);
+            this.txtTag.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtTag.Name = "txtTag";
+            this.txtTag.Size = new System.Drawing.Size(216, 26);
+            this.txtTag.TabIndex = 50;
+            this.txtTag.TextChanged += new System.EventHandler(this.txtTag_TextChanged);
+            // 
             // btnAddFolder
             // 
-            this.btnAddFolder.Location = new System.Drawing.Point(270, 89);
+            this.btnAddFolder.Location = new System.Drawing.Point(270, 77);
             this.btnAddFolder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnAddFolder.Name = "btnAddFolder";
             this.btnAddFolder.Padding = new System.Windows.Forms.Padding(8);
@@ -378,7 +404,7 @@ namespace Intersect.Editor.Forms.Editors
             // lblFolder
             // 
             this.lblFolder.AutoSize = true;
-            this.lblFolder.Location = new System.Drawing.Point(12, 95);
+            this.lblFolder.Location = new System.Drawing.Point(12, 83);
             this.lblFolder.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFolder.Name = "lblFolder";
             this.lblFolder.Size = new System.Drawing.Size(58, 20);
@@ -399,7 +425,7 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbFolder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmbFolder.ForeColor = System.Drawing.Color.Gainsboro;
             this.cmbFolder.FormattingEnabled = true;
-            this.cmbFolder.Location = new System.Drawing.Point(80, 89);
+            this.cmbFolder.Location = new System.Drawing.Point(80, 77);
             this.cmbFolder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbFolder.Name = "cmbFolder";
             this.cmbFolder.Size = new System.Drawing.Size(182, 27);
@@ -559,7 +585,7 @@ namespace Intersect.Editor.Forms.Editors
             // lblDesc
             // 
             this.lblDesc.AutoSize = true;
-            this.lblDesc.Location = new System.Drawing.Point(14, 194);
+            this.lblDesc.Location = new System.Drawing.Point(14, 146);
             this.lblDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDesc.Name = "lblDesc";
             this.lblDesc.Size = new System.Drawing.Size(50, 20);
@@ -571,7 +597,7 @@ namespace Intersect.Editor.Forms.Editors
             this.txtDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
             this.txtDesc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.txtDesc.Location = new System.Drawing.Point(18, 218);
+            this.txtDesc.Location = new System.Drawing.Point(18, 170);
             this.txtDesc.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtDesc.Multiline = true;
             this.txtDesc.Name = "txtDesc";
@@ -646,7 +672,7 @@ namespace Intersect.Editor.Forms.Editors
             // lblType
             // 
             this.lblType.AutoSize = true;
-            this.lblType.Location = new System.Drawing.Point(14, 148);
+            this.lblType.Location = new System.Drawing.Point(14, 123);
             this.lblType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblType.Name = "lblType";
             this.lblType.Size = new System.Drawing.Size(47, 20);
@@ -675,7 +701,7 @@ namespace Intersect.Editor.Forms.Editors
             "Spell",
             "Event",
             "Bag"});
-            this.cmbType.Location = new System.Drawing.Point(80, 143);
+            this.cmbType.Location = new System.Drawing.Point(80, 118);
             this.cmbType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbType.Name = "cmbType";
             this.cmbType.Size = new System.Drawing.Size(222, 27);
@@ -2784,5 +2810,7 @@ namespace Intersect.Editor.Forms.Editors
         private Label lblPlus9;
         private DarkNumericUpDown nudMS;
         private Label lblMS;
+        private Label lblTag;
+        private DarkTextBox txtTag;
     }
 }

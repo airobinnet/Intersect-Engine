@@ -164,6 +164,7 @@ namespace Intersect.Editor.Forms.Editors
             }
 
             lblDesc.Text = Strings.ItemEditor.description;
+            lblTag.Text = Strings.ItemEditor.tag;
             lblPic.Text = Strings.ItemEditor.picture;
             lblPrice.Text = Strings.ItemEditor.price;
             lblAnim.Text = Strings.ItemEditor.animation;
@@ -276,6 +277,7 @@ namespace Intersect.Editor.Forms.Editors
                 txtName.Text = mEditorItem.Name;
                 cmbFolder.Text = mEditorItem.Folder;
                 txtDesc.Text = mEditorItem.Description;
+                txtTag.Text = mEditorItem.Tag;
                 cmbType.SelectedIndex = (int) mEditorItem.ItemType;
                 cmbPic.SelectedIndex = cmbPic.FindString(TextUtils.NullToNone(mEditorItem.Icon));
                 cmbEquipmentAnimation.SelectedIndex = AnimationBase.ListIndex(mEditorItem.EquipmentAnimationId) + 1;
@@ -494,7 +496,12 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void txtDesc_TextChanged(object sender, EventArgs e)
+        private void txtTag_TextChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Tag = txtTag.Text;
+        }
+
+    private void txtDesc_TextChanged(object sender, EventArgs e)
         {
             mEditorItem.Description = txtDesc.Text;
         }

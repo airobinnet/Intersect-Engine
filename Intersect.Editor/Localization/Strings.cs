@@ -49,6 +49,16 @@ namespace Intersect.Editor.Localization
             return Strings.EventConditionDesc.hasitemequipped.ToString(ItemBase.GetName(condition.ItemId));
         }
 
+        public static string GetEventConditionalDesc(EquippedItemTagIsCondition condition)
+        {
+            return Strings.EventConditionDesc.itemequippedtagis.ToString(condition.Tag ?? ItemBase.Deleted);
+        }
+
+        public static string GetEventConditionalDesc(HasItemWTagCondition condition)
+        {
+            return Strings.EventConditionDesc.hasitemwithtag.ToString(condition.Tag ?? ItemBase.Deleted);
+        }
+
         public static string GetEventConditionalDesc(ClassIsCondition condition)
         {
             return Strings.EventConditionDesc.Class.ToString(ClassBase.GetName(condition.ClassId));
@@ -220,6 +230,11 @@ namespace Intersect.Editor.Localization
         public static string GetEventConditionalDesc(NoNpcsOnMapCondition condition)
         {
             return Strings.EventConditionDesc.nonpcsonmap;
+        }
+
+        public static string GetEventConditionalDesc(MapHasNPCWTag condition)
+        {
+            return Strings.EventConditionDesc.maphasnpcwithtag.ToString(condition.Tag ?? ItemBase.Deleted);
         }
 
         public static string GetEventConditionalDesc(GenderIsCondition condition)
@@ -1874,6 +1889,9 @@ Tick timer saved in server config.json.";
                 {15, @"Gender is..."},
                 {16, @"Map is..."},
                 {17, @"Item Equipped is..."},
+                {18, @"Item Equipped Has Tag..."},
+                {19, @"Has Item With Tag..."},
+                {20, @"Map has Npc With Tag..."}
             };
 
             public static LocalizedString endrange = @"End Range:";
@@ -1898,9 +1916,17 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString hasitemequipped = @"Has Equipped Item";
 
+            public static LocalizedString itemequippedhastag = @"Item Equipped Has Tag";
+
+            public static LocalizedString hasitemwithtag = @"Has Item With Tag";
+
+            public static LocalizedString maphasnpcwithtag = @"Map Has NPCs With Tag";
+
             public static LocalizedString ignorestatbuffs = @"Ignore equipment & spell buffs.";
 
             public static LocalizedString item = @"Item:";
+
+            public static LocalizedString tag = @"Tag:";
 
             public static LocalizedString knowsspell = @"Knows Spell";
 
@@ -2026,6 +2052,10 @@ Tick timer saved in server config.json.";
             public static LocalizedString hasitem = @"Player has at least {00} of Item {01}";
 
             public static LocalizedString hasitemequipped = @"Player has Item {00} equipped";
+            
+            public static LocalizedString itemequippedtagis = @"Player equipped Item tag is {00} ";
+            
+            public static LocalizedString hasitemwithtag = @"Player has Item with tag {00}";
 
             public static LocalizedString knowsspell = @"Player knows Spell {00}";
 
@@ -2048,6 +2078,8 @@ Tick timer saved in server config.json.";
             public static LocalizedString negated = @"NOT [{00}]";
 
             public static LocalizedString nonpcsonmap = @"No NPCs on the map";
+
+            public static LocalizedString maphasnpcwithtag = @"Map has NPCs with tag {00}";
 
             public static LocalizedString notequal = @"does not equal {00}";
 
@@ -2872,6 +2904,8 @@ Tick timer saved in server config.json.";
                 @"Are you sure you want to delete this item? This action cannot be reverted!";
 
             public static LocalizedString deletetitle = @"Delete Item";
+
+            public static LocalizedString tag = @"Tag:";
 
             public static LocalizedString description = @"Desc:";
 
