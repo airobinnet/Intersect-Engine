@@ -112,6 +112,7 @@ namespace Intersect.Editor.Forms.Editors
             nudMag.Maximum = Options.MaxStatValue;
             nudDef.Maximum = Options.MaxStatValue;
             nudMR.Maximum = Options.MaxStatValue;
+            nudMS.Maximum = 10000;
             nudSpd.Maximum = Options.MaxStatValue;
             InitLocalization();
             UpdateEditor();
@@ -131,6 +132,7 @@ namespace Intersect.Editor.Forms.Editors
             grpGeneral.Text = Strings.NpcEditor.general;
             lblName.Text = Strings.NpcEditor.name;
             grpBehavior.Text = Strings.NpcEditor.behavior;
+            lblTag.Text = Strings.EventConditional.tag;
 
             lblPic.Text = Strings.NpcEditor.sprite;
             lblSpawnDuration.Text = Strings.NpcEditor.spawnduration;
@@ -165,6 +167,7 @@ namespace Intersect.Editor.Forms.Editors
             lblSpd.Text = Strings.NpcEditor.speed;
             lblMag.Text = Strings.NpcEditor.abilitypower;
             lblMR.Text = Strings.NpcEditor.magicresist;
+            lblMS.Text = Strings.NpcEditor.movementspeed;
             lblExp.Text = Strings.NpcEditor.exp;
 
             grpRegen.Text = Strings.NpcEditor.regen;
@@ -237,6 +240,7 @@ namespace Intersect.Editor.Forms.Editors
                 pnlContainer.Show();
 
                 txtName.Text = mEditorItem.Name;
+                txtTag.Text = mEditorItem.Tag;
                 cmbFolder.Text = mEditorItem.Folder;
                 cmbSprite.SelectedIndex = cmbSprite.FindString(TextUtils.NullToNone(mEditorItem.Sprite));
                 nudLevel.Value = mEditorItem.Level;
@@ -267,6 +271,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudMag.Value = mEditorItem.Stats[(int) Stats.AbilityPower];
                 nudDef.Value = mEditorItem.Stats[(int) Stats.Defense];
                 nudMR.Value = mEditorItem.Stats[(int) Stats.MagicResist];
+                nudMS.Value = mEditorItem.Stats[(int) Stats.MovementSpeed];
                 nudSpd.Value = mEditorItem.Stats[(int) Stats.Speed];
                 nudHp.Value = mEditorItem.MaxVital[(int) Vitals.Health];
                 nudMana.Value = mEditorItem.MaxVital[(int) Vitals.Mana];
@@ -354,7 +359,12 @@ namespace Intersect.Editor.Forms.Editors
             mChangingName = false;
         }
 
-        private void cmbSprite_SelectedIndexChanged(object sender, EventArgs e)
+        private void txtTag_TextChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Tag = txtTag.Text;
+        }
+
+    private void cmbSprite_SelectedIndexChanged(object sender, EventArgs e)
         {
             mEditorItem.Sprite = TextUtils.SanitizeNone(cmbSprite.Text);
             DrawNpcSprite();
@@ -664,7 +674,12 @@ namespace Intersect.Editor.Forms.Editors
 
         private void nudMR_ValueChanged(object sender, EventArgs e)
         {
-            mEditorItem.Stats[(int) Stats.MagicResist] = (int) nudMR.Value;
+            mEditorItem.Stats[(int)Stats.MagicResist] = (int)nudMR.Value;
+        }
+
+        private void nudMS_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Stats[(int)Stats.MovementSpeed] = (int)nudMS.Value;
         }
 
         private void nudSpd_ValueChanged(object sender, EventArgs e)

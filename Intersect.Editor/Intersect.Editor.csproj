@@ -86,6 +86,36 @@
     <Compile Include="Core\Preferences.cs" />
     <Compile Include="Core\Program.cs" />
     <Compile Include="Entities\Animation.cs" />
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_CombatText.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_CombatText.Designer.cs">
+      <DependentUpon>EventCommand_CombatText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_FriendlySpells.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_FriendlySpells.Designer.cs">
+      <DependentUpon>EventCommand_FriendlySpells.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_UnEquipItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_UnEquipItem.Designer.cs">
+      <DependentUpon>EventCommand_UnEquipItem.cs</DependentUpon>
+	</Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeHair.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeHair.Designer.cs">
+      <DependentUpon>EventCommand_ChangeHair.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmUpdate.Designer.cs">
+      <DependentUpon>frmUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Maps\MapGridItem.cs" />
     <Compile Include="Maps\MapSaveState.cs" />
     <Compile Include="Forms\Controls\SearchableDarkTreeView.cs">
@@ -642,6 +672,9 @@
     <EmbeddedResource Include="Forms\Editors\EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeHair.resx">
+      <DependentUpon>EventCommand_ChangeHair.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeFace.resx">
       <DependentUpon>EventCommand_ChangeFace.cs</DependentUpon>
     </EmbeddedResource>
@@ -656,6 +689,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeNameColor.resx">
       <DependentUpon>EventCommand_ChangeNameColor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_CombatText.resx">
+      <DependentUpon>EventCommand_CombatText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_FriendlySpells.resx">
+      <DependentUpon>EventCommand_FriendlySpells.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_UnEquipItem.resx">
+      <DependentUpon>EventCommand_UnEquipItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_EquipItem.resx">
       <DependentUpon>EventCommand_EquipItem.cs</DependentUpon>
@@ -812,6 +854,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmAbout.resx">
       <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmUpdate.resx">
+      <DependentUpon>frmUpdate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>

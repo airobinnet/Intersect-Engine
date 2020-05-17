@@ -371,6 +371,8 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString stat4 = @"{00}: {01}";
 
+            public static LocalizedString stat5 = @"{00}: {01}";
+
             public static LocalizedString stats = @"Stats:";
 
             public static LocalizedString title = @"Character";
@@ -493,6 +495,8 @@ namespace Intersect.Client.Localization
             public static LocalizedString stat3 = @"Magic Resist";
 
             public static LocalizedString stat4 = @"Speed";
+
+            public static LocalizedString stat5 = @"Movement Speed";
 
             public static LocalizedString targetoutsiderange = @"Target too far away!";
 
@@ -823,6 +827,8 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString effect = @"Bonus Effect: {00}% {01}";
 
+            public static LocalizedString equippeditem = @"Equipped Item";
+
             public static Dictionary<int, LocalizedString> effects = new Dictionary<int, LocalizedString>
             {
                 {0, @"Cooldown Reduction"},
@@ -851,7 +857,8 @@ namespace Intersect.Client.Localization
                 {1, @"Ability Power: {00}"},
                 {2, @"Defense: {00}"},
                 {3, @"Magic Resist: {00}"},
-                {4, @"Speed: {00}"}
+                {4, @"Speed: {00}"},
+                {5, @"Movement Speed: {00}"}
             };
 
             public static LocalizedString twohand = @"2H";
@@ -1411,7 +1418,8 @@ namespace Intersect.Client.Localization
                 {1, @"Ability Power: {00}"},
                 {2, @"Defense: {00}"},
                 {3, @"Magic Resist: {00}"},
-                {4, @"Speed: {00}"}
+                {4, @"Speed: {00}"},
+                {5, @"Movement Speed: {00}"}
             };
 
             public static Dictionary<int, LocalizedString> targettypes = new Dictionary<int, LocalizedString>
@@ -1510,6 +1518,27 @@ namespace Intersect.Client.Localization
             public static LocalizedString dec = ".";
 
             public static LocalizedString comma = ",";
+
+        }
+
+        public struct Update
+        {
+
+            public static LocalizedString Checking = @"Checking for updates, please wait!";
+
+            public static LocalizedString Updating = @"Downloading updates, please wait!";
+
+            public static LocalizedString Restart = @"Update complete! Relaunch {00} to play!";
+
+            public static LocalizedString Done = @"Update complete! Launching game!";
+
+            public static LocalizedString Error = @"Update Error! Check logs for more info!";
+
+            public static LocalizedString Files = @"{00} Files Remaining";
+
+            public static LocalizedString Size = @"{00} Left";
+
+            public static LocalizedString Percent = @"{00}%";
 
         }
 

@@ -137,11 +137,13 @@ namespace Intersect.Server.General
                 expression.Parameters["A_Speed"] = attacker.Stat[(int) Stats.Speed].Value();
                 expression.Parameters["A_AbilityPwr"] = attacker.Stat[(int) Stats.AbilityPower].Value();
                 expression.Parameters["A_MagicResist"] = attacker.Stat[(int) Stats.MagicResist].Value();
+                expression.Parameters["A_MovementSpeed"] = attacker.Stat[(int) Stats.MovementSpeed].Value();
                 expression.Parameters["V_Attack"] = victim.Stat[(int) Stats.Attack].Value();
                 expression.Parameters["V_Defense"] = victim.Stat[(int) Stats.Defense].Value();
                 expression.Parameters["V_Speed"] = victim.Stat[(int) Stats.Speed].Value();
                 expression.Parameters["V_AbilityPwr"] = victim.Stat[(int) Stats.AbilityPower].Value();
                 expression.Parameters["V_MagicResist"] = victim.Stat[(int) Stats.MagicResist].Value();
+                expression.Parameters["V_MovementSpeed"] = victim.Stat[(int) Stats.MovementSpeed].Value();
                 expression.EvaluateFunction += delegate(string name, FunctionArgs args)
                 {
                     if (args == null)

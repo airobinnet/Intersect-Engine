@@ -109,6 +109,8 @@ namespace Intersect.Client.Interface.Game.EntityPanel
 
         public bool UpdateStatuses;
 
+        public bool IsHidden;
+
         //Init
         public EntityBox(Canvas gameCanvas, EntityTypes entityType, Entity myEntity, bool playerBox = false)
         {
@@ -326,12 +328,14 @@ namespace Intersect.Client.Interface.Game.EntityPanel
             //Update the event/entity face.
             UpdateImage();
 
+            IsHidden = true;
             if (EntityType != EntityTypes.Event)
             {
                 UpdateLevel();
                 UpdateMap();
                 UpdateHpBar(elapsedTime);
                 UpdateMpBar(elapsedTime);
+                IsHidden = false;
             }
             else
             {
@@ -747,6 +751,7 @@ namespace Intersect.Client.Interface.Game.EntityPanel
                 for (var z = 0; z < Options.PaperdollOrder[1].Count; z++)
                 {
                     var paperdoll = "";
+                    var type = GameContentManager.TextureType.Paperdoll;
                     if (Options.EquipmentSlots.IndexOf(Options.PaperdollOrder[1][z]) > -1 &&
                         equipment.Length == Options.EquipmentSlots.Count)
                     {
@@ -774,6 +779,12 @@ namespace Intersect.Client.Interface.Game.EntityPanel
                         continue;
                     }
 
+                    if (MyEntity is Player && paperdoll == "" && Options.PaperdollOrder[1][z] == Options.Equipment.HairSlot)
+                    {
+                        paperdoll = ((Player)MyEntity).CustomSpriteLayers[(int)Enums.CustomSpriteLayers.Hair];
+                        type = GameContentManager.TextureType.Hair;
+                    }
+
                     if (paperdoll == "" && PaperdollTextures[n] != "")
                     {
                         PaperdollPanels[n].Texture = null;
@@ -783,7 +794,7 @@ namespace Intersect.Client.Interface.Game.EntityPanel
                     else if (paperdoll != "" && paperdoll != PaperdollTextures[n])
                     {
                         var paperdollTex = Globals.ContentManager.GetTexture(
-                            GameContentManager.TextureType.Paperdoll, paperdoll
+                            type, paperdoll
                         );
 
                         PaperdollPanels[n].Texture = paperdollTex;

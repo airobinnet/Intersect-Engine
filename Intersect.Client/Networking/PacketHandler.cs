@@ -495,6 +495,26 @@ namespace Intersect.Client.Networking
                         en.OffsetX = -Options.TileWidth;
 
                         break;
+                    case 4:
+                        en.OffsetY = Options.TileHeight;
+                        en.OffsetX = Options.TileWidth;
+
+                        break;
+                    case 5:
+                        en.OffsetY = Options.TileHeight;
+                        en.OffsetX = -Options.TileWidth;
+
+                        break;
+                    case 6:
+                        en.OffsetY = -Options.TileHeight;
+                        en.OffsetX = Options.TileWidth;
+
+                        break;
+                    case 7:
+                        en.OffsetY = -Options.TileHeight;
+                        en.OffsetX = -Options.TileWidth;
+
+                        break;
                 }
             }
 
@@ -913,6 +933,19 @@ namespace Intersect.Client.Networking
             }
         }
 
+        private static void HandlePacket(CustomSpriteLayersPacket packet)
+        {
+            var entityId = packet.EntityId;
+            if (Globals.Entities.ContainsKey(entityId))
+            {
+                var entity = Globals.Entities[entityId];
+                if (entity != null)
+                {
+                    ((Player)entity).CustomSpriteLayers = packet.CustomSpriteLayers;
+                }
+            }
+        }
+
         //StatPointsPacket
         private static void HandlePacket(StatPointsPacket packet)
         {
@@ -1169,6 +1202,7 @@ namespace Intersect.Client.Networking
             {
                 Globals.GameShop = new ShopBase();
                 Globals.GameShop.Load(packet.ShopData);
+                Globals.ShopReqs = packet.ReqCheck;
                 Interface.Interface.GameUi.NotifyOpenShop();
             }
             else
@@ -1185,11 +1219,26 @@ namespace Intersect.Client.Networking
             {
                 Globals.ActiveCraftingTable = new CraftingTableBase();
                 Globals.ActiveCraftingTable.Load(packet.TableData);
+                Globals.ActiveCraftingTableReqs = packet.ReqCheck;
                 Interface.Interface.GameUi.NotifyOpenCraftingTable();
             }
             else
             {
                 Interface.Interface.GameUi.NotifyCloseCraftingTable();
+            }
+        }
+
+        //CraftStartPacket
+        private static void HandlePacket(CraftStartPacket packet)
+        {
+            if (!packet.Canstart)
+            {
+                Globals.canCraftrq = false;
+            }
+            else
+            {
+                Globals.canCraftrq = true;
+                Globals.canCraftitem = packet.CraftData;
             }
         }
 
@@ -1625,7 +1674,7 @@ namespace Intersect.Client.Networking
             foreach (var chr in packet.Characters)
             {
                 characters.Add(
-                    new Character(chr.Id, chr.Name, chr.Sprite, chr.Face, chr.Level, chr.ClassName, chr.Equipment)
+                    new Character(chr.Id, chr.Name, chr.Sprite, chr.Face, chr.Level, chr.ClassName, chr.Equipment, chr.CustomSpriteLayers)
                 );
             }
 

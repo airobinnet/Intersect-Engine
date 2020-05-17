@@ -75,6 +75,9 @@ namespace Intersect.Server.Migrations.Game
                     b.Property<string>("JsonBaseVitals")
                         .HasColumnName("BaseVitals");
 
+                    b.Property<string>("JsonCustomSpriteLayers")
+                        .HasColumnName("CustomSpriteLayers");
+
                     b.Property<string>("JsonItems")
                         .HasColumnName("Items");
 
@@ -124,6 +127,9 @@ namespace Intersect.Server.Migrations.Game
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<Guid>("CraftEventId")
+                        .HasColumnName("CraftEvent");
+
                     b.Property<string>("Folder");
 
                     b.Property<string>("IngredientsJson")
@@ -131,9 +137,15 @@ namespace Intersect.Server.Migrations.Game
 
                     b.Property<Guid>("ItemId");
 
+                    b.Property<string>("JsonCraftRequirements")
+                        .HasColumnName("CraftRequirements");
+
                     b.Property<string>("Name");
 
                     b.Property<int>("Quantity");
+
+                    b.Property<int>("SuccessRate")
+                        .HasColumnName("SuccessRate");
 
                     b.Property<int>("Time");
 
@@ -279,6 +291,8 @@ namespace Intersect.Server.Migrations.Game
                     b.Property<string>("StatsJson")
                         .HasColumnName("StatsGiven");
 
+                    b.Property<string>("Tag");
+
                     b.Property<long>("TimeCreated");
 
                     b.Property<int>("Tool");
@@ -395,6 +409,8 @@ namespace Intersect.Server.Migrations.Game
                     b.Property<string>("Sprite");
 
                     b.Property<bool>("Swarm");
+
+                    b.Property<string>("Tag");
 
                     b.Property<long>("TimeCreated");
 

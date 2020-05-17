@@ -130,12 +130,14 @@ namespace Intersect.Editor.Forms.Editors
             nudMag.Maximum = Options.MaxStatValue;
             nudDef.Maximum = Options.MaxStatValue;
             nudMR.Maximum = Options.MaxStatValue;
+            nudMS.Maximum = 10000;
             nudSpd.Maximum = Options.MaxStatValue;
 
             nudStr.Minimum = -Options.MaxStatValue;
             nudMag.Minimum = -Options.MaxStatValue;
             nudDef.Minimum = -Options.MaxStatValue;
             nudMR.Minimum = -Options.MaxStatValue;
+            nudMS.Minimum = 0;
             nudSpd.Minimum = -Options.MaxStatValue;
 
             InitLocalization();
@@ -162,6 +164,7 @@ namespace Intersect.Editor.Forms.Editors
             }
 
             lblDesc.Text = Strings.ItemEditor.description;
+            lblTag.Text = Strings.ItemEditor.tag;
             lblPic.Text = Strings.ItemEditor.picture;
             lblPrice.Text = Strings.ItemEditor.price;
             lblAnim.Text = Strings.ItemEditor.animation;
@@ -183,6 +186,7 @@ namespace Intersect.Editor.Forms.Editors
             lblSpd.Text = Strings.ItemEditor.speedbonus;
             lblMag.Text = Strings.ItemEditor.abilitypowerbonus;
             lblMR.Text = Strings.ItemEditor.magicresistbonus;
+            lblMS.Text = Strings.ItemEditor.movementspeedbonus;
             lblRange.Text = Strings.ItemEditor.bonusrange;
             lblBonusEffect.Text = Strings.ItemEditor.bonuseffect;
             lblEffectPercent.Text = Strings.ItemEditor.bonusamount;
@@ -273,6 +277,7 @@ namespace Intersect.Editor.Forms.Editors
                 txtName.Text = mEditorItem.Name;
                 cmbFolder.Text = mEditorItem.Folder;
                 txtDesc.Text = mEditorItem.Description;
+                txtTag.Text = mEditorItem.Tag;
                 cmbType.SelectedIndex = (int) mEditorItem.ItemType;
                 cmbPic.SelectedIndex = cmbPic.FindString(TextUtils.NullToNone(mEditorItem.Icon));
                 cmbEquipmentAnimation.SelectedIndex = AnimationBase.ListIndex(mEditorItem.EquipmentAnimationId) + 1;
@@ -284,12 +289,14 @@ namespace Intersect.Editor.Forms.Editors
                 nudDef.Value = mEditorItem.StatsGiven[2];
                 nudMR.Value = mEditorItem.StatsGiven[3];
                 nudSpd.Value = mEditorItem.StatsGiven[4];
+                nudMS.Value = mEditorItem.StatsGiven[5];
 
                 nudStrPercentage.Value = mEditorItem.PercentageStatsGiven[0];
                 nudMagPercentage.Value = mEditorItem.PercentageStatsGiven[1];
                 nudDefPercentage.Value = mEditorItem.PercentageStatsGiven[2];
                 nudMRPercentage.Value = mEditorItem.PercentageStatsGiven[3];
                 nudSpdPercentage.Value = mEditorItem.PercentageStatsGiven[4];
+                nudMSPercentage.Value = mEditorItem.PercentageStatsGiven[5];
 
                 nudHealthBonus.Value = mEditorItem.VitalsGiven[0];
                 nudManaBonus.Value = mEditorItem.VitalsGiven[1];
@@ -510,7 +517,12 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void txtDesc_TextChanged(object sender, EventArgs e)
+        private void txtTag_TextChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Tag = txtTag.Text;
+        }
+
+    private void txtDesc_TextChanged(object sender, EventArgs e)
         {
             mEditorItem.Description = txtDesc.Text;
         }
@@ -763,7 +775,12 @@ namespace Intersect.Editor.Forms.Editors
 
         private void nudSpd_ValueChanged(object sender, EventArgs e)
         {
-            mEditorItem.StatsGiven[4] = (int) nudSpd.Value;
+            mEditorItem.StatsGiven[4] = (int)nudSpd.Value;
+        }
+
+        private void nudMS_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.StatsGiven[5] = (int)nudMS.Value;
         }
 
         private void nudStrPercentage_ValueChanged(object sender, EventArgs e)
@@ -788,7 +805,12 @@ namespace Intersect.Editor.Forms.Editors
 
         private void nudSpdPercentage_ValueChanged(object sender, EventArgs e)
         {
-            mEditorItem.PercentageStatsGiven[4] = (int) nudSpdPercentage.Value;
+            mEditorItem.PercentageStatsGiven[4] = (int)nudSpdPercentage.Value;
+        }
+
+        private void nudMSPercentage_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.PercentageStatsGiven[5] = (int)nudMSPercentage.Value;
         }
 
         private void nudBag_ValueChanged(object sender, EventArgs e)

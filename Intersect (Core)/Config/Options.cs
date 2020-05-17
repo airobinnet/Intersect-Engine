@@ -50,6 +50,8 @@ namespace Intersect
 
         [JsonProperty("Player")] public PlayerOptions PlayerOpts = new PlayerOptions();
 
+        [JsonProperty("Party")] public PartyOptions PartyOpts = new PartyOptions();
+
         [JsonProperty("Security")] public SecurityOptions SecurityOpts = new SecurityOptions();
 
         public SmtpSettings SmtpSettings = new SmtpSettings();
@@ -79,9 +81,13 @@ namespace Intersect
 
         public static int RequestTimeout => Instance.PlayerOpts.RequestTimeout;
 
-        public static int TradeRange => Instance.PlayerOpts.TradeRange;
+        public static int PartyInviteRange => Instance.PartyOpts.InviteRange;
 
-        public static int PartyRange => Instance.PlayerOpts.PartyRange;
+        public static int PartySharedXpRange => Instance.PartyOpts.SharedXpRange;
+
+        public static int PartyStartCommonEventRange => Instance.PartyOpts.NpcDeathCommonEventStartRange;
+
+        public static int TradeRange => Instance.PlayerOpts.TradeRange;
 
         public static int WeaponIndex => Instance.EquipmentOpts.WeaponSlot;
 
@@ -267,7 +273,7 @@ namespace Intersect
         //Values that cannot easily be changed:
         public const int LayerCount = 5;
 
-        public const int MaxStats = 5;
+        public const int MaxStats = 6;
 
         public const int MaxHotbar = 10;
 

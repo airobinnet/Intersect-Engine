@@ -183,6 +183,19 @@ namespace Intersect.GameObjects.Events.Commands
 
     }
 
+    public class AddCombatTextCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.AddCombatText;
+
+        public string Text { get; set; } = "";
+
+        public string Color { get; set; } = "";
+
+        public bool self { get; set; }
+
+    }
+
     public class SetVariableCommand : EventCommand
     {
 
@@ -518,6 +531,15 @@ namespace Intersect.GameObjects.Events.Commands
 
     }
 
+    public class ChangeHairCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.ChangeHair;
+
+        public string Hair { get; set; } = "";
+
+    }
+
     public class ChangeGenderCommand : EventCommand
     {
 
@@ -826,4 +848,17 @@ namespace Intersect.GameObjects.Events.Commands
 
     }
 
+    public class UnEquipItemCommand : EventCommand
+    {
+        public override EventCommandType Type { get; } = EventCommandType.Unequip;
+
+        public int Slot { get; set; }
+    }
+
+    public class FriendlySpellsCommand : EventCommand
+    {
+        public override EventCommandType Type { get; } = EventCommandType.FriendlySpells;
+
+        public Guid spell { get; set; }
+    }
 }

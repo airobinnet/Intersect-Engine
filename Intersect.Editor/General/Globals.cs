@@ -91,6 +91,8 @@ namespace Intersect.Editor.General
 
         public static Guid LoadingMap = Guid.Empty;
 
+        public static FrmUpdate UpdateForm;
+
         public static FrmLogin LoginForm;
 
         public static FrmMain MainForm;
@@ -123,6 +125,8 @@ namespace Intersect.Editor.General
         public static FrmProgress PackingProgressForm;
 
         public static FrmProgress PreviewProgressForm;
+
+        public static FrmProgress UpdateCreationProgressForm;
 
         //Network Variables
         public static int ReconnectTime = 3000;
@@ -187,6 +191,8 @@ namespace Intersect.Editor.General
                     return "Defense";
                 case (int) Stats.MagicResist:
                     return "Magic Resist";
+                case (int) Stats.MovementSpeed:
+                    return "Movement Speed";
                 case (int) Stats.Speed:
                     return "Speed";
                 default:

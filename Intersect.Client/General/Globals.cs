@@ -23,6 +23,16 @@ namespace Intersect.Client.General
         //Only need 1 table, and that is the one we see at a given moment in time.
         public static CraftingTableBase ActiveCraftingTable;
 
+        //ReqCheck
+        public static string ActiveCraftingTableReqs;
+
+        //Shop req check
+        public static string ShopReqs;
+
+        //Craftcheck
+        public static bool canCraftrq = false;
+        public static Guid canCraftitem = Guid.Empty;
+
         public static int AnimFrame = 0;
 
         //Bag

@@ -24,6 +24,8 @@ namespace Intersect.Client.Interface.Game.Shop
 
         private ItemDescWindow mDescWindow;
 
+        private ItemCompareWindow mCompWindow;
+
         private bool mIsEquipped;
 
         //Mouse Event Variables
@@ -111,6 +113,11 @@ namespace Intersect.Client.Interface.Game.Shop
                 mDescWindow.Dispose();
                 mDescWindow = null;
             }
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
         }
 
         void pnl_HoverEnter(Base sender, EventArgs arguments)
@@ -131,6 +138,12 @@ namespace Intersect.Client.Interface.Game.Shop
                 mDescWindow = null;
             }
 
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
+
             var item = ItemBase.Get(Globals.GameShop.SellingItems[mMySlot].CostItemId);
             if (item != null && Globals.GameShop.SellingItems[mMySlot].Item != null)
             {
@@ -138,6 +151,21 @@ namespace Intersect.Client.Interface.Game.Shop
                     Globals.GameShop.SellingItems[mMySlot].Item, 1, mShopWindow.X, mShopWindow.Y, item.StatsGiven, "",
                     Strings.Shop.costs.ToString(Globals.GameShop.SellingItems[mMySlot].CostItemQuantity, item.Name)
                 );
+                    if (ItemBase.Get(Globals.GameShop.SellingItems[mMySlot].ItemId).ItemType == Enums.ItemTypes.Equipment)
+                    {
+                        var i = 0;
+                        foreach (var equip in Globals.Me.Equipment)
+                        {
+                            if (ItemBase.Get(equip)?.EquipmentSlot == Globals.GameShop.SellingItems[mMySlot].Item.EquipmentSlot)
+                            {
+                                mCompWindow = new ItemCompareWindow(
+                                               ItemBase.Get(equip), Globals.GameShop.SellingItems[mMySlot].Item, 1, mShopWindow.X,
+                                               mShopWindow.Y, Globals.Me.Inventory[Globals.Me.MyEquipment[ItemBase.Get(equip).EquipmentSlot]].StatBuffs, Globals.Me.Inventory[mMySlot].StatBuffs,"", Strings.ItemDesc.equippeditem
+                                            );
+                                i++;
+                            }
+                        }
+                    }
             }
         }
 

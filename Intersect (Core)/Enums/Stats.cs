@@ -14,7 +14,10 @@ namespace Intersect.Enums
 
         Speed,
 
+        MovementSpeed,
+
         StatCount
+
 
     }
 

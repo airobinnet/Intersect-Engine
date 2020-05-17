@@ -8,6 +8,7 @@ using Intersect.Client.Framework.Gwen.Input;
 using Intersect.Client.Framework.Input;
 using Intersect.Client.General;
 using Intersect.GameObjects;
+using Intersect.Client.Localization;
 
 namespace Intersect.Client.Interface.Game.Trades
 {
@@ -31,6 +32,8 @@ namespace Intersect.Client.Interface.Game.Trades
         private Guid mCurrentItemId;
 
         private ItemDescWindow mDescWindow;
+
+        private ItemCompareWindow mCompWindow;
 
         private Draggable mDragIcon;
 
@@ -91,6 +94,12 @@ namespace Intersect.Client.Interface.Game.Trades
                 mDescWindow.Dispose();
                 mDescWindow = null;
             }
+
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
         }
 
         void pnl_HoverEnter(Base sender, EventArgs arguments)
@@ -115,12 +124,33 @@ namespace Intersect.Client.Interface.Game.Trades
                 mDescWindow = null;
             }
 
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
+
             if (ItemBase.Get(Globals.Trade[mMySide, mMySlot].ItemId) != null)
             {
                 mDescWindow = new ItemDescWindow(
                     Globals.Trade[mMySide, mMySlot].Base, Globals.Trade[mMySide, mMySlot].Quantity, mTradeWindow.X,
                     mTradeWindow.Y, Globals.Trade[mMySide, mMySlot].StatBuffs
                 );
+                if (ItemBase.Get(Globals.Trade[mMySide, mMySlot].ItemId).ItemType == Enums.ItemTypes.Equipment)
+                {
+                    var i = 0;
+                    foreach (var equip in Globals.Me.Equipment)
+                    {
+                        if (ItemBase.Get(equip)?.EquipmentSlot == ItemBase.Get(Globals.Trade[mMySide, mMySlot].ItemId).EquipmentSlot)
+                        {
+                            mCompWindow = new ItemCompareWindow(
+                                           ItemBase.Get(equip), ItemBase.Get(Globals.Trade[mMySide, mMySlot].ItemId), 1, mTradeWindow.X,
+                                           mTradeWindow.Y, Globals.Me.Inventory[Globals.Me.MyEquipment[ItemBase.Get(equip).EquipmentSlot]].StatBuffs, Globals.Trade[mMySide, mMySlot].StatBuffs, "", Strings.ItemDesc.equippeditem
+                                        );
+                            i++;
+                        }
+                    }
+                }
             }
         }
 

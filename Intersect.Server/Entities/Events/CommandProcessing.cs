@@ -129,6 +129,89 @@ namespace Intersect.Server.Entities.Events
             }
         }
 
+        //Show Add Combat Text Command
+        private static void ProcessCommand(
+            AddCombatTextCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            var txt = ParseEventText(command.Text, player, instance);
+            var color = Color.FromName(command.Color, Strings.Colors.presets);
+            bool self = command.self;
+            var mapId = instance.MapId;
+            var tileX = instance.PageInstance.X;
+            var tileY = instance.PageInstance.Y;
+            var targetEntity = (Entity)player;
+            //Next part could probably be rewritten completely by just sending PageInstance.X and PageInstance.Y... but i'm lazy!
+            if (self)
+            {
+                if (mapId != Guid.Empty)
+                {
+                    tileX = instance.PageInstance.X;
+                    tileY = instance.PageInstance.Y;
+                }
+                else
+                {
+                    if (instance.Id != Guid.Empty)
+                    {
+                        foreach (var evt in player.EventLookup)
+                        {
+                            if (evt.Value.MapId != instance.MapId)
+                            {
+                                continue;
+                            }
+
+                            if (evt.Value.BaseEvent.Id == instance.Id)
+                            {
+                                targetEntity = evt.Value.PageInstance;
+
+                                break;
+                            }
+                        }
+                    }
+
+                    if (targetEntity != null)
+                    {
+                        if (instance.X == 0 && instance.Y == 0)
+                        {
+                            //Attach to entity instead of playing on tile
+                            PacketSender.SendActionMsgSelf(
+                                instance, txt, color, 0, 0, targetEntity.Id,
+                                targetEntity.MapId
+                            );
+
+                            return;
+                        }
+
+                        int xDiff = instance.X;
+                        int yDiff = instance.Y;
+
+                        mapId = targetEntity.MapId;
+                        tileX = targetEntity.X + xDiff;
+                        tileY = targetEntity.Y + yDiff;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                var tile = new TileHelper(mapId, tileX, tileY);
+                if (tile.TryFix())
+                {
+                    PacketSender.SendActionMsgSelf(instance, txt, color, tile.GetX(), tile.GetY(), targetEntity.Id,
+                                targetEntity.MapId);
+                }
+            }
+            else
+            {
+                PacketSender.SendActionMsg(player, txt, color);
+            }
+        }
+
         //Set Variable Commands
         private static void ProcessCommand(
             SetVariableCommand command,
@@ -409,6 +492,25 @@ namespace Intersect.Server.Entities.Events
             callStack.Push(tmpStack);
         }
 
+        //Friendly Spells Command
+        private static void ProcessCommand(
+            FriendlySpellsCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            var spell = SpellBase.Get(command.spell);
+
+            if (spell == null)
+            {
+                return;
+            }
+
+            player.CastSpell(command.spell);
+        }
+
         //Change Items Command
         private static void ProcessCommand(
             ChangeItemsCommand command,
@@ -467,6 +569,25 @@ namespace Intersect.Server.Entities.Events
             player.EquipItem(ItemBase.Get(command.ItemId));
         }
 
+        //UnEquip Items Command
+        private static void ProcessCommand(
+            UnEquipItemCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            var slot = Options.EquipmentSlots[command.Slot];
+
+            if (slot == null)
+            {
+                return;
+            }
+
+            player.UnequipItem(command.Slot);
+        }
+
         //Change Sprite Command
         private static void ProcessCommand(
             ChangeSpriteCommand command,
@@ -491,6 +612,19 @@ namespace Intersect.Server.Entities.Events
         {
             player.Face = command.Face;
             PacketSender.SendEntityDataToProximity(player);
+        }
+
+        //Change Hair Command
+        private static void ProcessCommand(
+            ChangeHairCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            player.CustomSpriteLayers[(int)Enums.CustomSpriteLayers.Hair] = command.Hair;
+            PacketSender.SendCustomSpriteLayersToProximity(player);
         }
 
         //Change Gender Command
@@ -1508,6 +1642,25 @@ namespace Intersect.Server.Entities.Events
                     value.Integer -= mod.Value;
 
                     break;
+                case Enums.VariableMods.Multiply:
+                    value.Integer *= mod.Value;
+
+                    break;
+                case Enums.VariableMods.Divide:
+                    if (mod.Value != 0)  //Idiot proofing divide by 0 LOL
+                    {
+                        value.Integer /= mod.Value;
+                    }
+
+                    break;
+                case Enums.VariableMods.LeftShift:
+                    value.Integer = value.Integer << (int)mod.Value;
+
+                    break;
+                case Enums.VariableMods.RightShift:
+                    value.Integer = value.Integer >> (int)mod.Value;
+
+                    break;
                 case Enums.VariableMods.Random:
                     //TODO: Fix - Random doesnt work with longs lolz
                     value.Integer = Randomization.Next((int) mod.Value, (int) mod.HighValue + 1);
@@ -1553,6 +1706,60 @@ namespace Intersect.Server.Entities.Events
                     if (ssv != null)
                     {
                         value.Integer -= ssv.Value.Integer;
+                    }
+
+                    break;
+                case Enums.VariableMods.MultiplyPlayerVar:
+                    value.Integer *= player.GetVariableValue(mod.DuplicateVariableId).Integer;
+
+                    break;
+                case Enums.VariableMods.MultiplyGlobalVar:
+                    var msv = ServerVariableBase.Get(mod.DuplicateVariableId);
+                    if (msv != null)
+                    {
+                        value.Integer *= msv.Value.Integer;
+                    }
+
+                    break;
+                case Enums.VariableMods.DividePlayerVar:
+                    if (player.GetVariableValue(mod.DuplicateVariableId).Integer != 0) //Idiot proofing divide by 0 LOL
+                    {
+                        value.Integer /= player.GetVariableValue(mod.DuplicateVariableId).Integer;
+                    }
+
+                    break;
+                case Enums.VariableMods.DivideGlobalVar:
+                    var dsv = ServerVariableBase.Get(mod.DuplicateVariableId);
+                    if (dsv != null)
+                    {
+                        if (dsv.Value != 0) //Idiot proofing divide by 0 LOL
+                        {
+                            value.Integer /= dsv.Value.Integer;
+                        }
+                    }
+
+                    break;
+                case Enums.VariableMods.LeftShiftPlayerVar:
+                    value.Integer = value.Integer << (int)player.GetVariableValue(mod.DuplicateVariableId).Integer;
+
+                    break;
+                case Enums.VariableMods.LeftShiftGlobalVar:
+                    var lhsv = ServerVariableBase.Get(mod.DuplicateVariableId);
+                    if (lhsv != null)
+                    {
+                        value.Integer = value.Integer << (int)lhsv.Value.Integer;
+                    }
+
+                    break;
+                case Enums.VariableMods.RightShiftPlayerVar:
+                    value.Integer = value.Integer >> (int)player.GetVariableValue(mod.DuplicateVariableId).Integer;
+
+                    break;
+                case Enums.VariableMods.RightShiftGlobalVar:
+                    var rhsv = ServerVariableBase.Get(mod.DuplicateVariableId);
+                    if (rhsv != null)
+                    {
+                        value.Integer = value.Integer >> (int)rhsv.Value.Integer;
                     }
 
                     break;

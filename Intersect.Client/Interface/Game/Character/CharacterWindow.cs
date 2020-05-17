@@ -31,6 +31,8 @@ namespace Intersect.Client.Interface.Game.Character
 
         Button mAddMagicResistBtn;
 
+        Button mAddMovementSpeedBtn;
+
         Button mAddSpeedBtn;
 
         //Stats
@@ -56,6 +58,8 @@ namespace Intersect.Client.Interface.Game.Character
         private int[] mEmptyStatBoost = new int[Options.MaxStats];
 
         Label mMagicRstLabel;
+
+        Label mMovementSpdLabel;
 
         Label mPointsLabel;
 
@@ -122,6 +126,10 @@ namespace Intersect.Client.Interface.Game.Character
             mAddMagicResistBtn = new Button(mCharacterWindow, "IncreaseMagicResistButton");
             mAddMagicResistBtn.Clicked += _addMagicResistBtn_Clicked;
 
+            mMovementSpdLabel = new Label(mCharacterWindow, "MovementSpeedLabel");
+            mAddMovementSpeedBtn = new Button(mCharacterWindow, "IncreaseMovementSpeedButton");
+            mAddMovementSpeedBtn.Clicked += _addMovementSpeedBtn_Clicked;
+
             mPointsLabel = new Label(mCharacterWindow, "PointsLabel");
 
             for (var i = 0; i < Options.EquipmentSlots.Count; i++)
@@ -135,6 +143,11 @@ namespace Intersect.Client.Interface.Game.Character
         }
 
         //Update Button Event Handlers
+        void _addMovementSpeedBtn_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            PacketSender.SendUpgradeStat((int) Stats.MovementSpeed);
+        }
+
         void _addMagicResistBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             PacketSender.SendUpgradeStat((int) Stats.MagicResist);
@@ -197,6 +210,7 @@ namespace Intersect.Client.Interface.Game.Character
                 for (var z = 0; z < Options.PaperdollOrder[1].Count; z++)
                 {
                     var paperdoll = "";
+                    var type = GameContentManager.TextureType.Paperdoll;
                     if (Options.EquipmentSlots.IndexOf(Options.PaperdollOrder[1][z]) > -1)
                     {
                         var equipment = Globals.Me.MyEquipment;
@@ -231,6 +245,12 @@ namespace Intersect.Client.Interface.Game.Character
                         Align.Center(PaperdollPanels[z]);
                     }
 
+                    if (paperdoll == "" && Options.PaperdollOrder[1][z] == Options.Equipment.HairSlot)
+                    {
+                        paperdoll = Globals.Me.CustomSpriteLayers[(int)Enums.CustomSpriteLayers.Hair];
+                        type = GameContentManager.TextureType.Hair;
+                    }
+
                     if (string.IsNullOrWhiteSpace(paperdoll) && !string.IsNullOrWhiteSpace(PaperdollTextures[z]) && Options.PaperdollOrder[1][z] != "Player")
                     {
                         PaperdollPanels[z].Texture = null;
@@ -240,7 +260,7 @@ namespace Intersect.Client.Interface.Game.Character
                     else if (paperdoll != "" && paperdoll != PaperdollTextures[z])
                     {
                         var paperdollTex = Globals.ContentManager.GetTexture(
-                            GameContentManager.TextureType.Paperdoll, paperdoll
+                            type, paperdoll
                         );
 
                         PaperdollPanels[z].Texture = paperdollTex;
@@ -267,7 +287,7 @@ namespace Intersect.Client.Interface.Game.Character
 
                         PaperdollPanels[z].Show();
                         PaperdollTextures[z] = paperdoll;
-                    }
+                    } 
                 }
             }
             else if (Globals.Me.MySprite != mCurrentSprite && Globals.Me.Face != mCurrentSprite)
@@ -299,6 +319,10 @@ namespace Intersect.Client.Interface.Game.Character
                 Strings.Character.stat3.ToString(Strings.Combat.stat3, Globals.Me.Stat[(int) Stats.MagicResist])
             );
 
+            mMovementSpdLabel.SetText(
+                Strings.Character.stat5.ToString(Strings.Combat.stat5, Globals.Me.Stat[(int) Stats.MovementSpeed])
+            );
+
             mPointsLabel.SetText(Strings.Character.points.ToString(Globals.Me.StatPoints));
             mAddAbilityPwrBtn.IsHidden = Globals.Me.StatPoints == 0 ||
                                          Globals.Me.Stat[(int) Stats.AbilityPower] == Options.MaxStatValue;
@@ -314,6 +338,8 @@ namespace Intersect.Client.Interface.Game.Character
 
             mAddSpeedBtn.IsHidden =
                 Globals.Me.StatPoints == 0 || Globals.Me.Stat[(int) Stats.Speed] == Options.MaxStatValue;
+
+            mAddMovementSpeedBtn.IsHidden = true;
 
             for (var i = 0; i < Options.EquipmentSlots.Count; i++)
             {

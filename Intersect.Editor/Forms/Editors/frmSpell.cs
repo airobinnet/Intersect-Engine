@@ -116,11 +116,13 @@ namespace Intersect.Editor.Forms.Editors
             nudMag.Maximum = Options.MaxStatValue;
             nudDef.Maximum = Options.MaxStatValue;
             nudMR.Maximum = Options.MaxStatValue;
+            nudMS.Maximum = 10000;
             nudSpd.Maximum = Options.MaxStatValue;
             nudStr.Minimum = -Options.MaxStatValue;
             nudMag.Minimum = -Options.MaxStatValue;
             nudDef.Minimum = -Options.MaxStatValue;
             nudMR.Minimum = -Options.MaxStatValue;
+            nudMS.Minimum = 0;
             nudSpd.Minimum = -Options.MaxStatValue;
 
             nudCastDuration.Maximum = Int32.MaxValue;
@@ -205,6 +207,7 @@ namespace Intersect.Editor.Forms.Editors
             lblSpd.Text = Strings.SpellEditor.speed;
             lblMag.Text = Strings.SpellEditor.abilitypower;
             lblMR.Text = Strings.SpellEditor.magicresist;
+            lblMS.Text = Strings.SpellEditor.movementspeed;
 
             grpEffectDuration.Text = Strings.SpellEditor.boostduration;
             lblBuffDuration.Text = Strings.SpellEditor.duration;
@@ -321,11 +324,13 @@ namespace Intersect.Editor.Forms.Editors
                 nudSpd.Value = mEditorItem.Combat.StatDiff[(int) Stats.Speed];
                 nudMag.Value = mEditorItem.Combat.StatDiff[(int) Stats.AbilityPower];
                 nudMR.Value = mEditorItem.Combat.StatDiff[(int) Stats.MagicResist];
+                nudMS.Value = mEditorItem.Combat.StatDiff[(int) Stats.MovementSpeed];
 
                 nudStrPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.Attack];
                 nudDefPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.Defense];
                 nudMagPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.AbilityPower];
                 nudMRPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.MagicResist];
+                nudMSPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.MovementSpeed];
                 nudSpdPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.Speed];
 
                 chkFriendly.Checked = Convert.ToBoolean(mEditorItem.Combat.Friendly);
@@ -841,6 +846,11 @@ namespace Intersect.Editor.Forms.Editors
             mEditorItem.Combat.StatDiff[(int) Stats.MagicResist] = (int) nudMR.Value;
         }
 
+        private void nudMS_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Combat.StatDiff[(int) Stats.MovementSpeed] = (int) nudMS.Value;
+        }
+
         private void nudSpd_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Combat.StatDiff[(int) Stats.Speed] = (int) nudSpd.Value;
@@ -864,6 +874,11 @@ namespace Intersect.Editor.Forms.Editors
         private void nudMRPercentage_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Combat.PercentageStatDiff[(int) Stats.MagicResist] = (int) nudMRPercentage.Value;
+        }
+
+        private void nudMSPercentage_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Combat.PercentageStatDiff[(int)Stats.MovementSpeed] = (int) nudMSPercentage.Value;
         }
 
         private void nudSpdPercentage_ValueChanged(object sender, EventArgs e)

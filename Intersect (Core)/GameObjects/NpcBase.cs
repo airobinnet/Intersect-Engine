@@ -190,6 +190,8 @@ namespace Intersect.GameObjects
 
         public string Sprite { get; set; } = "";
 
+        public string Tag { get; set; } = "";
+
         [Column("Stats")]
         [JsonIgnore]
         public string JsonStat

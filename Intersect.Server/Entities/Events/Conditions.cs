@@ -131,6 +131,50 @@ namespace Intersect.Server.Entities.Events
         }
 
         public static bool MeetsCondition(
+            HasItemWTagCondition condition,
+            Player player,
+            Event eventInstance,
+            QuestBase questBase
+        )
+        {
+            int cpt = 0;
+            foreach (var item in player.Items)
+            {
+                ItemBase i = ItemBase.Get(item.ItemId);
+                if (i != null && i.Tag == condition.Tag)
+                {
+                    cpt += player.CountItems(item.ItemId);
+                    if (cpt >= condition.Quantity)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public static bool MeetsCondition(
+            EquippedItemTagIsCondition condition,
+            Player player,
+            Event eventInstance,
+            QuestBase questBase
+        )
+        {
+            for (var i = 0; i < Options.EquipmentSlots.Count; i++)
+            {
+                if (player.Equipment[i] >= 0)
+                {
+                    if (ItemBase.Get(player.Items[player.Equipment[i]].ItemId).Tag == condition.Tag)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public static bool MeetsCondition(
             ClassIsCondition condition,
             Player player,
             Event eventInstance,
@@ -377,6 +421,41 @@ namespace Intersect.Server.Entities.Events
                 }
 
                 return true;
+            }
+
+            return false;
+        }
+
+        public static bool MeetsCondition(
+            MapHasNPCWTag condition,
+            Player player,
+            Event eventInstance,
+            QuestBase questBase
+        )
+        {
+            var map = MapInstance.Get(eventInstance?.MapId ?? Guid.Empty);
+            if (map == null)
+            {
+                map = MapInstance.Get(player.MapId);
+            }
+
+            if (map != null)
+            {
+                var entities = map.GetEntities();
+                
+
+                foreach (var en in entities)
+                {
+                    if (en.GetType() == typeof(Npc))
+                    {
+                        Npc npc = (Npc)en;
+                        if (npc.Base.Tag == condition.Tag)
+                        {
+                            return true;
+                        }
+                    }
+
+                }
             }
 
             return false;

@@ -736,6 +736,7 @@ namespace Intersect.Server.Networking
 
             var unequippedAttack = false;
             var target = packet.Target;
+            bool targetOnFocus = packet.TargetOnFocus;
 
             if (player.CastTime >= Globals.Timing.TimeMs)
             {
@@ -787,6 +788,22 @@ namespace Intersect.Server.Networking
                     break;
                 case 3:
                     attackingTile.Translate(1, 0);
+
+                    break;
+                case 4:
+                    attackingTile.Translate(-1, -1); // UpLeft
+
+                    break;
+                case 5:
+                    attackingTile.Translate(1, -1); // UpRight
+
+                    break;
+                case 6:
+                    attackingTile.Translate(-1, 1); // DownLeft
+
+                    break;
+                case 7:
+                    attackingTile.Translate(1, 1); // DownRight
 
                     break;
             }
@@ -920,7 +937,7 @@ namespace Intersect.Server.Networking
                 {
                     if (entity.Id == target)
                     {
-                        player.TryAttack(entity);
+                        player.TryAttack(entity, targetOnFocus);
 
                         break;
                     }
@@ -1108,6 +1125,12 @@ namespace Intersect.Server.Networking
                     newChar.Gender = classBase.Sprites[spriteIndex].Gender;
                 }
 
+                // Get our custom layers from the packet.
+                for (var i = 0; i < (int)Enums.CustomSpriteLayers.CustomCount; i++)
+                {
+                    newChar.CustomSpriteLayers[i] = packet.CustomSpriteLayers[i] != -1 ? classBase.CustomSpriteLayers[(Enums.CustomSpriteLayers)i][packet.CustomSpriteLayers[i]].Texture : String.Empty;
+                }
+                
                 client.LoadCharacter(newChar);
 
                 newChar.SetVital(Vitals.Health, classBase.BaseVital[(int) Vitals.Health]);
@@ -1394,6 +1417,17 @@ namespace Intersect.Server.Networking
             player.CraftTimer = Globals.Timing.TimeMs;
         }
 
+        //CraftRequestPacket
+        public void HandlePacket(Client client, Player player, CraftRequestPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.CraftRequestId = packet.CraftId;
+        }
+
         //CloseBankPacket
         public void HandlePacket(Client client, Player player, CloseBankPacket packet)
         {
@@ -1448,7 +1482,7 @@ namespace Intersect.Server.Networking
 
             var target = Player.FindOnline(packet.TargetId);
 
-            if (target != null && target.Id != player.Id && player.InRangeOf(target, Options.PartyRange))
+            if (target != null && target.Id != player.Id && player.InRangeOf(target, Options.PartyInviteRange))
             {
                 target.InviteToParty(player);
 

@@ -192,6 +192,7 @@
     <Compile Include="Configuration\ConfigurationHelper.cs" />
     <Compile Include="Config\ChatOptions.cs" />
     <Compile Include="Config\PacketOptions.cs" />
+    <Compile Include="Config\PartyOptions.cs" />
     <Compile Include="Config\SecurityOptions.cs" />
     <Compile Include="Core\ApplicationContext.cs" />
     <Compile Include="Core\ExperimentalFeatures\CommonExperiments.Core.cs" />
@@ -219,8 +220,8 @@
     <Compile Include="Config\Passability.cs" />
     <Compile Include="Console.cs" />
     <Compile Include="Config\SmtpSettings.cs" />
-    <Compile Include="Crypto\RsaUtils.cs" />
     <Compile Include="CustomColors.cs" />
+    <Compile Include="Enums\CustomSpriteLayers.cs" />
     <Compile Include="ErrorHandling\ExceptionInfo.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
@@ -312,6 +313,7 @@
     <Compile Include="Network\Packets\Client\CloseCraftingPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseShopPacket.cs" />
     <Compile Include="Network\Packets\Client\CraftItemPacket.cs" />
+    <Compile Include="Network\Packets\Client\CraftRequestPacket.cs" />
     <Compile Include="Network\Packets\Client\CreateAccountPacket.cs" />
     <Compile Include="Network\Packets\Client\CreateCharacterPacket.cs" />
     <Compile Include="Network\Packets\Client\DeclineTradePacket.cs" />
@@ -328,6 +330,8 @@
     <Compile Include="Network\Packets\Client\HotbarUpdatePacket.cs" />
     <Compile Include="Network\Packets\Client\LoginPacket.cs" />
     <Compile Include="Network\Packets\Client\LogoutPacket.cs" />
+    <Compile Include="Network\Packets\Server\CraftStartPacket.cs" />
+    <Compile Include="Network\Packets\Server\CustomSpriteLayersPacket.cs" />
     <Compile Include="Network\Packets\SlotQuantityPacket.cs" />
     <Compile Include="Network\Packets\Client\SwapBankItemsPacket.cs" />
     <Compile Include="Network\Packets\Client\MovePacket.cs" />
@@ -477,6 +481,10 @@
     <Compile Include="Threading\ConcurrentInstance.cs" />
     <Compile Include="Threading\LockingActionQueue.cs" />
     <Compile Include="Threading\Threaded.cs" />
+    <Compile Include="Updater\Update.cs" />
+    <Compile Include="Updater\UpdateFile.cs" />
+    <Compile Include="Updater\Updater.cs" />
+    <Compile Include="Updater\UpdateStatus.cs" />
     <Compile Include="Utilities\AlphanumComparator.cs" />
     <Compile Include="Utilities\DatabaseUtils.cs" />
     <Compile Include="Utilities\ExperienceCurve.cs" />

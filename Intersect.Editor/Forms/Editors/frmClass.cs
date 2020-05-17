@@ -151,6 +151,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudMag.Value = mEditorItem.BaseStat[(int) Stats.AbilityPower];
                 nudDef.Value = mEditorItem.BaseStat[(int) Stats.Defense];
                 nudMR.Value = mEditorItem.BaseStat[(int) Stats.MagicResist];
+                nudMS.Value = mEditorItem.BaseStat[(int) Stats.MovementSpeed];
                 nudSpd.Value = mEditorItem.BaseStat[(int) Stats.Speed];
                 nudBaseHP.Value = Math.Max(
                     Math.Min(mEditorItem.BaseVital[(int) Vitals.Health], nudBaseHP.Maximum), nudBaseHP.Minimum
@@ -211,6 +212,7 @@ namespace Intersect.Editor.Forms.Editors
                 }
 
                 RefreshSpriteList(false);
+                RefreshHairList(false);
 
                 // Don't select if there are no Spells, to avoid crashes.
                 if (lstSprites.Items.Count > 0)
@@ -246,6 +248,16 @@ namespace Intersect.Editor.Forms.Editors
                     mEditorItem.SpawnMapId = MapList.OrderedMaps[0].MapId;
                 }
 
+                if (mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair].Count > 0)
+                {
+                    lstHair.SelectedIndex = 0;
+                } else
+                {
+                    lstHair.SelectedIndex = -1;
+                    cmbHair.SelectedIndex = 0;
+                    rbMale2.Checked = true;
+                }
+
                 nudX.Value = mEditorItem.SpawnX;
                 nudY.Value = mEditorItem.SpawnY;
                 cmbDirection.SelectedIndex = mEditorItem.SpawnDir;
@@ -278,7 +290,16 @@ namespace Intersect.Editor.Forms.Editors
 
             cmbFace.Items.Clear();
             cmbFace.Items.Add(Strings.General.none);
-            cmbFace.Items.AddRange(GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Face));
+            cmbFace.Items.AddRange(
+                GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Face)
+            );
+
+            cmbHair.Items.Clear();
+            cmbHair.Items.Add(Strings.General.none);
+            cmbHair.Items.AddRange(
+                GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Hairs)
+            );
+
             cmbSpawnItem.Items.Clear();
             cmbSpawnItem.Items.Add(Strings.General.none);
             cmbSpawnItem.Items.AddRange(ItemBase.Names);
@@ -356,6 +377,7 @@ namespace Intersect.Editor.Forms.Editors
             lblSpd.Text = Strings.ClassEditor.basespeed;
             lblMag.Text = Strings.ClassEditor.baseabilitypower;
             lblMR.Text = Strings.ClassEditor.basemagicresist;
+            lblMS.Text = Strings.ClassEditor.basemovementspeed;
             lblPoints.Text = Strings.ClassEditor.basepoints;
 
             grpSpells.Text = Strings.ClassEditor.learntspells;
@@ -455,6 +477,12 @@ namespace Intersect.Editor.Forms.Editors
             expGrid.Columns.Add(levelCol);
             expGrid.Columns.Add(tnlCol);
             expGrid.Columns.Add(totalCol);
+
+            grpHair.Text = Strings.ClassEditor.hairstyles;
+            grpGender2.Text = Strings.ClassEditor.gender;
+            rbMale2.Text = Strings.ClassEditor.male;
+            rbFemale2.Text = Strings.ClassEditor.female;
+            lblHair.Text = Strings.ClassEditor.hair;
 
             //Searching/Sorting
             btnChronological.ToolTipText = Strings.ClassEditor.sortchronologically;
@@ -600,7 +628,6 @@ namespace Intersect.Editor.Forms.Editors
             if (lstSprites.Items.Count > 0)
             {
                 mEditorItem.Sprites[lstSprites.SelectedIndex].Gender = Gender.Male;
-
                 RefreshSpriteList();
             }
         }
@@ -656,6 +683,36 @@ namespace Intersect.Editor.Forms.Editors
             {
                 lstSprites.SelectedIndex = n;
             }
+        }
+
+        private void RefreshHairList(bool saveSpot = true) {
+            // Refresh List
+            var n = lstHair.SelectedIndex;
+            lstHair.Items.Clear();
+            for (var i = 0; i < mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair].Count; i++) {
+                if (mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][i].Gender == 0) {
+                    lstHair.Items.Add(
+                        Strings.ClassEditor.spriteitemmale.ToString(
+                            i + 1, TextUtils.NullToNone(mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][i].Texture)
+                        )
+                    );
+                } else {
+                    lstHair.Items.Add(
+                        Strings.ClassEditor.spriteitemfemale.ToString(
+                            i + 1, TextUtils.NullToNone(mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][i].Texture)
+                        )
+                    );
+                }
+            }
+
+            if (saveSpot) {
+                lstHair.SelectedIndex = n;
+            } else if (lstHair.Items.Count > 0)
+            {
+                lstHair.SelectedIndex = 0;
+            }
+
+            lstHair_Click(null, null);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -751,6 +808,26 @@ namespace Intersect.Editor.Forms.Editors
             picFace.BackgroundImage = picFaceBmp;
         }
 
+        private void DrawHair() {
+            var picSpriteBmp = new Bitmap(picHair.Width, picHair.Height);
+            var gfx = Graphics.FromImage(picSpriteBmp);
+            gfx.FillRectangle(Brushes.Black, new Rectangle(0, 0, picSprite.Width, picSprite.Height));
+            if (cmbHair.SelectedIndex > 0) {
+                if (File.Exists("resources/hairs/" + cmbHair.Text)) {
+                    var img = Image.FromFile("resources/hairs/" + cmbHair.Text);
+                    gfx.DrawImage(
+                        img, new Rectangle(0, 0, img.Width / 4, img.Height / 4),
+                        new Rectangle(0, 0, img.Width / 4, img.Height / 4), GraphicsUnit.Pixel
+                    );
+
+                    img.Dispose();
+                }
+            }
+
+            gfx.Dispose();
+            picHair.BackgroundImage = picSpriteBmp; 
+        }
+
         private void btnVisualMapSelector_Click(object sender, EventArgs e)
         {
             var frmWarpSelection = new FrmWarpSelection();
@@ -826,6 +903,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudArmorIncrease.Maximum = Options.MaxStatValue;
                 nudMagicIncrease.Maximum = Options.MaxStatValue;
                 nudMagicResistIncrease.Maximum = Options.MaxStatValue;
+                nudMovementSpeedIncrease.Maximum = Options.MaxStatValue;
                 nudSpeedIncrease.Maximum = Options.MaxStatValue;
             }
             else
@@ -835,6 +913,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudStrengthIncrease.Maximum = 100;
                 nudArmorIncrease.Maximum = 100;
                 nudMagicIncrease.Maximum = 100;
+                nudMovementSpeedIncrease.Maximum = 100;
                 nudMagicResistIncrease.Maximum = 100;
                 nudSpeedIncrease.Maximum = 100;
             }
@@ -853,6 +932,10 @@ namespace Intersect.Editor.Forms.Editors
 
             nudMagicResistIncrease.Value = Math.Min(
                 nudMagicResistIncrease.Maximum, mEditorItem.StatIncrease[(int) Stats.MagicResist]
+            );
+
+            nudMovementSpeedIncrease.Value = Math.Min(
+                nudMovementSpeedIncrease.Maximum, mEditorItem.StatIncrease[(int)Stats.MovementSpeed]
             );
 
             nudSpeedIncrease.Value = Math.Min(nudSpeedIncrease.Maximum, mEditorItem.StatIncrease[(int) Stats.Speed]);
@@ -1073,6 +1156,11 @@ namespace Intersect.Editor.Forms.Editors
             mEditorItem.BaseStat[(int) Stats.MagicResist] = (int) nudMR.Value;
         }
 
+        private void nudMS_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.BaseStat[(int)Stats.MovementSpeed] = (int)nudMS.Value;
+        }
+
         private void nudPoints_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.BasePoints = (int) nudPoints.Value;
@@ -1139,6 +1227,12 @@ namespace Intersect.Editor.Forms.Editors
         private void nudMagicResistIncrease_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.StatIncrease[(int) Stats.MagicResist] = (int) nudMagicResistIncrease.Value;
+            UpdateIncreases();
+        }
+
+        private void nudMovementSpeedIncrease_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.StatIncrease[(int)Stats.MovementSpeed] = (int) nudMovementSpeedIncrease.Value;
             UpdateIncreases();
         }
 
@@ -1282,6 +1376,89 @@ namespace Intersect.Editor.Forms.Editors
         private void nudAttackSpeedValue_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.AttackSpeedValue = (int) nudAttackSpeedValue.Value;
+        }
+
+        private void cmbHair_SelectedIndexChanged(object sender, EventArgs e) {
+            if (lstHair.SelectedIndex >= 0) {
+                mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][lstHair.SelectedIndex].Texture = TextUtils.SanitizeNone(cmbHair?.Text);
+
+                RefreshHairList();
+            }
+
+            DrawHair();
+        }
+
+        private void BtnAddHair_Click(object sender, EventArgs e) {
+            var n = new CustomSpriteLayer {
+                Texture = null,
+                Gender = 0
+            };
+
+            mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair].Add(n);
+
+            if (n.Gender == 0) {
+                lstHair.Items.Add(
+                    Strings.ClassEditor.spriteitemmale.ToString(
+                        mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair].Count, TextUtils.NullToNone(n.Texture)
+                    )
+                );
+            } else {
+                lstHair.Items.Add(
+                    Strings.ClassEditor.spriteitemfemale.ToString(
+                        mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair].Count, TextUtils.NullToNone(n.Texture)
+                    )
+                );
+            }
+
+            lstHair.SelectedIndex = lstHair.Items.Count - 1;
+            lstHair_Click(null, null);
+        }
+
+        private void btnRemoveHair_Click(object sender, EventArgs e) {
+            if (lstHair.SelectedIndex == -1) {
+                return;
+            }
+
+            mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair].RemoveAt(lstHair.SelectedIndex);
+            lstHair.Items.RemoveAt(lstHair.SelectedIndex);
+
+            RefreshHairList(false);
+
+            if (lstHair.Items.Count > 0) {
+                lstHair.SelectedIndex = 0;
+            }
+        }
+
+        private void lstHair_Click(object sender, EventArgs e) {
+            if (lstHair.Items.Count > 0) {
+                cmbHair.SelectedIndex = cmbHair.FindString(
+                    TextUtils.NullToNone(mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][lstHair.SelectedIndex].Texture)
+                );
+
+                if (mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][lstHair.SelectedIndex].Gender == 0) {
+                    rbMale2.Checked = true;
+                } else {
+                    rbFemale2.Checked = true;
+                }
+            }
+        }
+
+        private void rbMale2_Click(object sender, EventArgs e) {
+            if (lstHair.SelectedIndex == -1) return;
+
+            if (lstHair.Items.Count > 0) {
+                mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][lstHair.SelectedIndex].Gender = Gender.Male;
+                RefreshHairList();
+            }
+        }
+
+        private void rbFemale2_Click(object sender, EventArgs e) {
+            if (lstHair.SelectedIndex == -1) return;
+
+            if (lstHair.Items.Count > 0) {
+                mEditorItem.CustomSpriteLayers[CustomSpriteLayers.Hair][lstHair.SelectedIndex].Gender = Gender.Female;
+                RefreshHairList();
+            }
         }
 
         #region "Exp Grid"
@@ -1682,8 +1859,14 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
+
+
         #endregion
 
+        private void mnuExpGrid_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
     }
 
 }

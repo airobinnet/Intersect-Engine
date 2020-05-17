@@ -531,6 +531,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new AddChatboxTextCommand();
 
                     break;
+                case EventCommandType.AddCombatText:
+                    tmpCommand = new AddCombatTextCommand();
+
+                    break;
                 case EventCommandType.SetVariable:
                     tmpCommand = new SetVariableCommand();
 
@@ -591,12 +595,20 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new EquipItemCommand();
 
                     break;
+                case EventCommandType.Unequip:
+                    tmpCommand = new UnEquipItemCommand();
+
+                    break;
                 case EventCommandType.ChangeSprite:
                     tmpCommand = new ChangeSpriteCommand();
 
                     break;
                 case EventCommandType.ChangeFace:
                     tmpCommand = new ChangeFaceCommand();
+
+                    break;
+                case EventCommandType.ChangeHair:
+                    tmpCommand = new ChangeHairCommand();
 
                     break;
                 case EventCommandType.ChangeGender:
@@ -709,6 +721,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.ShowPlayer:
                     tmpCommand = new ShowPlayerCommand();
+
+                    break;
+                case EventCommandType.FriendlySpells:
+                    tmpCommand = new FriendlySpellsCommand();
 
                     break;
                 default:
@@ -1106,6 +1122,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     cmdWindow = new EventCommandChatboxText((AddChatboxTextCommand) command, this);
 
                     break;
+                case EventCommandType.AddCombatText:
+                    cmdWindow = new EventCommandCombatText((AddCombatTextCommand)command, this);
+
+                    break;
                 case EventCommandType.SetVariable:
                     cmdWindow = new EventCommandVariable((SetVariableCommand) command, this);
 
@@ -1167,12 +1187,20 @@ namespace Intersect.Editor.Forms.Editors.Events
                     cmdWindow = new EventCommandEquipItems((EquipItemCommand) command, this);
 
                     break;
+                case EventCommandType.Unequip:
+                    cmdWindow = new EventCommandUnEquipItems((UnEquipItemCommand)command, this);
+
+                    break;
                 case EventCommandType.ChangeSprite:
                     cmdWindow = new EventCommandChangeSprite((ChangeSpriteCommand) command, this);
 
                     break;
                 case EventCommandType.ChangeFace:
                     cmdWindow = new EventCommandChangeFace((ChangeFaceCommand) command, this);
+
+                    break;
+                case EventCommandType.ChangeHair:
+                    cmdWindow = new EventCommandChangeHair((ChangeHairCommand) command, this);
 
                     break;
                 case EventCommandType.ChangeGender:
@@ -1277,6 +1305,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.EndQuest:
                     cmdWindow = new EventCommandEndQuest((EndQuestCommand) command, this);
+
+                    break;
+                case EventCommandType.FriendlySpells:
+                    cmdWindow = new EventCommandFriendlySpells((FriendlySpellsCommand)command, this);
 
                     break;
                 default:
@@ -1765,6 +1797,10 @@ namespace Intersect.Editor.Forms.Editors.Events
 
         #endregion
 
+        private void lstCommands_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
     }
 
     public class CommandListProperties
