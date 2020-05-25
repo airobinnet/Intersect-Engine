@@ -723,8 +723,9 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new ShowPlayerCommand();
 
                     break;
-                case EventCommandType.FriendlySpells:
-                    tmpCommand = new FriendlySpellsCommand();
+
+                case EventCommandType.ChangeItemsByTag:
+                    tmpCommand = new ChangeItemsByTag(CurrentPage.CommandLists);
 
                     break;
                 default:
@@ -1307,8 +1308,8 @@ namespace Intersect.Editor.Forms.Editors.Events
                     cmdWindow = new EventCommandEndQuest((EndQuestCommand) command, this);
 
                     break;
-                case EventCommandType.FriendlySpells:
-                    cmdWindow = new EventCommandFriendlySpells((FriendlySpellsCommand)command, this);
+                case EventCommandType.ChangeItemsByTag:
+                    cmdWindow = new EventCommandChangeItemsBytag((ChangeItemsByTag)command, CurrentPage, this);
 
                     break;
                 default:

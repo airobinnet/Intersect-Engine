@@ -375,7 +375,31 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     nudFreeInventorySlots.Value = 1;
 
                     break;
+                case ConditionTypes.EquippedItemTagIs:
+                    Condition = new EquippedItemTagIsCondition();
+                    if (cmbEquippedItemTag.Items.Count > 0)
+                    {
+                        cmbEquippedItemTag.SelectedIndex = 0;
+                    }
 
+                    break;
+                case ConditionTypes.HasItemWTag:
+                    Condition = new HasItemWTagCondition();
+                    if (cmbHasItemWTag.Items.Count > 0)
+                    {
+                        cmbHasItemWTag.SelectedIndex = 0;
+                    }
+                    nudHasItemWTag.Value = 1;
+
+                    break;
+                case ConditionTypes.MapHasTag:
+                    Condition = new MapHasTag();
+                    if (cmbEquippedItemTag.Items.Count > 0)
+                    {
+                        cmbEquippedItemTag.SelectedIndex = 0;
+                    }
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -482,7 +506,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                 case ConditionTypes.NoNpcsOnMap:
                     break;
                 case ConditionTypes.MapHasNpcWTag:
-                    ShowTagCombo(false);
+                    ShowTagCombo(TagType.MapNPC);
                     grpEquippedItemTag.Text = Strings.EventConditional.maphasnpcwithtag;
 
                     break;
@@ -522,11 +546,55 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
                 case ConditionTypes.HasFreeInventorySlots:
                     grpFreeInventorySlots.Show();
+                    break;
+                case ConditionTypes.EquippedItemTagIs:
+                    ShowTagCombo(TagType.Item);
+                    grpEquippedItemTag.Text = Strings.EventConditional.itemequippedhastag;
+                    break;
+                case ConditionTypes.HasItemWTag:
+                    grpHasItemWTag.Show();
+                    cmbHasItemWTag.Items.Clear();
+                    cmbHasItemWTag.Items.AddRange(ItemBase.AllTags);
+
+                    break;
+                case ConditionTypes.MapHasTag:
+                    ShowTagCombo(TagType.Map);
+                    grpEquippedItemTag.Text = Strings.EventConditional.maphastag;
 
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void ShowTagCombo(TagType type)
+        {
+            grpEquippedItemTag.Show();
+            cmbEquippedItemTag.Items.Clear();
+            string[] tagList;
+
+            switch (type)
+            {
+                case TagType.Item:
+                    tagList = ItemBase.AllTags;
+
+                    break;
+
+                case TagType.MapNPC:
+                    tagList = NpcBase.AllTags;
+
+                    break;
+
+                case TagType.Map:
+                    tagList = GameObjects.Maps.MapBase.AllTags;
+                    break;
+
+                default:
+                    tagList = new string[0];
+                    throw new NotImplementedException();
+            }
+
+            cmbEquippedItemTag.Items.AddRange(tagList);
         }
 
         private void ShowTagCombo(bool isItem)
@@ -1014,6 +1082,31 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             }
         }
 
+        private void SetupFormValues(HasItemWTagCondition condition)
+        {
+            for (int i = 0; i < cmbHasItemWTag.Items.Count; i++)
+            {
+                if (cmbHasItemWTag.Items[i].ToString() == condition.Tag)
+                {
+                    cmbHasItemWTag.SelectedIndex = i;
+                    break;
+                }
+            }
+            nudHasItemWTag.Value = condition.Quantity;
+        }
+
+        private void SetupFormValues(EquippedItemTagIsCondition condition)
+        {
+            for (int i = 0; i < cmbEquippedItemTag.Items.Count; i++)
+            {
+                if (cmbEquippedItemTag.Items[i].ToString() == condition.Tag)
+                {
+                    cmbEquippedItemTag.SelectedIndex = i;
+                    break;
+                }
+            }
+        }
+
         private void SetupFormValues(ClassIsCondition condition)
         {
             cmbClass.SelectedIndex = ClassBase.ListIndex(condition.ClassId);
@@ -1086,6 +1179,18 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         }
 
         private void SetupFormValues(MapHasNPCWTag condition)
+        {
+            for (int i = 0; i < cmbEquippedItemTag.Items.Count; i++)
+            {
+                if (cmbEquippedItemTag.Items[i].ToString() == condition.Tag)
+                {
+                    cmbEquippedItemTag.SelectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        private void SetupFormValues(MapHasTag condition)
         {
             for (int i = 0; i < cmbEquippedItemTag.Items.Count; i++)
             {
@@ -1244,6 +1349,12 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                 cmbEquippedItemTag.Items[cmbEquippedItemTag.SelectedIndex].ToString();
         }
 
+        private void SaveFormValues(MapHasTag condition)
+        {
+            condition.Tag = cmbEquippedItemTag.SelectedIndex == -1 ? null :
+                cmbEquippedItemTag.Items[cmbEquippedItemTag.SelectedIndex].ToString();
+        }
+
         private void SaveFormValues(GenderIsCondition condition)
         {
             condition.Gender = (Gender) cmbGender.SelectedIndex;
@@ -1263,6 +1374,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         {
             condition.Quantity = (int) nudFreeInventorySlots.Value;
         }
+        
         private void SaveFormValues(EquippedItemTagIsCondition condition)
         {
             condition.Tag = cmbEquippedItemTag.SelectedIndex == -1 ? null :
@@ -1277,7 +1389,6 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         }
 
         #endregion
-
     }
 
 }
