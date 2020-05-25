@@ -911,7 +911,7 @@ namespace Intersect.Client.Entities
                 //If unit is stealthed, don't render unless the entity is the player.
                 if (Status[n].Type == StatusTypes.Stealth)
                 {
-                    if (this != Globals.Me && !Globals.Me.IsInMyParty(this))
+                    if (this != Globals.Me && !(this is Player player && Globals.Me.IsInMyParty(player)))
                     {
                         return;
                     }
@@ -1333,7 +1333,7 @@ namespace Intersect.Client.Entities
                 //If unit is stealthed, don't render unless the entity is the player.
                 if (Status[n].Type == StatusTypes.Stealth)
                 {
-                    if (this != Globals.Me && !Globals.Me.IsInMyParty(this))
+                    if (this != Globals.Me && !(this is Player player && Globals.Me.IsInMyParty(player)))
                     {
                         return;
                     }
@@ -1425,7 +1425,7 @@ namespace Intersect.Client.Entities
                 //If unit is stealthed, don't render unless the entity is the player.
                 if (Status[n].Type == StatusTypes.Stealth)
                 {
-                    if (this != Globals.Me && !Globals.Me.IsInMyParty(this))
+                    if (this != Globals.Me && !(this is Player player && Globals.Me.IsInMyParty(player)))
                     {
                         return;
                     }
@@ -1546,7 +1546,7 @@ namespace Intersect.Client.Entities
                 //If unit is stealthed, don't render unless the entity is the player.
                 if (Status[n].Type == StatusTypes.Stealth)
                 {
-                    if (this != Globals.Me && !Globals.Me.IsInMyParty(this))
+                    if (this != Globals.Me && !(this is Player player && Globals.Me.IsInMyParty(player)))
                     {
                         return;
                     }

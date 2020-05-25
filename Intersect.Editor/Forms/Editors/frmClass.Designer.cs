@@ -705,7 +705,7 @@ namespace Intersect.Editor.Forms.Editors
             this.nudSpawnItemAmount.Size = new System.Drawing.Size(292, 26);
             this.nudSpawnItemAmount.TabIndex = 61;
             this.nudSpawnItemAmount.Value = new decimal(new int[] {
-            0,
+            1,
             0,
             0,
             0});

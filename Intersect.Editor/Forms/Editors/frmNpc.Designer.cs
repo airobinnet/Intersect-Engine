@@ -1599,7 +1599,7 @@ namespace Intersect.Editor.Forms.Editors
             this.nudDropAmount.Size = new System.Drawing.Size(292, 26);
             this.nudDropAmount.TabIndex = 61;
             this.nudDropAmount.Value = new decimal(new int[] {
-            0,
+            1,
             0,
             0,
             0});

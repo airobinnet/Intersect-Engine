@@ -44,6 +44,8 @@ namespace Intersect.GameObjects.Events
 
         MapHasNpcWTag
 
+        HasFreeInventorySlots,
+
     }
 
     public class Condition
@@ -215,6 +217,22 @@ namespace Intersect.GameObjects.Events
 
         public Guid ItemId { get; set; }
 
+    }
+
+    /// <summary>
+    /// Defines the condition class used when checking for a player's free inventory slots.
+    /// </summary>
+    public class HasFreeInventorySlots : Condition
+    {
+        /// <summary>
+        /// Defines the type of condition.
+        /// </summary>
+        public override ConditionTypes Type { get; } = ConditionTypes.HasFreeInventorySlots;
+
+        /// <summary>
+        /// Defines the amount of inventory slots that need to be free to clear this condition.
+        /// </summary>
+        public int Quantity { get; set; }
     }
 
     public class EquippedItemTagIsCondition : Condition
