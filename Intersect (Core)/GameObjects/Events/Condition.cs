@@ -42,9 +42,9 @@ namespace Intersect.GameObjects.Events
 
         HasItemWTag,
 
-        MapHasNpcWTag
+        MapHasNpcWTag,
 
-        HasFreeInventorySlots,
+        HasFreeInventorySlots
 
     }
 

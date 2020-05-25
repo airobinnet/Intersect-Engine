@@ -1908,7 +1908,7 @@ Tick timer saved in server config.json.";
                 {17, @"Item Equipped is..."},
                 {18, @"Item Equipped Has Tag..."},
                 {19, @"Has Item With Tag..."},
-                {20, @"Map has Npc With Tag..."}
+                {20, @"Map has Npc With Tag..."},
                 {21, @"Has X free Inventory slots..." }
             };
 

@@ -1690,10 +1690,6 @@ namespace Intersect.Server.Entities
             }
 
                         UpdateGatherItemQuests(item.ItemId);
-                        var rarity = CustomColors.Items.Rarities.ContainsKey(itemBase.Rarity)
-                        ? CustomColors.Items.Rarities[itemBase.Rarity]
-                        : Color.White;
-                        PacketSender.SendActionMsg(this, itemBase.Name, rarity);
 
         }
 
@@ -4970,6 +4966,10 @@ namespace Intersect.Server.Entities
                                                 ItemBase.GetName(questTask.TargetId)
                                             )
                                         );
+                                        var rarity = CustomColors.Items.Rarities.ContainsKey(item.Rarity)
+                                        ? CustomColors.Items.Rarities[item.Rarity]
+                                        : Color.White;
+                                        PacketSender.SendActionMsg(this, item.Name, rarity);
                                     }
                                 }
                             }
