@@ -517,11 +517,6 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void txtTag_TextChanged(object sender, EventArgs e)
-        {
-            mEditorItem.Tag = txtTag.Text;
-        }
-
     private void txtDesc_TextChanged(object sender, EventArgs e)
         {
             mEditorItem.Description = txtDesc.Text;

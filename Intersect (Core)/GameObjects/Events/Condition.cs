@@ -247,22 +247,6 @@ namespace Intersect.GameObjects.Events
 
     }
 
-    public class EquippedItemTagIsCondition : Condition
-    {
-        public override ConditionTypes Type { get; } = ConditionTypes.EquippedItemTagIs;
-
-        public string Tag { get; set; }
-    }
-
-    public class HasItemWTagCondition : Condition
-    {
-        public override ConditionTypes Type { get; } = ConditionTypes.HasItemWTag;
-
-        public string Tag { get; set; }
-
-        public int Quantity { get; set; }
-
-    }
 
     public class EquippedItemTagIsCondition : Condition
     {

@@ -353,23 +353,6 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     }
 
                     break;
-                case ConditionTypes.EquippedItemTagIs:
-                    Condition = new EquippedItemTagIsCondition();
-                    if (cmbEquippedItemTag.Items.Count > 0)
-                    {
-                        cmbEquippedItemTag.SelectedIndex = 0;
-                    }
-
-                    break;
-                case ConditionTypes.HasItemWTag:
-                    Condition = new HasItemWTagCondition();
-                    if (cmbHasItemWTag.Items.Count > 0)
-                    {
-                        cmbHasItemWTag.SelectedIndex = 0;
-                    }
-                    nudHasItemWTag.Value = 1;
-
-                    break;
                 case ConditionTypes.HasFreeInventorySlots:
                     Condition = new HasFreeInventorySlots();
                     nudFreeInventorySlots.Value = 1;
@@ -506,8 +489,11 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                 case ConditionTypes.NoNpcsOnMap:
                     break;
                 case ConditionTypes.MapHasNpcWTag:
-                    ShowTagCombo(TagType.MapNPC);
-                    grpEquippedItemTag.Text = Strings.EventConditional.maphasnpcwithtag;
+                    Condition = new MapHasNPCWTag();
+                    if (cmbEquippedItemTag.Items.Count > 0)
+                    {
+                        cmbEquippedItemTag.SelectedIndex = 0;
+                    }
 
                     break;
                 case ConditionTypes.GenderIs:
@@ -524,32 +510,16 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     cmbEquippedItem.Items.AddRange(ItemBase.Names);
 
                     break;
-                case ConditionTypes.EquippedItemTagIs:
-                    ShowTagCombo(true);
-                    grpEquippedItemTag.Text = Strings.EventConditional.itemequippedhastag;
-                    break;
-                case ConditionTypes.HasItemWTag:
-                    grpHasItemWTag.Show();
-                    cmbHasItemWTag.Items.Clear();
-                    List<string> tags = new List<string>();
-                    foreach (var p in ItemBase.ItemPairs)
-                    {
-                        string tag = ItemBase.Get(p.Key).Tag;
-                        if (tag != null && tag != "" && !tags.Contains(tag))
-                        {
-                            tags.Add(tag);
-                        }
-                    }
-                    cmbHasItemWTag.Items.AddRange(tags.OrderBy(t => t).ToArray());
-
-                    break;
-
                 case ConditionTypes.HasFreeInventorySlots:
                     grpFreeInventorySlots.Show();
                     break;
                 case ConditionTypes.EquippedItemTagIs:
-                    ShowTagCombo(TagType.Item);
-                    grpEquippedItemTag.Text = Strings.EventConditional.itemequippedhastag;
+                    Condition = new EquippedItemTagIsCondition();
+                    if (cmbEquippedItemTag.Items.Count > 0)
+                    {
+                        cmbEquippedItemTag.SelectedIndex = 0;
+                    }
+
                     break;
                 case ConditionTypes.HasItemWTag:
                     grpHasItemWTag.Show();
@@ -558,8 +528,11 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
                     break;
                 case ConditionTypes.MapHasTag:
-                    ShowTagCombo(TagType.Map);
-                    grpEquippedItemTag.Text = Strings.EventConditional.maphastag;
+                    Condition = new MapHasTag();
+                    if (cmbEquippedItemTag.Items.Count > 0)
+                    {
+                        cmbEquippedItemTag.SelectedIndex = 0;
+                    }
 
                     break;
                 default:
@@ -595,37 +568,6 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             }
 
             cmbEquippedItemTag.Items.AddRange(tagList);
-        }
-
-        private void ShowTagCombo(bool isItem)
-        {
-            grpEquippedItemTag.Show();
-            cmbEquippedItemTag.Items.Clear();
-            List<string> eqpTags = new List<string>();
-            if (isItem)
-            {
-                foreach (var p in ItemBase.ItemPairs)
-                {
-                    string tag = ItemBase.Get(p.Key).Tag;
-                    if (tag != null && tag != "" && !eqpTags.Contains(tag))
-                    {
-                        eqpTags.Add(tag);
-                    }
-                }
-            }
-            else
-            {
-                foreach (var p in NpcBase.ItemPairs)
-                {
-                    string tag = NpcBase.Get(p.Key).Tag;
-                    if (tag != null && tag != "" && !eqpTags.Contains(tag))
-                    {
-                        eqpTags.Add(tag);
-                    }
-                }
-            }
-
-            cmbEquippedItemTag.Items.AddRange(eqpTags.OrderBy(t => t).ToArray());
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -1055,31 +997,6 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         {
             cmbItem.SelectedIndex = ItemBase.ListIndex(condition.ItemId);
             nudItemAmount.Value = condition.Quantity;
-        }
-
-        private void SetupFormValues(HasItemWTagCondition condition)
-        {
-            for (int i = 0; i < cmbHasItemWTag.Items.Count; i++)
-            {
-                if (cmbHasItemWTag.Items[i].ToString() == condition.Tag)
-                {
-                    cmbHasItemWTag.SelectedIndex = i;
-                    break;
-                }
-            }
-            nudHasItemWTag.Value = condition.Quantity;
-        }
-
-        private void SetupFormValues(EquippedItemTagIsCondition condition)
-        {
-            for (int i = 0; i < cmbEquippedItemTag.Items.Count; i++)
-            {
-                if (cmbEquippedItemTag.Items[i].ToString() == condition.Tag)
-                {
-                    cmbEquippedItemTag.SelectedIndex = i;
-                    break;
-                }
-            }
         }
 
         private void SetupFormValues(HasItemWTagCondition condition)
