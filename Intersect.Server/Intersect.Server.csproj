@@ -488,6 +488,10 @@
     <Compile Include="Migrations\Game\20200424140012_MapTags.designer.cs">
       <DependentUpon>20200424140012_MapTags.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Game\20200526184309_itemHitAnimation.cs" />
+    <Compile Include="Migrations\Game\20200526184309_itemHitAnimation.designer.cs">
+      <DependentUpon>20200526184309_itemHitAnimation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />
     <Compile Include="Networking\Helpers\NetDebug.cs" />

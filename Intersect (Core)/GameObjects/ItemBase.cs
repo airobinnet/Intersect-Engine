@@ -66,6 +66,17 @@ namespace Intersect.GameObjects
             set => EquipmentAnimationId = value?.Id ?? Guid.Empty;
         }
 
+        [Column("HitAnimation")]
+        public Guid HitAnimationId { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
+        public AnimationBase HitAnimation
+        {
+            get => AnimationBase.Get(HitAnimationId);
+            set => HitAnimationId = value?.Id ?? Guid.Empty;
+        }
+
         public bool Bound { get; set; }
 
         public int CritChance { get; set; }

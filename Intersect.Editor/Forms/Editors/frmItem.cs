@@ -100,7 +100,9 @@ namespace Intersect.Editor.Forms.Editors
             {
                 cmbScalingStat.Items.Add(Globals.GetStatName(x));
             }
-
+            cmbHitAnimation.Items.Clear();
+            cmbHitAnimation.Items.Add(Strings.General.none);
+            cmbHitAnimation.Items.AddRange(AnimationBase.Names);
             cmbAnimation.Items.Clear();
             cmbAnimation.Items.Add(Strings.General.none);
             cmbAnimation.Items.AddRange(AnimationBase.Names);
@@ -168,6 +170,7 @@ namespace Intersect.Editor.Forms.Editors
             lblPic.Text = Strings.ItemEditor.picture;
             lblPrice.Text = Strings.ItemEditor.price;
             lblAnim.Text = Strings.ItemEditor.animation;
+            lblHitAnimation.Text = Strings.SpellEditor.hitanimation;
             chkBound.Text = Strings.ItemEditor.bound;
             chkStackable.Text = Strings.ItemEditor.stackable;
             btnEditRequirements.Text = Strings.ItemEditor.requirements;
@@ -316,6 +319,7 @@ namespace Intersect.Editor.Forms.Editors
                 chkStackable.Checked = Convert.ToBoolean(mEditorItem.Stackable);
                 cmbToolType.SelectedIndex = mEditorItem.Tool + 1;
                 cmbAttackAnimation.SelectedIndex = AnimationBase.ListIndex(mEditorItem.AttackAnimationId) + 1;
+                cmbHitAnimation.SelectedIndex = AnimationBase.ListIndex(mEditorItem.HitAnimationId) + 1;
                 RefreshExtendedData();
                 if (mEditorItem.ItemType == ItemTypes.Equipment)
                 {
@@ -694,6 +698,11 @@ namespace Intersect.Editor.Forms.Editors
         {
             mEditorItem.AttackAnimation =
                 AnimationBase.Get(AnimationBase.IdFromList(cmbAttackAnimation.SelectedIndex - 1));
+        }
+
+        private void cmbHitAnimation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mEditorItem.HitAnimation = AnimationBase.Get(AnimationBase.IdFromList(cmbHitAnimation.SelectedIndex - 1));
         }
 
         private void cmbDamageType_SelectedIndexChanged(object sender, EventArgs e)

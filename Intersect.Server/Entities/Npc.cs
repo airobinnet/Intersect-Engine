@@ -306,7 +306,7 @@ namespace Intersect.Server.Entities
                     );
                 }
 
-                base.TryAttack(
+                base.TryAttackNPC(
                     target, Base.Damage, (DamageType) Base.DamageType, (Stats) Base.ScalingStat, Base.Scaling,
                     Base.CritChance, Base.CritMultiplier, deadAnimations, aliveAnimations
                 );

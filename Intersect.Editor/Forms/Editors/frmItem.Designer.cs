@@ -187,6 +187,8 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemPaste = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripItemUndo = new System.Windows.Forms.ToolStripButton();
+            this.cmbHitAnimation = new DarkUI.Controls.DarkComboBox();
+            this.lblHitAnimation = new System.Windows.Forms.Label();
             this.grpItems.SuspendLayout();
             this.grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudCooldown)).BeginInit();
@@ -736,6 +738,8 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpEquipment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpEquipment.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpEquipment.Controls.Add(this.cmbHitAnimation);
+            this.grpEquipment.Controls.Add(this.lblHitAnimation);
             this.grpEquipment.Controls.Add(this.grpRegen);
             this.grpEquipment.Controls.Add(this.grpVitalBonuses);
             this.grpEquipment.Controls.Add(this.cmbEquipmentAnimation);
@@ -1029,10 +1033,10 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbEquipmentAnimation.FormattingEnabled = true;
             this.cmbEquipmentAnimation.Items.AddRange(new object[] {
             "None"});
-            this.cmbEquipmentAnimation.Location = new System.Drawing.Point(332, 783);
+            this.cmbEquipmentAnimation.Location = new System.Drawing.Point(429, 788);
             this.cmbEquipmentAnimation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbEquipmentAnimation.Name = "cmbEquipmentAnimation";
-            this.cmbEquipmentAnimation.Size = new System.Drawing.Size(308, 27);
+            this.cmbEquipmentAnimation.Size = new System.Drawing.Size(211, 27);
             this.cmbEquipmentAnimation.TabIndex = 57;
             this.cmbEquipmentAnimation.Text = "None";
             this.cmbEquipmentAnimation.TextPadding = new System.Windows.Forms.Padding(2);
@@ -1041,12 +1045,12 @@ namespace Intersect.Editor.Forms.Editors
             // lblEquipmentAnimation
             // 
             this.lblEquipmentAnimation.AutoSize = true;
-            this.lblEquipmentAnimation.Location = new System.Drawing.Point(327, 758);
+            this.lblEquipmentAnimation.Location = new System.Drawing.Point(333, 791);
             this.lblEquipmentAnimation.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblEquipmentAnimation.Name = "lblEquipmentAnimation";
-            this.lblEquipmentAnimation.Size = new System.Drawing.Size(165, 20);
+            this.lblEquipmentAnimation.Size = new System.Drawing.Size(76, 20);
             this.lblEquipmentAnimation.TabIndex = 56;
-            this.lblEquipmentAnimation.Text = "Equipment Animation:";
+            this.lblEquipmentAnimation.Text = "EQ Anim:";
             // 
             // nudEffectPercent
             // 
@@ -2572,6 +2576,41 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemUndo.Text = "Undo";
             this.toolStripItemUndo.Click += new System.EventHandler(this.toolStripItemUndo_Click);
             // 
+            // cmbHitAnimation
+            // 
+            this.cmbHitAnimation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbHitAnimation.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbHitAnimation.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbHitAnimation.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbHitAnimation.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbHitAnimation.ButtonIcon")));
+            this.cmbHitAnimation.DrawDropdownHoverOutline = false;
+            this.cmbHitAnimation.DrawFocusRectangle = false;
+            this.cmbHitAnimation.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbHitAnimation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbHitAnimation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbHitAnimation.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbHitAnimation.FormattingEnabled = true;
+            this.cmbHitAnimation.Items.AddRange(new object[] {
+            "None"});
+            this.cmbHitAnimation.Location = new System.Drawing.Point(429, 745);
+            this.cmbHitAnimation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbHitAnimation.Name = "cmbHitAnimation";
+            this.cmbHitAnimation.Size = new System.Drawing.Size(211, 27);
+            this.cmbHitAnimation.TabIndex = 61;
+            this.cmbHitAnimation.Text = "None";
+            this.cmbHitAnimation.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbHitAnimation.SelectedIndexChanged += new System.EventHandler(this.cmbHitAnimation_SelectedIndexChanged);
+            // 
+            // lblHitAnimation
+            // 
+            this.lblHitAnimation.AutoSize = true;
+            this.lblHitAnimation.Location = new System.Drawing.Point(333, 748);
+            this.lblHitAnimation.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblHitAnimation.Name = "lblHitAnimation";
+            this.lblHitAnimation.Size = new System.Drawing.Size(73, 20);
+            this.lblHitAnimation.TabIndex = 60;
+            this.lblHitAnimation.Text = "Hit Anim:";
+            // 
             // FrmItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -2812,5 +2851,7 @@ namespace Intersect.Editor.Forms.Editors
         private Label lblMS;
         private Label lblTag;
         private DarkTextBox txtTag;
+        private DarkComboBox cmbHitAnimation;
+        private Label lblHitAnimation;
     }
 }

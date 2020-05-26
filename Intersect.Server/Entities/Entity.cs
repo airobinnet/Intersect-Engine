@@ -1673,6 +1673,98 @@ namespace Intersect.Server.Entities
         }
 
         //Attack using a weapon or unarmed
+        public virtual void TryAttackNPC(
+            Entity target,
+            int baseDamage,
+            DamageType damageType,
+            Stats scalingStat,
+            int scaling,
+            int critChance,
+            double critMultiplier,
+            List<KeyValuePair<Guid, sbyte>> deadAnimations = null,
+            List<KeyValuePair<Guid, sbyte>> aliveAnimations = null,
+            ItemBase weapon = null
+        )
+        {
+            if (AttackTimer > Globals.Timing.TimeMs || Blocking)
+            {
+                return;
+            }
+
+            //Check for parties and safe zones, friendly fire off (unless its healing)
+            if (target is Player targetPlayer && this is Player player)
+            {
+                if (player.InParty(targetPlayer))
+                {
+                    return;
+                }
+
+                //Check if either the attacker or the defender is in a "safe zone" (Only apply if combat is PVP)
+                //Player interaction common events
+                foreach (EventBase evt in EventBase.Lookup.Values)
+                {
+                    if (evt != null)
+                    {
+                        targetPlayer.StartCommonEvent(evt, CommonEventTrigger.PlayerInteract, "", this.Name);
+                    }
+                }
+
+                if (MapInstance.Get(MapId)?.ZoneType == MapZones.Safe)
+                {
+                    return;
+                }
+
+                if (MapInstance.Get(target.MapId)?.ZoneType == MapZones.Safe)
+                {
+                    return;
+                }
+            }
+
+            //Check for taunt status and trying to attack a target that has not taunted you.
+            var statusList = Statuses.Values.ToArray();
+            foreach (var status in statusList)
+            {
+                if (status.Type == StatusTypes.Taunt)
+                {
+                    if (Target != target)
+                    {
+                        PacketSender.SendActionMsg(this, Strings.Combat.miss, CustomColors.Combat.Missed);
+
+                        return;
+                    }
+                }
+            }
+
+            AttackTimer = Globals.Timing.TimeMs + CalculateAttackTime();
+
+            //Check if the attacker is blinded.
+            if (IsOneBlockAway(target))
+            {
+                var statuses = Statuses.Values.ToArray();
+                foreach (var status in statuses)
+                {
+                    if (status.Type == StatusTypes.Stun ||
+                        status.Type == StatusTypes.Blind ||
+                        status.Type == StatusTypes.Sleep)
+                    {
+                        PacketSender.SendActionMsg(this, Strings.Combat.miss, CustomColors.Combat.Missed);
+                        PacketSender.SendEntityAttack(this, CalculateAttackTime());
+
+                        return;
+                    }
+                }
+            }
+
+            Attack(
+                target, baseDamage, 0, damageType, scalingStat, scaling, critChance, critMultiplier, deadAnimations,
+                aliveAnimations, true
+            );
+
+            //If we took damage lets reset our combat timer
+            target.CombatTimer = Globals.Timing.TimeMs + Options.CombatTime;
+        }
+
+        //Attack using a weapon or unarmed
         public virtual void TryAttack(
             Entity target,
             int baseDamage,
@@ -1759,6 +1851,16 @@ namespace Intersect.Server.Entities
                 target, baseDamage, 0, damageType, scalingStat, scaling, critChance, critMultiplier, deadAnimations,
                 aliveAnimations, true
             );
+            if (weapon != null)
+            {
+                if (weapon.HitAnimationId != Guid.Empty)
+                {
+                    PacketSender.SendAnimationToProximity(
+                        weapon.HitAnimationId, -1, Guid.Empty, target.MapId, (byte)target.X, (byte)target.Y,
+                        (sbyte)Dir
+                    );
+                }
+            }
 
             //If we took damage lets reset our combat timer
             target.CombatTimer = Globals.Timing.TimeMs + Options.CombatTime;
