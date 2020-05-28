@@ -1689,11 +1689,11 @@ namespace Intersect.Server.Entities
                 foreach (var slot in updateSlots)
                 {
                     PacketSender.SendInventoryItemUpdate(this, slot);
-                    var rarity = CustomColors.Items.Rarities.ContainsKey(item.Descriptor.Rarity)
+                }
+                var rarity = CustomColors.Items.Rarities.ContainsKey(item.Descriptor.Rarity)
                                         ? CustomColors.Items.Rarities[item.Descriptor.Rarity]
                                         : Color.White;
-                    PacketSender.SendActionMsg(this, item.Descriptor.Name, rarity);
-                }
+                PacketSender.SendActionMsg(this, item.Descriptor.Name + " x" + item.Quantity, rarity);
             }
 
             UpdateGatherItemQuests(item.ItemId);
