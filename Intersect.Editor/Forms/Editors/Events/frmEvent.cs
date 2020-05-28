@@ -723,10 +723,12 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new ShowPlayerCommand();
 
                     break;
-
                 case EventCommandType.ChangeItemsByTag:
                     tmpCommand = new ChangeItemsByTag(CurrentPage.CommandLists);
 
+                    break;
+                case EventCommandType.FriendlySpells:
+                    tmpCommand = new FriendlySpellsCommand();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -1310,7 +1312,9 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.ChangeItemsByTag:
                     cmdWindow = new EventCommandChangeItemsBytag((ChangeItemsByTag)command, CurrentPage, this);
-
+                    break;
+                case EventCommandType.FriendlySpells:
+                    cmdWindow = new EventCommandFriendlySpells((FriendlySpellsCommand)command, this);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -1351,7 +1355,8 @@ namespace Intersect.Editor.Forms.Editors.Events
             if (!moveRoute)
             {
                 grpCreateCommands.Hide();
-                grpCreateCommands.Controls.RemoveAt(0);
+                grpCreateCommands.Controls.Clear();
+                
 
                 //Remove the only control which should be the last editing window
             }
