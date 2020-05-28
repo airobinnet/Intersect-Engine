@@ -2076,7 +2076,7 @@ namespace Intersect.Server.Entities
                         {
                             foreach (EventBase evt in EventBase.Lookup.Values)
                             {
-                                if (evt != null)
+                                if (evt != null && (Player)this != (Player)enemy)
                                 {
                                     ((Player) this).StartCommonEvent(evt, CommonEventTrigger.PVPKill, "", enemy.Name);
                                     ((Player) enemy).StartCommonEvent(evt, CommonEventTrigger.PVPDeath, "", this.Name);

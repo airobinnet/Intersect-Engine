@@ -1407,7 +1407,7 @@ namespace Intersect.Editor.Forms.Editors.Events
             if (!moveRoute)
             {
                 grpCreateCommands.Hide();
-                grpCreateCommands.Controls.RemoveAt(0);
+                grpCreateCommands.Controls.Clear();
             }
 
             ListPageCommands();
