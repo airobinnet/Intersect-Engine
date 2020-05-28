@@ -510,16 +510,13 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     cmbEquippedItem.Items.AddRange(ItemBase.Names);
 
                     break;
+
                 case ConditionTypes.HasFreeInventorySlots:
                     grpFreeInventorySlots.Show();
                     break;
                 case ConditionTypes.EquippedItemTagIs:
-                    Condition = new EquippedItemTagIsCondition();
-                    if (cmbEquippedItemTag.Items.Count > 0)
-                    {
-                        cmbEquippedItemTag.SelectedIndex = 0;
-                    }
-
+                    ShowTagCombo(TagType.Item);
+                    grpEquippedItemTag.Text = Strings.EventConditional.itemequippedhastag;
                     break;
                 case ConditionTypes.HasItemWTag:
                     grpHasItemWTag.Show();
@@ -528,11 +525,8 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
                     break;
                 case ConditionTypes.MapHasTag:
-                    Condition = new MapHasTag();
-                    if (cmbEquippedItemTag.Items.Count > 0)
-                    {
-                        cmbEquippedItemTag.SelectedIndex = 0;
-                    }
+                    ShowTagCombo(TagType.Map);
+                    grpEquippedItemTag.Text = Strings.EventConditional.maphastag;
 
                     break;
                 default:
