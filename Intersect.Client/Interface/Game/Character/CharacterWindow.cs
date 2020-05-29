@@ -231,6 +231,7 @@ namespace Intersect.Client.Interface.Game.Character
                                 {
                                     paperdoll = Globals.Me.CustomSpriteLayers[(int)Enums.CustomSpriteLayers.Hair];
                                     type = GameContentManager.TextureType.Hair;
+                                    // rewrite to display both hair + hat
                                 }
                                 else if (Options.PaperdollOrder[1][z] == Options.Equipment.HairSlot && itemdata.HideHair == true)
                                 {
