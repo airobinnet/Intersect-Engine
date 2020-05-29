@@ -176,6 +176,8 @@ namespace Intersect.GameObjects
 
         public bool Stackable { get; set; }
 
+        public bool HideHair { get; set; }
+
         public int StatGrowth { get; set; }
 
         public int Tool { get; set; } = -1;

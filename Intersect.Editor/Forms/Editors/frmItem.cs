@@ -317,6 +317,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudRange.Value = mEditorItem.StatGrowth;
                 chkBound.Checked = Convert.ToBoolean(mEditorItem.Bound);
                 chkStackable.Checked = Convert.ToBoolean(mEditorItem.Stackable);
+                chkHideHair.Checked = Convert.ToBoolean(mEditorItem.HideHair);
                 cmbToolType.SelectedIndex = mEditorItem.Tool + 1;
                 cmbAttackAnimation.SelectedIndex = AnimationBase.ListIndex(mEditorItem.AttackAnimationId) + 1;
                 cmbHitAnimation.SelectedIndex = AnimationBase.ListIndex(mEditorItem.HitAnimationId) + 1;
@@ -395,6 +396,7 @@ namespace Intersect.Editor.Forms.Editors
             grpEvent.Visible = false;
             grpBags.Visible = false;
             chkStackable.Enabled = true;
+            chkHideHair.Enabled = false;
 
             if ((int) mEditorItem.ItemType != cmbType.SelectedIndex)
             {
@@ -448,6 +450,7 @@ namespace Intersect.Editor.Forms.Editors
                 // Whether this item type is stackable is not up for debate.
                 chkStackable.Checked = false;
                 chkStackable.Enabled = false;
+                chkHideHair.Enabled = true;
             }
             else if (cmbType.SelectedIndex == (int) ItemTypes.Bag)
             {
@@ -854,6 +857,11 @@ namespace Intersect.Editor.Forms.Editors
         private void chkStackable_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem.Stackable = chkStackable.Checked;
+        }
+
+        private void chkHideHair_CheckedChanged(object sender, EventArgs e)
+        {
+            mEditorItem.HideHair = chkHideHair.Checked;
         }
 
         private void nudCritMultiplier_ValueChanged(object sender, EventArgs e)

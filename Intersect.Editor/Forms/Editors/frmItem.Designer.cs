@@ -68,6 +68,8 @@ namespace Intersect.Editor.Forms.Editors
             this.lblName = new System.Windows.Forms.Label();
             this.txtName = new DarkUI.Controls.DarkTextBox();
             this.grpEquipment = new DarkUI.Controls.DarkGroupBox();
+            this.cmbHitAnimation = new DarkUI.Controls.DarkComboBox();
+            this.lblHitAnimation = new System.Windows.Forms.Label();
             this.grpRegen = new DarkUI.Controls.DarkGroupBox();
             this.nudMpRegen = new DarkUI.Controls.DarkNumericUpDown();
             this.nudHPRegen = new DarkUI.Controls.DarkNumericUpDown();
@@ -187,8 +189,7 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemPaste = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripItemUndo = new System.Windows.Forms.ToolStripButton();
-            this.cmbHitAnimation = new DarkUI.Controls.DarkComboBox();
-            this.lblHitAnimation = new System.Windows.Forms.Label();
+            this.chkHideHair = new DarkUI.Controls.DarkCheckBox();
             this.grpItems.SuspendLayout();
             this.grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudCooldown)).BeginInit();
@@ -738,6 +739,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpEquipment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpEquipment.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpEquipment.Controls.Add(this.chkHideHair);
             this.grpEquipment.Controls.Add(this.cmbHitAnimation);
             this.grpEquipment.Controls.Add(this.lblHitAnimation);
             this.grpEquipment.Controls.Add(this.grpRegen);
@@ -768,6 +770,41 @@ namespace Intersect.Editor.Forms.Editors
             this.grpEquipment.TabStop = false;
             this.grpEquipment.Text = "Equipment";
             this.grpEquipment.Visible = false;
+            // 
+            // cmbHitAnimation
+            // 
+            this.cmbHitAnimation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbHitAnimation.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbHitAnimation.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbHitAnimation.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbHitAnimation.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbHitAnimation.ButtonIcon")));
+            this.cmbHitAnimation.DrawDropdownHoverOutline = false;
+            this.cmbHitAnimation.DrawFocusRectangle = false;
+            this.cmbHitAnimation.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbHitAnimation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbHitAnimation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbHitAnimation.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbHitAnimation.FormattingEnabled = true;
+            this.cmbHitAnimation.Items.AddRange(new object[] {
+            "None"});
+            this.cmbHitAnimation.Location = new System.Drawing.Point(429, 745);
+            this.cmbHitAnimation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbHitAnimation.Name = "cmbHitAnimation";
+            this.cmbHitAnimation.Size = new System.Drawing.Size(211, 27);
+            this.cmbHitAnimation.TabIndex = 61;
+            this.cmbHitAnimation.Text = "None";
+            this.cmbHitAnimation.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbHitAnimation.SelectedIndexChanged += new System.EventHandler(this.cmbHitAnimation_SelectedIndexChanged);
+            // 
+            // lblHitAnimation
+            // 
+            this.lblHitAnimation.AutoSize = true;
+            this.lblHitAnimation.Location = new System.Drawing.Point(333, 748);
+            this.lblHitAnimation.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblHitAnimation.Name = "lblHitAnimation";
+            this.lblHitAnimation.Size = new System.Drawing.Size(73, 20);
+            this.lblHitAnimation.TabIndex = 60;
+            this.lblHitAnimation.Text = "Hit Anim:";
             // 
             // grpRegen
             // 
@@ -2576,40 +2613,16 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemUndo.Text = "Undo";
             this.toolStripItemUndo.Click += new System.EventHandler(this.toolStripItemUndo_Click);
             // 
-            // cmbHitAnimation
+            // chkHideHair
             // 
-            this.cmbHitAnimation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.cmbHitAnimation.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.cmbHitAnimation.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
-            this.cmbHitAnimation.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.cmbHitAnimation.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbHitAnimation.ButtonIcon")));
-            this.cmbHitAnimation.DrawDropdownHoverOutline = false;
-            this.cmbHitAnimation.DrawFocusRectangle = false;
-            this.cmbHitAnimation.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbHitAnimation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbHitAnimation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbHitAnimation.ForeColor = System.Drawing.Color.Gainsboro;
-            this.cmbHitAnimation.FormattingEnabled = true;
-            this.cmbHitAnimation.Items.AddRange(new object[] {
-            "None"});
-            this.cmbHitAnimation.Location = new System.Drawing.Point(429, 745);
-            this.cmbHitAnimation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbHitAnimation.Name = "cmbHitAnimation";
-            this.cmbHitAnimation.Size = new System.Drawing.Size(211, 27);
-            this.cmbHitAnimation.TabIndex = 61;
-            this.cmbHitAnimation.Text = "None";
-            this.cmbHitAnimation.TextPadding = new System.Windows.Forms.Padding(2);
-            this.cmbHitAnimation.SelectedIndexChanged += new System.EventHandler(this.cmbHitAnimation_SelectedIndexChanged);
-            // 
-            // lblHitAnimation
-            // 
-            this.lblHitAnimation.AutoSize = true;
-            this.lblHitAnimation.Location = new System.Drawing.Point(333, 748);
-            this.lblHitAnimation.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblHitAnimation.Name = "lblHitAnimation";
-            this.lblHitAnimation.Size = new System.Drawing.Size(73, 20);
-            this.lblHitAnimation.TabIndex = 60;
-            this.lblHitAnimation.Text = "Hit Anim:";
+            this.chkHideHair.AutoSize = true;
+            this.chkHideHair.Location = new System.Drawing.Point(530, 821);
+            this.chkHideHair.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkHideHair.Name = "chkHideHair";
+            this.chkHideHair.Size = new System.Drawing.Size(110, 24);
+            this.chkHideHair.TabIndex = 62;
+            this.chkHideHair.Text = "Hide Hair?";
+            this.chkHideHair.CheckedChanged += new System.EventHandler(this.chkHideHair_CheckedChanged);
             // 
             // FrmItem
             // 
@@ -2853,5 +2866,6 @@ namespace Intersect.Editor.Forms.Editors
         private DarkTextBox txtTag;
         private DarkComboBox cmbHitAnimation;
         private Label lblHitAnimation;
+        private DarkCheckBox chkHideHair;
     }
 }

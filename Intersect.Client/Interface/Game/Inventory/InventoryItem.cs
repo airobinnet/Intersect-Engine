@@ -181,8 +181,8 @@ namespace Intersect.Client.Interface.Game.Inventory
                                 if (ItemBase.Get(equip)?.EquipmentSlot == Globals.Me.Inventory[mMySlot].Base.EquipmentSlot)
                                 {
                                     mCompWindow = new ItemCompareWindow(
-                                                   ItemBase.Get(equip), Globals.Me.Inventory[mMySlot].Base, Globals.Me.Inventory[mMySlot].Quantity, mInventoryWindow.X,
-                                                   mInventoryWindow.Y, Globals.Me.Inventory[Globals.Me.MyEquipment[ItemBase.Get(equip).EquipmentSlot]].StatBuffs, Globals.Me.Inventory[mMySlot].StatBuffs, "", Strings.ItemDesc.equippeditem
+                                                   ItemBase.Get(equip), Globals.Me.Inventory[mMySlot]?.Base, Globals.Me.Inventory[mMySlot].Quantity, mInventoryWindow.X,
+                                                   mInventoryWindow.Y, Globals.Me.Inventory[Globals.Me.MyEquipment[ItemBase.Get(equip).EquipmentSlot]]?.StatBuffs, Globals.Me.Inventory[mMySlot]?.StatBuffs, "", Strings.ItemDesc.equippeditem
                                                 );
                                     i++;
                                 }

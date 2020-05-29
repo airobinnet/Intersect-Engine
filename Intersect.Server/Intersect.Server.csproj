@@ -492,6 +492,10 @@
     <Compile Include="Migrations\Game\20200526184309_itemHitAnimation.designer.cs">
       <DependentUpon>20200526184309_itemHitAnimation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Game\20200529022239_hidehair.cs" />
+    <Compile Include="Migrations\Game\20200529022239_hidehair.designer.cs">
+      <DependentUpon>20200529022239_hidehair.cs</DependentUpon>
+    </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />
     <Compile Include="Networking\Helpers\NetDebug.cs" />
