@@ -225,13 +225,36 @@ namespace Intersect.Client.Interface.Game.Character
                             if (ItemBase.Get(itemNum) != null)
                             {
                                 var itemdata = ItemBase.Get(itemNum);
-                                if (Globals.Me.Gender == 0)
+
+
+                                if (Options.PaperdollOrder[1][z] == Options.Equipment.HairSlot && itemdata.HideHair == false)
                                 {
-                                    paperdoll = itemdata.MalePaperdoll;
+                                    paperdoll = Globals.Me.CustomSpriteLayers[(int)Enums.CustomSpriteLayers.Hair];
+                                    type = GameContentManager.TextureType.Hair;
                                 }
-                                else
+                                else if (Options.PaperdollOrder[1][z] == Options.Equipment.HairSlot && itemdata.HideHair == true)
                                 {
-                                    paperdoll = itemdata.FemalePaperdoll;
+                                    if (Globals.Me.Gender == 0)
+                                    {
+                                        paperdoll = itemdata.MalePaperdoll;
+                                        type = GameContentManager.TextureType.Paperdoll;
+                                    }
+                                    else
+                                    {
+                                        paperdoll = itemdata.FemalePaperdoll;
+                                        type = GameContentManager.TextureType.Paperdoll;
+                                    }
+                                } else {
+                                    if (Globals.Me.Gender == 0)
+                                    {
+                                        paperdoll = itemdata.MalePaperdoll;
+                                        type = GameContentManager.TextureType.Paperdoll;
+                                    }
+                                    else
+                                    {
+                                        paperdoll = itemdata.FemalePaperdoll;
+                                        type = GameContentManager.TextureType.Paperdoll;
+                                    }
                                 }
                             }
                         }
