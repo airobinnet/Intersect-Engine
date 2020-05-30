@@ -98,11 +98,11 @@ namespace Intersect.Client.Interface.Game.HDV
 			Interface.InputBlockingElements.Add(mWindow);
 
 			mBuySellButton = new Button(mWindow, "SellBuyButton");
-			mBuySellButton.SetText("Vendre");
+			mBuySellButton.SetText("Sell");
 			mBuySellButton.Clicked += BuySellButton_Clicked;
 
 			mCloseButton = new Button(mWindow, "CloseButton");
-			mCloseButton.SetText("Fermer");
+			mCloseButton.SetText("Close");
 			mCloseButton.Clicked += CloseButton_Clicked;
 
 			mPageMinusButton = new Button(mWindow, "PageMinusButton");
@@ -120,8 +120,8 @@ namespace Intersect.Client.Interface.Game.HDV
 
 			mQuantity = new Label(mWindow, "Quantity")
 			{
-				Text = "Quantite"
-			};
+				Text = "Quantity"
+            };
 			mQuantity.IsHidden = true;
 			mQuantityTextBoxNumeric = new TextBoxNumeric(mWindow, "QuantityTextBoxNumeric");
 			mQuantityTextBoxNumeric.IsHidden = true;
@@ -130,7 +130,7 @@ namespace Intersect.Client.Interface.Game.HDV
 
 			mPrice = new Label(mWindow, "Price")
 			{
-				Text = "Prix"
+				Text = "Price"
 			};
 			mPriceTextBoxNumeric = new TextBoxNumeric(mWindow, "PriceTextBoxNumeric");
 			mPriceTextBoxNumeric.IsHidden = true;
@@ -138,28 +138,28 @@ namespace Intersect.Client.Interface.Game.HDV
 			Interface.FocusElements.Add(mQuantityTextBoxNumeric);
 
 			mToSellButton = new Button(mWindow, "ToSellButton");
-			mToSellButton.SetText("Mettre en Vente");
+			mToSellButton.SetText("Sell");
 			mToSellButton.Clicked += ToSellButton_Clicked;
 
 
 			searchLabel = new Label(mWindow, "Search")
 			{
-				Text = "Recherche"
+				Text = "Search"
 			};
 			searchBox = new TextBox(mWindow, "SearchBox");
 			searchBox.SetMaxLength(20);
 			Interface.FocusElements.Add(searchBox);
 			searchButton = new Button(mWindow, "SearchButton");
-			searchButton.SetText("Rechercher");
+			searchButton.SetText("Search");
 			searchButton.Clicked += SearchButton_Clicked;
 
 			searchCB = new ComboBox(mWindow, "searchCB");
-			searchCB.AddItem("Tous", "", -1);
+			searchCB.AddItem("All", "", -1);
 			for (int i = 0; i < Options.EquipmentSlots.Count; i++)
 			{
 				searchCB.AddItem(Options.EquipmentSlots[i], "", i);
 			}
-			searchCB.AddItem("Autres", "", -2);
+			searchCB.AddItem("Other", "", -2);
 			searchCB.ItemSelected += SearchCB_Selected;
 
 			mWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
@@ -194,7 +194,7 @@ namespace Intersect.Client.Interface.Game.HDV
 			PacketSender.SendAddToHDV(mSellItem.GetSlot(), UpdateQuantity((int)mQuantityTextBoxNumeric.Value), price);
 			mSellItem.SetSlot(-1);
 			sellMode = false;
-			mBuySellButton.SetText("Vendre");
+			mBuySellButton.SetText("Sell");
 			UpdateHDV();
 		}
 
@@ -205,14 +205,14 @@ namespace Intersect.Client.Interface.Game.HDV
 			{
 				value = 1;
 			}
-			mPrice.Text = $"Prix: {value}";
+			mPrice.Text = $"Price: {value}";
 		}
 
 		private void Quantity_ChangeTextBoxNumeric(Base sender, EventArgs arguments)
 		{
 			int invSlot = mSellItem.GetSlot();
 			int val = UpdateQuantity((int)mQuantityTextBoxNumeric.Value);
-			mQuantity.Text = $"Quantite: {val}";
+			mQuantity.Text = $"Quantity: {val}";
 		}
 
 
@@ -245,7 +245,7 @@ namespace Intersect.Client.Interface.Game.HDV
 						mQuantity.IsHidden = !ibase.IsStackable;
 
 						sellMode = true;
-						mBuySellButton.SetText("Acheter");
+						mBuySellButton.SetText("Buy");
 						UpdateHDV();
 					}
 				}
@@ -316,7 +316,7 @@ namespace Intersect.Client.Interface.Game.HDV
 		{
 			page = 0;
 			sellMode = !sellMode;
-			mBuySellButton.SetText(sellMode ? "Acheter" : "Vendre");
+			mBuySellButton.SetText(sellMode ? "Buy" : "Sell");
 			UpdateHDV();
 		}
 

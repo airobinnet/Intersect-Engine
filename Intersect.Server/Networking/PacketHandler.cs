@@ -1574,7 +1574,7 @@ namespace Intersect.Server.Networking
                 character.MailBoxs.Add(new MailBox(player, character, packet.Title, packet.Message, itemID, quantity, statBuffs));
                 if (Globals.OnlineList.Select(p => p.Id == character.Id) != null)
                 {
-                    PacketSender.SendChatMsg(character, $"Vous avez recu une Lettre", CustomColors.Alerts.Accepted);
+                    PacketSender.SendChatMsg(character, $"You received a mail", CustomColors.Alerts.Accepted);
                 }
 
             }
@@ -1652,7 +1652,7 @@ namespace Intersect.Server.Networking
             HDVBase hdbBase = HDVBase.Get(player.HdvID);
             if (hdbBase == null)
             {
-                PacketSender.SendChatMsg(player, "HDV Introuvable !", CustomColors.Alerts.Declined);
+                PacketSender.SendChatMsg(player, "Can't find Auction House!", CustomColors.Alerts.Declined);
                 return;
             }
             HDV hdvItem = HDV.Get(packet.HdvItemId);
@@ -1670,13 +1670,13 @@ namespace Intersect.Server.Networking
                             if (player.TryGiveItem(nItem))
                             {
                                 HDV.Remove(hdvItem);
-                                PacketSender.SendChatMsg(player, "Vous avez recupere votre objet", CustomColors.Alerts.Accepted);
+                                PacketSender.SendChatMsg(player, "You have received your item(s)", CustomColors.Alerts.Accepted);
                                 PacketSender.SendRemoveHDVItem(player, id);
                                 DbInterface.SavePlayerDatabaseAsync();
                             }
                             else
                             {
-                                PacketSender.SendChatMsg(player, "Vous n'avez pas assez de place pour recuperer cette Objet.", CustomColors.Alerts.Declined);
+                                PacketSender.SendChatMsg(player, "Not enough room to receive item(s)", CustomColors.Alerts.Declined);
                             }
                         }
                         return;
@@ -1689,18 +1689,18 @@ namespace Intersect.Server.Networking
                         {
                             var seller = DbInterface.GetPlayer(hdvItem.SellerId);
 
-                            player.MailBoxs.Add(new MailBox(seller, player, hdbBase.Name, "Message Automatique de l'HDV", hdvItem.ItemId, hdvItem.Quantity, hdvItem.StatBuffs));
+                            player.MailBoxs.Add(new MailBox(seller, player, hdbBase.Name, "Auction House: ", hdvItem.ItemId, hdvItem.Quantity, hdvItem.StatBuffs));
 
-                            seller.MailBoxs.Add(new MailBox(player, seller, hdbBase.Name, "Message Automatique de l'HDV", hdbBase.Currency.Id, price,
+                            seller.MailBoxs.Add(new MailBox(player, seller, hdbBase.Name, "Auction House: ", hdbBase.Currency.Id, price,
                                 new int[(int)Enums.Stats.StatCount]));
 
                             ItemBase item = ItemBase.Get(hdvItem.ItemId);
 
-                            PacketSender.SendChatMsg(player, "L'objet vous a ete envoye par Lettre.", CustomColors.Alerts.Accepted);
+                            PacketSender.SendChatMsg(player, "The item(s) has/have been mailed to you", CustomColors.Alerts.Accepted);
 
                             if (Globals.OnlineList.Select(p => p.Id == seller.Id) != null)
                             {
-                                PacketSender.SendChatMsg(seller, $"Vous avez vendu {item.Name}", CustomColors.Alerts.Accepted);
+                                PacketSender.SendChatMsg(seller, $"You sold {item.Name}", CustomColors.Alerts.Accepted);
                             }
 
                             PacketSender.SendRemoveHDVItem(player, id);
@@ -1709,7 +1709,7 @@ namespace Intersect.Server.Networking
                         }
                         else
                         {
-                            PacketSender.SendChatMsg(player, $"Vous n'avez pas assez de {hdbBase.Currency.Name} pour acheter cette objet.", CustomColors.Alerts.Declined);
+                            PacketSender.SendChatMsg(player, $"You don't have enough {hdbBase.Currency.Name} to buy this item.", CustomColors.Alerts.Declined);
                         }
                         return;
                 }
@@ -1730,7 +1730,7 @@ namespace Intersect.Server.Networking
             HDVBase hdbBase = HDVBase.Get(player.HdvID);
             if (hdbBase == null)
             {
-                PacketSender.SendChatMsg(player, "HDV Introuvable !", CustomColors.Alerts.Declined);
+                PacketSender.SendChatMsg(player, "Can't find Auction House!", CustomColors.Alerts.Declined);
                 return;
             }
             if (slotID >= 0)
@@ -1742,7 +1742,7 @@ namespace Intersect.Server.Networking
                     {
                         if (hdbBase.ItemListed.Contains(slot.ItemId) == false)
                         {
-                            PacketSender.SendChatMsg(player, $"Cette objet ne peu pas etre vendu ici !", CustomColors.Alerts.Declined);
+                            PacketSender.SendChatMsg(player, $"The Auction House does not accept this item!", CustomColors.Alerts.Declined);
                             return;
                         }
                     }
@@ -1750,7 +1750,7 @@ namespace Intersect.Server.Networking
                     {
                         if (hdbBase.ItemListed.Contains(slot.ItemId))
                         {
-                            PacketSender.SendChatMsg(player, $"Cette objet ne peu pas etre vendu ici !", CustomColors.Alerts.Declined);
+                            PacketSender.SendChatMsg(player, $"The Auction House does not accept this item!", CustomColors.Alerts.Declined);
                             return;
                         }
                     }
@@ -1759,14 +1759,14 @@ namespace Intersect.Server.Networking
                     if (packet.Price <= 0)
                     {
                         // Erreur de prix
-                        PacketSender.SendChatMsg(player, "Prix invalide !", CustomColors.Alerts.Declined);
+                        PacketSender.SendChatMsg(player, "Invalid Price!", CustomColors.Alerts.Declined);
                         return;
                     }
                     Guid itemID = slot.ItemId;
 
                     if (itemID == hdbBase.CurrencyId)
                     {
-                        PacketSender.SendChatMsg(player, $"Cette objet ne peu pas etre vendu ici !", CustomColors.Alerts.Declined);
+                        PacketSender.SendChatMsg(player, $"The Auction House does not accept this item!", CustomColors.Alerts.Declined);
                         return;
                     }
 
@@ -1775,24 +1775,24 @@ namespace Intersect.Server.Networking
                     {
                         HDV nHDV = new HDV(player.HdvID, player.Id, itemID, packet.Quantity, statBuffs, packet.Price);
                         DbInterface.GetPlayerContext().HDV.Add(nHDV);
-                        PacketSender.SendChatMsg(player, "Votre objet a bien ete mis en vente.", CustomColors.Alerts.Accepted);
+                        PacketSender.SendChatMsg(player, "Your item is succesfully listed", CustomColors.Alerts.Accepted);
                         PacketSender.SendAddHDVItem(player, player.HdvID, nHDV);
                         PacketSender.SendInventory(player);
                         DbInterface.SavePlayerDatabaseAsync();
                     }
                     else
                     {
-                        PacketSender.SendChatMsg(player, "Impossible de vendre cette objet !", CustomColors.Alerts.Declined);
+                        PacketSender.SendChatMsg(player, "Can't sell this item!", CustomColors.Alerts.Declined);
                     }
                 }
                 else
                 {
-                    PacketSender.SendChatMsg(player, "Objet introuvable!", CustomColors.Alerts.Declined);
+                    PacketSender.SendChatMsg(player, "Can't find item!", CustomColors.Alerts.Declined);
                 }
             }
             else
             {
-                PacketSender.SendChatMsg(player, "Objet introuvable dans votre inventaire!", CustomColors.Alerts.Declined);
+                PacketSender.SendChatMsg(player, "Can't find item in your inventory!", CustomColors.Alerts.Declined);
             }
         }
 

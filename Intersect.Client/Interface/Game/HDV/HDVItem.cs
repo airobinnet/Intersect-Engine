@@ -41,11 +41,11 @@ namespace Intersect.Client.Interface.Game.HDV
 			Pnl.HoverLeave += pnl_HoverLeave;
 
 			mRetirerButton = new Button(Container, "RemoveButton");
-			mRetirerButton.SetText("Retirer");
+			mRetirerButton.SetText("Cancel");
 			mRetirerButton.Clicked += RemoveButton_Clicked;
 
 			mBuyButton = new Button(Container, "BuyButton");
-			mBuyButton.SetText("Acheter");
+			mBuyButton.SetText("Buy");
 			mBuyButton.Clicked += BuyButton_Clicked;
 
 			mItemName = new Label(Container, "ItemName");
