@@ -1684,8 +1684,11 @@ namespace Intersect.Server.Networking
                     case 1:
                         int price = hdvItem.Price;
 
-                        int currencySlot = player.FindItem(hdbBase.Currency.Id, hdvItem.Quantity);
-                        if (currencySlot > -1 && player.TakeItemsBySlot(currencySlot, hdvItem.Quantity))
+                        //int currencySlot = player.FindItem(hdbBase.Currency.Id, hdvItem.Quantity);
+                        //if (currencySlot > -1 && player.TakeItemsBySlot(currencySlot, hdvItem.Quantity))
+                        var currencySlot = ItemBase.Get(hdbBase.Currency.Id);
+                        var itemSlot = player.FindInventoryItemSlot(currencySlot.Id);
+                        if (itemSlot != null && player.TryTakeItem(itemSlot, hdvItem.Price))
                         {
                             var seller = DbInterface.GetPlayer(hdvItem.SellerId);
 

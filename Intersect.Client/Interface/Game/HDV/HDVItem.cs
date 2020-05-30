@@ -75,10 +75,11 @@ namespace Intersect.Client.Interface.Game.HDV
 					mRetirerButton.IsHidden = Globals.Me.Name.ToLower().Equals(hdv.Seller.ToLower()) == false;
 					mBuyButton.Show();
 					mItemName.Show();
-					mSellerName.Show();
+                    mSellerName.IsHidden = Globals.Me.Name.ToLower().Equals(hdv.Seller.ToLower()) == true;
+                    //mSellerName.Show();
 					mPriceName.Show();
 
-					mItemName.SetText(item.Name);
+					mItemName.SetText(item.Name + " x" + mHDV.Quantity);
 					mSellerName.SetText(mHDV.Seller);
 					var hdvBase = HDVBase.Get(Globals.HdvID);
 					mPriceName.SetText($"{mHDV.Price} {hdvBase.Currency.Name}");

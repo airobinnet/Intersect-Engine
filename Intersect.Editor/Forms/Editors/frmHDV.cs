@@ -98,7 +98,7 @@ namespace Intersect.Editor.Forms.Editors
 			if (mEditorItem != null && lstHdv.Focused)
 			{
 				if (DarkMessageBox.ShowWarning(
-						"Etes vous sur de vouloir supprimer l'hdv", "Supprimer l'HDV", DarkDialogButton.YesNo,
+						"Do you really want to delete the Auction House?", "Delete Auction House", DarkDialogButton.YesNo,
 						Properties.Resources.Icon
 					) ==
 					DialogResult.Yes)
@@ -229,7 +229,7 @@ namespace Intersect.Editor.Forms.Editors
 			if (mChanged.Contains(mEditorItem) && mEditorItem != null)
 			{
 				if (DarkMessageBox.ShowWarning(
-						"Etes vous sur de vouloir faire un retour en arriere ?","Retour", DarkDialogButton.YesNo,
+						"Do you really want to undo?","Undo", DarkDialogButton.YesNo,
 						Properties.Resources.Icon
 					) ==
 					DialogResult.Yes)
@@ -365,7 +365,7 @@ namespace Intersect.Editor.Forms.Editors
 		{
 			var folderName = "";
 			var result = DarkInputBox.ShowInformation(
-				"Entrer un nom de dossier", "Dossier", ref folderName,
+				"Folder name?", "Folder", ref folderName,
 				DarkDialogButton.OkCancel
 			);
 

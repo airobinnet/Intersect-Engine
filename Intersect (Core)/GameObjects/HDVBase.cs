@@ -13,12 +13,12 @@ namespace Intersect.GameObjects
 		[JsonConstructor]
 		public HDVBase(Guid id) : base(id)
 		{
-			Name = "HDV";
+			Name = "Auction House";
 		}
 		
 		public HDVBase()
 		{
-			Name = "HDV";
+			Name = "Auction House";
 		}
 				
 		[Column("Currency")]
