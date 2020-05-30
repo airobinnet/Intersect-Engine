@@ -114,6 +114,7 @@ namespace Intersect.Editor.Forms
             this.spellEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.variableEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timeEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hDVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.postQuestionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportBugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -798,7 +799,8 @@ namespace Intersect.Editor.Forms
             this.shopEditorToolStripMenuItem,
             this.spellEditorToolStripMenuItem,
             this.variableEditorToolStripMenuItem,
-            this.timeEditorToolStripMenuItem});
+            this.timeEditorToolStripMenuItem,
+            this.hDVToolStripMenuItem,});
             this.contentEditorsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.contentEditorsToolStripMenuItem.Name = "contentEditorsToolStripMenuItem";
             this.contentEditorsToolStripMenuItem.Size = new System.Drawing.Size(101, 20);
@@ -915,6 +917,14 @@ namespace Intersect.Editor.Forms
             this.timeEditorToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.timeEditorToolStripMenuItem.Text = "Time Editor";
             this.timeEditorToolStripMenuItem.Click += new System.EventHandler(this.timeEditorToolStripMenuItem_Click);
+            // 
+            // hDVToolStripMenuItem
+            // 
+            this.hDVToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.hDVToolStripMenuItem.Name = "hDVToolStripMenuItem";
+            this.hDVToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.hDVToolStripMenuItem.Text = "HDV";
+            this.hDVToolStripMenuItem.Click += new System.EventHandler(this.hDVToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -1114,5 +1124,6 @@ namespace Intersect.Editor.Forms
 		private ToolStripMenuItem craftsEditorToolStripMenuItem;
         private ToolStripMenuItem packClientTexturesToolStripMenuItem;
         private ToolStripMenuItem packageUpdateToolStripMenuItem;
+        private ToolStripMenuItem hDVToolStripMenuItem;
     }
 }

@@ -85,6 +85,8 @@ namespace Intersect
 
         public static int TradeRange => Instance.PlayerOpts.TradeRange;
 
+        public static int MaxMail => Instance.PlayerOpts.MaxMail;
+
         public static int WeaponIndex => Instance.EquipmentOpts.WeaponSlot;
 
         public static int ShieldIndex => Instance.EquipmentOpts.ShieldSlot;

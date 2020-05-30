@@ -115,6 +115,10 @@ namespace Intersect.Server.Entities
         [NotNull, JsonIgnore]
         public virtual List<Variable> Variables { get; set; } = new List<Variable>();
 
+        //Variables
+        [NotNull, JsonIgnore]
+        public virtual List<MailBox> MailBoxs { get; set; } = new List<MailBox>();
+
         [JsonIgnore, NotMapped]
         public bool IsValidPlayer => !IsDisposed && Client?.Entity == this;
 
@@ -138,8 +142,8 @@ namespace Intersect.Server.Entities
             changes |= SlotHelper.ValidateSlots(Spells, Options.MaxPlayerSkills);
             changes |= SlotHelper.ValidateSlots(Items, Options.MaxInvItems);
             changes |= SlotHelper.ValidateSlots(Bank, Options.MaxBankSlots);
-
-            if (Hotbar.Count < Options.MaxHotbar)
+			
+			if (Hotbar.Count < Options.MaxHotbar)
             {
                 Hotbar.Sort((a, b) => a?.Slot - b?.Slot ?? 0);
                 for (var i = Hotbar.Count; i < Options.MaxHotbar; i++)
@@ -285,6 +289,9 @@ namespace Intersect.Server.Entities
             FriendRequests.Clear();
             InBag = null;
             InBank = false;
+            InShop = null;
+            InMailBox = false;
+            InHDV = false;
             InShop = null;
 
             //Clear cooldowns that have expired
@@ -2279,6 +2286,80 @@ namespace Intersect.Server.Entities
             return slots;
         }
 
+        public int FindItem(Guid itemId, int quantity = 1)
+        {
+            if (Items == null)
+            {
+                return -1;
+            }
+
+            for (var i = 0; i < Options.MaxInvItems; i++)
+            {
+                var item = Items[i];
+                if (item?.ItemId != itemId)
+                {
+                    continue;
+                }
+
+                if (item.Quantity >= quantity)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public bool TakeItemsBySlot(int slot, int amount)
+        {
+            var returnVal = false;
+            if (slot < 0)
+            {
+                return false;
+            }
+
+            var itemBase = ItemBase.Get(Items[slot].ItemId);
+            if (itemBase != null)
+            {
+                if (itemBase.IsStackable)
+                {
+                    if (amount > Items[slot].Quantity)
+                    {
+                        amount = Items[slot].Quantity;
+                    }
+                    else
+                    {
+                        if (amount == Items[slot].Quantity)
+                        {
+                            Items[slot].Set(Item.None);
+                            EquipmentProcessItemLoss(slot);
+                            returnVal = true;
+                        }
+                        else
+                        {
+                            Items[slot].Quantity -= amount;
+                            returnVal = true;
+                        }
+                    }
+                }
+                else
+                {
+                    Items[slot].Set(Item.None);
+                    EquipmentProcessItemLoss(slot);
+                    returnVal = true;
+                }
+
+                PacketSender.SendInventoryItemUpdate(this, slot);
+            }
+
+            if (returnVal)
+            {
+                UpdateGatherItemQuests(itemBase.Id);
+            }
+
+            return returnVal;
+        }
+
         public int CountItems(Guid itemId, bool inInventory = true, bool inBank = false)
         {
             if (inInventory == false && inBank == false)
@@ -2886,7 +2967,7 @@ namespace Intersect.Server.Entities
         //Business
         public bool IsBusy()
         {
-            return InShop != null || InBank || CraftingTableId != Guid.Empty || Trading.Counterparty != null;
+            return InShop != null || InBank || CraftingTableId != Guid.Empty || Trading.Counterparty != null || InMailBox || InHDV;
         }
 
         //Bank
@@ -2910,6 +2991,38 @@ namespace Intersect.Server.Entities
                 InBank = false;
                 PacketSender.SendCloseBank(this);
             }
+        }
+
+        public void OpenMailBox()
+        {
+            InMailBox = true;
+            PacketSender.SendOpenMailBox(this);
+        }
+
+        public void CloseMailBox()
+        {
+            if (InMailBox)
+            {
+                InMailBox = false;
+                PacketSender.SendCloseMailBox(this);
+            }
+        }
+
+        public void SendMail()
+        {
+            InMailBox = true;
+            PacketSender.SendOpenSendMail(this);
+        }
+
+        public void OpenHDV(Guid hdvID)
+        {
+            InHDV = true;
+            PacketSender.SendOpenHDV(this, hdvID);
+        }
+
+        public void CloseHDV()
+        {
+            InHDV = false;
         }
 
         public bool TryDepositItem(int slot, int amount, bool sendUpdate = true)
@@ -5747,6 +5860,11 @@ namespace Intersect.Server.Entities
         [JsonIgnore, NotMapped] public ShopBase InShop;
 
         [NotMapped] public bool InBank;
+
+        [NotMapped] public bool InMailBox;
+
+        [NotMapped] public Guid HdvID = Guid.Empty;
+        [NotMapped] public bool InHDV;
 
         #endregion
 

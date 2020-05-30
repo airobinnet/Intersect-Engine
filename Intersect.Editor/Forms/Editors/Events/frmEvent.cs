@@ -730,6 +730,18 @@ namespace Intersect.Editor.Forms.Editors.Events
                 case EventCommandType.FriendlySpells:
                     tmpCommand = new FriendlySpellsCommand();
                     break;
+                case EventCommandType.SendMail:
+                    tmpCommand = new SendMailBoxCommand();
+
+                    break;
+                case EventCommandType.OpenMailBox:
+                    tmpCommand = new OpenMailBoxCommand();
+
+                    break;
+                case EventCommandType.HDV:
+                    tmpCommand = new HDVCommand();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1315,6 +1327,13 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.FriendlySpells:
                     cmdWindow = new EventCommandFriendlySpells((FriendlySpellsCommand)command, this);
+                    break;
+                case EventCommandType.SendMail:
+                    break;
+                case EventCommandType.OpenMailBox:
+                    break;
+                case EventCommandType.HDV:
+                    cmdWindow = new EventCommand_HDV((HDVCommand)command, this);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

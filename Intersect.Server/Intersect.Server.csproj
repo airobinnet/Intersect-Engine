@@ -430,6 +430,7 @@
     <Compile Include="Database\MigrationBuilderExtensions.cs" />
     <Compile Include="Database\PlayerData\Api\RefreshToken.cs" />
     <Compile Include="Database\PlayerData\Ban.cs" />
+	<Compile Include="Database\PlayerData\HDV.cs" />
     <Compile Include="Database\PlayerData\Players\Bag.cs" />
     <Compile Include="Database\PlayerData\Players\BagSlot.cs" />
     <Compile Include="Database\PlayerData\Players\BankSlot.cs" />
@@ -439,6 +440,7 @@
     <Compile Include="Database\Item.cs" />
     <Compile Include="Database\PlayerData\Players\IPlayerOwned.cs" />
     <Compile Include="Database\PlayerData\Players\ISlot.cs" />
+	<Compile Include="Database\PlayerData\Players\MailBox.cs" />
     <Compile Include="Database\PlayerData\Players\Quest.cs" />
     <Compile Include="Database\PlayerData\Players\SlotHelper.cs" />
     <Compile Include="Database\PlayerData\Players\SpellSlot.cs" />
@@ -511,6 +513,14 @@
     <Compile Include="Migrations\Game\20200402142818_PlayerHair_ClassEdits.cs" />
     <Compile Include="Migrations\Game\20200402142818_PlayerHair_ClassEdits.designer.cs">
       <DependentUpon>20200402142818_PlayerHair_ClassEdits.cs</DependentUpon>
+    </Compile>
+	<Compile Include="Migrations\20200405171804_AddingMailBox.cs" />
+    <Compile Include="Migrations\20200405171804_AddingMailBox.designer.cs">
+      <DependentUpon>20200405171804_AddingMailBox.cs</DependentUpon>
+    </Compile>
+	<Compile Include="Migrations\20200503210432_Player_HDV.cs" />
+    <Compile Include="Migrations\20200503210432_Player_HDV.designer.cs">
+      <DependentUpon>20200503210432_Player_HDV.cs</DependentUpon>
     </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />
@@ -673,6 +683,14 @@
     <Compile Include="Migrations\Game\20191030214236_Spell_Upgrades_Traps_Item_Upgrades_Effects_Event_Upgrades_Labels.cs" />
     <Compile Include="Migrations\Game\20191030214236_Spell_Upgrades_Traps_Item_Upgrades_Effects_Event_Upgrades_Labels.designer.cs">
       <DependentUpon>20191030214236_Spell_Upgrades_Traps_Item_Upgrades_Effects_Event_Upgrades_Labels.cs</DependentUpon>
+    </Compile>
+	<Compile Include="Migrations\Game\20200503210351_Game_HDV.cs" />
+    <Compile Include="Migrations\Game\20200503210351_Game_HDV.designer.cs">
+      <DependentUpon>20200503210351_Game_HDV.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20200505070642_Game_HDV_ItemListed.cs" />
+    <Compile Include="Migrations\Game\20200505070642_Game_HDV_ItemListed.designer.cs">
+      <DependentUpon>20200505070642_Game_HDV_ItemListed.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\PlayerContextModelSnapshot.cs" />
     <Compile Include="Web\RestApi\Attributes\DebugAuthorizeAttribute.cs" />

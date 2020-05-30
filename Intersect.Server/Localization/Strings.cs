@@ -1289,6 +1289,19 @@ namespace Intersect.Server.Localization
 
         }
 
+        public sealed class MailNamespace : LocaleNamespace
+        {
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            [NotNull]
+            public readonly LocalizedString inventoryfull = @"Not enough space in your inventory";
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            [NotNull]
+            public readonly LocalizedString receiveitem = @"You received an object";
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            [NotNull]
+            public readonly LocalizedString playernotfound = @"Player Not Found!";
+        }
+
         #region Serialization
 
         public static bool Load()
@@ -1422,6 +1435,8 @@ namespace Intersect.Server.Localization
 
             [NotNull] public readonly UpnpNamespace Upnp = new UpnpNamespace();
 
+            [NotNull] public readonly MailNamespace Mails = new MailNamespace();
+
         }
 
         // ReSharper restore MemberHidesStaticFromOuterClass
@@ -1526,6 +1541,9 @@ namespace Intersect.Server.Localization
 
         [NotNull]
         public static UpnpNamespace Upnp => Root.Upnp;
+
+        [NotNull]
+        public static MailNamespace Mails => Root.Mails;
 
         #endregion
 

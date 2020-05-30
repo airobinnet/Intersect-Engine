@@ -113,6 +113,14 @@ namespace Intersect.Client.Interface.Game.Inventory
             {
                 Globals.Me.TryTradeItem(mMySlot);
             }
+            else if (Globals.InSendMailBox)
+            {
+                Globals.Me.TrySendMailItem(mMySlot);
+            }
+            else if (Globals.InHDV)
+            {
+                Globals.Me.TrySellHDVItem(mMySlot);
+            }
             else
             {
                 Globals.Me.TryDropItem(mMySlot);

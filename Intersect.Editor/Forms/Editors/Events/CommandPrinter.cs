@@ -1140,6 +1140,22 @@ namespace Intersect.Editor.Forms.Editors.Events
             return Strings.EventCommandList.invalid;
         }
 
+        private static string GetCommandText(OpenMailBoxCommand command, MapInstance map)
+        {
+            return Strings.EventCommandList.openmailbox;
+        }
+
+        private static string GetCommandText(SendMailBoxCommand command, MapInstance map)
+        {
+            return Strings.EventCommandList.sendmail;
+        }
+
+        private static string GetCommandText(HDVCommand command, MapInstance map)
+        {
+            HDVBase hdv = HDVBase.Get(command.HDVid);
+            return $"Ouvrir HDV ({hdv?.Name})";
+        }
+
         private static string GetVariableModText(SetVariableCommand command, IntegerVariableMod mod)
         {
             var varvalue = "";

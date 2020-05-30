@@ -1334,6 +1334,39 @@ namespace Intersect.Server.Entities.Events
             PacketSender.SendEntityDataToProximity(player);
         }
 
+        private static void ProcessCommand(
+            OpenMailBoxCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            player.OpenMailBox();
+        }
+
+        private static void ProcessCommand(
+            SendMailBoxCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            player.SendMail();
+        }
+
+        private static void ProcessCommand(
+            HDVCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            player.OpenHDV(command.HDVid);
+        }
+
         //Start Quest Command
         private static void ProcessCommand(
             StartQuestCommand command,

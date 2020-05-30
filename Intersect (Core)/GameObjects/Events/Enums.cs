@@ -224,6 +224,10 @@
         //Player Label
         PlayerLabel,
 
+        SendMail = 440,
+        OpenMailBox = 441,
+        HDV = 447,
+
         //Combat Text
         AddCombatText,
 

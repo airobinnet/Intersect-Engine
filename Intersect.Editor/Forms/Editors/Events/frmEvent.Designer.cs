@@ -148,6 +148,9 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode58,
             treeNode59,
             treeNode60});
+            System.Windows.Forms.TreeNode treeNode62 = new System.Windows.Forms.TreeNode("Send Mail");
+            System.Windows.Forms.TreeNode treeNode63 = new System.Windows.Forms.TreeNode("Open Mailbox");
+            System.Windows.Forms.TreeNode treeNode64 = new System.Windows.Forms.TreeNode("Auction House");
             this.lblName = new System.Windows.Forms.Label();
             this.txtEventname = new DarkUI.Controls.DarkTextBox();
             this.grpEntityOptions = new DarkUI.Controls.DarkGroupBox();
@@ -1030,6 +1033,15 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode60.Text = "Open Crafting Station";
             treeNode61.Name = "shopandbank";
             treeNode61.Text = "Shop and Bank";
+            treeNode62.Name = "sendmail";
+            treeNode62.Tag = "440";
+            treeNode62.Text = "Send Mail";
+            treeNode63.Name = "openmailbox";
+            treeNode63.Tag = "441";
+            treeNode63.Text = "Open Mailbox";
+            treeNode64.Name = "openhdv";
+            treeNode64.Tag = "447";
+            treeNode64.Text = "Auction House";
             this.lstCommands.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode6,
             treeNode14,
@@ -1038,7 +1050,10 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode51,
             treeNode55,
             treeNode57,
-            treeNode61});
+            treeNode61,
+            treeNode62,
+            treeNode63,
+            treeNode64});
             this.lstCommands.Size = new System.Drawing.Size(666, 676);
             this.lstCommands.TabIndex = 2;
             this.lstCommands.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lstCommands_AfterSelect);

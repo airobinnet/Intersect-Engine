@@ -164,6 +164,9 @@ namespace Intersect.Client.Entities
                      Globals.InBank == false &&
                      Globals.InCraft == false &&
                      Globals.InTrade == false &&
+                     Globals.InMailBox == false &&
+                     Globals.InSendMailBox == false &&
+                     Globals.InHDV == false &&
                      !Interface.Interface.HasInputFocus());
         }
 
@@ -304,7 +307,9 @@ namespace Intersect.Client.Entities
 
         public void TryUseItem(int index)
         {
-            if (Globals.GameShop == null && Globals.InBank == false && Globals.InTrade == false && !ItemOnCd(index))
+            if (Globals.GameShop == null && Globals.InBank == false && Globals.InTrade == false &&
+                     Globals.InMailBox == false && Globals.InSendMailBox == false && Globals.InHDV == false &&
+                     !ItemOnCd(index))
             {
                 PacketSender.SendUseItem(index, TargetIndex);
             }
@@ -673,6 +678,23 @@ namespace Intersect.Client.Entities
             if (value > 0)
             {
                 PacketSender.SendRevokeTradeItem((int)((InputBox)sender).UserData, value);
+            }
+        }
+
+        // Mail Send
+        public void TrySendMailItem(int index)
+        {
+            if (ItemBase.Get(Inventory[index].ItemId) != null)
+            {
+                Interface.Interface.GameUi.UpdateSendMailItem(index);
+            }
+        }
+        // HDV
+        public void TrySellHDVItem(int index)
+        {
+            if (ItemBase.Get(Inventory[index].ItemId) != null)
+            {
+                Interface.Interface.GameUi.UpdateSellHDVItem(index);
             }
         }
 

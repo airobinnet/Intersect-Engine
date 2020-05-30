@@ -5,6 +5,7 @@ using System.Linq;
 
 using Intersect.Server.Database;
 using Intersect.Server.Database.PlayerData;
+using Intersect.Server.Database.PlayerData.Players;
 using Intersect.Server.General;
 using Intersect.Server.Networking;
 using Intersect.Server.Web.RestApi.Payloads;
@@ -214,6 +215,8 @@ namespace Intersect.Server.Entities
                     .Include(p => p.Variables)
                     .Include(p => p.Items)
                     .Include(p => p.Spells)
+                    .Include(p => p.MailBoxs)
+                    .ThenInclude(p => p.Sender)
             ) ??
             throw new InvalidOperationException();
 
@@ -232,6 +235,8 @@ namespace Intersect.Server.Entities
                     .Include(p => p.Variables)
                     .Include(p => p.Items)
                     .Include(p => p.Spells)
+                    .Include(p => p.MailBoxs)
+                    .ThenInclude(p => p.Sender)
             ) ??
             throw new InvalidOperationException();
 
@@ -251,6 +256,8 @@ namespace Intersect.Server.Entities
                     .Include(p => p.Variables)
                     .Include(p => p.Items)
                     .Include(p => p.Spells)
+                    .Include(p => p.MailBoxs)
+                    .ThenInclude(p => p.Sender)
             ) ??
             throw new InvalidOperationException();
 
@@ -265,6 +272,8 @@ namespace Intersect.Server.Entities
                     .Include(p => p.Variables)
                     .Include(p => p.Items)
                     .Include(p => p.Spells)
+                    .Include(p => p.MailBoxs)
+                    .ThenInclude(p => p.Sender)
                     .FirstOrDefault()
             ) ??
             throw new InvalidOperationException();
@@ -280,6 +289,8 @@ namespace Intersect.Server.Entities
                     .Include(p => p.Variables)
                     .Include(p => p.Items)
                     .Include(p => p.Spells)
+                    .Include(p => p.MailBoxs)
+                    .ThenInclude(p => p.Sender)
                     .FirstOrDefault()
             ) ??
             throw new InvalidOperationException();

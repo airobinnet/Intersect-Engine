@@ -58,6 +58,9 @@ namespace Intersect.Enums
         [GameObjectInfo(typeof(TilesetBase), "tilesets")]
         Tileset,
 
+        [GameObjectInfo(typeof(HDVBase), "hdvs")]
+        HDVs,
+
         [GameObjectInfo(typeof(TimeBase), "")] Time
 
     }

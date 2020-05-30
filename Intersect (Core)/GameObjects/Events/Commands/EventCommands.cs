@@ -916,6 +916,20 @@ namespace Intersect.GameObjects.Events.Commands
 
     }
 
+    public class SendMailBoxCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.SendMail;
+
+    }
+
+    public class OpenMailBoxCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.OpenMailBox;
+
+    }
+
     public class UnEquipItemCommand : EventCommand
     {
         public override EventCommandType Type { get; } = EventCommandType.Unequip;
@@ -928,5 +942,13 @@ namespace Intersect.GameObjects.Events.Commands
         public override EventCommandType Type { get; } = EventCommandType.FriendlySpells;
 
         public Guid spell { get; set; }
+    }
+
+    public class HDVCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.HDV;
+
+        public Guid HDVid { get; set; }
     }
 }

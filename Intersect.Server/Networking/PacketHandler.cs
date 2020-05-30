@@ -19,6 +19,7 @@ using Intersect.Server.Admin.Actions;
 using Intersect.Server.Core;
 using Intersect.Server.Database;
 using Intersect.Server.Database.PlayerData;
+using Intersect.Server.Database.PlayerData.Players;
 using Intersect.Server.Database.PlayerData.Security;
 using Intersect.Server.Entities;
 using Intersect.Server.General;
@@ -1521,6 +1522,280 @@ namespace Intersect.Server.Networking
             PacketSender.SendChatMsg(player, Strings.Parties.outofrange, CustomColors.Combat.NoTarget);
         }
 
+        // Mail Box
+        public void HandlePacket(Client client, Player player, MailBoxClosePacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.CloseMailBox();
+        }
+
+        public void HandlePacket(Client client, Player player, MailBoxSendPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            var character = DbInterface.GetPlayer(packet.To);
+            if (character != null)
+            {
+                int slotID = packet.SlotID;
+                if (slotID >= player.Items.Count)
+                {
+                    player.CloseMailBox();
+                    return;
+                }
+                int quantity = 0;
+                int[] statBuffs = new int[(int)Enums.Stats.StatCount];
+                Guid itemID = Guid.Empty;
+                if (slotID >= 0)
+                {
+                    InventorySlot slot = player.Items[slotID];
+                    itemID = slot.ItemId;
+                    if (itemID != Guid.Empty)
+                    {
+                        quantity = packet.Quantity;
+                        statBuffs = slot.StatBuffs;
+
+                        if (player.TryTakeItem(slot, quantity) == false)
+                        {
+                            itemID = Guid.Empty;
+                            quantity = 0;
+                            statBuffs = new int[(int)Enums.Stats.StatCount];
+                        }
+
+                    }
+                }
+
+                character.MailBoxs.Add(new MailBox(player, character, packet.Title, packet.Message, itemID, quantity, statBuffs));
+                if (Globals.OnlineList.Select(p => p.Id == character.Id) != null)
+                {
+                    PacketSender.SendChatMsg(character, $"Vous avez recu une Lettre", CustomColors.Alerts.Accepted);
+                }
+
+            }
+            else
+            {
+                PacketSender.SendChatMsg(player, $"{Strings.Mails.playernotfound} ({packet.To})", CustomColors.Alerts.Info);
+            }
+            player.CloseMailBox();
+            DbInterface.SavePlayerDatabaseAsync();
+        }
+
+        public void HandlePacket(Client client, Player player, TakeMailPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            MailBox mail = null;
+            foreach (MailBox mailbox in player.MailBoxs)
+            {
+                if (mailbox.Id == packet.MailID)
+                {
+                    mail = mailbox;
+                    break;
+                }
+            }
+            if (mail == null)
+            {
+                return;
+            }
+            if (mail.ItemId == Guid.Empty || mail.Quantity < 1)
+            {
+                player.MailBoxs.Remove(mail);
+                PacketSender.SendOpenMailBox(player);
+                DbInterface.SavePlayerDatabaseAsync();
+                return;
+            }
+            Item item = new Item(mail.ItemId, mail.Quantity, false);
+            item.StatBuffs = mail.StatBuffs;
+            if (player.TryGiveItem(item))
+            {
+                var it = ItemBase.Get(mail.ItemId);
+                player.MailBoxs.Remove(mail);
+                PacketSender.SendChatMsg(player, $"{Strings.Mails.receiveitem} ({it?.Name})!", CustomColors.Chat.PartyChat);
+                PacketSender.SendOpenMailBox(player);
+                DbInterface.SavePlayerDatabaseAsync();
+            }
+            else
+            {
+                PacketSender.SendChatMsg(player, Strings.Mails.inventoryfull, CustomColors.Alerts.Declined);
+            }
+
+        }
+
+        // HDV
+        public void HandlePacket(Client client, Player player, CloseHDVPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+            if (player.InHDV)
+            {
+                player.InHDV = false;
+                player.HdvID = Guid.Empty;
+            }
+        }
+        public void HandlePacket(Client client, Player player, ActionHDVPacket packet)
+        {
+            if (player == null || player.HdvID == Guid.Empty || !player.InHDV)
+            {
+                return;
+            }
+            HDVBase hdbBase = HDVBase.Get(player.HdvID);
+            if (hdbBase == null)
+            {
+                PacketSender.SendChatMsg(player, "HDV Introuvable !", CustomColors.Alerts.Declined);
+                return;
+            }
+            HDV hdvItem = HDV.Get(packet.HdvItemId);
+            if (hdvItem != null)
+            {
+                Guid id = hdvItem.Id;
+                switch (packet.Action)
+                {
+                    case -1:
+                        if (hdvItem.SellerId == player.Id)
+                        {
+                            Item nItem = new Item(hdvItem.ItemId, hdvItem.Quantity, false);
+                            nItem.StatBuffs = hdvItem.StatBuffs;
+
+                            if (player.TryGiveItem(nItem))
+                            {
+                                HDV.Remove(hdvItem);
+                                PacketSender.SendChatMsg(player, "Vous avez recupere votre objet", CustomColors.Alerts.Accepted);
+                                PacketSender.SendRemoveHDVItem(player, id);
+                                DbInterface.SavePlayerDatabaseAsync();
+                            }
+                            else
+                            {
+                                PacketSender.SendChatMsg(player, "Vous n'avez pas assez de place pour recuperer cette Objet.", CustomColors.Alerts.Declined);
+                            }
+                        }
+                        return;
+                    case 0:
+                    case 1:
+                        int price = hdvItem.Price;
+
+                        int currencySlot = player.FindItem(hdbBase.Currency.Id, hdvItem.Quantity);
+                        if (currencySlot > -1 && player.TakeItemsBySlot(currencySlot, hdvItem.Quantity))
+                        {
+                            var seller = DbInterface.GetPlayer(hdvItem.SellerId);
+
+                            player.MailBoxs.Add(new MailBox(seller, player, hdbBase.Name, "Message Automatique de l'HDV", hdvItem.ItemId, hdvItem.Quantity, hdvItem.StatBuffs));
+
+                            seller.MailBoxs.Add(new MailBox(player, seller, hdbBase.Name, "Message Automatique de l'HDV", hdbBase.Currency.Id, price,
+                                new int[(int)Enums.Stats.StatCount]));
+
+                            ItemBase item = ItemBase.Get(hdvItem.ItemId);
+
+                            PacketSender.SendChatMsg(player, "L'objet vous a ete envoye par Lettre.", CustomColors.Alerts.Accepted);
+
+                            if (Globals.OnlineList.Select(p => p.Id == seller.Id) != null)
+                            {
+                                PacketSender.SendChatMsg(seller, $"Vous avez vendu {item.Name}", CustomColors.Alerts.Accepted);
+                            }
+
+                            PacketSender.SendRemoveHDVItem(player, id);
+                            HDV.Remove(hdvItem);
+                            DbInterface.SavePlayerDatabaseAsync();
+                        }
+                        else
+                        {
+                            PacketSender.SendChatMsg(player, $"Vous n'avez pas assez de {hdbBase.Currency.Name} pour acheter cette objet.", CustomColors.Alerts.Declined);
+                        }
+                        return;
+                }
+            }
+
+        }
+        public void HandlePacket(Client client, Player player, AddHDVPacket packet)
+        {
+            if (player == null || player.HdvID == Guid.Empty || !player.InHDV)
+            {
+                return;
+            }
+            int slotID = packet.Slot;
+            if (slotID >= player.Items.Count)
+            {
+                return;
+            }
+            HDVBase hdbBase = HDVBase.Get(player.HdvID);
+            if (hdbBase == null)
+            {
+                PacketSender.SendChatMsg(player, "HDV Introuvable !", CustomColors.Alerts.Declined);
+                return;
+            }
+            if (slotID >= 0)
+            {
+                InventorySlot slot = player.Items[slotID];
+                if (slot.ItemId != Guid.Empty)
+                {
+                    if (hdbBase.isWhiteList)
+                    {
+                        if (hdbBase.ItemListed.Contains(slot.ItemId) == false)
+                        {
+                            PacketSender.SendChatMsg(player, $"Cette objet ne peu pas etre vendu ici !", CustomColors.Alerts.Declined);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (hdbBase.ItemListed.Contains(slot.ItemId))
+                        {
+                            PacketSender.SendChatMsg(player, $"Cette objet ne peu pas etre vendu ici !", CustomColors.Alerts.Declined);
+                            return;
+                        }
+                    }
+
+
+                    if (packet.Price <= 0)
+                    {
+                        // Erreur de prix
+                        PacketSender.SendChatMsg(player, "Prix invalide !", CustomColors.Alerts.Declined);
+                        return;
+                    }
+                    Guid itemID = slot.ItemId;
+
+                    if (itemID == hdbBase.CurrencyId)
+                    {
+                        PacketSender.SendChatMsg(player, $"Cette objet ne peu pas etre vendu ici !", CustomColors.Alerts.Declined);
+                        return;
+                    }
+
+                    int[] statBuffs = slot.StatBuffs;
+                    if (player.TryTakeItem(slot, packet.Quantity))
+                    {
+                        HDV nHDV = new HDV(player.HdvID, player.Id, itemID, packet.Quantity, statBuffs, packet.Price);
+                        DbInterface.GetPlayerContext().HDV.Add(nHDV);
+                        PacketSender.SendChatMsg(player, "Votre objet a bien ete mis en vente.", CustomColors.Alerts.Accepted);
+                        PacketSender.SendAddHDVItem(player, player.HdvID, nHDV);
+                        PacketSender.SendInventory(player);
+                        DbInterface.SavePlayerDatabaseAsync();
+                    }
+                    else
+                    {
+                        PacketSender.SendChatMsg(player, "Impossible de vendre cette objet !", CustomColors.Alerts.Declined);
+                    }
+                }
+                else
+                {
+                    PacketSender.SendChatMsg(player, "Objet introuvable!", CustomColors.Alerts.Declined);
+                }
+            }
+            else
+            {
+                PacketSender.SendChatMsg(player, "Objet introuvable dans votre inventaire!", CustomColors.Alerts.Declined);
+            }
+        }
+
         //PartyInviteResponsePacket
         public void HandlePacket(Client client, Player player, PartyInviteResponsePacket packet)
         {
@@ -2791,6 +3066,10 @@ namespace Intersect.Server.Networking
                     break;
                 case GameObjectType.Time:
                     break;
+                case GameObjectType.HDVs:
+                    obj = HDVBase.Get(id);
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -2892,6 +3171,9 @@ namespace Intersect.Server.Networking
                 case GameObjectType.Tileset:
                     break;
                 case GameObjectType.Time:
+                    break;
+                case GameObjectType.HDVs:
+                    obj = HDVBase.Get(id);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

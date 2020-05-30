@@ -76,6 +76,8 @@ namespace Intersect.Editor.Forms
 
         private FrmTime mTimeEditor;
 
+        private frmHDV mFrmHDV;
+
         //General Editting Variables
         bool mTMouseDown;
 
@@ -1590,6 +1592,14 @@ namespace Intersect.Editor.Forms
                         }
 
                         break;
+                    case GameObjectType.HDVs:
+                        if (mFrmHDV == null || mFrmHDV.Visible == false)
+                        {
+                            mFrmHDV = new frmHDV();
+                            mFrmHDV.InitEditor();
+                            mFrmHDV.Show();
+                        }
+                        break;
                     default:
                         return;
                 }
@@ -1794,6 +1804,11 @@ namespace Intersect.Editor.Forms
                     Globals.UpdateCreationProgressForm.ShowDialog();
                 }
             }
+        }
+
+        private void hDVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PacketSender.SendOpenEditor(GameObjectType.HDVs);
         }
 
         private void createUpdate(string path, Update existingUpdate)

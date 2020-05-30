@@ -15,6 +15,7 @@ using Intersect.Network;
 using Intersect.Network.Packets.Server;
 using Intersect.Server.Database;
 using Intersect.Server.Database.PlayerData.Players;
+using Intersect.Server.Database.PlayerData;
 using Intersect.Server.Database.PlayerData.Security;
 using Intersect.Server.Entities;
 using Intersect.Server.Entities.Events;
@@ -1411,6 +1412,95 @@ namespace Intersect.Server.Networking
             }
         }
 
+        public static void SendOpenMailBox(Player player)
+        {
+            // TODO : Mail List
+            List<MailBoxUpdatePacket> mails = new List<MailBoxUpdatePacket>();
+
+            foreach (MailBox mail in player.MailBoxs)
+            {
+                MailBoxUpdatePacket m = new MailBoxUpdatePacket(mail.Id, mail.Title, mail.Message, mail.Sender.Name, mail.ItemId, mail.Quantity);
+                mails.Add(m);
+            }
+            player.SendPacket(new MailBoxsUpdatePacket(mails.ToArray<MailBoxUpdatePacket>()));
+            player.SendPacket(new MailBoxPacket(true, false));
+        }
+        public static void SendCloseMailBox(Player player)
+        {
+            player.SendPacket(new MailBoxPacket(false, false));
+        }
+
+        public static void SendOpenSendMail(Player player)
+        {
+            SendInventory(player);
+            player.SendPacket(new MailBoxPacket(true, true));
+        }
+
+        public static void SendItemHDV(Player player, Guid hdvID, HDV item, bool update = false)
+        {
+            if (!player.InHDV || player.HdvID != hdvID)
+            {
+                return;
+            }
+            Player seller = DbInterface.GetPlayer(item.SellerId);
+            if (seller == null)
+            {
+                return;
+            }
+            player.SendPacket(new HDVItemPacket(
+                item.Id,
+                seller.Name,
+                item.ItemId,
+                item.Quantity,
+                item.StatBuffs,
+                item.Price,
+                update
+            ));
+        }
+
+        public static void SendAddHDVItem(Player player, Guid hdvID, HDV item)
+        {
+            SendItemHDV(player, hdvID, item, true);
+        }
+
+        public static void SendRemoveHDVItem(Player player, Guid removeItem)
+        {
+            player.SendPacket(new RemoveHDVItemPacket(removeItem));
+        }
+
+        public static void SendOpenHDV(Player player, Guid hdvID)
+        {
+            player.HdvID = hdvID;
+            player.InHDV = true;
+            SendInventory(player);
+            HDV[] HDVItems = HDV.List(hdvID).ToArray<HDV>();
+            List<HDVItemPacket> hdvItemPackets = new List<HDVItemPacket>();
+            List<HDV> toRemove = new List<HDV>();
+            for (int i = 0; i < HDVItems.Length; i++)
+            {
+                Player seller = DbInterface.GetPlayer(HDVItems[i].SellerId);
+                if (seller == null)
+                {
+                    toRemove.Add(HDVItems[i]);
+                    continue;
+                }
+                hdvItemPackets.Add(new HDVItemPacket(
+                    HDVItems[i].Id,
+                    seller.Name,
+                    HDVItems[i].ItemId,
+                    HDVItems[i].Quantity,
+                    HDVItems[i].StatBuffs,
+                    HDVItems[i].Price
+                ));
+            }
+            if (toRemove.Count > 0)
+            {
+                DbInterface.GetPlayerContext().HDV.RemoveRange(toRemove);
+                DbInterface.SavePlayerDatabaseAsync();
+            }
+            player.SendPacket(new HDVPacket(hdvID, hdvItemPackets.ToArray<HDVItemPacket>()));
+        }
+
         //GameObjectPacket
         public static void SendGameObjects(Client client, GameObjectType type, List<GameObjectPacket> packetList = null)
         {
@@ -1527,6 +1617,12 @@ namespace Intersect.Server.Networking
 
                     break;
                 case GameObjectType.Time:
+                    break;
+                case GameObjectType.HDVs:
+                    foreach (var obj in HDVBase.Lookup)
+                    {
+                        SendGameObject(client, obj.Value, false, false, packetList);
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);

@@ -95,6 +95,9 @@ namespace Intersect.Server.Database.GameData
         //Time
         public DbSet<TimeBase> Time { get; set; }
 
+        //AH
+        public DbSet<HDVBase> HDVs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }

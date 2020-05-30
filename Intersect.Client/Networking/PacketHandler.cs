@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Intersect.Config;
 using Intersect.Client.Core;
 using Intersect.Client.Entities;
 using Intersect.Client.Entities.Events;
@@ -1268,6 +1268,80 @@ namespace Intersect.Client.Networking
             {
                 Globals.Bank[slot] = null;
             }
+        }
+
+        // Mail
+        private static void HandlePacket(MailBoxsUpdatePacket packet)
+        {
+            Globals.Mails.Clear();
+            foreach (MailBoxUpdatePacket mail in packet.Mails)
+            {
+                Globals.Mails.Add(new Mail(mail.MailID, mail.Name, mail.Message, mail.SenderName, mail.Item == null ? Guid.Empty : mail.Item, mail.Quantity));
+            }
+        }
+
+        private static void HandlePacket(MailBoxPacket packet)
+        {
+            if (!packet.Close)
+            {
+                Interface.Interface.GameUi.CloseSendMailBox();
+                Interface.Interface.GameUi.CloseMailBox();
+            }
+            else
+            {
+                if (packet.Send)
+                {
+                    Interface.Interface.GameUi.OpenSendMailBox();
+                }
+                else
+                {
+                    Interface.Interface.GameUi.OpenMailBox();
+                }
+            }
+        }
+
+        // HDV
+        private static void HandlePacket(HDVItemPacket packet)
+        {
+            Globals.HDVObjet.Add(
+                new HDV(
+                    packet.Id,
+                    packet.Seller,
+                    packet.ItemId,
+                    packet.Quantity,
+                    packet.StatBuffs,
+                    packet.Price
+                )
+            );
+            if (packet.Update)
+            {
+                Interface.Interface.GameUi.OpenHDV();
+            }
+        }
+
+        private static void HandlePacket(RemoveHDVItemPacket packet)
+        {
+            if (Globals.InHDV == false)
+            {
+                return;
+            }
+            HDV item = Globals.HDVObjet.Where(i => i.Id == packet.RemoveItemHDVId).First();
+            if (item != null)
+            {
+                Globals.HDVObjet.Remove(item);
+            }
+            Interface.Interface.GameUi.OpenHDV();
+        }
+
+        private static void HandlePacket(HDVPacket packet)
+        {
+            Globals.HdvID = packet.HdvID;
+            Globals.HDVObjet.Clear();
+            foreach (HDVItemPacket item in packet.HdvItems)
+            {
+                HandlePacket((dynamic)item);
+            }
+            Interface.Interface.GameUi.OpenHDV();
         }
 
         //GameObjectPacket

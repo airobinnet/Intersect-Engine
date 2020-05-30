@@ -5,7 +5,9 @@ using Intersect.Client.Interface.Game.Bank;
 using Intersect.Client.Interface.Game.Chat;
 using Intersect.Client.Interface.Game.Crafting;
 using Intersect.Client.Interface.Game.EntityPanel;
+using Intersect.Client.Interface.Game.HDV;
 using Intersect.Client.Interface.Game.Hotbar;
+using Intersect.Client.Interface.Game.Mail;
 using Intersect.Client.Interface.Game.Shop;
 using Intersect.Client.Interface.Game.Trades;
 using Intersect.Client.Networking;
@@ -44,6 +46,11 @@ namespace Intersect.Client.Interface.Game
         private QuestOfferWindow mQuestOfferWindow;
 
         private ShopWindow mShopWindow;
+
+        private SendMailBoxWindow mSendMailBoxWindow;
+        private MailBoxWindow mMailBoxWindow;
+
+        private HDVWindow mHDVWindow;
 
         private bool mShouldCloseBag;
 
@@ -168,6 +175,77 @@ namespace Intersect.Client.Interface.Game
 
             mShopWindow = new ShopWindow(GameCanvas);
             mShouldOpenShop = false;
+        }
+
+        // Mail Box
+        public void OpenSendMailBox()
+        {
+            if (mSendMailBoxWindow != null)
+            {
+                mSendMailBoxWindow.Close();
+            }
+            mSendMailBoxWindow = new SendMailBoxWindow(GameCanvas);
+            mSendMailBoxWindow.UpdateItemListBySlot(-1);
+            //mSendMailBoxWindow.UpdateItemList();
+            Globals.InSendMailBox = true;
+        }
+
+        public void CloseSendMailBox()
+        {
+            mSendMailBoxWindow?.Hide();
+            Globals.InSendMailBox = false;
+        }
+
+        public void UpdateSendMailItem(int slot)
+        {
+            mSendMailBoxWindow?.UpdateItemListBySlot(slot);
+        }
+
+        public void OpenMailBox()
+        {
+            if (mMailBoxWindow != null)
+            {
+                mMailBoxWindow.UpdateMail();
+            }
+            else
+            {
+                mMailBoxWindow = new MailBoxWindow(GameCanvas);
+                mMailBoxWindow.UpdateMail();
+            }
+            Globals.InMailBox = true;
+        }
+
+        public void CloseMailBox()
+        {
+            mMailBoxWindow?.Hide();
+            Globals.InMailBox = false;
+        }
+
+        // HDV
+        public void OpenHDV()
+        {
+            if (mHDVWindow != null)
+            {
+                mHDVWindow.UpdateHDV();
+            }
+            else
+            {
+                mHDVWindow = new HDVWindow(GameCanvas);
+                mHDVWindow.UpdateItemListBySlot(-1);
+                mHDVWindow.UpdateHDV();
+            }
+            Globals.InHDV = true;
+        }
+
+        public void CloseHDV()
+        {
+            mHDVWindow?.Hide();
+            Globals.InHDV = false;
+        }
+
+        public void UpdateSellHDVItem(int slot)
+        {
+            mHDVWindow?.UpdateItemListBySlot(slot);
         }
 
         //Bank
@@ -369,6 +447,27 @@ namespace Intersect.Client.Interface.Game
             }
 
             mShouldCloseShop = false;
+
+            if (mSendMailBoxWindow != null && !mSendMailBoxWindow.IsVisible())
+            {
+                mSendMailBoxWindow?.Close();
+                mSendMailBoxWindow = null;
+                Globals.InSendMailBox = false;
+            }
+
+            if (mMailBoxWindow != null && !mMailBoxWindow.IsVisible())
+            {
+                mMailBoxWindow?.Close();
+                mMailBoxWindow = null;
+                Globals.InMailBox = false;
+            }
+
+            if (mHDVWindow != null && !mHDVWindow.IsVisible())
+            {
+                mHDVWindow?.Close();
+                mHDVWindow = null;
+                Globals.InHDV = false;
+            }
 
             //Bank Update
             if (mShouldOpenBank)

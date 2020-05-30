@@ -1792,6 +1792,11 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString whenoption = @"When [{00}]";
 
+            public static LocalizedString sendmail = @"Send Mail";
+
+            public static LocalizedString openmailbox = @"Open Mail Box";
+
+
         }
 
         public struct EventCommands
@@ -1862,6 +1867,10 @@ Tick timer saved in server config.json.";
                 {"friendlyspells", @"Friendly Spells" },
                 {"changehair", @"Change Hair"},
                 {"changeitemsbytag", "Change Items By Tag" },
+                {"mailbox", @"Mail Box" },
+                {"sendmail", @"Send Mail"},
+                {"openmailbox", @"Open Mail Box"},
+                {"openhdv","Open Auction House"},
             };
 
         }
