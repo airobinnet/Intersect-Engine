@@ -1736,6 +1736,13 @@ namespace Intersect.Server.Networking
                 PacketSender.SendChatMsg(player, "Can't find Auction House!", CustomColors.Alerts.Declined);
                 return;
             }
+            var totalAHitems = HDV.List(player.HdvID).ToArray<HDV>();
+            if (totalAHitems.Length >= 8)
+            {
+                PacketSender.SendChatMsg(player, "The Auction House reached the maximum amount of items!", CustomColors.Alerts.Declined);
+                return;
+            }
+
             if (slotID >= 0)
             {
                 InventorySlot slot = player.Items[slotID];

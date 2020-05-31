@@ -1478,20 +1478,23 @@ namespace Intersect.Server.Networking
             List<HDV> toRemove = new List<HDV>();
             for (int i = 0; i < HDVItems.Length; i++)
             {
-                Player seller = DbInterface.GetPlayer(HDVItems[i].SellerId);
-                if (seller == null)
+                //Player seller = DbInterface.GetPlayer(HDVItems[i].SellerId);
+                /*if (seller == null)
                 {
                     toRemove.Add(HDVItems[i]);
                     continue;
-                }
+                }*/
                 hdvItemPackets.Add(new HDVItemPacket(
                     HDVItems[i].Id,
-                    seller.Name,
+                    HDVItems[i].SellerId.ToString(),
+                    //seller.Name,
                     HDVItems[i].ItemId,
                     HDVItems[i].Quantity,
                     HDVItems[i].StatBuffs,
                     HDVItems[i].Price
                 ));
+                //SendChatMsg(player, HDVItems[i].Id.ToString(), CustomColors.Alerts.Accepted);
+                //player.SendPacket(new HDVPacket(hdvID, hdvItemPackets.ToArray<HDVItemPacket>()));
             }
             if (toRemove.Count > 0)
             {
