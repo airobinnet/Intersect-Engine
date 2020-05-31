@@ -32,11 +32,12 @@ namespace Intersect.Client.Interface.Game.HDV
 		private Label searchLabel;
 		private TextBox searchBox;
 		private Button searchButton;
-		private ComboBox searchCB;
+        private ComboBox searchCB;
+        private ComboBox orderCB;
 
 
-		// Sell
-		private HDVSellItem mSellItem;
+        // Sell
+        private HDVSellItem mSellItem;
 		private Label mQuantity;
 		private TextBoxNumeric mQuantityTextBoxNumeric;
 		private Label mPrice;
@@ -51,8 +52,9 @@ namespace Intersect.Client.Interface.Game.HDV
 
 		private static int PageItemCount = 8;
 		private int page = 0;
-		private int searchMode = -1;
-		private string searchKey = "";
+        private int searchMode = -1;
+        private int sortMode = 0;
+        private string searchKey = "";
 
 		private List<Client.HDV> itemList {
 			get
@@ -162,7 +164,14 @@ namespace Intersect.Client.Interface.Game.HDV
 			searchCB.AddItem("Other", "", -2);
 			searchCB.ItemSelected += SearchCB_Selected;
 
-			mWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
+            orderCB = new ComboBox(mWindow, "orderCB");
+            orderCB.AddItem("Sort by Date", "", 0);
+            orderCB.AddItem("Sort by Price", "", 1);
+            orderCB.AddItem("Sort by Seller", "", 2);
+            orderCB.AddItem("Sort by Name", "", 3);
+            orderCB.ItemSelected += orderCB_Selected;
+
+            mWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 			mHdvObject = new List<HDVItem>();
 			page = 0;
 
@@ -178,6 +187,7 @@ namespace Intersect.Client.Interface.Game.HDV
 			UpdateHDV();
 		}
 
+
 		private void SearchCB_Selected(Base sender, ItemSelectedEventArgs arguments)
 		{
 			searchMode = (int)arguments.SelectedItem.UserData;
@@ -185,7 +195,14 @@ namespace Intersect.Client.Interface.Game.HDV
 			UpdateHDV();
 		}
 
-		private void ToSellButton_Clicked(Base sender, ClickedEventArgs arguments)
+        private void orderCB_Selected(Base sender, ItemSelectedEventArgs arguments)
+        {
+            sortMode = (int)arguments.SelectedItem.UserData;
+            page = 0;
+            UpdateHDV();
+        }
+
+        private void ToSellButton_Clicked(Base sender, ClickedEventArgs arguments)
 		{
 			if (mSellItem.GetSlot() < 0)
 				return;
@@ -326,9 +343,10 @@ namespace Intersect.Client.Interface.Game.HDV
 			searchLabel.Hide();
 			searchBox.Hide();
 			searchButton.Hide();
-			searchCB.Hide();
+            searchCB.Hide();
+            orderCB.Hide();
 
-			mSellItem.Container.Hide();
+            mSellItem.Container.Hide();
 			mQuantity.Hide();
 			mQuantityTextBoxNumeric.Hide();
 			mPrice.Hide();
@@ -362,10 +380,27 @@ namespace Intersect.Client.Interface.Game.HDV
 			searchBox.Show();
 			searchButton.Show();
 			searchCB.Show();
+            orderCB.Show();
 
 			mPageLabel.SetText($"{(page + 1)} / {pageNB}");
 			List<Client.HDV> items = itemList;
-			for (int i = 0; i < PageItemCount; i++)
+            if (sortMode == 0)
+            {
+                items = itemList;
+            }
+            if (sortMode == 1)
+            {
+                items = itemList.OrderBy(o => o.Price).ToList();
+            }
+            if (sortMode == 2)
+            {
+                items = itemList.OrderBy(o => o.Seller).ToList();
+            }
+            if (sortMode == 3)
+            {
+                items = itemList.OrderBy(o => ItemBase.GetName(o.ItemId)).ToList();
+            }
+            for (int i = 0; i < PageItemCount; i++)
 			{
 				int index = page * PageItemCount + i;
 				HDVItem item;

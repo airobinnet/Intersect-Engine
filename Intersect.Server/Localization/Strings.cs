@@ -1296,7 +1296,7 @@ namespace Intersect.Server.Localization
             public readonly LocalizedString inventoryfull = @"Not enough space in your inventory";
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             [NotNull]
-            public readonly LocalizedString receiveitem = @"You received an object";
+            public readonly LocalizedString receiveitem = @"You opened the mail and received";
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             [NotNull]
             public readonly LocalizedString playernotfound = @"Player Not Found!";

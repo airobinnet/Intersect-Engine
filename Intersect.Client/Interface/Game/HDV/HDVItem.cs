@@ -7,6 +7,7 @@ using Intersect.Client.General;
 using Intersect.Client.Networking;
 using Intersect.GameObjects;
 using System;
+using Intersect.Client.Localization;
 
 namespace Intersect.Client.Interface.Game.HDV
 {
@@ -26,9 +27,10 @@ namespace Intersect.Client.Interface.Game.HDV
 		private Label mItemName;
 		private Label mSellerName;
 		private Label mPriceName;
+        public ItemCompareWindow mCompWindow;
 
 
-		public HDVItem(HDVWindow window, Client.HDV hdv, ImagePanel container)
+        public HDVItem(HDVWindow window, Client.HDV hdv, ImagePanel container)
 		{
 			mWindow = window;
 			Container = container;
@@ -139,12 +141,17 @@ namespace Intersect.Client.Interface.Game.HDV
 			{
 				return;
 			}
-			if (mDescWindow != null)
-			{
-				mDescWindow.Dispose();
-				mDescWindow = null;
-			}
-			if (mHDV != null)
+            if (mDescWindow != null)
+            {
+                mDescWindow.Dispose();
+                mDescWindow = null;
+            }
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
+            if (mHDV != null)
 			{
 				var item = ItemBase.Get(mHDV.ItemId);
 				if (item != null)
@@ -155,7 +162,22 @@ namespace Intersect.Client.Interface.Game.HDV
 						mWindow.X, mWindow.Y,
 						mHDV.StatBuffs
 					);
-				}
+                    if (ItemBase.Get(mHDV.ItemId).ItemType == Enums.ItemTypes.Equipment)
+                    {
+                        var i = 0;
+                        foreach (var equip in Globals.Me.Equipment)
+                        {
+                            if (ItemBase.Get(equip)?.EquipmentSlot == ItemBase.Get(mHDV.ItemId).EquipmentSlot)
+                            {
+                                mCompWindow = new ItemCompareWindow(
+                                               ItemBase.Get(equip), ItemBase.Get(mHDV.ItemId), 1, mWindow.X,
+                                               mWindow.Y, Globals.Me.Inventory[Globals.Me.MyEquipment[ItemBase.Get(equip).EquipmentSlot]].StatBuffs, mHDV.StatBuffs, "", Strings.ItemDesc.equippeditem
+                                            );
+                                i++;
+                            }
+                        }
+                    }
+                }
 			}
 		}
 
@@ -166,6 +188,12 @@ namespace Intersect.Client.Interface.Game.HDV
 				mDescWindow.Dispose();
 				mDescWindow = null;
 			}
-		}
+
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
+        }
 	}
 }

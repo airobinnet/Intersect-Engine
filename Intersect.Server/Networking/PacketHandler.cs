@@ -1559,7 +1559,8 @@ namespace Intersect.Server.Networking
                     if (itemID != Guid.Empty)
                     {
                         quantity = packet.Quantity;
-                        statBuffs = slot.StatBuffs;
+                        //statBuffs = slot.StatBuffs;
+                        statBuffs = packet.StatBuffs;
 
                         if (player.TryTakeItem(slot, quantity) == false)
                         {
@@ -1699,7 +1700,7 @@ namespace Intersect.Server.Networking
 
                             ItemBase item = ItemBase.Get(hdvItem.ItemId);
 
-                            PacketSender.SendChatMsg(player, "The item(s) has/have been mailed to you", CustomColors.Alerts.Accepted);
+                            PacketSender.SendChatMsg(player, "Your purchase has been mailed to you", CustomColors.Alerts.Accepted);
 
                             if (Globals.OnlineList.Select(p => p.Id == seller.Id) != null)
                             {
@@ -1780,7 +1781,7 @@ namespace Intersect.Server.Networking
                         return;
                     }
 
-                    int[] statBuffs = slot.StatBuffs;
+                    int[] statBuffs = packet.StatBuffs;
                     if (player.TryTakeItem(slot, packet.Quantity))
                     {
                         HDV nHDV = new HDV(player.HdvID, player.Id, itemID, packet.Quantity, statBuffs, packet.Price);

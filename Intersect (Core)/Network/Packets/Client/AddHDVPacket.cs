@@ -9,15 +9,17 @@ namespace Intersect.Network.Packets.Client
 	public class AddHDVPacket : CerasPacket
 	{
 
-		public AddHDVPacket(int slot, int quantity, int price)
+		public AddHDVPacket(int slot, int[] statBuffs, int quantity, int price)
 		{
 			Slot = slot;
-			Quantity = quantity;
+            StatBuffs = statBuffs;
+            Quantity = quantity;
 			Price = price;
 		}
 
 		public int Slot { get; set; }
-		public int Quantity { get; set; }
+        public int[] StatBuffs { get; set; } = new int[(int)Enums.Stats.StatCount];
+        public int Quantity { get; set; }
 		public int Price { get; set; }
 	}
 }

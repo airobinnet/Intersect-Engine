@@ -380,7 +380,7 @@ namespace Intersect.Client.Networking
 
         public static void SendMail(string to, string title, string message, int slotID, int quantity)
         {
-            Network.SendPacket(new MailBoxSendPacket(to, title, message, slotID, quantity));
+            Network.SendPacket(new MailBoxSendPacket(to, title, message, slotID, quantity, Globals.Me.Inventory[slotID].StatBuffs));
         }
 
         public static void SendCloseMail()
@@ -404,7 +404,7 @@ namespace Intersect.Client.Networking
 
         public static void SendAddToHDV(int slot, int quantity, int price)
         {
-            Network.SendPacket(new AddHDVPacket(slot, quantity, price));
+            Network.SendPacket(new AddHDVPacket(slot, Globals.Me.Inventory[slot].StatBuffs, quantity, price));
         }
 
         public static void SendActionHDV(Guid hdvItemID, int action)
