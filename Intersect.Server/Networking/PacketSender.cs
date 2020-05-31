@@ -1449,7 +1449,7 @@ namespace Intersect.Server.Networking
             }
             player.SendPacket(new HDVItemPacket(
                 item.Id,
-                seller.Name,
+                seller.Id.ToString(),
                 item.ItemId,
                 item.Quantity,
                 item.StatBuffs,
@@ -1478,6 +1478,7 @@ namespace Intersect.Server.Networking
             List<HDV> toRemove = new List<HDV>();
             for (int i = 0; i < HDVItems.Length; i++)
             {
+                //fix the seller name/id
                 //Player seller = DbInterface.GetPlayer(HDVItems[i].SellerId);
                 /*if (seller == null)
                 {

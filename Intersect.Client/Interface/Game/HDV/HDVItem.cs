@@ -71,13 +71,16 @@ namespace Intersect.Client.Interface.Game.HDV
 
 				var item = ItemBase.Get(mHDV.ItemId);
 				if (item != null)
-				{
-					mRetirerButton.IsHidden = Globals.Me.Name.ToLower().Equals(hdv.Seller.ToLower()) == false;
-					mBuyButton.Show();
+                {
+                    //mRetirerButton.IsHidden = Globals.Me.Name.ToLower().Equals(hdv.Seller.ToLower()) == false;
+                    mRetirerButton.IsHidden = Globals.Me.Id.ToString().Equals(hdv.Seller) == false;
+                    mBuyButton.Show();
 					mItemName.Show();
-                    mSellerName.IsHidden = Globals.Me.Name.ToLower().Equals(hdv.Seller.ToLower()) == true;
+                    //mSellerName.IsHidden = Globals.Me.Name.ToLower().Equals(hdv.Seller.ToLower()) == true;
+                    //mSellerName.IsHidden = Globals.Me.Id.ToString().Equals(hdv.Seller) == true;
+                    mSellerName.IsHidden = true;
                     //mSellerName.Show();
-					mPriceName.Show();
+                    mPriceName.Show();
 
 					mItemName.SetText(item.Name + " x" + mHDV.Quantity);
 					mSellerName.SetText(mHDV.Seller);
