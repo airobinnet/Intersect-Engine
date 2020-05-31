@@ -1737,7 +1737,7 @@ namespace Intersect.Server.Networking
                 return;
             }
             var totalAHitems = HDV.List(player.HdvID).ToArray<HDV>();
-            if (totalAHitems.Length >= 8)
+            if (totalAHitems.Length >= 255)
             {
                 PacketSender.SendChatMsg(player, "The Auction House reached the maximum amount of items!", CustomColors.Alerts.Declined);
                 return;
