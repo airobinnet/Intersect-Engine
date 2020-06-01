@@ -1558,6 +1558,11 @@ namespace Intersect.Server.Networking
                     itemID = slot.ItemId;
                     if (itemID != Guid.Empty)
                     {
+                        if (slot.Descriptor.Bound)
+                        {
+                            PacketSender.SendChatMsg(player, $"Can't send bound items!", CustomColors.Alerts.Declined);
+                            return;
+                        }
                         quantity = packet.Quantity;
                         //statBuffs = slot.StatBuffs;
                         statBuffs = packet.StatBuffs;
@@ -1749,6 +1754,11 @@ namespace Intersect.Server.Networking
                 InventorySlot slot = player.Items[slotID];
                 if (slot.ItemId != Guid.Empty)
                 {
+                    if (slot.Descriptor.Bound)
+                    {
+                        PacketSender.SendChatMsg(player, $"Can't sell bound items!", CustomColors.Alerts.Declined);
+                        return;
+                    }
                     if (hdbBase.isWhiteList)
                     {
                         if (hdbBase.ItemListed.Contains(slot.ItemId) == false)
