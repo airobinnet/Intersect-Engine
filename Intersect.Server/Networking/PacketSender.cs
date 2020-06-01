@@ -1454,6 +1454,7 @@ namespace Intersect.Server.Networking
                 item.Quantity,
                 item.StatBuffs,
                 item.Price,
+                item.Expires,
                 update
             ));
         }
@@ -1485,6 +1486,14 @@ namespace Intersect.Server.Networking
                     toRemove.Add(HDVItems[i]);
                     continue;
                 }*/
+                if (HDVItems[i].Expires <= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
+                {
+                    toRemove.Add(HDVItems[i]);
+                    var seller = DbInterface.GetPlayer(HDVItems[i].SellerId);
+                    seller.MailBoxs.Add(new MailBox(seller, player, "AH", "AH Item expired: ", HDVItems[i].ItemId, HDVItems[i].Quantity, HDVItems[i].StatBuffs));
+                    continue;
+                }
+
                 hdvItemPackets.Add(new HDVItemPacket(
                     HDVItems[i].Id,
                     HDVItems[i].SellerId.ToString(),
@@ -1492,7 +1501,8 @@ namespace Intersect.Server.Networking
                     HDVItems[i].ItemId,
                     HDVItems[i].Quantity,
                     HDVItems[i].StatBuffs,
-                    HDVItems[i].Price
+                    HDVItems[i].Price,
+                    HDVItems[i].Expires
                 ));
                 //SendChatMsg(player, HDVItems[i].Id.ToString(), CustomColors.Alerts.Accepted);
                 //player.SendPacket(new HDVPacket(hdvID, hdvItemPackets.ToArray<HDVItemPacket>()));

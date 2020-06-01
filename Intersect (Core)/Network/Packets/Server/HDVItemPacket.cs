@@ -8,7 +8,7 @@ namespace Intersect.Network.Packets.Server
 {
 	public class HDVItemPacket : CerasPacket
 	{
-		public HDVItemPacket(Guid id, string seller, Guid itemid, int quantity, int[] statBuffs, int price, bool update = false)
+		public HDVItemPacket(Guid id, string seller, Guid itemid, int quantity, int[] statBuffs, int price, double expires, bool update = false)
 		{
 			Id = id;
 			Seller = seller;
@@ -16,7 +16,8 @@ namespace Intersect.Network.Packets.Server
 			Quantity = quantity;
 			StatBuffs = statBuffs;
 			Price = price;
-			Update = update;
+            Expires = expires;
+            Update = update;
 		}
 
 		public Guid Id { get; set; }
@@ -25,6 +26,7 @@ namespace Intersect.Network.Packets.Server
 		public int Quantity { get; set; }
 		public int[] StatBuffs { get; set; } = new int[(int)Enums.Stats.StatCount];
 		public int Price { get; set; }
+        public double Expires { get; set; }
 		public bool Update { get; set; }
 		
 	}

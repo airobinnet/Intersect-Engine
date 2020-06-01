@@ -1698,9 +1698,9 @@ namespace Intersect.Server.Networking
                         {
                             var seller = DbInterface.GetPlayer(hdvItem.SellerId);
 
-                            player.MailBoxs.Add(new MailBox(seller, player, hdbBase.Name, "Auction House: ", hdvItem.ItemId, hdvItem.Quantity, hdvItem.StatBuffs));
+                            player.MailBoxs.Add(new MailBox(seller, player, hdbBase.Name, "Auction House item bought: ", hdvItem.ItemId, hdvItem.Quantity, hdvItem.StatBuffs));
 
-                            seller.MailBoxs.Add(new MailBox(player, seller, hdbBase.Name, "Auction House: ", hdbBase.Currency.Id, price,
+                            seller.MailBoxs.Add(new MailBox(player, seller, hdbBase.Name, "Auction House item sold: ", hdbBase.Currency.Id, price,
                                 new int[(int)Enums.Stats.StatCount]));
 
                             ItemBase item = ItemBase.Get(hdvItem.ItemId);
@@ -1792,9 +1792,22 @@ namespace Intersect.Server.Networking
                     }
 
                     int[] statBuffs = packet.StatBuffs;
+                    double expireTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     if (player.TryTakeItem(slot, packet.Quantity))
                     {
-                        HDV nHDV = new HDV(player.HdvID, player.Id, itemID, packet.Quantity, statBuffs, packet.Price);
+                        if (packet.Expires == 0)
+                        {
+                            expireTime = expireTime + 21600000;
+                        }
+                        if (packet.Expires == 1)
+                        {
+                            expireTime = expireTime + 43200000;
+                        }
+                        if (packet.Expires == 2)
+                        {
+                            expireTime = expireTime + 86400000;
+                        }
+                        HDV nHDV = new HDV(player.HdvID, player.Id, itemID, packet.Quantity, statBuffs, packet.Price, expireTime);
                         DbInterface.GetPlayerContext().HDV.Add(nHDV);
                         PacketSender.SendChatMsg(player, "Your item is succesfully listed", CustomColors.Alerts.Accepted);
                         PacketSender.SendAddHDVItem(player, player.HdvID, nHDV);

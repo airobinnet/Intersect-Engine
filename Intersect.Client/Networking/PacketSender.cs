@@ -402,9 +402,9 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new CloseHDVPacket());
         }
 
-        public static void SendAddToHDV(int slot, int quantity, int price)
+        public static void SendAddToHDV(int slot, int quantity, int price, double expires)
         {
-            Network.SendPacket(new AddHDVPacket(slot, Globals.Me.Inventory[slot].StatBuffs, quantity, price));
+            Network.SendPacket(new AddHDVPacket(slot, Globals.Me.Inventory[slot].StatBuffs, quantity, price , expires));
         }
 
         public static void SendActionHDV(Guid hdvItemID, int action)

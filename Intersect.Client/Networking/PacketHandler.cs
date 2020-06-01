@@ -1310,7 +1310,8 @@ namespace Intersect.Client.Networking
                     packet.ItemId,
                     packet.Quantity,
                     packet.StatBuffs,
-                    packet.Price
+                    packet.Price,
+                    packet.Expires
                 )
             );
             if (packet.Update)

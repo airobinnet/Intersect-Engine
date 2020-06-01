@@ -9,7 +9,7 @@ namespace Intersect.Client
 {
 	public class HDV
 	{
-		public HDV(Guid id, string seller, Guid itemid, int quantity, int[] statBuffs, int price)
+		public HDV(Guid id, string seller, Guid itemid, int quantity, int[] statBuffs, int price, double expires)
 		{
 			Id = id;
 			Seller = seller;
@@ -17,6 +17,7 @@ namespace Intersect.Client
 			Quantity = quantity;
 			StatBuffs = statBuffs;
 			Price = price;
+            Expires = expires;
 		}
 
 		public Guid Id { get; set; }
@@ -26,5 +27,6 @@ namespace Intersect.Client
 		public int Quantity { get; set; }
 		public int[] StatBuffs { get; set; } = new int[(int)Enums.Stats.StatCount];
 		public int Price { get; set; }
+        public double Expires { get; set; }
 	}
 }

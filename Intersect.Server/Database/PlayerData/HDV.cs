@@ -22,7 +22,7 @@ namespace Intersect.Server.Database.PlayerData
 
 		}
 
-		public HDV(Guid hdv, Guid seller, Guid itemid, int quantity, int[] statBuffs, int price)
+		public HDV(Guid hdv, Guid seller, Guid itemid, int quantity, int[] statBuffs, int price, double expires)
 		{
 			HDVId = hdv;
 			SellerId = seller;
@@ -30,6 +30,7 @@ namespace Intersect.Server.Database.PlayerData
 			Quantity = quantity;
 			StatBuffs = statBuffs;
 			Price = price;
+            Expires = expires;
 		}
 
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -55,12 +56,14 @@ namespace Intersect.Server.Database.PlayerData
 		public int[] StatBuffs { get; set; } = new int[(int)Enums.Stats.StatCount];
 
 
-		public int Price { get; set; }
+        public int Price { get; set; }
+
+        public double Expires { get; set; }
 
 
-		#region DatabaseRequest
+        #region DatabaseRequest
 
-		public static void DeletePlayer(Guid sellerDeleted)
+        public static void DeletePlayer(Guid sellerDeleted)
 		{
 			lock (DbInterface.GetPlayerContextLock())
 			{

@@ -34,14 +34,16 @@ namespace Intersect.Client.Interface.Game.HDV
 		private Button searchButton;
         private ComboBox searchCB;
         private ComboBox orderCB;
+        private ComboBox expiracyCB;
 
 
         // Sell
         private HDVSellItem mSellItem;
 		private Label mQuantity;
 		private TextBoxNumeric mQuantityTextBoxNumeric;
-		private Label mPrice;
-		private TextBoxNumeric mPriceTextBoxNumeric;
+        private Label mPrice;
+        private Label mExpiracy;
+        private TextBoxNumeric mPriceTextBoxNumeric;
 		private Button mToSellButton;
 
 		public int X { get => mWindow.X; }
@@ -55,6 +57,7 @@ namespace Intersect.Client.Interface.Game.HDV
         private int searchMode = -1;
         private int sortMode = 0;
         private string searchKey = "";
+        private int expiracyTimeChoice = 0;
 
 		private List<Client.HDV> itemList {
 			get
@@ -171,6 +174,16 @@ namespace Intersect.Client.Interface.Game.HDV
             orderCB.AddItem("Sort by Name", "", 3);
             orderCB.ItemSelected += orderCB_Selected;
 
+            mExpiracy = new Label(mWindow, "Expiration")
+            {
+                Text = "Expiration"
+            };
+            expiracyCB = new ComboBox(mWindow, "expiracyCB");
+            expiracyCB.AddItem("6h", "", 0);
+            expiracyCB.AddItem("12h", "", 1);
+            expiracyCB.AddItem("24h", "", 2);
+            expiracyCB.ItemSelected += expiracyCB_Selected;
+
             mWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 			mHdvObject = new List<HDVItem>();
 			page = 0;
@@ -195,6 +208,12 @@ namespace Intersect.Client.Interface.Game.HDV
 			UpdateHDV();
 		}
 
+        private void expiracyCB_Selected(Base sender, ItemSelectedEventArgs arguments)
+        {
+            expiracyTimeChoice = (int)arguments.SelectedItem.UserData;
+            UpdateHDV();
+        }
+
         private void orderCB_Selected(Base sender, ItemSelectedEventArgs arguments)
         {
             sortMode = (int)arguments.SelectedItem.UserData;
@@ -208,8 +227,25 @@ namespace Intersect.Client.Interface.Game.HDV
 				return;
 			int price = (int)mPriceTextBoxNumeric.Value;
 			if (price <= 0) price = 1;
-			PacketSender.SendAddToHDV(mSellItem.GetSlot(), UpdateQuantity((int)mQuantityTextBoxNumeric.Value), price);
-			mSellItem.SetSlot(-1);
+            /*if (expiracyTimeChoice == 0)
+            {
+                //expiracyTime = 21600000;
+                expiracyTime = 60000;
+            }
+            if (expiracyTimeChoice == 1)
+            {
+                //expiracyTime = 43200000;
+                expiracyTime = 600000;
+            }
+            if (expiracyTimeChoice == 2)
+            {
+                //expiracyTime = 86400000;
+                expiracyTime = 360000;
+            }*/
+            //MOVE THIS SERVERSIDE!!!!!!!
+            //PacketSender.SendAddToHDV(mSellItem.GetSlot(), UpdateQuantity((int)mQuantityTextBoxNumeric.Value), price, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + expiracyTime);
+            PacketSender.SendAddToHDV(mSellItem.GetSlot(), UpdateQuantity((int)mQuantityTextBoxNumeric.Value), price, expiracyTimeChoice);
+            mSellItem.SetSlot(-1);
 			sellMode = false;
 			mBuySellButton.SetText("Sell");
 			UpdateHDV();
@@ -345,6 +381,7 @@ namespace Intersect.Client.Interface.Game.HDV
 			searchButton.Hide();
             searchCB.Hide();
             orderCB.Hide();
+            expiracyCB.Hide();
 
             mSellItem.Container.Hide();
 			mQuantity.Hide();
@@ -352,6 +389,7 @@ namespace Intersect.Client.Interface.Game.HDV
 			mPrice.Hide();
 			mPriceTextBoxNumeric.Hide();
 			mToSellButton.Hide();
+            mExpiracy.Hide();
 
 
 
@@ -370,6 +408,8 @@ namespace Intersect.Client.Interface.Game.HDV
 				mPrice.Show();
 				mPriceTextBoxNumeric.Show();
 				mToSellButton.Show();
+                expiracyCB.Show();
+                mExpiracy.Show();
 
 				mPageLabel.SetText($"{(page + 1)} / {pageNB}");
 
@@ -386,7 +426,7 @@ namespace Intersect.Client.Interface.Game.HDV
 			List<Client.HDV> items = itemList;
             if (sortMode == 0)
             {
-                items = itemList;
+                items = itemList.OrderBy(o => o.Expires).ToList();
             }
             if (sortMode == 1)
             {
