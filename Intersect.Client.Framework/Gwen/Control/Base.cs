@@ -1888,7 +1888,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             if (mChildren.Count > 0)
             {
                 //Now render my kids
-                foreach (var child in mChildren)
+                foreach (var child in mChildren.ToArray())
                 {
                     if (child.IsHidden)
                     {
@@ -2290,7 +2290,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             bounds.Y += mPadding.Top;
             bounds.Height -= mPadding.Top + mPadding.Bottom;
 
-            foreach (var child in mChildren)
+            foreach (var child in mChildren.ToArray())
             {
                 if (child.IsHidden)
                 {
@@ -2609,7 +2609,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         {
             var size = Point.Empty;
 
-            foreach (var child in mChildren)
+            foreach (var child in mChildren.ToArray())
             {
                 if (child.IsHidden)
                 {

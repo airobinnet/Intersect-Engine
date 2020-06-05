@@ -302,7 +302,7 @@ namespace Intersect.Client.Framework.Gwen.Control
 
             // align bottoms. this is still not ideal, need to take font metrics into account.
             Base prev = null;
-            foreach (var child in Children)
+            foreach (var child in Children.ToArray())
             {
                 if (prev != null && child.Y == prev.Y)
                 {

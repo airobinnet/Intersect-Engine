@@ -25,6 +25,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mEventEditor = editor;
             InitLocalization();
             txtShowText.Text = mMyCommand.Text;
+            chkDialogue.Checked = refCommand.Dialogue;
             cmbFace.Items.Clear();
             cmbFace.Items.Add(Strings.General.none);
             cmbFace.Items.AddRange(GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Face));
@@ -66,6 +67,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         {
             mMyCommand.Text = txtShowText.Text;
             mMyCommand.Face = TextUtils.SanitizeNone(cmbFace?.Text);
+            mMyCommand.Dialogue = chkDialogue.Checked;
             mEventEditor.FinishCommandEdit();
         }
 

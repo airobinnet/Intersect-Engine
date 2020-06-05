@@ -46,7 +46,7 @@ namespace Intersect.Server.Entities.Events
         )
         {
             PacketSender.SendEventDialog(
-                player, ParseEventText(command.Text, player, instance), command.Face, instance.PageInstance.Id
+                player, ParseEventText(command.Text, player, instance), command.Face, instance.PageInstance.Id, command.Dialogue
             );
 
             stackInfo.WaitingForResponse = CommandInstance.EventResponse.Dialogue;
@@ -66,7 +66,7 @@ namespace Intersect.Server.Entities.Events
             var opt2 = ParseEventText(command.Options[1], player, instance);
             var opt3 = ParseEventText(command.Options[2], player, instance);
             var opt4 = ParseEventText(command.Options[3], player, instance);
-            PacketSender.SendEventDialog(player, txt, opt1, opt2, opt3, opt4, command.Face, instance.PageInstance.Id);
+            PacketSender.SendEventDialog(player, txt, opt1, opt2, opt3, opt4, command.Face, instance.PageInstance.Id, false);
             stackInfo.WaitingForResponse = CommandInstance.EventResponse.Dialogue;
             stackInfo.WaitingOnCommand = command;
             stackInfo.BranchIds = command.BranchIds;

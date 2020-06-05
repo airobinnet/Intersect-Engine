@@ -6,6 +6,8 @@ using Intersect.Client.Framework.Gwen.Control.EventArguments;
 using Intersect.Client.General;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
+using System.Timers;
+using System.Threading.Tasks;
 
 namespace Intersect.Client.Interface.Game
 {
@@ -38,6 +40,12 @@ namespace Intersect.Client.Interface.Game
 
         private Button mEventResponse4;
 
+        private Timer mTimer;
+
+        int counter;
+
+        int len;
+
         //Init
         public EventWindow(Canvas gameCanvas)
         {
@@ -67,6 +75,12 @@ namespace Intersect.Client.Interface.Game
 
             mEventResponse4 = new Button(mEventDialogWindow, "EventResponse4");
             mEventResponse4.Clicked += EventResponse4_Clicked;
+
+            mTimer = new Timer();
+            mTimer.Interval = 20;
+            mTimer.Elapsed += mTimer_Tick;
+            
+
         }
 
         //Update
@@ -158,6 +172,7 @@ namespace Intersect.Client.Interface.Game
                     {
                         mEventFace.Hide();
                         mEventDialogArea.Hide();
+                        mEventDialogLabelNoFace.ClearText();
                         mEventDialogAreaNoFace.Show();
                     }
 
@@ -234,21 +249,65 @@ namespace Intersect.Client.Interface.Game
                     }
                     else
                     {
-                        mEventDialogLabelNoFace.ClearText();
-                        mEventDialogLabelNoFace.Width = mEventDialogAreaNoFace.Width -
-                                                        mEventDialogAreaNoFace.GetVerticalScrollBar().Width;
+                        if (Globals.EventDialogs[0].isDialog)
+                        {
+                            len = Globals.EventDialogs[0].Prompt.Length;
+                            mTimer.Start();
+                        } else
+                        {
+                            mEventDialogLabelNoFace.ClearText();
+                            mEventDialogLabelNoFace.Width = mEventDialogAreaNoFace.Width -
+                                                            mEventDialogAreaNoFace.GetVerticalScrollBar().Width;
 
-                        mEventDialogLabelNoFace.AddText(
-                            Globals.EventDialogs[0].Prompt, mEventDialogLabelNoFaceTemplate.TextColor,
-                            mEventDialogLabelNoFaceTemplate.CurAlignments.Count > 0
-                                ? mEventDialogLabelNoFaceTemplate.CurAlignments[0]
-                                : Alignments.Left, mEventDialogLabelNoFaceTemplate.Font
-                        );
+                            mEventDialogLabelNoFace?.AddText(
+                                Globals.EventDialogs[0].Prompt, mEventDialogLabelNoFaceTemplate.TextColor,
+                                mEventDialogLabelNoFaceTemplate.CurAlignments.Count > 0
+                                    ? mEventDialogLabelNoFaceTemplate.CurAlignments[0]
+                                    : Alignments.Left, mEventDialogLabelNoFaceTemplate.Font
+                            );
 
-                        mEventDialogLabelNoFace.SizeToChildren(false, true);
-                        mEventDialogAreaNoFace.ScrollToTop();
+                            mEventDialogLabelNoFace.SizeToChildren(false, true);
+                            mEventDialogAreaNoFace.ScrollToTop();
+                        }
                     }
                 }
+            }
+        }
+
+        private void mTimer_Tick(object sender, ElapsedEventArgs elapsedEventArg)
+        {
+            counter++;
+            if (counter > len)
+            {
+                mEventDialogLabelNoFace.ClearText();
+                mEventDialogLabelNoFace.Width = mEventDialogAreaNoFace.Width -
+                                                mEventDialogAreaNoFace.GetVerticalScrollBar().Width;
+                mEventDialogLabelNoFace.AddText(
+                    Globals.EventDialogs[0].Prompt, mEventDialogLabelNoFaceTemplate.TextColor,
+                    mEventDialogLabelNoFaceTemplate.CurAlignments.Count > 0
+                        ? mEventDialogLabelNoFaceTemplate.CurAlignments[0]
+                        : Alignments.Left, mEventDialogLabelNoFaceTemplate.Font
+                );
+                //mEventDialogLabelNoFace.SizeToChildren(false, true);
+                //mEventDialogAreaNoFace.ScrollToTop();
+                counter = 0;
+                mTimer.Stop();
+            }
+
+            else
+            {
+                mEventDialogLabelNoFace.ClearText();
+                mEventDialogLabelNoFace.Width = mEventDialogAreaNoFace.Width -
+                                                mEventDialogAreaNoFace.GetVerticalScrollBar().Width;
+
+                mEventDialogLabelNoFace?.AddText(
+                    Globals.EventDialogs[0].Prompt.Substring(0, counter), mEventDialogLabelNoFaceTemplate.TextColor,
+                    mEventDialogLabelNoFaceTemplate.CurAlignments.Count > 0
+                        ? mEventDialogLabelNoFaceTemplate.CurAlignments[0]
+                        : Alignments.Left, mEventDialogLabelNoFaceTemplate.Font
+                );
+
+                mEventDialogLabelNoFace.SizeToChildren(false, true);             
             }
         }
 
@@ -262,6 +321,9 @@ namespace Intersect.Client.Interface.Game
             }
 
             PacketSender.SendEventResponse(4, ed);
+            mTimer.Stop();
+            counter = 0;
+            mEventDialogLabelNoFace.ClearText();
             mEventDialogWindow.RemoveModal();
             mEventDialogWindow.IsHidden = true;
             ed.ResponseSent = 1;
@@ -276,6 +338,9 @@ namespace Intersect.Client.Interface.Game
             }
 
             PacketSender.SendEventResponse(3, ed);
+            mTimer.Stop();
+            counter = 0;
+            mEventDialogLabelNoFace.ClearText();
             mEventDialogWindow.RemoveModal();
             mEventDialogWindow.IsHidden = true;
             ed.ResponseSent = 1;
@@ -290,6 +355,9 @@ namespace Intersect.Client.Interface.Game
             }
 
             PacketSender.SendEventResponse(2, ed);
+            mTimer.Stop();
+            counter = 0;
+            mEventDialogLabelNoFace.ClearText();
             mEventDialogWindow.RemoveModal();
             mEventDialogWindow.IsHidden = true;
             ed.ResponseSent = 1;
@@ -304,6 +372,9 @@ namespace Intersect.Client.Interface.Game
             }
 
             PacketSender.SendEventResponse(1, ed);
+            mTimer.Stop();
+            counter = 0;
+            mEventDialogLabelNoFace.ClearText();
             mEventDialogWindow.RemoveModal();
             mEventDialogWindow.IsHidden = true;
             ed.ResponseSent = 1;

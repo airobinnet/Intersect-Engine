@@ -24,6 +24,8 @@ namespace Intersect.Client.Entities.Events
 
         public int Type;
 
+        public bool isDialog;
+
     }
 
 }

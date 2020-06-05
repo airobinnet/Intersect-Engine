@@ -44,6 +44,8 @@ namespace Intersect.GameObjects.Events.Commands
 
         public string Face { get; set; } = "";
 
+        public bool Dialogue { get; set; } = false;
+
     }
 
     public class ShowOptionsCommand : EventCommand
