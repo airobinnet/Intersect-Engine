@@ -380,7 +380,13 @@ namespace Intersect.Client.Networking
 
         public static void SendMail(string to, string title, string message, int slotID, int quantity)
         {
-            Network.SendPacket(new MailBoxSendPacket(to, title, message, slotID, quantity, Globals.Me.Inventory[slotID].StatBuffs));
+            if (slotID != -1)
+            {
+                Network.SendPacket(new MailBoxSendPacket(to, title, message, slotID, quantity, Globals.Me.Inventory[slotID].StatBuffs));
+            } else
+            {
+                Network.SendPacket(new MailBoxSendPacket(to, title, message, slotID, quantity, new int[(int)Enums.Stats.StatCount]));
+            }
         }
 
         public static void SendCloseMail()

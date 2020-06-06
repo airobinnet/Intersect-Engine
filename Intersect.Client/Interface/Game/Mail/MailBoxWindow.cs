@@ -10,6 +10,7 @@ using Intersect.Client.General;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.GameObjects;
+using System.Linq;
 
 namespace Intersect.Client.Interface.Game.Mail
 {
@@ -126,7 +127,8 @@ namespace Intersect.Client.Interface.Game.Mail
 		{
 			mMailListBox.RemoveAllRows();
 			mMailListBox.ScrollToTop();
-			foreach (Client.Mail mail in Globals.Mails)
+            Globals.Mails = Globals.Mails.OrderByDescending(o => o.MailID).ToList();
+            foreach (Client.Mail mail in Globals.Mails)
 			{
 				var row = mMailListBox.AddRow(mail.Name.Trim(), "", mail);
 				row.SetTextColor(Color.White);

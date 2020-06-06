@@ -1415,11 +1415,13 @@ namespace Intersect.Server.Networking
 
         public static void SendOpenMailBox(Player player)
         {
+            MailBox.GetMails(DbInterface.GetPlayerContext(), player);
             // TODO : Mail List
             List<MailBoxUpdatePacket> mails = new List<MailBoxUpdatePacket>();
 
             foreach (MailBox mail in player.MailBoxs)
             {
+                //DbInterface.GetPlayerContext().Player_MailBox.Add(mail);
                 MailBoxUpdatePacket m = new MailBoxUpdatePacket(mail.Id, mail.Title, mail.Message, mail.Sender.Name, mail.ItemId, mail.Quantity);
                 mails.Add(m);
             }

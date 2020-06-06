@@ -1529,7 +1529,6 @@ namespace Intersect.Server.Networking
             {
                 return;
             }
-
             player.CloseMailBox();
         }
 
@@ -1615,8 +1614,10 @@ namespace Intersect.Server.Networking
             if (mail.ItemId == Guid.Empty || mail.Quantity < 1)
             {
                 player.MailBoxs.Remove(mail);
+                DbInterface.GetPlayerContext().Player_MailBox.Remove(mail);
                 PacketSender.SendOpenMailBox(player);
                 DbInterface.SavePlayerDatabaseAsync();
+                player.CloseMailBox();
                 return;
             }
             Item item = new Item(mail.ItemId, mail.Quantity, false);
@@ -1625,9 +1626,11 @@ namespace Intersect.Server.Networking
             {
                 var it = ItemBase.Get(mail.ItemId);
                 player.MailBoxs.Remove(mail);
+                DbInterface.GetPlayerContext().Player_MailBox.Remove(mail);
                 PacketSender.SendChatMsg(player, $"{Strings.Mails.receiveitem} ({it?.Name})!", CustomColors.Chat.PartyChat);
                 PacketSender.SendOpenMailBox(player);
                 DbInterface.SavePlayerDatabaseAsync();
+                player.CloseMailBox();
             }
             else
             {
