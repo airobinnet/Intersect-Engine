@@ -255,6 +255,20 @@ namespace Intersect.Client.Interface.Game
                     {
                         if (Globals.EventDialogs[0].isDialog)
                         {
+                            mEventDialogLabel.ClearText();
+                            mEventDialogLabel.Width = mEventDialogArea.Width -
+                                                      mEventDialogArea.GetVerticalScrollBar().Width;
+
+                            mEventDialogLabel.AddText(
+                                "", mEventDialogLabelTemplate.TextColor,
+                                mEventDialogLabelTemplate.CurAlignments.Count > 0
+                                    ? mEventDialogLabelTemplate.CurAlignments[0]
+                                    : Alignments.Left, mEventDialogLabelTemplate.Font
+                            );
+
+                            mEventDialogLabel.SizeToChildren(false, true);
+                            mEventDialogArea.ScrollToTop();
+                            len = Globals.EventDialogs[0].Prompt.Length;
                             mTimerFace.Start();
                         }
                         else
@@ -278,6 +292,19 @@ namespace Intersect.Client.Interface.Game
                     {
                         if (Globals.EventDialogs[0].isDialog)
                         {
+                            mEventDialogLabelNoFace.ClearText();
+                            mEventDialogLabelNoFace.Width = mEventDialogAreaNoFace.Width -
+                                                            mEventDialogAreaNoFace.GetVerticalScrollBar().Width;
+
+                            mEventDialogLabelNoFace?.AddText(
+                                "", mEventDialogLabelNoFaceTemplate.TextColor,
+                                mEventDialogLabelNoFaceTemplate.CurAlignments.Count > 0
+                                    ? mEventDialogLabelNoFaceTemplate.CurAlignments[0]
+                                    : Alignments.Left, mEventDialogLabelNoFaceTemplate.Font
+                            );
+
+                            mEventDialogLabelNoFace.SizeToChildren(false, true);
+                            mEventDialogAreaNoFace.ScrollToTop();
                             len = Globals.EventDialogs[0].Prompt.Length;
                             mTimer.Start();
                         } else
