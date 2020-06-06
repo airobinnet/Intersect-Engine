@@ -42,6 +42,8 @@ namespace Intersect.Client.Interface.Game
 
         private Timer mTimer;
 
+        private Timer mTimerFace;
+
         int counter;
 
         int len;
@@ -79,7 +81,11 @@ namespace Intersect.Client.Interface.Game
             mTimer = new Timer();
             mTimer.Interval = 20;
             mTimer.Elapsed += mTimer_Tick;
-            
+
+            mTimerFace = new Timer();
+            mTimerFace.Interval = 20;
+            mTimerFace.Elapsed += mTimerFace_Tick;
+
 
         }
 
@@ -233,19 +239,27 @@ namespace Intersect.Client.Interface.Game
 
                     if (faceTex != null)
                     {
-                        mEventDialogLabel.ClearText();
-                        mEventDialogLabel.Width = mEventDialogArea.Width -
-                                                  mEventDialogArea.GetVerticalScrollBar().Width;
+                        if (Globals.EventDialogs[0].isDialog)
+                        {
+                            len = Globals.EventDialogs[0].Prompt.Length;
+                            mTimerFace.Start();
+                        }
+                        else
+                        {
+                            mEventDialogLabel.ClearText();
+                            mEventDialogLabel.Width = mEventDialogArea.Width -
+                                                      mEventDialogArea.GetVerticalScrollBar().Width;
 
-                        mEventDialogLabel.AddText(
-                            Globals.EventDialogs[0].Prompt, mEventDialogLabelTemplate.TextColor,
-                            mEventDialogLabelTemplate.CurAlignments.Count > 0
-                                ? mEventDialogLabelTemplate.CurAlignments[0]
-                                : Alignments.Left, mEventDialogLabelTemplate.Font
-                        );
+                            mEventDialogLabel.AddText(
+                                Globals.EventDialogs[0].Prompt, mEventDialogLabelTemplate.TextColor,
+                                mEventDialogLabelTemplate.CurAlignments.Count > 0
+                                    ? mEventDialogLabelTemplate.CurAlignments[0]
+                                    : Alignments.Left, mEventDialogLabelTemplate.Font
+                            );
 
-                        mEventDialogLabel.SizeToChildren(false, true);
-                        mEventDialogArea.ScrollToTop();
+                            mEventDialogLabel.SizeToChildren(false, true);
+                            mEventDialogArea.ScrollToTop();
+                        }
                     }
                     else
                     {
@@ -289,7 +303,7 @@ namespace Intersect.Client.Interface.Game
                         : Alignments.Left, mEventDialogLabelNoFaceTemplate.Font
                 );
                 //mEventDialogLabelNoFace.SizeToChildren(false, true);
-                //mEventDialogAreaNoFace.ScrollToTop();
+                mEventDialogAreaNoFace.ScrollToBottom();
                 counter = 0;
                 mTimer.Stop();
             }
@@ -306,8 +320,53 @@ namespace Intersect.Client.Interface.Game
                         ? mEventDialogLabelNoFaceTemplate.CurAlignments[0]
                         : Alignments.Left, mEventDialogLabelNoFaceTemplate.Font
                 );
+                int x = 6;
+                if (counter % x == 0)
+                {
+                mEventDialogLabelNoFace.SizeToChildren(false, true);
+                mEventDialogAreaNoFace.ScrollToBottom();
+                }    
+            }
+        }
 
-                mEventDialogLabelNoFace.SizeToChildren(false, true);             
+        private void mTimerFace_Tick(object sender, ElapsedEventArgs elapsedEventArg)
+        {
+            counter++;
+            if (counter > len)
+            {
+                mEventDialogLabel.ClearText();
+                mEventDialogLabel.Width = mEventDialogLabel.Width -
+                                                mEventDialogArea.GetVerticalScrollBar().Width;
+                mEventDialogLabel.AddText(
+                    Globals.EventDialogs[0].Prompt, mEventDialogLabelTemplate.TextColor,
+                    mEventDialogLabelTemplate.CurAlignments.Count > 0
+                        ? mEventDialogLabelTemplate.CurAlignments[0]
+                        : Alignments.Left, mEventDialogLabelTemplate.Font
+                );
+                //mEventDialogLabelNoFace.SizeToChildren(false, true);
+                mEventDialogArea.ScrollToBottom();
+                counter = 0;
+                mTimerFace.Stop();
+            }
+
+            else
+            {
+                mEventDialogLabel.ClearText();
+                mEventDialogLabel.Width = mEventDialogArea.Width -
+                                                mEventDialogArea.GetVerticalScrollBar().Width;
+
+                mEventDialogLabel?.AddText(
+                    Globals.EventDialogs[0].Prompt.Substring(0, counter), mEventDialogLabelTemplate.TextColor,
+                    mEventDialogLabelTemplate.CurAlignments.Count > 0
+                        ? mEventDialogLabelTemplate.CurAlignments[0]
+                        : Alignments.Left, mEventDialogLabelTemplate.Font
+                );
+                int x = 6;
+                if (counter % x == 0)
+                {
+                    mEventDialogLabel.SizeToChildren(false, true);
+                    mEventDialogArea.ScrollToBottom();
+                }
             }
         }
 
@@ -322,6 +381,7 @@ namespace Intersect.Client.Interface.Game
 
             PacketSender.SendEventResponse(4, ed);
             mTimer.Stop();
+            mTimerFace.Stop();
             counter = 0;
             mEventDialogLabelNoFace.ClearText();
             mEventDialogWindow.RemoveModal();
@@ -339,6 +399,7 @@ namespace Intersect.Client.Interface.Game
 
             PacketSender.SendEventResponse(3, ed);
             mTimer.Stop();
+            mTimerFace.Stop();
             counter = 0;
             mEventDialogLabelNoFace.ClearText();
             mEventDialogWindow.RemoveModal();
@@ -356,6 +417,7 @@ namespace Intersect.Client.Interface.Game
 
             PacketSender.SendEventResponse(2, ed);
             mTimer.Stop();
+            mTimerFace.Stop();
             counter = 0;
             mEventDialogLabelNoFace.ClearText();
             mEventDialogWindow.RemoveModal();
@@ -373,6 +435,7 @@ namespace Intersect.Client.Interface.Game
 
             PacketSender.SendEventResponse(1, ed);
             mTimer.Stop();
+            mTimerFace.Stop();
             counter = 0;
             mEventDialogLabelNoFace.ClearText();
             mEventDialogWindow.RemoveModal();

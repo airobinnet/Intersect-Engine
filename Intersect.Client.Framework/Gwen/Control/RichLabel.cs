@@ -258,7 +258,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             var y = 0;
             var lineHeight = -1;
 
-            foreach (var block in mTextBlocks)
+            foreach (var block in mTextBlocks.ToArray())
             {
                 if (block.Type == BlockType.NewLine)
                 {

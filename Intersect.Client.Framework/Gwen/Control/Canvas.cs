@@ -227,7 +227,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         {
             //if (m_DisposeQueue.Count > 0)
             //    System.Diagnostics.//debug.print("Canvas.ProcessDelayedDeletes: {0} items", m_DisposeQueue.Count);
-            foreach (var control in mDisposeQueue)
+            foreach (var control in mDisposeQueue.ToArray())
             {
                 control.Dispose();
             }
