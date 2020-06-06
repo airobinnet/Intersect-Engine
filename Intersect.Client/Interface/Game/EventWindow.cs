@@ -87,7 +87,20 @@ namespace Intersect.Client.Interface.Game
             mTimerFace = new Timer();
             mTimerFace.Interval = 20;
             mTimerFace.Elapsed += mTimerFace_Tick;
-
+            mEventDialogLabel.AddText(
+                                "", mEventDialogLabelTemplate.TextColor,
+                                mEventDialogLabelTemplate.CurAlignments.Count > 0
+                                    ? mEventDialogLabelTemplate.CurAlignments[0]
+                                    : Alignments.Left, mEventDialogLabelTemplate.Font
+                            );
+            mEventDialogLabelNoFace.AddText(
+                        "", mEventDialogLabelTemplate.TextColor,
+                        mEventDialogLabelTemplate.CurAlignments.Count > 0
+                            ? mEventDialogLabelTemplate.CurAlignments[0]
+                            : Alignments.Left, mEventDialogLabelTemplate.Font
+                    );
+            mEventDialogLabel.ClearText();
+            mEventDialogLabelNoFace.ClearText();
         }
 
         //Update
@@ -285,11 +298,11 @@ namespace Intersect.Client.Interface.Game
                         }
                     }                    
                 }
-                if (Controls.KeyDown(Control.AttackInteract) && !mTimer.Enabled && counter >= len)
+                if (Controls.KeyDown(Control.AttackInteract) && !mTimer.Enabled && counter > len && !mEventDialogWindow.IsHidden)
                 {
                     EventResponse1_Clicked(null, null);
                 }
-                if (Controls.KeyDown(Control.AttackInteract) && !mTimerFace.Enabled && counter >= len)
+                if (Controls.KeyDown(Control.AttackInteract) && !mTimerFace.Enabled && counter > len && !mEventDialogWindow.IsHidden)
                 {
                     EventResponse1_Clicked(null, null);
                 }
@@ -305,7 +318,7 @@ namespace Intersect.Client.Interface.Game
                 counter = len;
             }
 
-            if (counter >= len)
+            if (counter == len)
             {
                 mEventDialogLabelNoFace.ClearText();
                 mEventDialogLabelNoFace.Width = mEventDialogAreaNoFace.Width -
@@ -318,7 +331,7 @@ namespace Intersect.Client.Interface.Game
                 );
                 mEventDialogLabelNoFace.SizeToChildren(false, true);
                 mEventDialogAreaNoFace.ScrollToBottom();
-                //counter = 0;
+                counter++;
                 mTimer.Stop();
                 mTimer.Enabled = false;
             }
@@ -355,7 +368,7 @@ namespace Intersect.Client.Interface.Game
                 counter = len;
             }
 
-            if (counter >= len)
+            if (counter == len)
             {
                 mEventDialogLabel.ClearText();
                 mEventDialogLabel.Width = mEventDialogLabel.Width -
@@ -368,7 +381,7 @@ namespace Intersect.Client.Interface.Game
                 );
                 mEventDialogLabel.SizeToChildren(false, true);
                 mEventDialogArea.ScrollToBottom();
-                //counter = 0;
+                counter++;
                 mTimerFace.Stop();
                 mTimerFace.Enabled = false;
             }
