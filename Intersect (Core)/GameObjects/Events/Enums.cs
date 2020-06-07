@@ -224,10 +224,6 @@
         //Player Label
         PlayerLabel,
 
-        SendMail = 440,
-        OpenMailBox = 441,
-        HDV = 447,
-
         //Combat Text
         AddCombatText,
 
@@ -242,6 +238,10 @@
 
         // Take Items By tag
         ChangeItemsByTag,
+
+        SendMail = 440,
+        OpenMailBox = 441,
+        HDV = 447,
 
     }
 

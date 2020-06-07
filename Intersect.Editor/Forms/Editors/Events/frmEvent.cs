@@ -729,6 +729,7 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.FriendlySpells:
                     tmpCommand = new FriendlySpellsCommand();
+
                     break;
                 case EventCommandType.SendMail:
                     tmpCommand = new SendMailBoxCommand();
