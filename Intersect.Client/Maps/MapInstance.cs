@@ -648,9 +648,17 @@ namespace Intersect.Client.Maps
 
         public void DrawItemsAndLights()
         {
+            int i = 0;
             //Draw Map Items
             foreach (var item in MapItems)
             {
+                if (i < 3)
+                {
+                    i++;
+                } else
+                {
+                    i = 0;
+                }
                 // Are we allowed to see and pick this item up?
                 if (!item.Value.VisibleToAll && item.Value.Owner != Globals.Me.Id && !Globals.Me.IsInMyParty(item.Value.Owner))
                 {
@@ -664,6 +672,15 @@ namespace Intersect.Client.Maps
                     var itemTex = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Item, itemBase.Icon);
                     if (itemTex != null)
                     {
+                        var textSize = Graphics.Renderer.MeasureText(ItemBase.GetName(item.Value.ItemId), Graphics.EntityNameFont, 1);
+                        var rarity = CustomColors.Items.Rarities.ContainsKey(itemBase.Rarity)
+                        ? CustomColors.Items.Rarities[itemBase.Rarity]
+                        : Color.White;
+                        Graphics.Renderer.DrawString(
+                            ItemBase.GetName(item.Value.ItemId) + " x" + item.Value.Quantity, Graphics.EntityNameFont, (int)(GetX() + item.Value.X * Options.TileWidth - (int)Math.Ceiling(textSize.X / 2f)), (int)GetY() + item.Value.Y * Options.TileHeight -  (20+i*10), 1,
+                            Color.FromArgb(rarity.ToArgb()), true, null,
+                            Color.FromArgb(CustomColors.Names.Events.Outline.ToArgb())
+                        );
                         Graphics.DrawGameTexture(
                             itemTex, new FloatRect(0, 0, itemTex.GetWidth(), itemTex.GetHeight()),
                             new FloatRect(
