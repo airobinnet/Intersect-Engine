@@ -17,6 +17,7 @@ using Intersect.GameObjects;
 using Intersect.GameObjects.Maps;
 using Intersect.Network.Packets.Server;
 using Intersect.Utilities;
+using MonoGame.Framework.Utilities;
 
 using JetBrains.Annotations;
 
@@ -672,15 +673,24 @@ namespace Intersect.Client.Maps
                     var itemTex = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Item, itemBase.Icon);
                     if (itemTex != null)
                     {
-                        var textSize = Graphics.Renderer.MeasureText(ItemBase.GetName(item.Value.ItemId), Graphics.EntityNameFont, 1);
-                        var rarity = CustomColors.Items.Rarities.ContainsKey(itemBase.Rarity)
-                        ? CustomColors.Items.Rarities[itemBase.Rarity]
-                        : Color.White;
-                        Graphics.Renderer.DrawString(
-                            ItemBase.GetName(item.Value.ItemId) + " x" + item.Value.Quantity, Graphics.EntityNameFont, (int)(GetX() + item.Value.X * Options.TileWidth - (int)Math.Ceiling(textSize.X / 2f)), (int)GetY() + item.Value.Y * Options.TileHeight -  (20+i*10), 1,
-                            Color.FromArgb(rarity.ToArgb()), true, null,
-                            Color.FromArgb(CustomColors.Names.Events.Outline.ToArgb())
-                        );
+                        var x = (int)Math.Floor(Globals.InputManager.GetMousePosition().X + Graphics.CurrentView.Left);
+                        var y = (int)Math.Floor(Globals.InputManager.GetMousePosition().Y + Graphics.CurrentView.Top);
+                        var xleftitem = GetX() + item.Value.X * Options.TileWidth;
+                        var xrightitem = xleftitem + Options.TileWidth;
+                        var ytopitem = GetY() + item.Value.Y * Options.TileHeight;
+                        var ybottomitem = ytopitem - Options.TileHeight;
+                        if (x > xleftitem && x < xrightitem && y - Options.TileHeight < ytopitem && y - Options.TileHeight > ybottomitem)
+                        {
+                            var textSize = Graphics.Renderer.MeasureText(ItemBase.GetName(item.Value.ItemId), Graphics.EntityNameFont, 1);
+                            var rarity = CustomColors.Items.Rarities.ContainsKey(itemBase.Rarity)
+                            ? CustomColors.Items.Rarities[itemBase.Rarity]
+                            : Color.White;
+                            Graphics.Renderer.DrawString(
+                                ItemBase.GetName(item.Value.ItemId) + " x" + item.Value.Quantity, Graphics.EntityNameFont, (int)(GetX() + item.Value.X * Options.TileWidth - (int)Math.Ceiling(textSize.X / 2f)), (int)GetY() + item.Value.Y * Options.TileHeight - (20 + i * 10), 1,
+                                Color.FromArgb(rarity.ToArgb()), true, null,
+                                Color.FromArgb(CustomColors.Names.Events.Outline.ToArgb())
+                            );
+                        }
                         Graphics.DrawGameTexture(
                             itemTex, new FloatRect(0, 0, itemTex.GetWidth(), itemTex.GetHeight()),
                             new FloatRect(
