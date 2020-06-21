@@ -125,6 +125,8 @@ namespace Intersect.Server.Entities
         [NotMapped]
         public long ExperienceToNextLevel => GetExperienceToNextLevel(Level);
 
+        public Guid emptyguid;
+
         public static Player FindOnline(Guid id)
         {
             return OnlinePlayers.ContainsKey(id) ? OnlinePlayers[id] : null;
@@ -4207,8 +4209,18 @@ namespace Intersect.Server.Entities
                     {
                         PacketSender.SendPlayerSpellUpdate(this, i);
                         PacketSender.SendActionMsg(this, "New Skill learned: " + SpellBase.Get(Spells[i].SpellId).Name, Color.LightCoral);
-                    }
 
+                        // put skill in hotbar if a slot is available
+                        for (var j = 0; j < Options.MaxHotbar; j++)
+                        {
+                            if (Hotbar[j].ItemOrSpellId == emptyguid)
+                            {
+                                Hotbar[j].ItemOrSpellId = Spells[i].SpellId;
+                                j = Options.MaxHotbar;
+                                PacketSender.SendHotbarSlots(this);
+                            }
+                        }
+                    }
                     return true;
                 }
             }
