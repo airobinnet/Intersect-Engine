@@ -681,12 +681,12 @@ namespace Intersect.Client.Maps
                         var ybottomitem = ytopitem - Options.TileHeight;
                         if (x > xleftitem && x < xrightitem && y - Options.TileHeight < ytopitem && y - Options.TileHeight > ybottomitem)
                         {
-                            var textSize = Graphics.Renderer.MeasureText(ItemBase.GetName(item.Value.ItemId), Graphics.EntityNameFont, 1);
+                            var textSize = Graphics.Renderer.MeasureText(ItemBase.GetName(item.Value.ItemId) + " x" + item.Value.Quantity, Graphics.EntityNameFont, 1);
                             var rarity = CustomColors.Items.Rarities.ContainsKey(itemBase.Rarity)
                             ? CustomColors.Items.Rarities[itemBase.Rarity]
                             : Color.White;
                             Graphics.Renderer.DrawString(
-                                ItemBase.GetName(item.Value.ItemId) + " x" + item.Value.Quantity, Graphics.EntityNameFont, (int)(GetX() + item.Value.X * Options.TileWidth - (int)Math.Ceiling(textSize.X / 2f)), (int)GetY() + item.Value.Y * Options.TileHeight - (20 + i * 10), 1,
+                                ItemBase.GetName(item.Value.ItemId) + " x" + item.Value.Quantity, Graphics.EntityNameFont, (int)(GetX() + item.Value.X * Options.TileWidth - (int)Math.Ceiling(textSize.X / 3f)), (int)GetY() + item.Value.Y * Options.TileHeight - (20 + i * 10), 1,
                                 Color.FromArgb(rarity.ToArgb()), true, null,
                                 Color.FromArgb(CustomColors.Names.Events.Outline.ToArgb())
                             );
