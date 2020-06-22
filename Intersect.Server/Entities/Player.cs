@@ -5087,6 +5087,7 @@ namespace Intersect.Server.Entities
                                     questProgress.TaskProgress = CountItems(item.Id);
                                     if (questProgress.TaskProgress >= questTask.Quantity)
                                     {
+                                        PacketSender.SendActionMsg(this, "Questitem: " + item.Name + ": " + questProgress.TaskProgress + "/" + questTask.Quantity, Color.ForestGreen);
                                         CompleteQuestTask(questId, questProgress.TaskId);
                                     }
                                     else
@@ -5099,10 +5100,7 @@ namespace Intersect.Server.Entities
                                                 ItemBase.GetName(questTask.TargetId)
                                             )
                                         );
-                                        var rarity = CustomColors.Items.Rarities.ContainsKey(item.Rarity)
-                                        ? CustomColors.Items.Rarities[item.Rarity]
-                                        : Color.White;
-                                        PacketSender.SendActionMsg(this, item.Name, rarity);
+                                        PacketSender.SendActionMsg(this,"Questitem: " + item.Name + ": " + questProgress.TaskProgress + "/" + questTask.Quantity, Color.ForestGreen);
                                     }
                                 }
                             }

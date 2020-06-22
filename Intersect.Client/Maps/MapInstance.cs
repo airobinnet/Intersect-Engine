@@ -691,13 +691,27 @@ namespace Intersect.Client.Maps
                                 Color.FromArgb(CustomColors.Names.Events.Outline.ToArgb())
                             );
                         }
-                        Graphics.DrawGameTexture(
+                        if (item.Value.hasFallen > 0)
+                        {
+                            Graphics.DrawGameTexture(
                             itemTex, new FloatRect(0, 0, itemTex.GetWidth(), itemTex.GetHeight()),
                             new FloatRect(
-                                GetX() + item.Value.X * Options.TileWidth, GetY() + item.Value.Y * Options.TileHeight,
-                                Options.TileWidth, Options.TileHeight
+                            GetX() + item.Value.X * Options.TileWidth, (GetY() + item.Value.Y * Options.TileHeight) - (item.Value.hasFallen * Options.TileHeight),
+                            Options.TileWidth, Options.TileHeight
                             ), Color.White
-                        );
+                            );
+                            item.Value.hasFallen -= 0.2f;
+                        }
+                        else
+                        {
+                            Graphics.DrawGameTexture(
+                            itemTex, new FloatRect(0, 0, itemTex.GetWidth(), itemTex.GetHeight()),
+                            new FloatRect(
+                            GetX() + item.Value.X * Options.TileWidth, GetY() + item.Value.Y * (Options.TileHeight),
+                            Options.TileWidth, Options.TileHeight
+                            ), Color.White
+                            );
+                        }
                     }
                 }
             }

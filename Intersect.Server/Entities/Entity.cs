@@ -2649,6 +2649,27 @@ namespace Intersect.Server.Entities
 
             if (dropitems > 0)
             {
+                //Find tiles to spawn items
+                var tiles = new List<TileHelper>();
+                for (var x = X - Options.ItemDropRange; x <= X + Options.ItemDropRange; x++)
+                {
+                    for (var y = Y - Options.ItemDropRange; y <= Y + Options.ItemDropRange; y++)
+                    {
+                        var tileHelper = new TileHelper(MapId, x, y);
+                        if (tileHelper.TryFix())
+                        {
+                            //Tile is valid.. let's see if its open
+                            var map = MapInstance.Get(tileHelper.GetMapId());
+                            if (map != null)
+                            {
+                                if (!map.TileBlocked(tileHelper.GetX(), tileHelper.GetY()))
+                                {
+                                    tiles.Add(tileHelper);
+                                }
+                            }
+                        }
+                    }
+                }
                 // Drop items
                 for (var n = 0; n < Items.Count; n++)
                 {
@@ -2708,8 +2729,17 @@ namespace Intersect.Server.Entities
                     }
 
                     // Spawn the actual item!
-                    var map = MapInstance.Get(MapId);
-                    map?.SpawnItem(X, Y, item, item.Quantity, lootOwner);
+                    if (tiles.Count > 0)
+                    {
+                        var tile = tiles[Randomization.Next(tiles.Count)];
+                        var map = MapInstance.Get(tile.GetMapId());
+                        map?.SpawnItem(tile.GetX(), tile.GetY(), item, item.Quantity, lootOwner);
+                    }
+                    else
+                    {
+                        var map = MapInstance.Get(MapId);
+                        map?.SpawnItem(X, Y, item, item.Quantity, lootOwner);
+                    }
 
                     // Remove the item from inventory if a player.
                     var player = this as Player;

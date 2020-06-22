@@ -101,6 +101,8 @@ namespace Intersect
 
         public static int RegenTime => Instance.CombatOpts.RegenTime;
 
+        public static int ItemDropRange => Instance.CombatOpts.ItemDropRange;
+
         public static int CombatTime => Instance.CombatOpts.CombatTime;
 
         public static int MinAttackRate => Instance.CombatOpts.MinAttackRate;
