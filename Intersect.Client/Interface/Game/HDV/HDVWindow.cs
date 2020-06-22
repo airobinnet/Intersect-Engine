@@ -472,7 +472,10 @@ namespace Intersect.Client.Interface.Game.HDV
 
 		public void Close()
 		{
-			mWindow.Close();
+            PacketSender.SendCloseHDV();
+            //Interface.GameUi.CloseHDV();
+            mWindow.Close();
+
 		}
 
 

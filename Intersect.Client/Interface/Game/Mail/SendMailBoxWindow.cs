@@ -260,7 +260,8 @@ namespace Intersect.Client.Interface.Game.Mail
 
 		public void Close()
 		{
-			mSendMailBoxWindow.Close();
+            PacketSender.SendCloseMail();
+            mSendMailBoxWindow.Close();
 		}
 
 		public bool IsVisible()

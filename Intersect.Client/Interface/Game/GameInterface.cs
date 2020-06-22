@@ -218,6 +218,8 @@ namespace Intersect.Client.Interface.Game
         public void CloseMailBox()
         {
             mMailBoxWindow?.Hide();
+            mMailBoxWindow?.Close();
+            mMailBoxWindow = null;
             Globals.InMailBox = false;
         }
 
@@ -240,6 +242,8 @@ namespace Intersect.Client.Interface.Game
         public void CloseHDV()
         {
             mHDVWindow?.Hide();
+            mHDVWindow?.Close();
+            mHDVWindow = null;
             Globals.InHDV = false;
         }
 

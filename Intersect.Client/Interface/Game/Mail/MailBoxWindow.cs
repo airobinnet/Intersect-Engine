@@ -123,7 +123,8 @@ namespace Intersect.Client.Interface.Game.Mail
 			PacketSender.SendCloseMail();
 		}
 
-		public void UpdateMail()
+
+        public void UpdateMail()
 		{
 			mMailListBox.RemoveAllRows();
 			mMailListBox.ScrollToTop();
@@ -149,7 +150,8 @@ namespace Intersect.Client.Interface.Game.Mail
 
 		public void Close()
 		{
-			mMailBoxWindow.Close();
+            PacketSender.SendCloseMail();
+            mMailBoxWindow.Close();
 		}
 
 		public bool IsVisible()
