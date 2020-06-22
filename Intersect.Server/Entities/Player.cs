@@ -5091,7 +5091,7 @@ namespace Intersect.Server.Entities
                                     questProgress.TaskProgress = CountItems(item.Id);
                                     if (questProgress.TaskProgress >= questTask.Quantity)
                                     {
-                                        PacketSender.SendActionMsg(this, "Questitem: " + item.Name + ": " + questProgress.TaskProgress + "/" + questTask.Quantity, Color.ForestGreen);
+                                        PacketSender.SendActionMsg(this, "Questitem: " + item.Name + ": " + Math.Min(questProgress.TaskProgress, questTask.Quantity) + "/" + questTask.Quantity, Color.ForestGreen);
                                         CompleteQuestTask(questId, questProgress.TaskId);
                                     }
                                     else
@@ -5104,7 +5104,7 @@ namespace Intersect.Server.Entities
                                                 ItemBase.GetName(questTask.TargetId)
                                             )
                                         );
-                                        PacketSender.SendActionMsg(this,"Questitem: " + item.Name + ": " + questProgress.TaskProgress + "/" + questTask.Quantity, Color.ForestGreen);
+                                        PacketSender.SendActionMsg(this,"Questitem: " + item.Name + ": " + Math.Min(questProgress.TaskProgress, questTask.Quantity) + "/" + questTask.Quantity, Color.ForestGreen);
                                     }
                                 }
                             }

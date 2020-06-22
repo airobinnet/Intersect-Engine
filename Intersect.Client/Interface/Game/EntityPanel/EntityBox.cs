@@ -751,6 +751,8 @@ namespace Intersect.Client.Interface.Game.EntityPanel
                 for (var z = 0; z < Options.PaperdollOrder[1].Count; z++)
                 {
                     var paperdoll = "";
+                    var paperdoll2 = "";
+                    var type2 = GameContentManager.TextureType.Paperdoll;
                     var type = GameContentManager.TextureType.Paperdoll;
                     if (Options.EquipmentSlots.IndexOf(Options.PaperdollOrder[1][z]) > -1 &&
                         equipment.Length == Options.EquipmentSlots.Count)
@@ -761,13 +763,37 @@ namespace Intersect.Client.Interface.Game.EntityPanel
                             if (ItemBase.Get(itemId) != null)
                             {
                                 var itemdata = ItemBase.Get(itemId);
-                                if (MyEntity.Gender == 0)
+                                if (Options.PaperdollOrder[1][z] == Options.Equipment.HairSlot && itemdata.HideHair == false)
                                 {
-                                    paperdoll = itemdata.MalePaperdoll;
+                                    paperdoll = Globals.Me.CustomSpriteLayers[(int)Enums.CustomSpriteLayers.Hair];
+                                    type = GameContentManager.TextureType.Hair;
+                                    // rewrite to display both hair + hat
+                                }
+                                else if (Options.PaperdollOrder[1][z] == Options.Equipment.HairSlot && itemdata.HideHair == true)
+                                {
+                                    if (Globals.Me.Gender == 0)
+                                    {
+                                        paperdoll = itemdata.MalePaperdoll;
+                                        type = GameContentManager.TextureType.Paperdoll;
+                                    }
+                                    else
+                                    {
+                                        paperdoll = itemdata.FemalePaperdoll;
+                                        type = GameContentManager.TextureType.Paperdoll;
+                                    }
                                 }
                                 else
                                 {
-                                    paperdoll = itemdata.FemalePaperdoll;
+                                    if (Globals.Me.Gender == 0)
+                                    {
+                                        paperdoll = itemdata.MalePaperdoll;
+                                        type = GameContentManager.TextureType.Paperdoll;
+                                    }
+                                    else
+                                    {
+                                        paperdoll = itemdata.FemalePaperdoll;
+                                        type = GameContentManager.TextureType.Paperdoll;
+                                    }
                                 }
                             }
                         }
