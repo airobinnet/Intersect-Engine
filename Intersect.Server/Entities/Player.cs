@@ -4213,8 +4213,12 @@ namespace Intersect.Server.Entities
                         // put skill in hotbar if a slot is available
                         for (var j = 0; j < Options.MaxHotbar; j++)
                         {
-                            if (Hotbar[j].ItemOrSpellId == emptyguid)
+                            if (Hotbar[j].ItemOrSpellId == Spells[i].SpellId)
                             {
+                                j = Options.MaxHotbar;
+                            }
+                            else if (Hotbar[j].ItemOrSpellId == emptyguid)
+                            { 
                                 Hotbar[j].ItemOrSpellId = Spells[i].SpellId;
                                 j = Options.MaxHotbar;
                                 PacketSender.SendHotbarSlots(this);
