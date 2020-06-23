@@ -11,7 +11,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Intersect.Client</RootNamespace>
-    <AssemblyName>Intersect Client</AssemblyName>
+    <AssemblyName>Floor 100 Client</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -95,7 +95,7 @@
     <Compile Include="General\Time.cs" />
     <Compile Include="General\Enums.cs" />
     <Compile Include="General\Globals.cs" />
-	<Compile Include="HDV.cs" />
+    <Compile Include="HDV.cs" />
     <Compile Include="Interface\Game\HDV\HDVItem.cs" />
     <Compile Include="Interface\Game\HDV\HDVSellItem.cs" />
     <Compile Include="Interface\Game\HDV\HDVWindow.cs" />
@@ -107,7 +107,7 @@
     <Compile Include="Items\Item.cs" />
     <Compile Include="Items\MapItem.cs" />
     <Compile Include="Localization\Strings.cs" />
-	<Compile Include="Mail.cs" />
+    <Compile Include="Mail.cs" />
     <Compile Include="Maps\ActionMessage.cs" />
     <Compile Include="Maps\MapAnimation.cs" />
     <Compile Include="Maps\MapInstance.cs" />

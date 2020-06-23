@@ -48,9 +48,10 @@ namespace Intersect.Editor.Forms
             // 
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.ForeColor = System.Drawing.Color.White;
-            this.lblStatus.Location = new System.Drawing.Point(31, 220);
+            this.lblStatus.Location = new System.Drawing.Point(46, 338);
+            this.lblStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(569, 23);
+            this.lblStatus.Size = new System.Drawing.Size(854, 35);
             this.lblStatus.TabIndex = 0;
             this.lblStatus.Text = "Checking for updates, please wait!";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -58,10 +59,11 @@ namespace Intersect.Editor.Forms
             // picLogo
             // 
             this.picLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picLogo.BackgroundImage")));
-            this.picLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.picLogo.Location = new System.Drawing.Point(32, 22);
+            this.picLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.picLogo.Location = new System.Drawing.Point(48, 34);
+            this.picLogo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(580, 160);
+            this.picLogo.Size = new System.Drawing.Size(870, 246);
             this.picLogo.TabIndex = 4;
             this.picLogo.TabStop = false;
             // 
@@ -70,18 +72,20 @@ namespace Intersect.Editor.Forms
             this.lblVersion.BackColor = System.Drawing.Color.Transparent;
             this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVersion.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lblVersion.Location = new System.Drawing.Point(372, 319);
+            this.lblVersion.Location = new System.Drawing.Point(558, 491);
+            this.lblVersion.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(257, 20);
+            this.lblVersion.Size = new System.Drawing.Size(386, 31);
             this.lblVersion.TabIndex = 5;
             this.lblVersion.Text = "Editor v1.0.0.0";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(32, 246);
+            this.progressBar.Location = new System.Drawing.Point(48, 378);
+            this.progressBar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(568, 26);
+            this.progressBar.Size = new System.Drawing.Size(852, 40);
             this.progressBar.TabIndex = 6;
             this.progressBar.Value = 20;
             // 
@@ -89,9 +93,10 @@ namespace Intersect.Editor.Forms
             // 
             this.lblFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblFiles.ForeColor = System.Drawing.Color.White;
-            this.lblFiles.Location = new System.Drawing.Point(28, 275);
+            this.lblFiles.Location = new System.Drawing.Point(42, 423);
+            this.lblFiles.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFiles.Name = "lblFiles";
-            this.lblFiles.Size = new System.Drawing.Size(284, 23);
+            this.lblFiles.Size = new System.Drawing.Size(426, 35);
             this.lblFiles.TabIndex = 7;
             this.lblFiles.Text = "20 Files Remaining";
             this.lblFiles.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -101,9 +106,10 @@ namespace Intersect.Editor.Forms
             // 
             this.lblSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSize.ForeColor = System.Drawing.Color.White;
-            this.lblSize.Location = new System.Drawing.Point(363, 275);
+            this.lblSize.Location = new System.Drawing.Point(544, 423);
+            this.lblSize.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSize.Name = "lblSize";
-            this.lblSize.Size = new System.Drawing.Size(237, 23);
+            this.lblSize.Size = new System.Drawing.Size(356, 35);
             this.lblSize.TabIndex = 8;
             this.lblSize.Text = "100 MB Left";
             this.lblSize.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -117,10 +123,10 @@ namespace Intersect.Editor.Forms
             // 
             // FrmUpdate
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.ClientSize = new System.Drawing.Size(628, 338);
+            this.ClientSize = new System.Drawing.Size(942, 520);
             this.Controls.Add(this.lblSize);
             this.Controls.Add(this.lblFiles);
             this.Controls.Add(this.progressBar);
@@ -130,6 +136,7 @@ namespace Intersect.Editor.Forms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.Name = "FrmUpdate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
