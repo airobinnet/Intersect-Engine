@@ -13,6 +13,16 @@ using Intersect.Enums;
 using Intersect.GameObjects;
 using Intersect.GameObjects.Maps;
 
+using DiscordRPC.Message;
+using DiscordRPC;
+using System.Text;
+using System.Threading;
+using System.Timers;
+using System.Threading.Tasks;
+
+using System.Diagnostics;
+using System.ComponentModel;
+
 // ReSharper disable All
 
 namespace Intersect.Client.Core
@@ -26,6 +36,39 @@ namespace Intersect.Client.Core
         private static bool _createdMapTextures;
 
         private static bool _loadedTilesets;
+
+        private static int _ExpiredTicks;
+
+        /// <summary>
+        /// The level of logging to use.
+        /// </summary>
+        private static DiscordRPC.Logging.LogLevel logLevel = DiscordRPC.Logging.LogLevel.Trace;
+
+        /// <summary>
+        /// The pipe to connect too.
+        /// </summary>
+        private static int discordPipe = -1;
+
+        /// <summary>
+        /// The current presence to send to discord.
+        /// </summary>
+        private static RichPresence presence = new RichPresence();
+
+        /// <summary>
+        /// The discord client
+        /// </summary>
+        private static DiscordRpcClient client;
+
+        /// <summary>
+        /// Is the main loop currently running?
+        /// </summary>
+        private static bool isRunning = true;
+
+        /// <summary>
+        /// The string builder for the command
+        /// </summary>
+        private static StringBuilder word = new StringBuilder();
+
 
         public static void Start()
         {
@@ -53,19 +96,125 @@ namespace Intersect.Client.Core
                     lookup.Delete(item);
                 }
             }
+
+            // == Create the client
+            client = new DiscordRpcClient("725494946081013832", pipe: discordPipe)
+            {
+                Logger = new DiscordRPC.Logging.ConsoleLogger(logLevel, true)
+            };
+
+            // == Subscribe to some events
+            client.OnReady += (sender, msg) =>
+            {
+                //Create some events so we know things are happening
+                //Console.WriteLine("Connected to discord with user {0}", msg.User.Username);
+            };
+
+            client.OnPresenceUpdate += (sender, msg) =>
+            {
+                //The presence has updated
+                //Console.WriteLine("Presence has been updated! ");
+            };
+
+            // == Initialize
+            client.Initialize();
+
+            // == Set the presence
+            client.SetPresence(new RichPresence()
+            {
+                Details = "Chilling...",
+                State = "In Menu",
+                Assets = new Assets()
+                {
+                    LargeImageKey = "discordlogo",
+                    SmallImageKey = "logov2"
+                }
+
+            });
+
+            _ExpiredTicks = 0;
+
+            // == Do the rest of your program.
+            //Simulated by a Console.ReadKey
+            // etc...
+            //Console.ReadKey();
+
+            // == At the very end we need to dispose of it
+            //client.Dispose();
         }
+
 
         public static void DestroyGame()
         {
             //Destroy Game
             //TODO - Destroy Graphics and Networking peacefully
             //Network.Close();
+            client.Dispose();
             Interface.Interface.DestroyGwen();
             Graphics.Renderer.Close();
         }
 
+        #region Pipe Connection Events
+        private static void OnConnectionEstablished(object sender, ConnectionEstablishedMessage args)
+        {
+            //This is called when a pipe connection is established. The connection is not ready yet, but we have at least found a valid pipe.
+            Console.WriteLine("Pipe Connection Established. Valid on pipe #{0}", args.ConnectedPipe);
+        }
+        private static void OnConnectionFailed(object sender, ConnectionFailedMessage args)
+        {
+            //This is called when the client fails to establish a connection to discord. 
+            // It can be assumed that Discord is unavailable on the supplied pipe.
+            Console.WriteLine("Pipe Connection Failed. Could not connect to pipe #{0}", args.FailedPipe);
+            if (discordPipe < 5)
+            {
+                discordPipe++;
+            } else
+            {
+                discordPipe = -1;
+            }
+            isRunning = false;
+        }
+        #endregion
+
         public static void Update()
         {
+            if (_ExpiredTicks == 600) {
+                if (client != null)
+                {
+                    if (Globals.Me?.MapInstance != null)
+                    {
+                        client.SetPresence(new RichPresence()
+                        {
+                            Details = Globals.Me.Name + " level " + Globals.Me.Level,
+                            State = "In Game",
+                            Assets = new Assets()
+                            {
+                                LargeImageKey = "discordlogo",
+                                SmallImageKey = "logov2"
+                            }
+                        });
+                    }
+                    else
+                    {
+                        client.SetPresence(new RichPresence()
+                        {
+                            Details = "Chilling...",
+                            State = "In Menu",
+                            Assets = new Assets()
+                            {
+                                LargeImageKey = "discordlogo",
+                                SmallImageKey = "logov2"
+                            }
+                        });
+                    }
+                    client.Invoke();
+                    _ExpiredTicks = 0;
+                }
+            } else
+            {
+                _ExpiredTicks++;
+            }
+
             lock (Globals.GameLock)
             {
                 Networking.Network.Update();
