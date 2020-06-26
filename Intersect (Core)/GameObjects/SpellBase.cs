@@ -193,6 +193,8 @@ namespace Intersect.GameObjects
 
         public string TransformSprite { get; set; }
 
+        public int ExtraBuff { get; set; } = 0;
+
         [Column("OnHit")]
         public int OnHitDuration { get; set; }
 

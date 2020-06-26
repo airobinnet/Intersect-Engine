@@ -1605,7 +1605,7 @@ namespace Intersect.Server.Entities
                 {
                     new Status(
                         target, spellBase, spellBase.Combat.Effect, spellBase.Combat.Duration,
-                        spellBase.Combat.TransformSprite
+                        spellBase.Combat.TransformSprite, spellBase.Combat.ExtraBuff
                     );
 
                     PacketSender.SendActionMsg(
@@ -1635,7 +1635,7 @@ namespace Intersect.Server.Entities
             {
                 if (statBuffTime > -1)
                 {
-                    new Status(target, spellBase, spellBase.Combat.Effect, statBuffTime, "");
+                    new Status(target, spellBase, spellBase.Combat.Effect, statBuffTime, "", spellBase.Combat.ExtraBuff);
                 }
             }
 
@@ -2243,7 +2243,7 @@ namespace Intersect.Server.Entities
                             {
                                 new Status(
                                     this, spellBase, StatusTypes.OnHit, spellBase.Combat.OnHitDuration,
-                                    spellBase.Combat.TransformSprite
+                                    spellBase.Combat.TransformSprite, spellBase.Combat.ExtraBuff
                                 );
 
                                 PacketSender.SendActionMsg(
@@ -2846,7 +2846,7 @@ namespace Intersect.Server.Entities
 
                 statusPackets[i] = new StatusPacket(
                     status.Spell.Id, status.Type, status.Data, (int) (status.Duration - Globals.Timing.TimeMs),
-                    (int) (status.Duration - status.StartTime), vitalShields
+                    (int) (status.Duration - status.StartTime), vitalShields, status.ExtraBuff
                 );
             }
 

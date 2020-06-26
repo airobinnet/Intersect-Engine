@@ -25,7 +25,9 @@ namespace Intersect.Server.Entities.Combat
 
         public StatusTypes Type;
 
-        public Status(Entity en, SpellBase spell, StatusTypes type, int duration, string data)
+        public int ExtraBuff;
+
+        public Status(Entity en, SpellBase spell, StatusTypes type, int duration, string data, int extraBuff)
         {
             mEntity = en;
             Spell = spell;
@@ -33,6 +35,7 @@ namespace Intersect.Server.Entities.Combat
             StartTime = Globals.Timing.TimeMs;
             Duration = Globals.Timing.TimeMs + duration;
             Data = data;
+            ExtraBuff = extraBuff;
 
             if (en.GetType() == typeof(Player))
             {

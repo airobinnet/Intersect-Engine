@@ -1411,6 +1411,9 @@ namespace Intersect.Client.Localization
                 {10, @"Makes the target fall asleep"},
                 {11, @"Applies an On Hit effect to the target"},
                 {12, @"Taunts Target"},
+                {13, @"Gives Lifesteal"},
+                {14, @"Ride a mount"},
+                {15, @"Bonus Experience"},
             };
 
             public static LocalizedString effects = @"Effects:";

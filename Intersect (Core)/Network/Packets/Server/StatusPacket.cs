@@ -14,7 +14,8 @@ namespace Intersect.Network.Packets.Server
             string transformSprite,
             long timeRemaining,
             long totalDuration,
-            int[] vitalShields
+            int[] vitalShields,
+            int extraBuff
         )
         {
             SpellId = spellId;
@@ -23,6 +24,7 @@ namespace Intersect.Network.Packets.Server
             TimeRemaining = timeRemaining;
             TotalDuration = totalDuration;
             VitalShields = vitalShields;
+            ExtraBuff = extraBuff;
         }
 
         public Guid SpellId { get; set; }
@@ -36,6 +38,8 @@ namespace Intersect.Network.Packets.Server
         public long TotalDuration { get; set; }
 
         public int[] VitalShields { get; set; }
+
+        public int ExtraBuff { get; set; }
 
     }
 

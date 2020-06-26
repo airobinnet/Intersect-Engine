@@ -526,6 +526,10 @@
     <Compile Include="Migrations\20200503210432_Player_HDV.designer.cs">
       <DependentUpon>20200503210432_Player_HDV.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Game\20200626170156_ExtraBuffSpell.cs" />
+    <Compile Include="Migrations\Game\20200626170156_ExtraBuffSpell.designer.cs">
+      <DependentUpon>20200626170156_ExtraBuffSpell.cs</DependentUpon>
+    </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />
     <Compile Include="Networking\Helpers\NetDebug.cs" />

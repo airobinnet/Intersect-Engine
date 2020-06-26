@@ -30,6 +30,12 @@ namespace Intersect.Enums
 
         Taunt = 12,
 
+        Lifesteal = 13,
+
+        Mount = 14,
+
+        Exp = 15,
+
     }
 
 }

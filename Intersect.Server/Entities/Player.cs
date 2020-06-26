@@ -940,6 +940,8 @@ namespace Intersect.Server.Entities
 
             if (!CheckLevelUp())
             {
+                PacketSender.SendChatMsg(this, "You gained " + (int)(amount * GetExpMultiplier() / 100) + " experience.", Color.Pink);
+                PacketSender.SendActionMsg(this, "Exp +" + (int)(amount * GetExpMultiplier() / 100), Color.Pink);
                 PacketSender.SendExperience(this);
             }
         }
@@ -2436,7 +2438,7 @@ namespace Intersect.Server.Entities
         public decimal GetLifeSteal()
         {
             var lifesteal = 0;
-
+            //check for lifesteal on items
             for (var i = 0; i < Options.EquipmentSlots.Count; i++)
             {
                 if (Equipment[i] > -1)
@@ -2454,8 +2456,17 @@ namespace Intersect.Server.Entities
                     }
                 }
             }
+            //check for lifesteal on status
+            var currentstatuses = Statuses.Values.ToArray();
+            foreach (var status in currentstatuses)
+            {
+                if (status.Type == StatusTypes.Lifesteal)
+                {
+                    lifesteal += status.ExtraBuff;
+                }
 
-            return lifesteal;
+            }
+                return lifesteal;
         }
 
         public double GetTenacity()
@@ -2528,6 +2539,16 @@ namespace Intersect.Server.Entities
                         }
                     }
                 }
+            }
+            //check for bonus exp on status
+            var currentstatuses = Statuses.Values.ToArray();
+            foreach (var status in currentstatuses)
+            {
+                if (status.Type == StatusTypes.Exp)
+                {
+                    exp += status.ExtraBuff;
+                }
+
             }
 
             return exp;

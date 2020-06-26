@@ -124,6 +124,8 @@ namespace Intersect.Editor.Forms.Editors
             nudMR.Minimum = -Options.MaxStatValue;
             nudMS.Minimum = 0;
             nudSpd.Minimum = -Options.MaxStatValue;
+            nudExtraBuff.Minimum = 0;
+            nudExtraBuff.Maximum = 1000;
 
             nudCastDuration.Maximum = Int32.MaxValue;
             nudCooldownDuration.Maximum = Int32.MaxValue;
@@ -326,6 +328,8 @@ namespace Intersect.Editor.Forms.Editors
                 nudMR.Value = mEditorItem.Combat.StatDiff[(int) Stats.MagicResist];
                 nudMS.Value = mEditorItem.Combat.StatDiff[(int) Stats.MovementSpeed];
 
+                nudExtraBuff.Value = mEditorItem.Combat.ExtraBuff;
+
                 nudStrPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.Attack];
                 nudDefPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.Defense];
                 nudMagPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.AbilityPower];
@@ -504,6 +508,8 @@ namespace Intersect.Editor.Forms.Editors
             lblSprite.Visible = false;
             cmbTransform.Visible = false;
             picSprite.Visible = false;
+            nudExtraBuff.Visible = false;
+            lblPercentage7.Visible = false;
 
             if (cmbExtraEffect.SelectedIndex == 6) //Transform
             {
@@ -535,6 +541,16 @@ namespace Intersect.Editor.Forms.Editors
                 {
                     picSprite.BackgroundImage = null;
                 }
+            }
+            if (cmbExtraEffect.SelectedIndex == 13) //Lifesteal
+            {
+                lblPercentage7.Visible = true;
+                nudExtraBuff.Visible = true;
+            }
+            if (cmbExtraEffect.SelectedIndex == 15) //Exp
+            {
+                lblPercentage7.Visible = true;
+                nudExtraBuff.Visible = true;
             }
         }
 
@@ -854,6 +870,11 @@ namespace Intersect.Editor.Forms.Editors
         private void nudSpd_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Combat.StatDiff[(int) Stats.Speed] = (int) nudSpd.Value;
+        }
+
+        private void nudExtraBuff_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Combat.ExtraBuff = (int)nudExtraBuff.Value;
         }
 
         private void nudStrPercentage_ValueChanged(object sender, EventArgs e)
