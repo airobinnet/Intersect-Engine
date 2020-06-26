@@ -69,6 +69,10 @@ namespace Intersect.Client.Core
         /// </summary>
         private static StringBuilder word = new StringBuilder();
 
+        private static Timestamps menuTime = Timestamps.Now;
+
+        private static Timestamps gameTime = Timestamps.Now;
+
 
         public static void Start()
         {
@@ -115,7 +119,11 @@ namespace Intersect.Client.Core
                 //The presence has updated
                 //Console.WriteLine("Presence has been updated! ");
             };
-
+            client.OnConnectionEstablished += OnConnectionEstablished;      //Called when a pipe connection is made, but not ready
+            client.OnConnectionFailed += OnConnectionFailed;                //Called when a pipe connection failed.
+            client.OnReady += OnReady;                                      //Called when the client is ready to send presences
+            client.OnClose += OnClose;                                      //Called when connection to discord is lost
+            client.OnError += OnError;                                      //Called when discord has a error
             // == Initialize
             client.Initialize();
 
@@ -124,6 +132,7 @@ namespace Intersect.Client.Core
             {
                 Details = "Chilling...",
                 State = "In Menu",
+                Timestamps = menuTime,
                 Assets = new Assets()
                 {
                     LargeImageKey = "discordlogo",
@@ -158,13 +167,13 @@ namespace Intersect.Client.Core
         private static void OnConnectionEstablished(object sender, ConnectionEstablishedMessage args)
         {
             //This is called when a pipe connection is established. The connection is not ready yet, but we have at least found a valid pipe.
-            Console.WriteLine("Pipe Connection Established. Valid on pipe #{0}", args.ConnectedPipe);
+            //Console.WriteLine("Pipe Connection Established. Valid on pipe #{0}", args.ConnectedPipe);
         }
         private static void OnConnectionFailed(object sender, ConnectionFailedMessage args)
         {
             //This is called when the client fails to establish a connection to discord. 
             // It can be assumed that Discord is unavailable on the supplied pipe.
-            Console.WriteLine("Pipe Connection Failed. Could not connect to pipe #{0}", args.FailedPipe);
+            //Console.WriteLine("Pipe Connection Failed. Could not connect to pipe #{0}", args.FailedPipe);
             if (discordPipe < 5)
             {
                 discordPipe++;
@@ -173,6 +182,33 @@ namespace Intersect.Client.Core
                 discordPipe = -1;
             }
             isRunning = false;
+        }
+        #endregion
+
+        #region State Events
+        private static void OnReady(object sender, ReadyMessage args)
+        {
+            //This is called when we are all ready to start receiving and sending discord events. 
+            // It will give us some basic information about discord to use in the future.
+
+            //DEBUG: Update the presence timestamp
+            presence.Timestamps = Timestamps.Now;
+
+            //It can be a good idea to send a inital presence update on this event too, just to setup the inital game state.
+            //Console.WriteLine("On Ready. RPC Version: {0}", args.Version);
+
+        }
+        private static void OnClose(object sender, CloseMessage args)
+        {
+            //This is called when our client has closed. The client can no longer send or receive events after this message.
+            // Connection will automatically try to re-establish and another OnReady will be called (unless it was disposed).
+            //Console.WriteLine("Lost Connection with client because of '{0}'", args.Reason);
+        }
+        private static void OnError(object sender, ErrorMessage args)
+        {
+            //Some error has occured from one of our messages. Could be a malformed presence for example.
+            // Discord will give us one of these events and its upto us to handle it
+            //Console.WriteLine("Error occured within discord. ({1}) {0}", args.Message, args.Code);
         }
         #endregion
 
@@ -185,8 +221,9 @@ namespace Intersect.Client.Core
                     {
                         client.SetPresence(new RichPresence()
                         {
-                            Details = Globals.Me.Name + " level " + Globals.Me.Level,
-                            State = "In Game",
+                            Details = Globals.Me?.Name + " lvl " + Globals.Me?.Level + " " + ClassBase.GetName(Globals.Me.Class),
+                            State = "In Game: " + MapBase.GetName(Globals.Me.CurrentMap),
+                            Timestamps = menuTime,
                             Assets = new Assets()
                             {
                                 LargeImageKey = "discordlogo",
@@ -200,6 +237,7 @@ namespace Intersect.Client.Core
                         {
                             Details = "Chilling...",
                             State = "In Menu",
+                            Timestamps = gameTime,
                             Assets = new Assets()
                             {
                                 LargeImageKey = "discordlogo",
