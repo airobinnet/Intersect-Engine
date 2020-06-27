@@ -1241,7 +1241,7 @@ namespace Intersect.Server.Entities
 
             //Check if the attacker is stunned or blinded.
             if (Statuses.Values.ToArray()
-                .Any(status => status?.Type == StatusTypes.Stun || status?.Type == StatusTypes.Sleep))
+                .Any(status => status?.Type == StatusTypes.Stun || status?.Type == StatusTypes.Sleep || status?.Type == StatusTypes.Fear))
             {
                 return false;
             }
@@ -1859,6 +1859,13 @@ namespace Intersect.Server.Entities
                     if (status.Type == StatusTypes.Sleep)
                     {
                         PacketSender.SendChatMsg(this, Strings.Items.sleep);
+
+                        return;
+                    }
+
+                    if (status.Type == StatusTypes.Fear)
+                    {
+                        PacketSender.SendChatMsg(this, Strings.Items.fear);
 
                         return;
                     }
@@ -4447,6 +4454,13 @@ namespace Intersect.Server.Entities
                     if (status.Type == StatusTypes.Sleep)
                     {
                         PacketSender.SendChatMsg(this, Strings.Combat.sleep);
+
+                        return false;
+                    }
+
+                    if (status.Type == StatusTypes.Fear)
+                    {
+                        PacketSender.SendChatMsg(this, Strings.Combat.fear);
 
                         return false;
                     }

@@ -323,10 +323,19 @@ namespace Intersect.Server.Localization
             public readonly LocalizedString sleep = @"You cannot cast this ability whilst asleep";
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString fear = @"You cannot cast this ability whilst feared";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString sleepattacking = @"You are asleep and can't attack.";
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString fearattacking = @"You are feared and can't attack.";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString sleepblocking = @"You are asleep and can't block.";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString fearblocking = @"You are feared and can't block.";
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString statreq =
@@ -786,6 +795,9 @@ namespace Intersect.Server.Localization
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString sleep = @"You cannot use this item whilst asleep.";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString fear = @"You cannot use this item whilst feared.";
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString statreq = @"You do not possess the correct combat stats to use this item.";

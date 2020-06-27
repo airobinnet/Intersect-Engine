@@ -222,7 +222,7 @@ namespace Intersect.Server.Entities
             }
         }
 
-        public bool isFeared()
+        public virtual void Update(long timeMs)
         {
             //Feared
             var statuses = Statuses.Values.ToArray();
@@ -230,25 +230,16 @@ namespace Intersect.Server.Entities
             {
                 if (status.Type == StatusTypes.Fear)
                 {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public virtual void Update(long timeMs)
-        {
-            if (isFeared())
-            {
-                //fix this error when attacking
-                if (Globals.Timing.TimeMs > onesecondLater)
-                {
-                    var randomizer = new Random();
-                    var randomDir = randomizer.Next(0, 7);
-                    if (CanMove(randomDir) == -1)
+                    if (Globals.Timing.TimeMs > onesecondLater)
                     {
-                        Move(randomDir, null, false, true);
-                        onesecondLater = Globals.Timing.TimeMs + 200;
+                        var randomizer = new Random();
+                        var randomDir = randomizer.Next(0, 7);
+                        if (CanMove(randomDir) == -1)
+                        {
+                            Move(randomDir, null, false, true);
+                            onesecondLater = Globals.Timing.TimeMs + 200;
+                            Update(timeMs);
+                        }
                     }
                 }
             }
@@ -1776,7 +1767,8 @@ namespace Intersect.Server.Entities
                 {
                     if (status.Type == StatusTypes.Stun ||
                         status.Type == StatusTypes.Blind ||
-                        status.Type == StatusTypes.Sleep)
+                        status.Type == StatusTypes.Sleep || 
+                        status.Type == StatusTypes.Fear)
                     {
                         PacketSender.SendActionMsg(this, Strings.Combat.miss, CustomColors.Combat.Missed);
                         PacketSender.SendEntityAttack(this, CalculateAttackTime());
@@ -1868,7 +1860,8 @@ namespace Intersect.Server.Entities
                 {
                     if (status.Type == StatusTypes.Stun ||
                         status.Type == StatusTypes.Blind ||
-                        status.Type == StatusTypes.Sleep)
+                        status.Type == StatusTypes.Sleep ||
+                        status.Type == StatusTypes.Fear)
                     {
                         PacketSender.SendActionMsg(this, Strings.Combat.miss, CustomColors.Combat.Missed);
                         PacketSender.SendEntityAttack(this, CalculateAttackTime());
@@ -1998,6 +1991,14 @@ namespace Intersect.Server.Entities
                         {
                             status.RemoveStatus();
                         }
+
+                        //Remove Fear from feared targets
+                        //needs fixing before enabling: fear gets removed but stats stay untill original timer runs out
+                        /*if (status.Type == StatusTypes.Fear)
+                        {
+                            status.Duration = Globals.Timing.TimeMs;
+                            status.RemoveStatus();
+                        }*/
                     }
 
                     //No Matter what, if we attack the entity, make them chase us

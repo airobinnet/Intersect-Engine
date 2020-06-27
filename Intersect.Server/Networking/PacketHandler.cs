@@ -395,7 +395,8 @@ namespace Intersect.Server.Networking
             {
                 if (status.Type == StatusTypes.Stun ||
                     status.Type == StatusTypes.Snare ||
-                    status.Type == StatusTypes.Sleep)
+                    status.Type == StatusTypes.Sleep || 
+                    status.Type == StatusTypes.Fear)
                 {
                     return;
                 }
@@ -711,6 +712,13 @@ namespace Intersect.Server.Networking
 
                     return;
                 }
+
+                if (status.Type == StatusTypes.Fear)
+                {
+                    PacketSender.SendChatMsg(player, Strings.Combat.fearblocking);
+
+                    return;
+                }
             }
 
             client.Entity.TryBlock(packet.Blocking);
@@ -767,6 +775,13 @@ namespace Intersect.Server.Networking
                 if (status.Type == StatusTypes.Blind)
                 {
                     PacketSender.SendActionMsg(player, Strings.Combat.miss, CustomColors.Combat.Missed);
+
+                    return;
+                }
+
+                if (status.Type == StatusTypes.Fear)
+                {
+                    PacketSender.SendChatMsg(player, Strings.Combat.fearattacking);
 
                     return;
                 }

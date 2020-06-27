@@ -44,7 +44,8 @@ namespace Intersect.Server.Entities.Combat
                     type == StatusTypes.Sleep ||
                     type == StatusTypes.Snare ||
                     type == StatusTypes.Stun ||
-                    type == StatusTypes.Taunt)
+                    type == StatusTypes.Taunt ||
+                    type == StatusTypes.Fear)
                 {
                     Duration = Globals.Timing.TimeMs + duration - (long) (((Player) en).GetTenacity() / 100 * duration);
                 }

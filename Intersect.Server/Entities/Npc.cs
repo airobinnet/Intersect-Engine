@@ -232,7 +232,7 @@ namespace Intersect.Server.Entities
             var statuses = Statuses.Values.ToArray();
             foreach (var status in statuses)
             {
-                if (status.Type == StatusTypes.Stun || status.Type == StatusTypes.Sleep)
+                if (status.Type == StatusTypes.Stun || status.Type == StatusTypes.Sleep || status.Type == StatusTypes.Fear)
                 {
                     return false;
                 }
@@ -373,6 +373,7 @@ namespace Intersect.Server.Entities
             {
                 case StatusTypes.Sleep:
                 case StatusTypes.Stun:
+                case StatusTypes.Fear:
                     return true;
 
                 case StatusTypes.Silence:
@@ -401,6 +402,7 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Silence:
                 case StatusTypes.Sleep:
                 case StatusTypes.Stun:
+                case StatusTypes.Fear:
                     return true;
 
                 case StatusTypes.None:
@@ -608,7 +610,7 @@ namespace Intersect.Server.Entities
             var statuses = Statuses.Values.ToArray();
             foreach (var status in statuses)
             {
-                if (status.Type == StatusTypes.Stun || status.Type == StatusTypes.Sleep)
+                if (status.Type == StatusTypes.Stun || status.Type == StatusTypes.Sleep || status.Type == StatusTypes.Fear)
                 {
                     return;
                 }
@@ -796,7 +798,8 @@ namespace Intersect.Server.Entities
                                             {
                                                 if (status.Type == StatusTypes.Stun ||
                                                     status.Type == StatusTypes.Snare ||
-                                                    status.Type == StatusTypes.Sleep)
+                                                    status.Type == StatusTypes.Sleep || 
+                                                    status.Type == StatusTypes.Fear)
                                                 {
                                                     return;
                                                 }
@@ -886,7 +889,8 @@ namespace Intersect.Server.Entities
                                     {
                                         if (status.Type == StatusTypes.Stun ||
                                             status.Type == StatusTypes.Snare ||
-                                            status.Type == StatusTypes.Sleep)
+                                            status.Type == StatusTypes.Sleep ||
+                                            status.Type == StatusTypes.Fear)
                                         {
                                             return;
                                         }
@@ -960,7 +964,8 @@ namespace Intersect.Server.Entities
                         {
                             if (status.Type == StatusTypes.Stun ||
                                 status.Type == StatusTypes.Snare ||
-                                status.Type == StatusTypes.Sleep)
+                                status.Type == StatusTypes.Sleep ||
+                                status.Type == StatusTypes.Fear)
                             {
                                 return;
                             }
