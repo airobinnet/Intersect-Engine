@@ -1993,10 +1993,10 @@ namespace Intersect.Server.Entities
                         }
 
                         //Remove Fear from feared targets
-                        //needs fixing before enabling: fear gets removed but stats stay untill original timer runs out
+                        //
+                        //needs fixing: fear gets removed but stats stays untill original timer runs out
                         /*if (status.Type == StatusTypes.Fear)
                         {
-                            status.Duration = Globals.Timing.TimeMs;
                             status.RemoveStatus();
                         }*/
                     }
