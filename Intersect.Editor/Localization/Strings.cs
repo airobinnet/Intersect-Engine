@@ -4220,6 +4220,11 @@ Tick timer saved in server config.json.";
                 {13, @"Lifesteal"},
                 {14, @"Mount"},
                 {15, @"Exp"},
+                {16, @"Cooldown Reduction"},
+                {17, @"Tenacity"},
+                {18, @"Luck"},
+                {19, @"Drunk"},
+                {20, @"Fear"},
             };
 
             public static LocalizedString effectgroup = @"Effect";

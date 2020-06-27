@@ -36,6 +36,16 @@ namespace Intersect.Enums
 
         Exp = 15,
 
+        CooldownReduction = 16,
+
+        Tenacity = 17,
+
+        Luck = 18,
+
+        Drunk = 19,
+
+        Fear = 20,
+
     }
 
 }

@@ -364,7 +364,12 @@ namespace Intersect.Server.Localization
                     {12, @"TAUNT!"},
                     {13, @"LIFESTEAL!"},
                     {14, @"MOUNT!"},
-                    {15, @"BONUS EXP!"}
+                    {15, @"BONUS EXP!"},
+                    {16, @"COOLDOWN REDUCTION!"},
+                    {17, @"TENACITY!"},
+                    {18, @"LUCK!"},
+                    {19, @"DRUNK!"},
+                    {20, @"FEARED!"}
                 }
             );
 

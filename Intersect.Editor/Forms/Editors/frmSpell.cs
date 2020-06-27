@@ -542,12 +542,11 @@ namespace Intersect.Editor.Forms.Editors
                     picSprite.BackgroundImage = null;
                 }
             }
-            if (cmbExtraEffect.SelectedIndex == 13) //Lifesteal
-            {
-                lblPercentage7.Visible = true;
-                nudExtraBuff.Visible = true;
-            }
-            if (cmbExtraEffect.SelectedIndex == 15) //Exp
+            if (cmbExtraEffect.SelectedIndex == 13 || cmbExtraEffect.SelectedIndex == 15 || 
+                cmbExtraEffect.SelectedIndex == 16 || cmbExtraEffect.SelectedIndex == 17 || 
+                cmbExtraEffect.SelectedIndex == 18 || cmbExtraEffect.SelectedIndex == 19 || 
+                cmbExtraEffect.SelectedIndex == 20) 
+                //Lifesteal, Exp, CdR, Tenacity, Luck, drunk or Fear
             {
                 lblPercentage7.Visible = true;
                 nudExtraBuff.Visible = true;

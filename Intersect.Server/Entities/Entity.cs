@@ -212,6 +212,8 @@ namespace Intersect.Server.Entities
         [NotMapped, JsonIgnore]
         public bool IsDisposed { get; protected set; }
 
+        private static long onesecondLater;
+
         public virtual void Dispose()
         {
             if (!IsDisposed)
@@ -220,8 +222,37 @@ namespace Intersect.Server.Entities
             }
         }
 
+        public bool isFeared()
+        {
+            //Feared
+            var statuses = Statuses.Values.ToArray();
+            foreach (var status in statuses)
+            {
+                if (status.Type == StatusTypes.Fear)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public virtual void Update(long timeMs)
         {
+            if (isFeared())
+            {
+                //fix this error when attacking
+                if (Globals.Timing.TimeMs > onesecondLater)
+                {
+                    var randomizer = new Random();
+                    var randomDir = randomizer.Next(0, 7);
+                    if (CanMove(randomDir) == -1)
+                    {
+                        Move(randomDir, null, false, true);
+                        onesecondLater = Globals.Timing.TimeMs + 200;
+                    }
+                }
+            }
+
             //Cast timers
             if (CastTime != 0 && CastTime < timeMs)
             {

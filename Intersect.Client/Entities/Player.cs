@@ -170,16 +170,33 @@ namespace Intersect.Client.Entities
                      !Interface.Interface.HasInputFocus());
         }
 
+        public bool IsFeared()
+        {
+            for (var i = 0; i < Status.Count; i++)
+            {
+                if (Status[i].Type == StatusTypes.Fear)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
         public override bool Update()
         {
+            
 
-            if (Globals.Me == this)
+            if (Globals.Me == this && !IsFeared())
             {
                 HandleInput();
             }
 
 
-            if (!IsBusy())
+            if (!IsBusy() && !IsFeared())
             {
                 if (this == Globals.Me && IsMoving == false)
                 {
@@ -848,6 +865,7 @@ namespace Intersect.Client.Entities
         {
             var movex = 0f;
             var movey = 0f;
+            
             if (Interface.Interface.HasInputFocus())
             {
                 return;
@@ -871,6 +889,32 @@ namespace Intersect.Client.Entities
             if (Controls.KeyDown(Control.MoveRight))
             {
                 movex = 1;
+            }
+
+            for (var i = 0; i < Status.Count; i++)
+            {
+                if (Status[i].Type == StatusTypes.Drunk)
+                {
+                    if (Controls.KeyDown(Control.MoveUp))
+                    {
+                        movey = -1;
+                    }
+
+                    if (Controls.KeyDown(Control.MoveDown))
+                    {
+                        movey = 1;
+                    }
+
+                    if (Controls.KeyDown(Control.MoveLeft))
+                    {
+                        movex = 1;
+                    }
+
+                    if (Controls.KeyDown(Control.MoveRight))
+                    {
+                        movex = -1;
+                    }
+                }
             }
 
 

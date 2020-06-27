@@ -333,6 +333,8 @@ namespace Intersect.Server.Entities
             }
         }
 
+        public long onesecondLater = Globals.Timing.TimeMs + 1000;
+
         //Update
         public override void Update(long timeMs)
         {
@@ -348,6 +350,26 @@ namespace Intersect.Server.Entities
                     Logout();
 
                     return;
+                }
+            }
+
+            //feared
+            var statuses = Statuses.Values.ToArray();
+            foreach (var status in statuses)
+            {
+                if (status.Type == StatusTypes.Fear)
+                {
+                    if (Globals.Timing.TimeMs > onesecondLater)
+                    {
+                        var randomizer = new Random();
+                        var randomDir = randomizer.Next(0, 7);
+                        if (CanMove(randomDir) == -1)
+                        {
+                            Move(randomDir, this, false, true);
+                            onesecondLater = Globals.Timing.TimeMs + 200;
+                        }
+                        return;
+                    }
                 }
             }
 
@@ -2431,6 +2453,16 @@ namespace Intersect.Server.Entities
                     }
                 }
             }
+            //check for CdR on status
+            var currentstatuses = Statuses.Values.ToArray();
+            foreach (var status in currentstatuses)
+            {
+                if (status.Type == StatusTypes.CooldownReduction)
+                {
+                    cooldown += status.ExtraBuff;
+                }
+
+            }
 
             return cooldown;
         }
@@ -2490,6 +2522,16 @@ namespace Intersect.Server.Entities
                     }
                 }
             }
+            //check for Tenacity on status
+            var currentstatuses = Statuses.Values.ToArray();
+            foreach (var status in currentstatuses)
+            {
+                if (status.Type == StatusTypes.Tenacity)
+                {
+                    tenacity += status.ExtraBuff;
+                }
+
+            }
 
             return tenacity;
         }
@@ -2514,6 +2556,16 @@ namespace Intersect.Server.Entities
                         }
                     }
                 }
+            }
+            //check for Luck on status
+            var currentstatuses = Statuses.Values.ToArray();
+            foreach (var status in currentstatuses)
+            {
+                if (status.Type == StatusTypes.Luck)
+                {
+                    luck += status.ExtraBuff;
+                }
+
             }
 
             return luck;
