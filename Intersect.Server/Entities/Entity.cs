@@ -1561,8 +1561,8 @@ namespace Intersect.Server.Entities
                 // Friendly Spell! Do not attack other players/npcs around us.
                 switch (target)
                 {
-                    case Player targetPlayer
-                        when this is Player player && !player.InParty(targetPlayer) && this != target:
+                    //case Player targetPlayer
+                        //when this is Player player && !player.InParty(targetPlayer) && this != target:
                     case Npc _ when this is Npc npc && !npc.CanNpcCombat(target, spellBase.Combat.Friendly):
                         return;
                 }
