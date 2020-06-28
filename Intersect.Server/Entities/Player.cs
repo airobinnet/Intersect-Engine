@@ -963,7 +963,7 @@ namespace Intersect.Server.Entities
             if (!CheckLevelUp())
             {
                 PacketSender.SendChatMsg(this, "You gained " + (int)(amount * GetExpMultiplier() / 100) + " experience.", Color.Pink);
-                PacketSender.SendActionMsg(this, "Exp +" + (int)(amount * GetExpMultiplier() / 100), Color.Pink);
+                PacketSender.SendActionMsgPrivate(this, "Exp +" + (int)(amount * GetExpMultiplier() / 100), Color.Pink);
                 PacketSender.SendExperience(this);
             }
         }
@@ -1726,7 +1726,7 @@ namespace Intersect.Server.Entities
                 var rarity = CustomColors.Items.Rarities.ContainsKey(item.Descriptor.Rarity)
                                         ? CustomColors.Items.Rarities[item.Descriptor.Rarity]
                                         : Color.White;
-                PacketSender.SendActionMsg(this, item.Descriptor.Name + " x" + item.Quantity, rarity);
+                PacketSender.SendActionMsgPrivate(this, item.Descriptor.Name + " x" + item.Quantity, rarity);
             }
 
             UpdateGatherItemQuests(item.ItemId);
@@ -4288,7 +4288,7 @@ namespace Intersect.Server.Entities
                     if (sendUpdate)
                     {
                         PacketSender.SendPlayerSpellUpdate(this, i);
-                        PacketSender.SendActionMsg(this, "New Skill learned: " + SpellBase.Get(Spells[i].SpellId).Name, Color.LightCoral);
+                        PacketSender.SendActionMsgPrivate(this, "New Skill learned: " + SpellBase.Get(Spells[i].SpellId).Name, Color.LightCoral);
 
                         // put skill in hotbar if a slot is available
                         for (var j = 0; j < Options.MaxHotbar; j++)
@@ -5178,7 +5178,7 @@ namespace Intersect.Server.Entities
                                     questProgress.TaskProgress = CountItems(item.Id);
                                     if (questProgress.TaskProgress >= questTask.Quantity)
                                     {
-                                        PacketSender.SendActionMsg(this, "Questitem: " + item.Name + ": " + Math.Min(questProgress.TaskProgress, questTask.Quantity) + "/" + questTask.Quantity, Color.ForestGreen);
+                                        PacketSender.SendActionMsgPrivate(this, "Questitem: " + item.Name + ": " + Math.Min(questProgress.TaskProgress, questTask.Quantity) + "/" + questTask.Quantity, Color.ForestGreen);
                                         CompleteQuestTask(questId, questProgress.TaskId);
                                     }
                                     else
@@ -5191,7 +5191,7 @@ namespace Intersect.Server.Entities
                                                 ItemBase.GetName(questTask.TargetId)
                                             )
                                         );
-                                        PacketSender.SendActionMsg(this,"Questitem: " + item.Name + ": " + Math.Min(questProgress.TaskProgress, questTask.Quantity) + "/" + questTask.Quantity, Color.ForestGreen);
+                                        PacketSender.SendActionMsgPrivate(this,"Questitem: " + item.Name + ": " + Math.Min(questProgress.TaskProgress, questTask.Quantity) + "/" + questTask.Quantity, Color.ForestGreen);
                                     }
                                 }
                             }

@@ -1728,6 +1728,11 @@ namespace Intersect.Server.Networking
             SendDataToProximity(en.MapId, new ActionMsgPacket(en.MapId, en.X, en.Y, message, color));
         }
 
+        public static void SendActionMsgPrivate(Player en, string message, Color color)
+        {
+            SendDataToProximityPrivate(en.MapId, new ActionMsgPacket(en.MapId, en.X, en.Y, message, color), en);
+        }
+
         //ActionMsgPacket
         //public static void SendActionMsgSelf(Event ev, string message, Color color, bool self)
         //{
@@ -2038,6 +2043,23 @@ namespace Intersect.Server.Networking
             }
         }
 
+        public static void SendDataToMapPrivate(Guid mapId, CerasPacket packet, Player except = null)
+        {
+            if (!MapInstance.Lookup.Keys.Contains(mapId))
+            {
+                return;
+            }
+
+            var players = MapInstance.Get(mapId).GetPlayersOnMap();
+            foreach (var player in players)
+            {
+                if (player != null && player == except)
+                {
+                    player.SendPacket(packet);
+                }
+            }
+        }
+
         public static bool SendDataToProximity(Guid mapId, CerasPacket packet, Player except = null)
         {
             if (!MapInstance.Lookup.Keys.Contains(mapId))
@@ -2049,6 +2071,22 @@ namespace Intersect.Server.Networking
             for (var i = 0; i < MapInstance.Get(mapId).SurroundingMaps.Count; i++)
             {
                 SendDataToMap(MapInstance.Get(mapId).SurroundingMaps[i], packet, except);
+            }
+
+            return true;
+        }
+
+        public static bool SendDataToProximityPrivate(Guid mapId, CerasPacket packet, Player except = null)
+        {
+            if (!MapInstance.Lookup.Keys.Contains(mapId))
+            {
+                return false;
+            }
+
+            SendDataToMapPrivate(mapId, packet, except);
+            for (var i = 0; i < MapInstance.Get(mapId).SurroundingMaps.Count; i++)
+            {
+                SendDataToMapPrivate(MapInstance.Get(mapId).SurroundingMaps[i], packet, except);
             }
 
             return true;
