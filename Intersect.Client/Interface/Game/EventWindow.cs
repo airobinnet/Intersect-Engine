@@ -333,6 +333,22 @@ namespace Intersect.Client.Interface.Game
                 {
                     EventResponse1_Clicked(null, null);
                 }
+                if (Controls.KeyDown(Control.Hotkey1) && mEventResponse1.IsVisible && mEventResponse2.IsVisible && !mEventDialogWindow.IsHidden)
+                {
+                    EventResponse1_Clicked(null, null);
+                }
+                if (Controls.KeyDown(Control.Hotkey2) && mEventResponse2.IsVisible && !mEventDialogWindow.IsHidden)
+                {
+                    EventResponse2_Clicked(null, null);
+                }
+                if (Controls.KeyDown(Control.Hotkey3) && mEventResponse3.IsVisible && !mEventDialogWindow.IsHidden)
+                {
+                    EventResponse3_Clicked(null, null);
+                }
+                if (Controls.KeyDown(Control.Hotkey4) && mEventResponse4.IsVisible && !mEventDialogWindow.IsHidden)
+                {
+                    EventResponse4_Clicked(null, null);
+                }
             }
         }
 
