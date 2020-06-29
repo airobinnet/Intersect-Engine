@@ -1995,10 +1995,18 @@ namespace Intersect.Server.Entities
                         //Remove Fear from feared targets
                         //
                         //needs fixing: fear gets removed but stats stays untill original timer runs out
-                        /*if (status.Type == StatusTypes.Fear)
+                        if (status.Type == StatusTypes.Fear)
                         {
                             status.RemoveStatus();
-                        }*/
+                            for (var i = 0; i < enemy.DoT.Count; i++)
+                            {
+                                if (enemy.DoT[i].SpellBase == status.Spell)
+                                {
+                                    enemy.DoT.Remove(enemy.DoT[i]);
+                                }
+                            }
+                            PacketSender.SendEntityVitals(this);
+                        }
                     }
 
                     //No Matter what, if we attack the entity, make them chase us

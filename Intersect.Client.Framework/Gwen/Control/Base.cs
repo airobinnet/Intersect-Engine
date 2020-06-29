@@ -2314,9 +2314,12 @@ namespace Intersect.Client.Framework.Gwen.Control
 
             foreach (var child in mChildren.ToArray())
             {
-                if (child.IsHidden)
+                if (child != null)
                 {
-                    continue;
+                    if (child.IsHidden)
+                    {
+                        continue;
+                    }
                 }
 
                 var dock = child.Dock;
@@ -2389,7 +2392,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             //
             // Fill uses the left over space, so do that now.
             //
-            foreach (var child in mChildren)
+            foreach (var child in mChildren.ToArray())
             {
                 var dock = child.Dock;
 
