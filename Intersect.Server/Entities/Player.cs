@@ -962,8 +962,11 @@ namespace Intersect.Server.Entities
 
             if (!CheckLevelUp())
             {
-                PacketSender.SendChatMsg(this, "You gained " + (int)(amount * GetExpMultiplier() / 100) + " experience.", Color.Pink);
-                PacketSender.SendActionMsgPrivate(this, "Exp +" + (int)(amount * GetExpMultiplier() / 100), Color.Pink);
+                if (amount > 0)
+                {
+                    PacketSender.SendChatMsg(this, "You gained " + (int)(amount * GetExpMultiplier() / 100) + " experience.", Color.Pink);
+                    PacketSender.SendActionMsgPrivate(this, "Exp +" + (int)(amount * GetExpMultiplier() / 100), Color.Pink);
+                }
                 PacketSender.SendExperience(this);
             }
         }
