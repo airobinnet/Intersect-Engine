@@ -219,10 +219,16 @@ namespace Intersect.Client.Core
                 {
                     if (Globals.Me?.MapInstance != null)
                     {
+                        var maptag = MapBase.Get(Globals.Me.CurrentMap).Tags;
+                        var firsttag = "unknown";
+                        if (maptag.Count > 0)
+                        {
+                            firsttag = maptag[0];
+                        }
                         client.SetPresence(new RichPresence()
                         {
                             Details = Globals.Me?.Name + " lvl " + Globals.Me?.Level + " " + ClassBase.GetName(Globals.Me.Class),
-                            State = "In Game: " + MapBase.GetName(Globals.Me.CurrentMap),
+                            State = "On map: " + firsttag,
                             Timestamps = menuTime,
                             Assets = new Assets()
                             {
