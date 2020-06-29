@@ -1890,12 +1890,15 @@ namespace Intersect.Client.Framework.Gwen.Control
                 //Now render my kids
                 foreach (var child in mChildren.ToArray())
                 {
-                    if (child.IsHidden)
+                    if (child != null)
                     {
-                        continue;
-                    }
+                        if (child.IsHidden)
+                        {
+                            continue;
+                        }
 
-                    child.DoRender(skin);
+                        child.DoRender(skin);
+                    }
                 }
             }
 
