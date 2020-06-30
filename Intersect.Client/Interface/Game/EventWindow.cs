@@ -46,6 +46,8 @@ namespace Intersect.Client.Interface.Game
 
         private Timer mTimerFace;
 
+        static long keyTimer = Globals.System.GetTimeMs() + 1000;
+
         int counter;
 
         int len;
@@ -101,6 +103,8 @@ namespace Intersect.Client.Interface.Game
                     );
             mEventDialogLabel.ClearText();
             mEventDialogLabelNoFace.ClearText();
+
+            keyTimer = Globals.System.GetTimeMs() + 1000;
         }
 
         //Update
@@ -110,6 +114,7 @@ namespace Intersect.Client.Interface.Game
             {
                 if (mEventDialogWindow.IsHidden)
                 {
+                    keyTimer = Globals.System.GetTimeMs() + 1000;
                     mEventDialogWindow.Show();
                     mEventDialogWindow.MakeModal();
                     mEventDialogArea.ScrollToTop();
@@ -325,28 +330,39 @@ namespace Intersect.Client.Interface.Game
                         }
                     }                    
                 }
-                if (Controls.KeyDown(Control.AttackInteract) && !mTimer.Enabled && counter > len && !mEventDialogWindow.IsHidden)
+                if (Controls.KeyDown(Control.AttackInteract) && !Globals.EventDialogs[0].isDialog && !mEventDialogWindow.IsHidden && keyTimer < Globals.System.GetTimeMs())
                 {
+                    keyTimer = Globals.System.GetTimeMs() + 1000;
                     EventResponse1_Clicked(null, null);
                 }
-                if (Controls.KeyDown(Control.AttackInteract) && !mTimerFace.Enabled && counter > len && !mEventDialogWindow.IsHidden)
+                if (Controls.KeyDown(Control.AttackInteract) && !mTimer.Enabled && counter > len && !mEventDialogWindow.IsHidden && keyTimer < Globals.System.GetTimeMs())
                 {
+                    keyTimer = Globals.System.GetTimeMs() + 1000;
                     EventResponse1_Clicked(null, null);
                 }
-                if (Controls.KeyDown(Control.Hotkey1) && mEventResponse1.IsVisible && mEventResponse2.IsVisible && !mEventDialogWindow.IsHidden)
+                if (Controls.KeyDown(Control.AttackInteract) && !mTimerFace.Enabled && counter > len && !mEventDialogWindow.IsHidden && keyTimer < Globals.System.GetTimeMs())
                 {
+                    keyTimer = Globals.System.GetTimeMs() + 1000;
                     EventResponse1_Clicked(null, null);
                 }
-                if (Controls.KeyDown(Control.Hotkey2) && mEventResponse2.IsVisible && !mEventDialogWindow.IsHidden)
+                if (Controls.KeyDown(Control.Hotkey1) && mEventResponse1.IsVisible && mEventResponse2.IsVisible && !mEventDialogWindow.IsHidden && keyTimer < Globals.System.GetTimeMs())
                 {
+                    keyTimer = Globals.System.GetTimeMs() + 1000;
+                    EventResponse1_Clicked(null, null);
+                }
+                if (Controls.KeyDown(Control.Hotkey2) && mEventResponse2.IsVisible && !mEventDialogWindow.IsHidden && keyTimer < Globals.System.GetTimeMs())
+                {
+                    keyTimer = Globals.System.GetTimeMs() + 1000;
                     EventResponse2_Clicked(null, null);
                 }
-                if (Controls.KeyDown(Control.Hotkey3) && mEventResponse3.IsVisible && !mEventDialogWindow.IsHidden)
+                if (Controls.KeyDown(Control.Hotkey3) && mEventResponse3.IsVisible && !mEventDialogWindow.IsHidden && keyTimer < Globals.System.GetTimeMs())
                 {
+                    keyTimer = Globals.System.GetTimeMs() + 1000;
                     EventResponse3_Clicked(null, null);
                 }
-                if (Controls.KeyDown(Control.Hotkey4) && mEventResponse4.IsVisible && !mEventDialogWindow.IsHidden)
+                if (Controls.KeyDown(Control.Hotkey4) && mEventResponse4.IsVisible && !mEventDialogWindow.IsHidden && keyTimer < Globals.System.GetTimeMs())
                 {
+                    keyTimer = Globals.System.GetTimeMs() + 1000;
                     EventResponse4_Clicked(null, null);
                 }
             }

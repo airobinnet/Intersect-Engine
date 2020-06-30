@@ -30,7 +30,7 @@ namespace Intersect.Client.Maps
             Msg = message;
             Clr = color;
             XOffset = Globals.Random.Next(-30, 30); //+- 16 pixels so action msg's don't overlap!
-            YOffset = Globals.Random.Next(-30, 30); //+- 16 pixels so action msg's don't overlap!
+            YOffset = Globals.Random.Next(-90, 30); //+- 16 pixels so action msg's don't overlap!
             TransmittionTimer = Globals.System.GetTimeMs() + 2000;
         }
 
