@@ -408,7 +408,7 @@ namespace Intersect.Client.Framework.Gwen.Input
             if (canvas == null)
                 return false;
 
-            if (HoveredControl.GetCanvas() != canvas)
+            if (HoveredControl?.GetCanvas() != canvas)
                 return false;
 
             if (!canvas.IsVisible)
