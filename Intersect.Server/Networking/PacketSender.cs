@@ -1262,6 +1262,21 @@ namespace Intersect.Server.Networking
             SendDataToProximity(mapId, new PlayAnimationPacket(animId, targetType, entityId, mapId, x, y, direction));
         }
 
+        //PlayAnimationPacket
+        public static void SendAnimationToPrivateProximity(
+            Guid animId,
+            int targetType,
+            Guid entityId,
+            Guid mapId,
+            byte x,
+            byte y,
+            sbyte direction,
+            Player entity
+        )
+        {
+            SendDataToProximityPrivate(mapId, new PlayAnimationPacket(animId, targetType, entityId, mapId, x, y, direction), entity);
+        }
+
         //HoldPlayerPacket
         public static void SendHoldPlayer(Player player, Guid eventId, Guid mapId)
         {

@@ -2295,8 +2295,9 @@ namespace Intersect.Server.Entities
                             break;
                         case SpellTargetTypes.Trap:
                             MapInstance.Get(MapId).SpawnTrap(this, spellBase, (byte) X, (byte) Y, (byte) Z);
-                            PacketSender.SendAnimationToProximity(
-                                spellBase.HitAnimationId, -1, Guid.Empty, MapId, (byte) X, (byte) Y, 0
+                            PacketSender.SendAnimationToPrivateProximity(
+                                spellBase.HitAnimationId, //add new animation for the trap on the map and keep HitAnimationId for the actual hit animation
+                                -1, Guid.Empty, MapId, (byte) X, (byte) Y, 0, (Player)this
                             );
 
                             break;
