@@ -140,7 +140,7 @@ namespace Intersect.Editor.Forms
             this.MaximizeBox = false;
             this.Name = "FrmUpdate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Intersect Editor - Updating";
+            this.Text = "Floor 100 Editor - Updating";
             this.Load += new System.EventHandler(this.frmUpdate_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.ResumeLayout(false);

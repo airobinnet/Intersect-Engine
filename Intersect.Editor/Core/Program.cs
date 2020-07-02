@@ -69,7 +69,7 @@ namespace Intersect.Editor
         {
             Log.Error((Exception) exception?.ExceptionObject);
             MessageBox.Show(
-                @"The Intersect Editor has encountered an error and must close. Error information can be found in logs/errors.log"
+                @"The Floor 100 Editor has encountered an error and must close. Error information can be found in logs/errors.log"
             );
 
             Environment.Exit(1);

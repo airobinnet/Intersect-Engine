@@ -1179,7 +1179,7 @@ Tick timer saved in server config.json.";
             public static LocalizedString disconnectedsavecaption = @"Disconnected -- Export Map?";
 
             public static LocalizedString importfailed =
-                @"Cannot import map. Currently selected map is not an Intersect map file or was exported with a different version of the Intersect editor!";
+                @"Cannot import map. Currently selected map is not a Floor 100 map file or was exported with a different version of the Floor 100 editor!";
 
             public static LocalizedString importfailedcaption = @"Failed to import map!";
 
@@ -3146,8 +3146,8 @@ Tick timer saved in server config.json.";
             public static LocalizedString Denied = @"Connection denied. Version mismatch?";
 
             public static LocalizedString gettingstarted = @"Getting Started?
-        1. Start the Intersect Server
-        2. Open the Intersect Client and Create an Account
+        1. Start the Floor 100 Server
+        2. Open the Floor 100 Client and Create an Account
         3. Login to that account here to start designing your game!";
 
             public static LocalizedString login = @"Login";
@@ -3155,11 +3155,11 @@ Tick timer saved in server config.json.";
             public static LocalizedString password = @"Password: ";
 
             public static LocalizedString raptr =
-                @"Please close AMD Gaming Evolved before logging into the Intersect editor.";
+                @"Please close AMD Gaming Evolved before logging into the Floor 100 editor.";
 
             public static LocalizedString rememberme = @"Remember Me";
 
-            public static LocalizedString title = @"Intersect Editor Login";
+            public static LocalizedString title = @"Floor 100 Editor Login";
 
             public static LocalizedString username = @"Username: ";
 
@@ -3282,7 +3282,7 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString timeeditor = @"Time Editor";
 
-            public static LocalizedString title = @"Intersect Editor - {00}";
+            public static LocalizedString title = @"Floor 100 Editor - {00}";
 
             public static LocalizedString tools = @"Tools";
 
@@ -4570,7 +4570,7 @@ Negative values for time to flow backwards.";
         public struct Update
         {
 
-            public static LocalizedString Title = @"Intersect Editor - Updating";
+            public static LocalizedString Title = @"Floor 100 Editor - Updating";
 
             public static LocalizedString Checking = @"Checking for updates, please wait!";
 

@@ -674,7 +674,7 @@ namespace Intersect.Client.Localization
                 @"Fullscreen {00} resolution is not supported on this device!";
 
             public static LocalizedString errorencountered =
-                @"The Intersect Client has encountered an error and must close. Error information can be found in logs/errors.log";
+                @"The Floor 100 Client has encountered an error and must close. Error information can be found in logs/errors.log";
 
             public static LocalizedString notconnected = @"Not connected to the game server. Is it online?";
 
@@ -1126,7 +1126,7 @@ namespace Intersect.Client.Localization
         public struct Main
         {
 
-            public static LocalizedString gamename = @"Intersect Client";
+            public static LocalizedString gamename = @"Floor 100 Client";
 
         }
 

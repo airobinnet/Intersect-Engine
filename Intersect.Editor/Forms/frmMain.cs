@@ -404,7 +404,7 @@ namespace Intersect.Editor.Forms
             Globals.LoadingMap = mapId;
             if (Globals.CurrentMap == null)
             {
-                Text = @"Intersect Editor";
+                Text = @"Floor 100 Editor";
             }
             else
             {
@@ -1834,7 +1834,7 @@ namespace Intersect.Editor.Forms
 
                 //Intersect excluded files
                 var excludeFiles = new string[] {"resources/mapcache.db", "update.json", "version.json"};
-                var clientExcludeFiles = new List<string>(){"Intersect Editor.exe", "Intersect Editor.pdb"};
+                var clientExcludeFiles = new List<string>(){"Floor 100 Editor.exe", "Floor 100 Editor.pdb"};
                 var excludeExtensions = new string[] {".dll", ".xml", ".config", ".php"};
                 var excludeDirectories = new string[] {"logs", "screenshots"};
 
