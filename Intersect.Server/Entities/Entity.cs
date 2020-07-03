@@ -840,7 +840,13 @@ namespace Intersect.Server.Entities
 
         public virtual EntityTypes GetEntityType()
         {
-            return EntityTypes.GlobalEntity;
+            if (GetEntityType() == EntityTypes.Pet)
+            {
+                return EntityTypes.GlobalEntity;
+            } else
+            {
+                return EntityTypes.Pet;
+            }
         }
 
         public virtual void Move(int moveDir, Player forPlayer, bool doNotUpdate = false, bool correction = false)
@@ -939,17 +945,6 @@ namespace Intersect.Server.Entities
                 if (doNotUpdate == false)
                 {
                     if (this is EventPageInstance)
-                    {
-                        if (forPlayer != null)
-                        {
-                            PacketSender.SendEntityMoveTo(forPlayer, this, correction);
-                        }
-                        else
-                        {
-                            PacketSender.SendEntityMove(this, correction);
-                        }
-                    }
-                    else if (this is Pet)
                     {
                         if (forPlayer != null)
                         {

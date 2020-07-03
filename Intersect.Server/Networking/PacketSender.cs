@@ -357,7 +357,11 @@ namespace Intersect.Server.Networking
 
             if (en.GetType() == typeof(Npc))
             {
-                SendNpcAggressionTo(player, (Npc) en);
+                SendNpcAggressionTo(player, (Npc)en);
+            }
+            if (en.GetType() == typeof(Pet))
+            {
+                SendPetAggressionTo(player, (Pet)en);
             }
         }
 
@@ -389,7 +393,11 @@ namespace Intersect.Server.Networking
             {
                 if (sendEntities[i].GetType() == typeof(Npc))
                 {
-                    SendNpcAggressionTo(player, (Npc) sendEntities[i]);
+                    SendNpcAggressionTo(player, (Npc)sendEntities[i]);
+                }
+                if (sendEntities[i].GetType() == typeof(Pet))
+                {
+                    SendPetAggressionTo(player, (Pet)sendEntities[i]);
                 }
             }
         }
@@ -510,6 +518,24 @@ namespace Intersect.Server.Networking
             }
         }
 
+        public static void SendPetAggressionToProximity(Pet en)
+        {
+            if (en == null)
+            {
+                return;
+            }
+
+            var map = en.Map;
+            foreach (var mp in en.Map.GetSurroundingMaps(true))
+            {
+                var players = mp.GetPlayersOnMap();
+                foreach (var pl in players)
+                {
+                    SendPetAggressionTo(pl, en);
+                }
+            }
+        }
+
         //NpcAggressionPacket
         public static void SendNpcAggressionTo(Player player, Npc npc)
         {
@@ -519,6 +545,17 @@ namespace Intersect.Server.Networking
             }
 
             player.SendPacket(new NpcAggressionPacket(npc.Id, npc.GetAggression(player)));
+        }
+
+        //PetAggressionPacket
+        public static void SendPetAggressionTo(Player player, Pet pet)
+        {
+            if (player == null || pet == null)
+            {
+                return;
+            }
+
+            player.SendPacket(new PetAggressionPacket(pet.Id, pet.GetAggression(player)));
         }
 
         //EntityLeftArea

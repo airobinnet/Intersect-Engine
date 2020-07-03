@@ -40,7 +40,9 @@ namespace Intersect.Client.Framework.File_Management
 
             Misc,
 
-            Hair
+            Hair,
+
+            Pet
 
         }
 

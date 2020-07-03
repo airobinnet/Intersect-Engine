@@ -4,7 +4,7 @@
     public class PetEntityPacket : EntityPacket
     {
 
-        public int Shiny { get; set; }
+        public int Aggression { get; set; }
 
     }
 

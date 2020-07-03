@@ -259,7 +259,15 @@ namespace Intersect.Client.Entities
             set
             {
                 mMySprite = value;
-                Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, mMySprite);
+                if (Type == (int)EntityTypes.Pet)
+                {
+
+                    Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Pet, mMySprite);
+                } else
+                {
+
+                    Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, mMySprite);
+                }
                 LoadAnimationTextures(mMySprite);
             }
         }
@@ -1638,7 +1646,7 @@ namespace Intersect.Client.Entities
             if (castSpell != null)
             {
 
-                Console.WriteLine(Animations.Count);
+                //Console.WriteLine(Animations.Count);
                 var width = Options.TileWidth;
                 var fillratio = (castSpell.CastDuration - (CastTime - Globals.System.GetTimeMs())) /
                                 (float) castSpell.CastDuration;
@@ -1880,7 +1888,14 @@ namespace Intersect.Client.Entities
             AnimatedTextures.Clear();
             foreach (var anim in Enum.GetValues(typeof(SpriteAnimations)))
             {
-                AnimatedTextures.Add((SpriteAnimations)anim, Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, $@"{file}_{anim}.png"));
+                if (this.Type == (int)EntityTypes.Pet)
+                {
+                    AnimatedTextures.Add((SpriteAnimations)anim, Globals.ContentManager.GetTexture(GameContentManager.TextureType.Pet, $@"{file}_{anim}.png"));
+                }
+                else
+                {
+                    AnimatedTextures.Add((SpriteAnimations)anim, Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, $@"{file}_{anim}.png"));
+                }
             }
         }
 

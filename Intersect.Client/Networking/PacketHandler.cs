@@ -194,12 +194,12 @@ namespace Intersect.Client.Networking
             if (en != null)
             {
                 en.Load(packet);
-                en.Type = packet.Shiny;
+                en.Type = packet.Aggression;
             }
             else
             {
                 Globals.Entities.Add(packet.EntityId, new Entity(packet.EntityId, packet));
-                Globals.Entities[packet.EntityId].Type = packet.Shiny;
+                Globals.Entities[packet.EntityId].Type = packet.Aggression;
             }
         }
 
@@ -1656,6 +1656,14 @@ namespace Intersect.Client.Networking
 
         //NpcAggressionPacket
         private static void HandlePacket(NpcAggressionPacket packet)
+        {
+            if (Globals.Entities.ContainsKey(packet.EntityId))
+            {
+                Globals.Entities[packet.EntityId].Type = packet.Aggression;
+            }
+        }
+        //PetAggressionPacket
+        private static void HandlePacket(PetAggressionPacket packet)
         {
             if (Globals.Entities.ContainsKey(packet.EntityId))
             {

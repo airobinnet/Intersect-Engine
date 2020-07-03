@@ -314,6 +314,7 @@
     <Compile Include="Network\Packets\Client\CloseHDVPacket.cs" />
     <Compile Include="Network\Packets\Server\HDVItemPacket.cs" />
     <Compile Include="Network\Packets\Server\HDVPacket.cs" />
+    <Compile Include="Network\Packets\Server\PetAggressionPacket.cs" />
     <Compile Include="Network\Packets\Server\PetEntityPacket.cs" />
     <Compile Include="Network\Packets\Server\RemoveHDVItemPacket.cs" />
     <Compile Include="Network\Packets\Client\ActivateEventPacket.cs" />

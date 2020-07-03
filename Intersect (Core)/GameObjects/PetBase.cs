@@ -33,6 +33,9 @@ namespace Intersect.GameObjects
         [Column("Animation1")]
         public Guid AnimationId { get; set; }
 
+
+        [NotMapped] public int[] Stats = new int[(int)Enums.Stats.StatCount];
+
         [NotMapped]
         [JsonIgnore]
         public AnimationBase Animation

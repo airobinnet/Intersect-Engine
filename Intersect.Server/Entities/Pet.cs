@@ -54,6 +54,12 @@ namespace Intersect.Server.Entities
 
             Range = (byte)myBase.SightRange;
             mPathFinder = new Pathfinder(this);
+
+            for (var i = 0; i < (int)Stats.StatCount; i++)
+            {
+                BaseStats[i] = myBase.Stats[i];
+                Stat[i] = new Stat((Stats)i, this);
+            }
         }
 
         [NotNull]
@@ -74,17 +80,26 @@ namespace Intersect.Server.Entities
         public void RemoveTarget()
         {
             Target = null;
+            PacketSender.SendPetAggressionToProximity(this);
         }
 
         public void AssignTarget(Entity en)
         {
             Target = Owner;
+            PacketSender.SendPetAggressionToProximity(this);
         }
+
+        public override int CalculateAttackTime()
+        {
+            return 1;
+        }
+
 
         public override void Update(long timeMs)
         {
             var curMapLink = MapId;
             base.Update(timeMs);
+            var fleeing = false;
 
             if (MoveTimer < Globals.Timing.TimeMs)
             {
@@ -186,6 +201,7 @@ namespace Intersect.Server.Entities
                                         {
 
                                             Move((byte)dir, null);
+
                                         }
                                         else
                                         {
@@ -194,6 +210,7 @@ namespace Intersect.Server.Entities
 
                                     }
                                     // Npc move when here
+                                    this.Update(timeMs);
 
                                     break;
                                 case PathfinderResult.OutOfRange:
@@ -220,7 +237,10 @@ namespace Intersect.Server.Entities
                             }
                             if (Dir != DirToEnemy(Target) && DirToEnemy(Target) != -1)
                             {
-                                ChangeDir(DirToEnemy(Target));
+                                if (Target != null)
+                                {
+                                    ChangeDir(DirToEnemy(Target));
+                                }
                             }
                             else
                             {
@@ -232,10 +252,33 @@ namespace Intersect.Server.Entities
                         }
                     }
                 }
-                
-            }
-            LastRandomMove = Globals.Timing.TimeMs + (long) GetMovementTime();
+                //Move randomly
+                if (targetMap != Guid.Empty)
+                {
+                    return;
+                }
 
+                if (LastRandomMove >= Globals.Timing.TimeMs || CastTime > 0)
+                {
+                    return;
+                }
+
+                var i = Randomization.Next(0, 1);
+                if (i == 0)
+                {
+                    i = Randomization.Next(0, 8);
+                    if (CanMove(i) == -1)
+                    {
+                        Move((byte)i, null);
+
+                    }
+                }
+
+                LastRandomMove = Globals.Timing.TimeMs + Randomization.Next(1000, 3000);
+                
+
+            }
+            
 
             //If we switched maps, lets update the maps
             if (curMapLink != MapId)
@@ -250,8 +293,10 @@ namespace Intersect.Server.Entities
                     MapInstance.Get(MapId).AddEntity(this);
                 }
             }
-            base.Update(timeMs);
             // End of the Npc Movement
+
+            PacketSender.SendEntityDataToProximity(this);
+            //PacketSender.SendEntityPositionToAll(this);
         }
 
         private void TryFindNewTarget(long timeMs, Guid avoidId = new Guid())
@@ -295,6 +340,52 @@ namespace Intersect.Server.Entities
             FindTargetWaitTime = timeMs + FindTargetDelay;
         }
 
+        public override void Warp(
+            Guid newMapId,
+            byte newX,
+            byte newY,
+            byte newDir,
+            bool adminWarp = false,
+            byte zOverride = 0,
+            bool mapSave = false
+        )
+        {
+            var map = MapInstance.Get(newMapId);
+            if (map == null)
+            {
+                return;
+            }
+
+            X = newX;
+            Y = newY;
+            Z = zOverride;
+            Dir = newDir;
+            if (newMapId != MapId)
+            {
+                var oldMap = MapInstance.Get(MapId);
+                if (oldMap != null)
+                {
+                    oldMap.RemoveEntity(this);
+                }
+
+                PacketSender.SendEntityLeave(this);
+                MapId = newMapId;
+                PacketSender.SendEntityDataToProximity(this);
+                PacketSender.SendEntityPositionToAll(this);
+            }
+            else
+            {
+                PacketSender.SendEntityPositionToAll(this);
+                PacketSender.SendEntityVitals(this);
+                PacketSender.SendEntityStats(this);
+            }
+        }
+
+        public int GetAggression(Player player)
+        {
+            return 1;
+        }
+
         public override EntityPacket EntityPacket(EntityPacket packet = null, Player forPlayer = null)
         {
             if (packet == null)
@@ -305,6 +396,7 @@ namespace Intersect.Server.Entities
             packet = base.EntityPacket(packet, forPlayer);
 
             var pkt = (PetEntityPacket)packet;
+            pkt.Aggression = GetAggression(forPlayer);
 
             return pkt;
         }

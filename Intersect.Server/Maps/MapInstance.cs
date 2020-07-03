@@ -60,8 +60,13 @@ namespace Intersect.Server.Maps
 
         private ConcurrentDictionary<Guid, Player> mPlayers = new ConcurrentDictionary<Guid, Player>();
 
-        [JsonIgnore] [NotMapped]
+        [JsonIgnore]
+        [NotMapped]
         public Dictionary<NpcSpawn, MapNpcSpawn> NpcSpawnInstances = new Dictionary<NpcSpawn, MapNpcSpawn>();
+
+        [JsonIgnore]
+        [NotMapped]
+        public Dictionary<NpcSpawn, MapNpcSpawn> PetSpawnInstances = new Dictionary<NpcSpawn, MapNpcSpawn>();
 
         [JsonIgnore] [NotMapped]
         public Dictionary<ResourceSpawn, MapResourceSpawn> ResourceSpawnInstances =
@@ -535,7 +540,7 @@ namespace Intersect.Server.Maps
 
                 if (Spawns[i].Direction != NpcSpawnDirection.Random)
                 {
-                    dir = (byte) (Spawns[i].Direction - 1);
+                    dir = (byte)(Spawns[i].Direction - 1);
                 }
                 else
                 {
@@ -544,7 +549,7 @@ namespace Intersect.Server.Maps
 
                 if (Spawns[i].X >= 0 && Spawns[i].Y >= 0)
                 {
-                    npcSpawnInstance.Entity = SpawnNpc((byte) Spawns[i].X, (byte) Spawns[i].Y, dir, Spawns[i].NpcId);
+                    npcSpawnInstance.Entity = SpawnNpc((byte)Spawns[i].X, (byte)Spawns[i].Y, dir, Spawns[i].NpcId);
                 }
                 else
                 {
@@ -552,7 +557,7 @@ namespace Intersect.Server.Maps
                     {
                         x = (byte)Randomization.Next(0, Options.MapWidth);
                         y = (byte)Randomization.Next(0, Options.MapHeight);
-                        if (Attributes[x, y] == null || Attributes[x, y].Type == (int) MapAttributes.Walkable)
+                        if (Attributes[x, y] == null || Attributes[x, y].Type == (int)MapAttributes.Walkable)
                         {
                             break;
                         }
