@@ -1034,6 +1034,120 @@ namespace Intersect.Server.Entities.Events
             player.SpawnedNpcs.Clear();
         }
 
+        //Spawn Pet Command
+        private static void ProcessCommand(
+            SpawnPetCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            var petId = command.PetId;
+            var mapId = command.MapId;
+            var tileX = 0;
+            var tileY = 0;
+            var direction = (byte)Directions.Up;
+            var targetEntity = (Entity)player;
+            if (mapId != Guid.Empty)
+            {
+                tileX = command.X;
+                tileY = command.Y;
+                direction = command.Dir;
+            }
+            else
+            {
+                if (command.EntityId != Guid.Empty)
+                {
+                    foreach (var evt in player.EventLookup)
+                    {
+                        if (evt.Value.MapId != instance.MapId)
+                        {
+                            continue;
+                        }
+
+                        if (evt.Value.BaseEvent.Id == command.EntityId)
+                        {
+                            targetEntity = evt.Value.PageInstance;
+
+                            break;
+                        }
+                    }
+                }
+
+                if (targetEntity != null)
+                {
+                    int xDiff = command.X;
+                    int yDiff = command.Y;
+                    if (command.Dir == 1)
+                    {
+                        var tmp = 0;
+                        switch (targetEntity.Dir)
+                        {
+                            case (int)Directions.Down:
+                                yDiff *= -1;
+                                xDiff *= -1;
+
+                                break;
+                            case (int)Directions.Left:
+                                tmp = yDiff;
+                                yDiff = xDiff;
+                                xDiff = tmp;
+
+                                break;
+                            case (int)Directions.Right:
+                                tmp = yDiff;
+                                yDiff = xDiff;
+                                xDiff = -tmp;
+
+                                break;
+                        }
+
+                        direction = (byte)targetEntity.Dir;
+                    }
+
+                    mapId = targetEntity.MapId;
+                    tileX = (byte)(targetEntity.X + xDiff);
+                    tileY = (byte)(targetEntity.Y + yDiff);
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            var tile = new TileHelper(mapId, tileX, tileY);
+            if (tile.TryFix())
+            {
+                var pet = MapInstance.Get(mapId).SpawnPet((byte)tileX, (byte)tileY, direction, petId, player, true);
+                player.SpawnedPets.Add((Pet)pet);
+            }
+        }
+
+        //Despawn Pet Command
+        private static void ProcessCommand(
+            DespawnPetCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            var entities = player.SpawnedPets.ToArray();
+            for (var i = 0; i < entities.Length; i++)
+            {
+                if (entities[i] != null && entities[i].GetType() == typeof(Pet))
+                {
+                    if (((Pet)entities[i]).Despawnable == true)
+                    {
+                        ((Pet)entities[i]).Die(100);
+                    }
+                }
+            }
+
+            player.SpawnedPets.Clear();
+        }
+
         //Play Animation Command
         private static void ProcessCommand(
             PlayAnimationCommand command,

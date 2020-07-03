@@ -123,6 +123,7 @@ namespace Intersect.Editor.Forms
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.packClientTexturesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.packageUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PetEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -199,7 +200,7 @@ namespace Intersect.Editor.Forms
             this.dockLeft.DockLeftPortion = 316D;
             this.dockLeft.DockRightPortion = 0.15D;
             this.dockLeft.Location = new System.Drawing.Point(0, 73);
-            this.dockLeft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dockLeft.Margin = new System.Windows.Forms.Padding(4);
             this.dockLeft.Name = "dockLeft";
             this.dockLeft.ShowAutoHideContentOnHover = false;
             this.dockLeft.Size = new System.Drawing.Size(1779, 894);
@@ -802,7 +803,8 @@ namespace Intersect.Editor.Forms
             this.spellEditorToolStripMenuItem,
             this.variableEditorToolStripMenuItem,
             this.timeEditorToolStripMenuItem,
-            this.hDVToolStripMenuItem});
+            this.hDVToolStripMenuItem,
+            this.PetEditorToolStripMenuItem});
             this.contentEditorsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.contentEditorsToolStripMenuItem.Name = "contentEditorsToolStripMenuItem";
             this.contentEditorsToolStripMenuItem.Size = new System.Drawing.Size(147, 29);
@@ -1008,6 +1010,14 @@ namespace Intersect.Editor.Forms
             this.packageUpdateToolStripMenuItem.Text = "Package Update";
             this.packageUpdateToolStripMenuItem.Click += new System.EventHandler(this.packageUpdateToolStripMenuItem_Click);
             // 
+            // PetEditorToolStripMenuItem
+            // 
+            this.PetEditorToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.PetEditorToolStripMenuItem.Name = "PetEditorToolStripMenuItem";
+            this.PetEditorToolStripMenuItem.Size = new System.Drawing.Size(271, 30);
+            this.PetEditorToolStripMenuItem.Text = "Pets";
+            this.PetEditorToolStripMenuItem.Click += new System.EventHandler(this.PetEditorToolStripMenuItem_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -1021,7 +1031,7 @@ namespace Intersect.Editor.Forms
             this.IsMdiContainer = true;
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Floor 100 Editor";
@@ -1129,5 +1139,6 @@ namespace Intersect.Editor.Forms
         private ToolStripMenuItem packClientTexturesToolStripMenuItem;
         private ToolStripMenuItem packageUpdateToolStripMenuItem;
         private ToolStripMenuItem hDVToolStripMenuItem;
+        private ToolStripMenuItem PetEditorToolStripMenuItem;
     }
 }

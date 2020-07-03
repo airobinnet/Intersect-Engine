@@ -692,6 +692,37 @@ namespace Intersect.GameObjects.Events.Commands
 
     }
 
+    public class SpawnPetCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.SpawnPet;
+
+        public Guid PetId { get; set; }
+
+        public byte Dir { get; set; }
+
+        //Tile Spawn Variables  (Will spawn on map tile if mapid is not empty)
+        public Guid MapId { get; set; }
+
+        //Entity Spawn Variables (Will spawn on/around entity if entityId is not empty)
+        public Guid EntityId { get; set; }
+
+        //Map Coords or Coords Centered around player to spawn at
+        public sbyte X { get; set; }
+
+        public sbyte Y { get; set; }
+
+    }
+
+    public class DespawnPetCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.DespawnPet;
+
+        //No parameters, only despawns npcs that have been spawned via events for the player
+
+    }
+
     public class PlayAnimationCommand : EventCommand
     {
 

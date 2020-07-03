@@ -49,6 +49,14 @@ namespace Intersect.Server.General
             }
         }
 
+        public static void KillPetsOf(PetBase pet)
+        {
+            foreach (MapInstance map in MapInstance.Lookup.Values)
+            {
+                map?.DespawnPetsOf(pet);
+            }
+        }
+
         public static void KillProjectilesOf(ProjectileBase projectile)
         {
             foreach (MapInstance map in MapInstance.Lookup.Values)

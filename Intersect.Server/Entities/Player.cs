@@ -59,6 +59,13 @@ namespace Intersect.Server.Entities
 
         #endregion
 
+
+        #region Pets
+
+        [JsonIgnore] [NotMapped] public List<Pet> SpawnedPets = new List<Pet>();
+
+        #endregion
+
         public static int OnlineCount => OnlinePlayers.Count;
 
         [JsonProperty("MaxVitals"), NotMapped]
@@ -269,6 +276,23 @@ namespace Intersect.Server.Entities
             }
 
             SpawnedNpcs.Clear();
+
+            //Clear all spawned pets
+            var pets = SpawnedPets.ToArray();
+            foreach (var p in pets)
+            {
+                if (p == null || p.GetType() != typeof(Pet))
+                {
+                    continue;
+                }
+
+                if (p.Despawnable)
+                {
+                    p.Die(0);
+                }
+            }
+
+            SpawnedPets.Clear();
 
             lock (mEventLock)
             {

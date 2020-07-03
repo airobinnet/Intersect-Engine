@@ -448,6 +448,7 @@
     <Compile Include="Entities\Combat\Dash.cs" />
     <Compile Include="Entities\Combat\DoT.cs" />
     <Compile Include="Entities\Label.cs" />
+    <Compile Include="Entities\Pet.cs" />
     <Compile Include="Entities\Player.Database.cs" />
     <Compile Include="Database\Spell.cs" />
     <Compile Include="Database\PlayerData\Players\Switch.cs" />
@@ -529,6 +530,10 @@
     <Compile Include="Migrations\Game\20200626170156_ExtraBuffSpell.cs" />
     <Compile Include="Migrations\Game\20200626170156_ExtraBuffSpell.designer.cs">
       <DependentUpon>20200626170156_ExtraBuffSpell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20200703002446_Pets.cs" />
+    <Compile Include="Migrations\Game\20200703002446_Pets.designer.cs">
+      <DependentUpon>20200703002446_Pets.cs</DependentUpon>
     </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />

@@ -187,6 +187,22 @@ namespace Intersect.Client.Networking
             }
         }
 
+        //PetEntityPacket
+        private static void HandlePacket(PetEntityPacket packet)
+        {
+            var en = Globals.GetEntity(packet.EntityId, EntityTypes.Pet);
+            if (en != null)
+            {
+                en.Load(packet);
+                en.Type = packet.Shiny;
+            }
+            else
+            {
+                Globals.Entities.Add(packet.EntityId, new Entity(packet.EntityId, packet));
+                Globals.Entities[packet.EntityId].Type = packet.Shiny;
+            }
+        }
+
         //ResourceEntityPacket
         private static void HandlePacket(ResourceEntityPacket packet)
         {

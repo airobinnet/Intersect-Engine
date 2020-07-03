@@ -48,7 +48,9 @@ namespace Intersect.Editor.Content
 
             Misc,
 
-            Hairs
+            Hairs,
+
+            Pets
 
         }
 
@@ -93,6 +95,8 @@ namespace Intersect.Editor.Content
         static IDictionary<string, Texture> sTilesetDict = new Dictionary<string, Texture>();
 
         static IDictionary<string, Texture> sHairsDict = new Dictionary<string, Texture>();
+
+        static IDictionary<string, Texture> sPetsDict = new Dictionary<string, Texture>();
 
         public static List<Texture> TilesetTextures = new List<Texture>();
 
@@ -143,6 +147,7 @@ namespace Intersect.Editor.Content
             LoadShaders();
             LoadSounds();
             LoadMusic();
+            LoadPets();
         }
 
         public static void Update()
@@ -328,8 +333,14 @@ namespace Intersect.Editor.Content
             LoadTextureGroup("misc", sMiscDict);
         }
 
-        private static void LoadHairs() {
+        private static void LoadHairs()
+        {
             LoadTextureGroup("hairs", sHairsDict);
+        }
+
+        private static void LoadPets()
+        {
+            LoadTextureGroup("pets", sPetsDict);
         }
 
         public static void LoadShaders()
@@ -455,6 +466,10 @@ namespace Intersect.Editor.Content
                     break;
                 case TextureType.Hairs:
                     textureDict = sHairsDict;
+
+                    break;
+                case TextureType.Pets:
+                    textureDict = sPetsDict;
 
                     break;
                 default:
@@ -588,6 +603,10 @@ namespace Intersect.Editor.Content
 
                 case TextureType.Hairs:
                     textureDict = sHairsDict;
+
+                    break;
+                case TextureType.Pets:
+                    textureDict = sPetsDict;
 
                     break;
                 default:

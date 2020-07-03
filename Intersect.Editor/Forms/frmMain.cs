@@ -62,6 +62,8 @@ namespace Intersect.Editor.Forms
 
         private FrmNpc mNpcEditor;
 
+        private FrmPet mPetEditor;
+
         private FrmProjectile mProjectileEditor;
 
         private FrmQuest mQuestEditor;
@@ -1142,6 +1144,11 @@ namespace Intersect.Editor.Forms
             PacketSender.SendOpenEditor(GameObjectType.Npc);
         }
 
+        private void PetEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PacketSender.SendOpenEditor(GameObjectType.Pet);
+        }
+
         private void spellEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PacketSender.SendOpenEditor(GameObjectType.Spell);
@@ -1598,6 +1605,14 @@ namespace Intersect.Editor.Forms
                             mFrmHDV = new frmHDV();
                             mFrmHDV.InitEditor();
                             mFrmHDV.Show();
+                        }
+                        break;
+                    case GameObjectType.Pet:
+                        if (mPetEditor == null || mPetEditor.Visible == false)
+                        {
+                            mPetEditor = new FrmPet();
+                            mPetEditor.InitEditor();
+                            mPetEditor.Show();
                         }
                         break;
                     default:

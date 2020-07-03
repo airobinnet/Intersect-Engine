@@ -92,6 +92,12 @@
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_HDV.Designer.cs">
       <DependentUpon>EventCommand_HDV.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SpawnPet.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SpawnPet.Designer.cs">
+      <DependentUpon>EventCommand_SpawnPet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Editors\frmHDV.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +133,12 @@
     </Compile>
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeItemsByTag.Designer.cs">
       <DependentUpon>EventCommand_ChangeItemsByTag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\frmPet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\frmPet.Designer.cs">
+      <DependentUpon>frmPet.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmUpdate.cs">
       <SubType>Form</SubType>
@@ -693,6 +705,9 @@
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_HDV.resx">
       <DependentUpon>EventCommand_HDV.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_SpawnPet.resx">
+      <DependentUpon>EventCommand_SpawnPet.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\frmHDV.resx">
       <DependentUpon>frmHDV.cs</DependentUpon>
     </EmbeddedResource>
@@ -851,6 +866,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\frmItem.resx">
       <DependentUpon>frmItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\frmPet.resx">
+      <DependentUpon>frmPet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\frmNpc.resx">
       <DependentUpon>frmNpc.cs</DependentUpon>

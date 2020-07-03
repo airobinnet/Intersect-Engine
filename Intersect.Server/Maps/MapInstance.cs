@@ -373,6 +373,17 @@ namespace Intersect.Server.Maps
             }
         }
 
+        public void DespawnPetsOf(PetBase petBase)
+        {
+            foreach (var entity in mEntities)
+            {
+                if (entity.Value is Pet pet && pet.Base == petBase)
+                {
+                    pet.Die(0);
+                }
+            }
+        }
+
         public void DespawnResourcesOf(ResourceBase resourceBase)
         {
             foreach (var entity in mEntities)
@@ -595,6 +606,28 @@ namespace Intersect.Server.Maps
                 PacketSender.SendEntityDataToProximity(npc);
 
                 return npc;
+            }
+
+            return null;
+        }
+
+        public Entity SpawnPet(byte tileX, byte tileY, byte dir, Guid petId, Entity owner, bool despawnable = false)
+        {
+            var petBase = PetBase.Get(petId);
+            if (petBase != null)
+            {
+                var pet = new Pet(petBase, owner, despawnable)
+                {
+                    MapId = Id,
+                    X = tileX,
+                    Y = tileY,
+                    Dir = dir
+                };
+
+                AddEntity(pet);
+                PacketSender.SendEntityDataToProximity(pet);
+
+                return pet;
             }
 
             return null;

@@ -784,7 +784,10 @@ namespace Intersect.Server.Entities
                         break;
                     default:
                         //Gonna end up returning false because command not found
-                        return false;
+                        //return false;
+                        MoveTimer = Globals.Timing.TimeMs + 100;
+                        moved = true;
+                        break;
                 }
 
                 if (moved || MoveRoute.IgnoreIfBlocked)
@@ -818,13 +821,21 @@ namespace Intersect.Server.Entities
         //Returns the amount of time required to traverse 1 tile
         public virtual float GetMovementTime()
         {
-            var time = 1000f / (float)(1 + Math.Log(Stat[(int)Stats.MovementSpeed].Value())); //swap to MovementSpeed instead of Speed
-            if (Blocking)
+            if (GetEntityType() == EntityTypes.Pet)
             {
-                time += time * Options.BlockingSlow;
+                Console.WriteLine(X + "," + Y);
+                return 500f;
             }
+            else
+            {
+                var time = 1000f / (float)(1 + Math.Log(Stat[(int)Stats.MovementSpeed].Value())); //swap to MovementSpeed instead of Speed
+                if (Blocking)
+                {
+                    time += time * Options.BlockingSlow;
+                }
 
-            return Math.Min(1000f, time);
+                return Math.Min(1000f, time);
+            }
         }
 
         public virtual EntityTypes GetEntityType()
@@ -928,6 +939,17 @@ namespace Intersect.Server.Entities
                 if (doNotUpdate == false)
                 {
                     if (this is EventPageInstance)
+                    {
+                        if (forPlayer != null)
+                        {
+                            PacketSender.SendEntityMoveTo(forPlayer, this, correction);
+                        }
+                        else
+                        {
+                            PacketSender.SendEntityMove(this, correction);
+                        }
+                    }
+                    else if (this is Pet)
                     {
                         if (forPlayer != null)
                         {
@@ -1906,6 +1928,11 @@ namespace Intersect.Server.Entities
         {
             var damagingAttack = baseDamage > 0;
             if (enemy == null)
+            {
+                return;
+            }
+
+            if (enemy is Pet)
             {
                 return;
             }

@@ -743,6 +743,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new HDVCommand();
 
                     break;
+                case EventCommandType.SpawnPet:
+                    tmpCommand = new SpawnPetCommand();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1335,6 +1339,9 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.HDV:
                     cmdWindow = new EventCommand_HDV((HDVCommand)command, this);
+                    break;
+                case EventCommandType.SpawnPet:
+                    cmdWindow = new EventCommandSpawnPet(this, mCurrentMap, MyEvent, (SpawnPetCommand)command);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

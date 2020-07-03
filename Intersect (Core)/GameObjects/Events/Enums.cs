@@ -242,6 +242,8 @@
         SendMail = 440,
         OpenMailBox = 441,
         HDV = 447,
+        SpawnPet = 600,
+        DespawnPet = 601,
 
     }
 

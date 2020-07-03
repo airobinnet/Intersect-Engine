@@ -61,7 +61,11 @@ namespace Intersect.Enums
         [GameObjectInfo(typeof(HDVBase), "hdvs")]
         HDVs,
 
-        [GameObjectInfo(typeof(TimeBase), "")] Time
+        [GameObjectInfo(typeof(PetBase), "pets")]
+        Pet,
+
+        [GameObjectInfo(typeof(TimeBase), "")]
+        Time
 
     }
 

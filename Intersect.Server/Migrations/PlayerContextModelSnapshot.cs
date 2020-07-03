@@ -75,7 +75,7 @@ namespace Intersect.Server.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Expires");
+                    b.Property<double>("Expires");
 
                     b.Property<Guid>("HDVId");
 

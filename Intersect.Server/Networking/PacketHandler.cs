@@ -3072,6 +3072,10 @@ namespace Intersect.Server.Networking
                     obj = NpcBase.Get(id);
 
                     break;
+                case GameObjectType.Pet:
+                    obj = PetBase.Get(id);
+
+                    break;
                 case GameObjectType.Projectile:
                     obj = ProjectileBase.Get(id);
 
@@ -3139,7 +3143,11 @@ namespace Intersect.Server.Networking
                 }
                 else if (type == GameObjectType.Npc)
                 {
-                    Globals.KillNpcsOf((NpcBase) obj);
+                    Globals.KillNpcsOf((NpcBase)obj);
+                }
+                else if (type == GameObjectType.Pet)
+                {
+                    Globals.KillPetsOf((PetBase)obj);
                 }
 
                 DbInterface.DeleteGameObject(obj);
@@ -3176,6 +3184,10 @@ namespace Intersect.Server.Networking
                     break;
                 case GameObjectType.Npc:
                     obj = NpcBase.Get(id);
+
+                    break;
+                case GameObjectType.Pet:
+                    obj = PetBase.Get(id);
 
                     break;
                 case GameObjectType.Projectile:
@@ -3243,6 +3255,10 @@ namespace Intersect.Server.Networking
                     else if (type == GameObjectType.Npc)
                     {
                         Globals.KillNpcsOf((NpcBase)obj);
+                    }
+                    else if (type == GameObjectType.Pet)
+                    {
+                        Globals.KillPetsOf((PetBase)obj);
                     }
                     else if (type == GameObjectType.Projectile)
                     {

@@ -624,6 +624,10 @@ namespace Intersect.Server.Database
                     NpcBase.Lookup.Clear();
 
                     break;
+                case GameObjectType.Pet:
+                    PetBase.Lookup.Clear();
+
+                    break;
                 case GameObjectType.Projectile:
                     ProjectileBase.Lookup.Clear();
 
@@ -715,6 +719,13 @@ namespace Intersect.Server.Database
                         foreach (var npc in sGameDb.Npcs)
                         {
                             NpcBase.Lookup.Set(npc.Id, npc);
+                        }
+
+                        break;
+                    case GameObjectType.Pet:
+                        foreach (var pet in sGameDb.Pets)
+                        {
+                            PetBase.Lookup.Set(pet.Id, pet);
                         }
 
                         break;
@@ -848,6 +859,10 @@ namespace Intersect.Server.Database
                     dbObj = new NpcBase(predefinedid);
 
                     break;
+                case GameObjectType.Pet:
+                    dbObj = new PetBase(predefinedid);
+
+                    break;
                 case GameObjectType.Projectile:
                     dbObj = new ProjectileBase(predefinedid);
 
@@ -944,8 +959,14 @@ namespace Intersect.Server.Database
                         break;
 
                     case GameObjectType.Npc:
-                        sGameDb.Npcs.Add((NpcBase) dbObj);
+                        sGameDb.Npcs.Add((NpcBase)dbObj);
                         NpcBase.Lookup.Set(dbObj.Id, dbObj);
+
+                        break;
+
+                    case GameObjectType.Pet:
+                        sGameDb.Pets.Add((PetBase)dbObj);
+                        PetBase.Lookup.Set(dbObj.Id, dbObj);
 
                         break;
 
@@ -1062,6 +1083,10 @@ namespace Intersect.Server.Database
                         break;
                     case GameObjectType.Npc:
                         sGameDb.Npcs.Remove((NpcBase) gameObject);
+
+                        break;
+                    case GameObjectType.Pet:
+                        sGameDb.Pets.Remove((PetBase)gameObject);
 
                         break;
                     case GameObjectType.Projectile:
