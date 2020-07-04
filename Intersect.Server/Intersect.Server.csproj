@@ -475,6 +475,7 @@
     <Compile Include="Maps\MapInstance.cs" />
     <Compile Include="Maps\MapItemInstance.cs" />
     <Compile Include="Maps\MapItemSpawn.cs" />
+    <Compile Include="Maps\MapPetSpawn.cs" />
     <Compile Include="Maps\MapNpcSpawn.cs" />
     <Compile Include="Maps\MapResourceSpawn.cs" />
     <Compile Include="Maps\MapTrapInstance.cs" />

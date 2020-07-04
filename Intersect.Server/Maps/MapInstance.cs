@@ -66,7 +66,7 @@ namespace Intersect.Server.Maps
 
         [JsonIgnore]
         [NotMapped]
-        public Dictionary<NpcSpawn, MapNpcSpawn> PetSpawnInstances = new Dictionary<NpcSpawn, MapNpcSpawn>();
+        public Dictionary<PetSpawn, MapPetSpawn> PetSpawnInstances = new Dictionary<PetSpawn, MapPetSpawn>();
 
         [JsonIgnore] [NotMapped]
         public Dictionary<ResourceSpawn, MapResourceSpawn> ResourceSpawnInstances =

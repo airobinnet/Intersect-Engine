@@ -196,12 +196,48 @@ namespace Intersect.Server.Entities
                                     var dir = mPathFinder.GetMove();
                                     if (dir > -1)
                                     {
+                                        if (fleeing)
+                                        {
+                                            switch (dir)
+                                            {
+                                                case 0:
+                                                    dir = 1;
+
+                                                    break;
+                                                case 1:
+                                                    dir = 0;
+
+                                                    break;
+                                                case 2:
+                                                    dir = 3;
+
+                                                    break;
+                                                case 3:
+                                                    dir = 2;
+
+                                                    break;
+                                                case 4:
+                                                    dir = 5;
+
+                                                    break;
+                                                case 5:
+                                                    dir = 4;
+
+                                                    break;
+                                                case 6:
+                                                    dir = 7;
+
+                                                    break;
+                                                case 7:
+                                                    dir = 6;
+
+                                                    break;
+                                            }
+                                        }
 
                                         if (CanMove(dir) == -1 || CanMove(dir) == -4)
                                         {
-
                                             Move((byte)dir, null);
-
                                         }
                                         else
                                         {
@@ -210,7 +246,6 @@ namespace Intersect.Server.Entities
 
                                     }
                                     // Npc move when here
-                                    this.Update(timeMs);
 
                                     break;
                                 case PathfinderResult.OutOfRange:
@@ -235,18 +270,68 @@ namespace Intersect.Server.Entities
                                 default:
                                     throw new ArgumentOutOfRangeException();
                             }
-                            if (Dir != DirToEnemy(Target) && DirToEnemy(Target) != -1)
+                        }
+                        else
+                        {
+                            var fleed = false;
+                            if (fleeing)
                             {
-                                if (Target != null)
+                                var dir = DirToEnemy(Target);
+                                switch (dir)
+                                {
+                                    case 0:
+                                        dir = 1;
+
+                                        break;
+                                    case 1:
+                                        dir = 0;
+
+                                        break;
+                                    case 2:
+                                        dir = 3;
+
+                                        break;
+                                    case 3:
+                                        dir = 2;
+
+                                        break;
+                                    case 4:
+                                        dir = 5;
+
+                                        break;
+                                    case 5:
+                                        dir = 4;
+
+                                        break;
+                                    case 6:
+                                        dir = 7;
+
+                                        break;
+                                    case 7:
+                                        dir = 6;
+
+                                        break;
+                                }
+
+                                if (CanMove(dir) == -1 || CanMove(dir) == -4)
+                                {
+                                    Move(dir, null);
+                                    fleed = true;
+                                }
+                            }
+
+                            if (!fleed)
+                            {
+                                if (Target != null && Dir != DirToEnemy(Target) && DirToEnemy(Target) != -1)
                                 {
                                     ChangeDir(DirToEnemy(Target));
                                 }
-                            }
-                            else
-                            {
-                                if (Target.IsDisposed)
+                                else
                                 {
-                                    Target = null;
+                                    if (Target.IsDisposed)
+                                    {
+                                        Target = null;
+                                    }
                                 }
                             }
                         }
@@ -276,7 +361,10 @@ namespace Intersect.Server.Entities
 
                 LastRandomMove = Globals.Timing.TimeMs + Randomization.Next(1000, 3000);
                 
-
+                if (fleeing)
+                {
+                    LastRandomMove = Globals.Timing.TimeMs + (long) GetMovementTime();
+                }
             }
             
 
@@ -293,10 +381,8 @@ namespace Intersect.Server.Entities
                     MapInstance.Get(MapId).AddEntity(this);
                 }
             }
-            // End of the Npc Movement
-
-            PacketSender.SendEntityDataToProximity(this);
-            //PacketSender.SendEntityPositionToAll(this);
+            // End of the Pet Movement
+            //PacketSender.SendEntityDataToProximity(this);
         }
 
         private void TryFindNewTarget(long timeMs, Guid avoidId = new Guid())

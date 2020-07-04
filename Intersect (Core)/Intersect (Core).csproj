@@ -236,6 +236,7 @@
     <Compile Include="Extensions\LogLevelExtensions.cs" />
     <Compile Include="GameObjects\Events\VariableMod.cs" />
     <Compile Include="GameObjects\HDVBase.cs" />
+    <Compile Include="GameObjects\Maps\MapPetSpawn.cs" />
     <Compile Include="GameObjects\PetBase.cs" />
     <Compile Include="GameObjects\Switches and Variables\VariableValue.cs" />
     <Compile Include="IO\ConsoleContext.cs" />

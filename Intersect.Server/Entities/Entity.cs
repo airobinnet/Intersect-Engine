@@ -784,10 +784,7 @@ namespace Intersect.Server.Entities
                         break;
                     default:
                         //Gonna end up returning false because command not found
-                        //return false;
-                        MoveTimer = Globals.Timing.TimeMs + 100;
-                        moved = true;
-                        break;
+                        return false;
                 }
 
                 if (moved || MoveRoute.IgnoreIfBlocked)
@@ -824,7 +821,7 @@ namespace Intersect.Server.Entities
             if (GetEntityType() == EntityTypes.Pet)
             {
                 Console.WriteLine(X + "," + Y);
-                return 500f;
+                return 300f;
             }
             else
             {
@@ -840,13 +837,7 @@ namespace Intersect.Server.Entities
 
         public virtual EntityTypes GetEntityType()
         {
-            if (GetEntityType() == EntityTypes.Pet)
-            {
-                return EntityTypes.GlobalEntity;
-            } else
-            {
-                return EntityTypes.Pet;
-            }
+            return EntityTypes.GlobalEntity;
         }
 
         public virtual void Move(int moveDir, Player forPlayer, bool doNotUpdate = false, bool correction = false)
@@ -941,6 +932,20 @@ namespace Intersect.Server.Entities
                 }
 
                 MapId = tile.GetMapId();
+
+                if (this is Pet)
+                {
+                    if (forPlayer != null)
+                    {
+                       // PacketSender.SendEntityDataToProximity(this);
+                        PacketSender.SendEntityMoveTo(forPlayer, this, true);
+                    }
+                    else
+                    {
+                        //PacketSender.SendEntityDataToProximity(this);
+                        PacketSender.SendEntityMove(this, true);
+                    }
+                }
 
                 if (doNotUpdate == false)
                 {

@@ -83,7 +83,7 @@ namespace Intersect.Editor.Forms.Editors
             cmbSprite.Items.Clear();
             cmbSprite.Items.Add(Strings.General.none);
             cmbSprite.Items.AddRange(
-                GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Pets)
+                GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Entity)
             );
             
             InitLocalization();
@@ -167,7 +167,7 @@ namespace Intersect.Editor.Forms.Editors
             gfx.FillRectangle(Brushes.Black, new Rectangle(0, 0, picPet.Width, picPet.Height));
             if (cmbSprite.SelectedIndex > 0)
             {
-                var img = Image.FromFile("resources/pets/" + cmbSprite.Text);
+                var img = Image.FromFile("resources/entities/" + cmbSprite.Text);
                 gfx.DrawImage(
                     img, new Rectangle(0, 0, img.Width / 4, img.Height / 4),
                     new Rectangle(0, 0, img.Width / 4, img.Height / 4), GraphicsUnit.Pixel

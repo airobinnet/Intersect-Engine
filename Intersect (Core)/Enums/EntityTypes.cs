@@ -12,9 +12,9 @@ namespace Intersect.Enums
 
         Projectile = 3,
 
-        Event = 4,
+        Pet = 4,
 
-        Pet = 5,
+        Event = 5,
 
     }
 

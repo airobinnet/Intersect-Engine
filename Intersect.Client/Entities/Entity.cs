@@ -259,15 +259,7 @@ namespace Intersect.Client.Entities
             set
             {
                 mMySprite = value;
-                if (Type == (int)EntityTypes.Pet)
-                {
-
-                    Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Pet, mMySprite);
-                } else
-                {
-
-                    Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, mMySprite);
-                }
+                Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, mMySprite);
                 LoadAnimationTextures(mMySprite);
             }
         }
@@ -459,9 +451,9 @@ namespace Intersect.Client.Entities
         //Returns the amount of time required to traverse 1 tile
         public virtual float GetMovementTime()
         {
-            if (Type == (int)EntityTypes.Pet)
+            if (Name.Contains("[pet]") || Name.Contains("[PET]"))
             {
-                return 500f;
+                return 300f;
             }
             else
             {
@@ -1781,6 +1773,7 @@ namespace Intersect.Client.Entities
                 return;
             }
 
+
             SpriteAnimation = AnimatedTextures[SpriteAnimations.Idle] != null && LastActionTime + TimeBeforeIdling < Globals.System.GetTimeMs() ? SpriteAnimations.Idle : SpriteAnimations.Normal;
             if (IsMoving)
             {
@@ -1888,14 +1881,7 @@ namespace Intersect.Client.Entities
             AnimatedTextures.Clear();
             foreach (var anim in Enum.GetValues(typeof(SpriteAnimations)))
             {
-                if (this.Type == (int)EntityTypes.Pet)
-                {
-                    AnimatedTextures.Add((SpriteAnimations)anim, Globals.ContentManager.GetTexture(GameContentManager.TextureType.Pet, $@"{file}_{anim}.png"));
-                }
-                else
-                {
-                    AnimatedTextures.Add((SpriteAnimations)anim, Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, $@"{file}_{anim}.png"));
-                }
+                AnimatedTextures.Add((SpriteAnimations)anim, Globals.ContentManager.GetTexture(GameContentManager.TextureType.Entity, $@"{file}_{anim}.png"));
             }
         }
 
