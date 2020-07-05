@@ -102,7 +102,7 @@ namespace Intersect.Server.Entities
             var curMapLink = MapId;
             base.Update(timeMs);
             var fleeing = false;
-
+            
             if (MoveTimer < Globals.Timing.TimeMs)
             {
                 var targetMap = Guid.Empty;
@@ -464,8 +464,6 @@ namespace Intersect.Server.Entities
             else
             {
                 PacketSender.SendEntityPositionToAll(this);
-                PacketSender.SendEntityVitals(this);
-                PacketSender.SendEntityStats(this);
             }
         }
 

@@ -165,7 +165,7 @@ namespace Intersect.Client.Entities
 
         public long LastActionTime = -1;
 
-        public const long TimeBeforeIdling = 4000;
+        public const long TimeBeforeIdling = 200;
 
         public const long IdleFrameDuration = 200;
         #endregion
@@ -1369,6 +1369,10 @@ namespace Intersect.Client.Entities
 
         public virtual void DrawName(Color textColor, Color borderColor = null, Color backgroundColor = null)
         {
+            if (GetType() == typeof(Pet))
+            {
+                return;
+            }
             if (HideName || Name.Trim().Length == 0)
             {
                 return;
@@ -1677,6 +1681,11 @@ namespace Intersect.Client.Entities
         public void DrawTarget(int priority)
         {
             if (GetType() == typeof(Projectile))
+            {
+                return;
+            }
+
+            if (GetType() == typeof(Pet))
             {
                 return;
             }

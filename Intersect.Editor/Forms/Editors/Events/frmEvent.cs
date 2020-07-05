@@ -747,6 +747,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new SpawnPetCommand();
 
                     break;
+                case EventCommandType.DespawnPet:
+                    tmpCommand = new DespawnPetCommand();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1342,6 +1346,8 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.SpawnPet:
                     cmdWindow = new EventCommandSpawnPet(this, mCurrentMap, MyEvent, (SpawnPetCommand)command);
+                    break;
+                case EventCommandType.DespawnPet:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

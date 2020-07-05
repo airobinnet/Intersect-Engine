@@ -424,7 +424,18 @@ namespace Intersect.Editor.Forms.Editors
                 nudIntervalPercentage.Value = mEditorItem.Consumable.Percentage;
                 grpConsumable.Visible = true;
             }
-            else if (cmbType.SelectedIndex == (int) ItemTypes.Spell)
+            else if (cmbType.SelectedIndex == (int) ItemTypes.Pet)
+            {
+                cmbTeachSpell.SelectedIndex = SpellBase.ListIndex(mEditorItem.SpellId) + 1;
+                chkQuickCast.Checked = true;
+                chkQuickCast.Enabled = false;
+                chkQuickCast.Visible = false;
+                chkDestroy.Checked = false;
+                chkDestroy.Enabled = false;
+                chkDestroy.Visible = false;
+                grpSpell.Visible = true;
+            }
+            else if (cmbType.SelectedIndex == (int)ItemTypes.Spell)
             {
                 cmbTeachSpell.SelectedIndex = SpellBase.ListIndex(mEditorItem.SpellId) + 1;
                 chkQuickCast.Checked = mEditorItem.QuickCast;

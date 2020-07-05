@@ -502,7 +502,8 @@ namespace Intersect.Server.Entities
                     if (entities[z] != null &&
                         entities[z].X == spawn.X &&
                         entities[z].Y == spawn.Y &&
-                        entities[z].Z == spawn.Z)
+                        entities[z].Z == spawn.Z &&
+                        entities[z].GetType() != typeof(Pet))
                     {
                         killSpawn = spawn.HitEntity(entities[z]);
                     }

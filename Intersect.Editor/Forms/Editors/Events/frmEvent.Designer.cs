@@ -152,6 +152,7 @@ namespace Intersect.Editor.Forms.Editors.Events
             System.Windows.Forms.TreeNode treeNode63 = new System.Windows.Forms.TreeNode("Open Mailbox");
             System.Windows.Forms.TreeNode treeNode64 = new System.Windows.Forms.TreeNode("Auction House");
             System.Windows.Forms.TreeNode treeNode65 = new System.Windows.Forms.TreeNode("Spawn Pet");
+            System.Windows.Forms.TreeNode treeNode66 = new System.Windows.Forms.TreeNode("Despawn Pet");
             this.lblName = new System.Windows.Forms.Label();
             this.txtEventname = new DarkUI.Controls.DarkTextBox();
             this.grpEntityOptions = new DarkUI.Controls.DarkGroupBox();
@@ -1046,6 +1047,9 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode65.Name = "spawnpet";
             treeNode65.Tag = "600";
             treeNode65.Text = "Spawn Pet";
+            treeNode66.Name = "despawnpet";
+            treeNode66.Tag = "601";
+            treeNode66.Text = "Despawn Pet";
             this.lstCommands.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode6,
             treeNode14,
@@ -1058,7 +1062,8 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode62,
             treeNode63,
             treeNode64,
-            treeNode65});
+            treeNode65,
+            treeNode66});
             this.lstCommands.Size = new System.Drawing.Size(666, 676);
             this.lstCommands.TabIndex = 2;
             this.lstCommands.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lstCommands_AfterSelect);

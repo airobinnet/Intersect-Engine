@@ -1475,6 +1475,21 @@ namespace Intersect.Server.Entities
                 map.PlayerEnteredMap(this);
                 PacketSender.SendEntityDataToProximity(this);
                 PacketSender.SendEntityPositionToAll(this);
+                //Clear all spawned pets
+                var pets = SpawnedPets.ToArray();
+                foreach (var p in pets)
+                {
+                    if (p == null || p.GetType() != typeof(Pet))
+                    {
+                        continue;
+                    }
+                    //p.Warp(newMapId, newX, newY, newDir); // does not seem to work, so despawn instead
+                    if (p.Despawnable)
+                    {
+                        p.Die(0);
+                    }
+                }
+                SpawnedPets.Clear();
 
                 //If map grid changed then send the new map grid
                 if (!adminWarp && (oldMap == null || !oldMap.SurroundingMaps.Contains(newMapId)))
@@ -1489,6 +1504,23 @@ namespace Intersect.Server.Entities
                 PacketSender.SendEntityPositionToAll(this);
                 PacketSender.SendEntityVitals(this);
                 PacketSender.SendEntityStats(this);
+
+                //Clear all spawned pets
+                var pets = SpawnedPets.ToArray();
+                foreach (var p in pets)
+                {
+                    if (p == null || p.GetType() != typeof(Pet))
+                    {
+                        continue;
+                    }
+
+                    if (p.Despawnable)
+                    {
+                        p.Die(0);
+                    }
+                }
+
+                SpawnedPets.Clear();
             }
         }
 
@@ -2022,6 +2054,33 @@ namespace Intersect.Server.Entities
 
                         break;
                     case ItemTypes.Spell:
+                        if (itemBase.SpellId == Guid.Empty)
+                        {
+                            return;
+                        }
+
+                        if (itemBase.QuickCast)
+                        {
+                            if (!CanSpellCast(itemBase.Spell, target, false))
+                            {
+                                return;
+                            }
+
+                            CastTarget = target;
+                            CastSpell(itemBase.SpellId);
+                        }
+                        else if (!TryTeachSpell(new Spell(itemBase.SpellId)))
+                        {
+                            return;
+                        }
+
+                        if (itemBase.DestroySpell)
+                        {
+                            TryTakeItem(Items[slot], 1);
+                        }
+
+                        break;
+                    case ItemTypes.Pet:
                         if (itemBase.SpellId == Guid.Empty)
                         {
                             return;
@@ -5804,11 +5863,12 @@ namespace Intersect.Server.Entities
                 var warpAtt = (MapWarpAttribute) attribute;
                 if (warpAtt.Direction == WarpDirection.Retain)
                 {
-                    Warp(warpAtt.MapId, warpAtt.X, warpAtt.Y, (byte) Dir);
+                    Warp(warpAtt.MapId, warpAtt.X, warpAtt.Y, (byte)Dir);
                 }
                 else
                 {
-                    Warp(warpAtt.MapId, warpAtt.X, warpAtt.Y, (byte) (warpAtt.Direction - 1));
+                    Warp(warpAtt.MapId, warpAtt.X, warpAtt.Y, (byte)(warpAtt.Direction - 1));
+                    
                 }
             }
 

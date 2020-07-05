@@ -955,28 +955,30 @@ namespace Intersect.Server.Entities
                     {
                         PacketSender.SendEntityMove(this, correction);
                     }
-
                     //Check if moving into a projectile.. if so this npc needs to be hit
-                    if (currentMap != null)
+                    if (GetType() != typeof(Pet))
                     {
-                        var localMaps = currentMap.GetSurroundingMaps(true);
-                        foreach (var map in localMaps)
+                        if (currentMap != null)
                         {
-                            var projectiles = map.MapProjectiles.ToArray();
-                            foreach (var projectile in projectiles)
+                            var localMaps = currentMap.GetSurroundingMaps(true);
+                            foreach (var map in localMaps)
                             {
-                                var spawns = projectile.Spawns?.ToArray() ?? new ProjectileSpawn[0];
-                                foreach (var spawn in spawns)
+                                var projectiles = map.MapProjectiles.ToArray();
+                                foreach (var projectile in projectiles)
                                 {
-                                    // TODO: Filter in Spawns variable, there should be no nulls. See #78 for evidence it is null.
-                                    if (spawn == null)
+                                    var spawns = projectile.Spawns?.ToArray() ?? new ProjectileSpawn[0];
+                                    foreach (var spawn in spawns)
                                     {
-                                        continue;
-                                    }
+                                        // TODO: Filter in Spawns variable, there should be no nulls. See #78 for evidence it is null.
+                                        if (spawn == null)
+                                        {
+                                            continue;
+                                        }
 
-                                    if (spawn.IsAtLocation(MapId, X, Y, Z) && spawn.HitEntity(this))
-                                    {
-                                        projectile.KillSpawn(spawn);
+                                        if (spawn.IsAtLocation(MapId, X, Y, Z) && spawn.HitEntity(this))
+                                        {
+                                            projectile.KillSpawn(spawn);
+                                        }
                                     }
                                 }
                             }

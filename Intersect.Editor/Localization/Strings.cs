@@ -1558,6 +1558,8 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString despawnnpcs = @"Despawn NPCs";
 
+            public static LocalizedString despawnpets = @"Despawn Pets";
+
             public static LocalizedString dividevariable = @"Divide {00}";
 
             public static LocalizedString dupglobalvariable = @"Global Variable: {00}'s Value";
@@ -1872,6 +1874,7 @@ Tick timer saved in server config.json.";
                 {"openmailbox", @"Open Mail Box"},
                 {"openhdv","Open Auction House"},
                 {"spawnpet","Spawn Pet"},
+                {"despawnpet","Despawn Pet"},
             };
 
         }
@@ -3089,6 +3092,7 @@ Tick timer saved in server config.json.";
                 {4, @"Spell"},
                 {5, @"Event"},
                 {6, @"Bag"},
+                {7, @"Pet"},
             };
 
             public static LocalizedString undo = @"Undo Changes";
@@ -3792,7 +3796,7 @@ Tick timer saved in server config.json.";
             public static LocalizedString delete = @"Delete Npc";
 
             public static LocalizedString deleteprompt =
-                @"Are you sure you want to delete this npc? This action cannot be reverted!";
+                @"Are you sure you want to delete this pet? This action cannot be reverted!";
 
             public static LocalizedString deletetitle = @"Delete Item";
 
@@ -3868,13 +3872,13 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString Pets = @"Pets";
 
-            public static LocalizedString petvspet = @"NPC vs NPC Combat/Hostility  ";
+            public static LocalizedString petvspet = @"Pet vs Pet Combat/Hostility  ";
 
             public static LocalizedString ondeathevent = @"On Death (for killer):";
 
             public static LocalizedString ondeathpartyevent = @"On Death (for party):";
 
-            public static LocalizedString paste = @"Paste Npc";
+            public static LocalizedString paste = @"Paste Pet";
 
             public static LocalizedString playercanattackconditions = @"Player Can Attack (Default: True)";
 
@@ -3916,12 +3920,12 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString swarm = @"Swarm";
 
-            public static LocalizedString title = @"Npc Editor";
+            public static LocalizedString title = @"Pet Editor";
 
             public static LocalizedString undo = @"Undo Changes";
 
             public static LocalizedString undoprompt =
-                @"Are you sure you want to undo changes made to this npc? This action cannot be reverted!";
+                @"Are you sure you want to undo changes made to this Pet? This action cannot be reverted!";
 
             public static LocalizedString undotitle = @"Undo Changes";
 

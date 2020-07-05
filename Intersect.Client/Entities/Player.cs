@@ -1392,7 +1392,8 @@ namespace Intersect.Client.Entities
                                     (!en.Value.IsStealthed() || en.Value is Player player && Globals.Me.IsInMyParty(player)))
                                 {
                                     if (en.Value.GetType() != typeof(Projectile) &&
-                                        en.Value.GetType() != typeof(Resource))
+                                        en.Value.GetType() != typeof(Resource) &&
+                                        en.Value.GetType() != typeof(Pet))
                                     {
                                         if (TargetBox != null)
                                         {
@@ -1943,7 +1944,7 @@ namespace Intersect.Client.Entities
                                         }
                                     }
                                 }
-                                else if (en.Value.GetType() == typeof(Pet))
+                                else if (en.Value.GetType() == typeof(Pet)) //Make all entities with type Pet Passable (-1)
                                 //else if (en.Value.GetEntityType() == EntityTypes.GlobalEntity && en.Value.Passable) //or this for all entities who are passable
                                 {
                                     return -1;
@@ -2089,7 +2090,7 @@ namespace Intersect.Client.Entities
 
                 if (!en.Value.IsStealthed() || en.Value is Player player && Globals.Me.IsInMyParty(player))
                 {
-                    if (en.Value.GetType() != typeof(Projectile) && en.Value.GetType() != typeof(Resource))
+                    if (en.Value.GetType() != typeof(Projectile) && en.Value.GetType() != typeof(Resource) && en.Value.GetType() != typeof(Pet))
                     {
                         en.Value.IsATarget = false;
                         if (TargetType == 0 && TargetIndex == en.Value.Id)
@@ -2149,7 +2150,7 @@ namespace Intersect.Client.Entities
                                 !en.Value.IsStealthed() &&
                                 en.Value.WorldPos.Contains(x, y))
                             {
-                                if (en.Value.GetType() != typeof(Projectile) && en.Value.GetType() != typeof(Resource))
+                                if (en.Value.GetType() != typeof(Projectile) && en.Value.GetType() != typeof(Resource) && en.Value.GetType() != typeof(Pet))
                                 {
                                     if (TargetType != 0 || TargetIndex != en.Value.Id)
                                     {

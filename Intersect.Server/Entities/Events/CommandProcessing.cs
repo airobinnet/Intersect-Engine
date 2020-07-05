@@ -1115,12 +1115,38 @@ namespace Intersect.Server.Entities.Events
                     return;
                 }
             }
-
-            var tile = new TileHelper(mapId, tileX, tileY);
-            if (tile.TryFix())
+            if (player.SpawnedPets.ToArray() == null || player.SpawnedPets.ToArray().Length == 0)
             {
-                var pet = MapInstance.Get(mapId).SpawnPet((byte)tileX, (byte)tileY, direction, petId, player, true);
-                player.SpawnedPets.Add((Pet)pet);
+                var tile = new TileHelper(mapId, tileX, tileY);
+                if (tile.TryFix())
+                {
+                    var pet = MapInstance.Get(mapId).SpawnPet((byte)tileX, (byte)tileY, direction, petId, player, true);
+                    player.SpawnedPets.Add((Pet)pet);
+                }
+            } else
+            {
+                var entities = player.SpawnedPets.ToArray();
+                for (var i = 0; i < entities.Length; i++)
+                {
+                    if (entities[i] != null && entities[i].GetType() == typeof(Pet))
+                    {
+                        if (entities[i].Name == PetBase.Get(petId).Name)
+                        {
+                            //if (((Pet)entities[i]).Despawnable == true)
+                            //{
+                            ((Pet)entities[i]).Die(100);
+                            player.SpawnedPets.Clear();
+                            //}
+                        } else
+                        {
+
+                            ((Pet)entities[i]).Die(100);
+                            player.SpawnedPets.Clear();
+                            var pet = MapInstance.Get(mapId).SpawnPet((byte)tileX, (byte)tileY, direction, petId, player, true);
+                            player.SpawnedPets.Add((Pet)pet);
+                        }
+                    }
+                }
             }
         }
 

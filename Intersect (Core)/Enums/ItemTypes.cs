@@ -18,6 +18,8 @@ namespace Intersect.Enums
 
         Bag = 6,
 
+        Pet = 7,
+
     }
 
 }

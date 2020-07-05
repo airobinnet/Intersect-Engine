@@ -970,6 +970,11 @@ namespace Intersect.Editor.Forms.Editors.Events
             return Strings.EventCommandList.despawnnpcs;
         }
 
+        private static string GetCommandText(DespawnPetCommand command, MapInstance map)
+        {
+            return Strings.EventCommandList.despawnpets;
+        }
+
         private static string GetCommandText(PlayAnimationCommand command, MapInstance map)
         {
             if (command.MapId != Guid.Empty)

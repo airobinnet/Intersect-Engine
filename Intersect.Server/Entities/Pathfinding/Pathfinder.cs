@@ -332,7 +332,14 @@ namespace Intersect.Server.Entities.Pathfinding
                 {
                     case PathfinderResult.Success:
                         //Use the same path for at least a second before trying again.
-                        mWaitTime = timeMs + 200;
+                        //mWaitTime = timeMs + 200;
+                        if (GetType() == typeof(Pet))
+                        {
+                            mWaitTime = timeMs + 1;
+                        } else
+                        {
+                            mWaitTime = timeMs + 200;
+                        }
                         mConsecutiveFails = 0;
 
                         break;
