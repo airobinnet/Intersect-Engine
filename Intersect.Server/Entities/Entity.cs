@@ -412,14 +412,27 @@ namespace Intersect.Server.Entities
             {
                 return -5; //Out of Bounds
             }
-
+            var targetMap = MapInstance.Get(tile.GetMapId());
+            var mapEntities = MapInstance.Get(tile.GetMapId()).GetEntities();
+            for (var i = 0; i < mapEntities.Count; i++)
+            {
+                var en = mapEntities[i];
+                if (this is Player && en.Passable)
+                {
+                    return -1;
+                }
+            }
             if (!Passable)
             {
-                var targetMap = MapInstance.Get(tile.GetMapId());
-                var mapEntities = MapInstance.Get(tile.GetMapId()).GetEntities();
+                //targetMap = MapInstance.Get(tile.GetMapId());
+                //mapEntities = MapInstance.Get(tile.GetMapId()).GetEntities();
                 for (var i = 0; i < mapEntities.Count; i++)
                 {
                     var en = mapEntities[i];
+                    if (this is Player && en.Passable)
+                    {
+                        return -1;
+                    }
                     if (en != null && en.X == tile.GetX() && en.Y == tile.GetY() && en.Z == Z && !en.Passable)
                     {
                         //Set a target if a projectile
@@ -441,7 +454,7 @@ namespace Intersect.Server.Entities
                         }
                         else if (en is Npc)
                         {
-                            return (int) EntityTypes.Player;
+                            return (int)EntityTypes.Player;
                         }
                         else if (en is Resource resource)
                         {
@@ -818,21 +831,13 @@ namespace Intersect.Server.Entities
         //Returns the amount of time required to traverse 1 tile
         public virtual float GetMovementTime()
         {
-            if (GetEntityType() == EntityTypes.Pet)
+            var time = 1000f / (float)(1 + Math.Log(Stat[(int)Stats.MovementSpeed].Value())); //swap to MovementSpeed instead of Speed
+            if (Blocking)
             {
-                Console.WriteLine(X + "," + Y);
-                return 300f;
+                time += time * Options.BlockingSlow;
             }
-            else
-            {
-                var time = 1000f / (float)(1 + Math.Log(Stat[(int)Stats.MovementSpeed].Value())); //swap to MovementSpeed instead of Speed
-                if (Blocking)
-                {
-                    time += time * Options.BlockingSlow;
-                }
 
-                return Math.Min(1000f, time);
-            }
+            return Math.Min(1000f, time);
         }
 
         public virtual EntityTypes GetEntityType()
@@ -932,20 +937,6 @@ namespace Intersect.Server.Entities
                 }
 
                 MapId = tile.GetMapId();
-
-                if (this is Pet)
-                {
-                    if (forPlayer != null)
-                    {
-                       // PacketSender.SendEntityDataToProximity(this);
-                        PacketSender.SendEntityMoveTo(forPlayer, this, true);
-                    }
-                    else
-                    {
-                        //PacketSender.SendEntityDataToProximity(this);
-                        PacketSender.SendEntityMove(this, true);
-                    }
-                }
 
                 if (doNotUpdate == false)
                 {

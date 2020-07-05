@@ -198,7 +198,7 @@ namespace Intersect.Client.Networking
             }
             else
             {
-                Globals.Entities.Add(packet.EntityId, new Entity(packet.EntityId, packet));
+                Globals.Entities.Add(packet.EntityId, new Pet(packet.EntityId, packet));
                 Globals.Entities[packet.EntityId].Type = packet.Aggression;
             }
         }

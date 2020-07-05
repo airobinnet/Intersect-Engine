@@ -51,6 +51,7 @@ namespace Intersect.Server.Entities
             Base = myBase;
             Despawnable = despawnable;
             Owner = owner;
+            Passable = true;
 
             Range = (byte)myBase.SightRange;
             mPathFinder = new Pathfinder(this);
@@ -60,6 +61,7 @@ namespace Intersect.Server.Entities
                 BaseStats[i] = myBase.Stats[i];
                 Stat[i] = new Stat((Stats)i, this);
             }
+            Stat[(int)Stats.MovementSpeed].BaseStat = owner.Stat[(int)Stats.MovementSpeed].Value();
         }
 
         [NotNull]
@@ -483,6 +485,8 @@ namespace Intersect.Server.Entities
 
             var pkt = (PetEntityPacket)packet;
             pkt.Aggression = GetAggression(forPlayer);
+            pkt.Passable = true;
+            pkt.Stats[(int)Stats.MovementSpeed] = forPlayer.Stat[(int)Stats.MovementSpeed].Value();
 
             return pkt;
         }

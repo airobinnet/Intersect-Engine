@@ -89,6 +89,7 @@
     <Compile Include="Entities\Player.cs" />
     <Compile Include="Entities\Projectiles\Projectile.cs" />
     <Compile Include="Entities\Projectiles\ProjectileSpawns.cs" />
+    <Compile Include="Entities\Pet.cs" />
     <Compile Include="Entities\Resource.cs" />
     <Compile Include="Entities\SpriteAnimations.cs" />
     <Compile Include="Entities\Status.cs" />

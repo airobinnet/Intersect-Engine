@@ -1943,6 +1943,11 @@ namespace Intersect.Client.Entities
                                         }
                                     }
                                 }
+                                else if (en.Value.GetType() == typeof(Pet))
+                                //else if (en.Value.GetEntityType() == EntityTypes.GlobalEntity && en.Value.Passable) //or this for all entities who are passable
+                                {
+                                    return -1;
+                                }
                                 else if (en.Value.GetType() == typeof(Player))
                                 {
                                     //Return the entity key as this should block the player.  Only exception is if the MapZone this entity is on is passable.
