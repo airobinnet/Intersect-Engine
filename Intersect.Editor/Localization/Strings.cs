@@ -2831,6 +2831,35 @@ Tick timer saved in server config.json.";
 
         }
 
+        public struct EventSpawnPet
+        {
+
+            public static LocalizedString cancel = @"Cancel";
+
+            public static LocalizedString entity = @"Entity:";
+
+            public static LocalizedString npc = @"Pet:";
+
+            public static LocalizedString okay = @"Ok";
+
+            public static LocalizedString player = @"Player";
+
+            public static LocalizedString relativelocation = @"Relative Location:";
+
+            public static LocalizedString spawnrelative = @"Relative to Entity Direction";
+
+            public static LocalizedString spawntype = @"Spawn Type:";
+
+            public static LocalizedString spawntype0 = @"Specific Tile";
+
+            public static LocalizedString spawntype1 = @"On/Around Entity";
+
+            public static LocalizedString This = @"[THIS EVENT]";
+
+            public static LocalizedString title = @"Spawn Pet";
+
+        }
+
         public struct EventStartCommonEvent
         {
 

@@ -426,6 +426,12 @@ namespace Intersect.Server.Entities
             }
 
             FindTargetWaitTime = timeMs + FindTargetDelay;
+            //tp to player if too far away
+            X = Owner.X;
+            Y = Owner.Y;
+            Dir = Owner.Dir;
+            MapId = Owner.MapId;
+            PacketSender.SendEntityDataToProximity(this);
         }
 
         public override void Warp(

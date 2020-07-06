@@ -1125,7 +1125,10 @@ namespace Intersect.Server.Entities
             {
                 return;
             }
-
+            if (target is Pet)
+            {
+                return;
+            }
             //If Entity is resource, check for the correct tool and make sure its not a spell cast.
             if (target is Resource resource)
             {
@@ -1167,6 +1170,11 @@ namespace Intersect.Server.Entities
             {
                 PacketSender.SendChatMsg(this, Strings.Combat.channelingnoattack);
 
+                return;
+            }
+
+            if (target is Pet)
+            {
                 return;
             }
 

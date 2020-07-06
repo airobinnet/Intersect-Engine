@@ -77,15 +77,15 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private void InitLocalization()
         {
-            grpSpawnNpc.Text = Strings.EventSpawnNpc.title;
-            lblNpc.Text = Strings.EventSpawnNpc.npc;
-            lblSpawnType.Text = Strings.EventSpawnNpc.spawntype;
+            grpSpawnNpc.Text = Strings.EventSpawnPet.title;
+            lblNpc.Text = Strings.EventSpawnPet.npc;
+            lblSpawnType.Text = Strings.EventSpawnPet.spawntype;
             cmbConditionType.Items.Clear();
-            cmbConditionType.Items.Add(Strings.EventSpawnNpc.spawntype0);
-            cmbConditionType.Items.Add(Strings.EventSpawnNpc.spawntype1);
+            cmbConditionType.Items.Add(Strings.EventSpawnPet.spawntype0);
+            cmbConditionType.Items.Add(Strings.EventSpawnPet.spawntype1);
 
-            grpTileSpawn.Text = Strings.EventSpawnNpc.spawntype0;
-            grpEntitySpawn.Text = Strings.EventSpawnNpc.spawntype1;
+            grpTileSpawn.Text = Strings.EventSpawnPet.spawntype0;
+            grpEntitySpawn.Text = Strings.EventSpawnPet.spawntype1;
 
             lblMap.Text = Strings.Warping.map.ToString("");
             lblX.Text = Strings.Warping.x.ToString("");
@@ -100,12 +100,12 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             cmbDirection.SelectedIndex = 0;
             btnVisual.Text = Strings.Warping.visual;
 
-            lblEntity.Text = Strings.EventSpawnNpc.entity;
-            lblRelativeLocation.Text = Strings.EventSpawnNpc.relativelocation;
-            chkDirRelative.Text = Strings.EventSpawnNpc.spawnrelative;
+            lblEntity.Text = Strings.EventSpawnPet.entity;
+            lblRelativeLocation.Text = Strings.EventSpawnPet.relativelocation;
+            chkDirRelative.Text = Strings.EventSpawnPet.spawnrelative;
 
-            btnSave.Text = Strings.EventSpawnNpc.okay;
-            btnCancel.Text = Strings.EventSpawnNpc.cancel;
+            btnSave.Text = Strings.EventSpawnPet.okay;
+            btnCancel.Text = Strings.EventSpawnPet.cancel;
         }
 
         private void UpdateFormElements()
@@ -135,7 +135,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                 case 1: //On/Around Entity Spawn
                     grpEntitySpawn.Show();
                     cmbEntities.Items.Clear();
-                    cmbEntities.Items.Add(Strings.EventSpawnNpc.player);
+                    cmbEntities.Items.Add(Strings.EventSpawnPet.player);
                     cmbEntities.SelectedIndex = 0;
 
                     if (!mEditingEvent.CommonEvent)
@@ -143,7 +143,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                         foreach (var evt in mCurrentMap.LocalEvents)
                         {
                             cmbEntities.Items.Add(
-                                evt.Key == mEditingEvent.Id ? Strings.EventSpawnNpc.This + " " : "" + evt.Value.Name
+                                evt.Key == mEditingEvent.Id ? Strings.EventSpawnPet.This + " " : "" + evt.Value.Name
                             );
 
                             if (mMyCommand.EntityId == evt.Key)
