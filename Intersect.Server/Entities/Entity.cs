@@ -2145,7 +2145,7 @@ namespace Intersect.Server.Entities
                         }
                     }
                 }
-
+                
                 if (deadAnimations != null)
                 {
                     foreach (var anim in deadAnimations)

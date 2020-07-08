@@ -536,6 +536,10 @@
     <Compile Include="Migrations\Game\20200703002446_Pets.designer.cs">
       <DependentUpon>20200703002446_Pets.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Game\20200707204901_NpcDeathAnimation.cs" />
+    <Compile Include="Migrations\Game\20200707204901_NpcDeathAnimation.designer.cs">
+      <DependentUpon>20200707204901_NpcDeathAnimation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />
     <Compile Include="Networking\Helpers\NetDebug.cs" />

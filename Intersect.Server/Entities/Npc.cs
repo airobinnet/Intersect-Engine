@@ -133,6 +133,14 @@ namespace Intersect.Server.Entities
 
         public override void Die(int dropitems = 100, Entity killer = null)
         {
+
+            if (Base.DeathAnimationId != null)
+            {
+                PacketSender.SendAnimationToProximity(
+                                Base.DeathAnimationId, -1, Guid.Empty, MapId, (byte)X, (byte)Y,
+                                (sbyte)Dir
+                            );
+            }
             base.Die(dropitems, killer);
             MapInstance.Get(MapId).RemoveEntity(this);
             PacketSender.SendEntityDie(this);
@@ -976,7 +984,7 @@ namespace Intersect.Server.Entities
                     }
                 }
 
-                LastRandomMove = Globals.Timing.TimeMs + Randomization.Next(1000, 3000);
+                LastRandomMove = Globals.Timing.TimeMs + Randomization.Next(500, 3000);
 
                 if (fleeing)
                 {

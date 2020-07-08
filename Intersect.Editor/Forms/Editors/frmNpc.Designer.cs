@@ -38,6 +38,8 @@ namespace Intersect.Editor.Forms.Editors
             this.lstNpcs = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.grpGeneral = new DarkUI.Controls.DarkGroupBox();
+            this.lblTag = new System.Windows.Forms.Label();
+            this.txtTag = new DarkUI.Controls.DarkTextBox();
             this.btnAddFolder = new DarkUI.Controls.DarkButton();
             this.lblFolder = new System.Windows.Forms.Label();
             this.cmbFolder = new DarkUI.Controls.DarkComboBox();
@@ -158,8 +160,8 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripItemUndo = new System.Windows.Forms.ToolStripButton();
             this.searchableDarkTreeView1 = new Intersect.Editor.Forms.Controls.SearchableDarkTreeView();
-            this.lblTag = new System.Windows.Forms.Label();
-            this.txtTag = new DarkUI.Controls.DarkTextBox();
+            this.cmbDeathAnimation = new DarkUI.Controls.DarkComboBox();
+            this.lblDeathAnimation = new System.Windows.Forms.Label();
             this.grpNpcs.SuspendLayout();
             this.grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudLevel)).BeginInit();
@@ -294,6 +296,28 @@ namespace Intersect.Editor.Forms.Editors
             this.grpGeneral.TabIndex = 14;
             this.grpGeneral.TabStop = false;
             this.grpGeneral.Text = "General";
+            // 
+            // lblTag
+            // 
+            this.lblTag.AutoSize = true;
+            this.lblTag.Location = new System.Drawing.Point(113, 153);
+            this.lblTag.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTag.Name = "lblTag";
+            this.lblTag.Size = new System.Drawing.Size(40, 20);
+            this.lblTag.TabIndex = 69;
+            this.lblTag.Text = "Tag:";
+            // 
+            // txtTag
+            // 
+            this.txtTag.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.txtTag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTag.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.txtTag.Location = new System.Drawing.Point(194, 151);
+            this.txtTag.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtTag.Name = "txtTag";
+            this.txtTag.Size = new System.Drawing.Size(99, 26);
+            this.txtTag.TabIndex = 68;
+            this.txtTag.TextChanged += new System.EventHandler(this.txtTag_TextChanged);
             // 
             // btnAddFolder
             // 
@@ -807,6 +831,8 @@ namespace Intersect.Editor.Forms.Editors
             // pnlContainer
             // 
             this.pnlContainer.AutoScroll = true;
+            this.pnlContainer.Controls.Add(this.cmbDeathAnimation);
+            this.pnlContainer.Controls.Add(this.lblDeathAnimation);
             this.pnlContainer.Controls.Add(this.grpCombat);
             this.pnlContainer.Controls.Add(this.grpCommonEvents);
             this.pnlContainer.Controls.Add(this.grpBehavior);
@@ -2078,27 +2104,39 @@ namespace Intersect.Editor.Forms.Editors
             this.searchableDarkTreeView1.TabIndex = 46;
             this.searchableDarkTreeView1.Visible = false;
             // 
-            // lblTag
+            // cmbDeathAnimation
             // 
-            this.lblTag.AutoSize = true;
-            this.lblTag.Location = new System.Drawing.Point(113, 153);
-            this.lblTag.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblTag.Name = "lblTag";
-            this.lblTag.Size = new System.Drawing.Size(40, 20);
-            this.lblTag.TabIndex = 69;
-            this.lblTag.Text = "Tag:";
+            this.cmbDeathAnimation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbDeathAnimation.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbDeathAnimation.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbDeathAnimation.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbDeathAnimation.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbDeathAnimation.ButtonIcon")));
+            this.cmbDeathAnimation.DrawDropdownHoverOutline = false;
+            this.cmbDeathAnimation.DrawFocusRectangle = false;
+            this.cmbDeathAnimation.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbDeathAnimation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDeathAnimation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbDeathAnimation.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbDeathAnimation.FormattingEnabled = true;
+            this.cmbDeathAnimation.Location = new System.Drawing.Point(16, 1590);
+            this.cmbDeathAnimation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbDeathAnimation.Name = "cmbDeathAnimation";
+            this.cmbDeathAnimation.Size = new System.Drawing.Size(286, 27);
+            this.cmbDeathAnimation.TabIndex = 66;
+            this.cmbDeathAnimation.Text = null;
+            this.cmbDeathAnimation.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbDeathAnimation.SelectedIndexChanged += new System.EventHandler(this.cmbDeathAnimation_SelectedIndexChanged);
             // 
-            // txtTag
+            // lblDeathAnimation
             // 
-            this.txtTag.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.txtTag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTag.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.txtTag.Location = new System.Drawing.Point(194, 151);
-            this.txtTag.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtTag.Name = "txtTag";
-            this.txtTag.Size = new System.Drawing.Size(99, 26);
-            this.txtTag.TabIndex = 68;
-            this.txtTag.TextChanged += new System.EventHandler(this.txtTag_TextChanged);
+            this.lblDeathAnimation.AutoSize = true;
+            this.lblDeathAnimation.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lblDeathAnimation.Location = new System.Drawing.Point(12, 1567);
+            this.lblDeathAnimation.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDeathAnimation.Name = "lblDeathAnimation";
+            this.lblDeathAnimation.Size = new System.Drawing.Size(132, 20);
+            this.lblDeathAnimation.TabIndex = 65;
+            this.lblDeathAnimation.Text = "Death Animation:";
             // 
             // FrmNpc
             // 
@@ -2145,6 +2183,7 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudMag)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudStr)).EndInit();
             this.pnlContainer.ResumeLayout(false);
+            this.pnlContainer.PerformLayout();
             this.grpCombat.ResumeLayout(false);
             this.grpCombat.PerformLayout();
             this.grpAttackSpeed.ResumeLayout(false);
@@ -2307,5 +2346,7 @@ namespace Intersect.Editor.Forms.Editors
         private System.Windows.Forms.Label lblMS;
         private System.Windows.Forms.Label lblTag;
         private DarkTextBox txtTag;
+        private DarkComboBox cmbDeathAnimation;
+        private System.Windows.Forms.Label lblDeathAnimation;
     }
 }

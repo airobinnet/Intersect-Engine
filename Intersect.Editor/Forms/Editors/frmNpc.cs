@@ -96,6 +96,9 @@ namespace Intersect.Editor.Forms.Editors
             cmbAttackAnimation.Items.Clear();
             cmbAttackAnimation.Items.Add(Strings.General.none);
             cmbAttackAnimation.Items.AddRange(AnimationBase.Names);
+            cmbDeathAnimation.Items.Clear();
+            cmbDeathAnimation.Items.Add(Strings.General.none);
+            cmbDeathAnimation.Items.AddRange(AnimationBase.Names);
             cmbOnDeathEventKiller.Items.Clear();
             cmbOnDeathEventKiller.Items.Add(Strings.General.none);
             cmbOnDeathEventKiller.Items.AddRange(EventBase.Names);
@@ -225,6 +228,7 @@ namespace Intersect.Editor.Forms.Editors
             lblScalingStat.Text = Strings.NpcEditor.scalingstat;
             lblScaling.Text = Strings.NpcEditor.scalingamount;
             lblAttackAnimation.Text = Strings.NpcEditor.attackanimation;
+            lblDeathAnimation.Text = Strings.NpcEditor.deathanimation;
 
             //Searching/Sorting
             btnChronological.ToolTipText = Strings.NpcEditor.sortchronologically;
@@ -289,6 +293,7 @@ namespace Intersect.Editor.Forms.Editors
                 cmbDamageType.SelectedIndex = mEditorItem.DamageType;
                 cmbScalingStat.SelectedIndex = mEditorItem.ScalingStat;
                 cmbAttackAnimation.SelectedIndex = AnimationBase.ListIndex(mEditorItem.AttackAnimationId) + 1;
+                cmbDeathAnimation.SelectedIndex = AnimationBase.ListIndex(mEditorItem.DeathAnimationId) + 1;
                 cmbAttackSpeedModifier.SelectedIndex = mEditorItem.AttackSpeedModifier;
                 nudAttackSpeedValue.Value = mEditorItem.AttackSpeedValue;
 
@@ -617,6 +622,12 @@ namespace Intersect.Editor.Forms.Editors
         {
             mEditorItem.AttackAnimation =
                 AnimationBase.Get(AnimationBase.IdFromList(cmbAttackAnimation.SelectedIndex - 1));
+        }
+
+        private void cmbDeathAnimation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mEditorItem.DeathAnimation =
+                AnimationBase.Get(AnimationBase.IdFromList(cmbDeathAnimation.SelectedIndex - 1));
         }
 
         private void cmbDamageType_SelectedIndexChanged(object sender, EventArgs e)

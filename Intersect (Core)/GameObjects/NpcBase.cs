@@ -61,12 +61,24 @@ namespace Intersect.GameObjects
         [Column("AttackAnimation")]
         public Guid AttackAnimationId { get; set; }
 
+
         [NotMapped]
         [JsonIgnore]
         public AnimationBase AttackAnimation
         {
             get => AnimationBase.Get(AttackAnimationId);
             set => AttackAnimationId = value?.Id ?? Guid.Empty;
+        }
+
+        [Column("DeathAnimation")]
+        public Guid DeathAnimationId { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
+        public AnimationBase DeathAnimation
+        {
+            get => AnimationBase.Get(DeathAnimationId);
+            set => DeathAnimationId = value?.Id ?? Guid.Empty;
         }
 
         //Behavior
