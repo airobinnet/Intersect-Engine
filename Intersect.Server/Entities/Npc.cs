@@ -395,6 +395,13 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Shield:
                 case StatusTypes.OnHit:
                 case StatusTypes.Taunt:
+                case StatusTypes.CooldownReduction:
+                case StatusTypes.Drunk:
+                case StatusTypes.Exp:
+                case StatusTypes.Lifesteal:
+                case StatusTypes.Luck:
+                case StatusTypes.Mount:
+                case StatusTypes.Tenacity:
                 case null:
                     return false;
 
@@ -423,6 +430,13 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Shield:
                 case StatusTypes.OnHit:
                 case StatusTypes.Taunt:
+                case StatusTypes.CooldownReduction:
+                case StatusTypes.Drunk:
+                case StatusTypes.Exp:
+                case StatusTypes.Lifesteal:
+                case StatusTypes.Luck:
+                case StatusTypes.Mount:
+                case StatusTypes.Tenacity:
                 case null:
                     return false;
 
