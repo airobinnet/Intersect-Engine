@@ -33,6 +33,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             txtShowOptionsOpt2.Text = mMyCommand.Options[1];
             txtShowOptionsOpt3.Text = mMyCommand.Options[2];
             txtShowOptionsOpt4.Text = mMyCommand.Options[3];
+            checkBoxFishing.Checked = mMyCommand.fishScreen;
             cmbFace.Items.Clear();
             cmbFace.Items.Add(Strings.General.none);
             cmbFace.Items.AddRange(GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Face));
@@ -82,6 +83,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mMyCommand.Options[2] = txtShowOptionsOpt3.Text;
             mMyCommand.Options[3] = txtShowOptionsOpt4.Text;
             mMyCommand.Face = TextUtils.SanitizeNone(cmbFace.Text);
+            mMyCommand.fishScreen = checkBoxFishing.Checked;
             mEventEditor.FinishCommandEdit();
         }
 

@@ -842,9 +842,9 @@ namespace Intersect.Server.Networking
         }
 
         //EventDialogPacket
-        public static void SendEventDialog(Player player, string prompt, string face, Guid eventId, bool isdialog)
+        public static void SendEventDialog(Player player, string prompt, string face, Guid eventId, bool isdialog, bool isfishing)
         {
-            player.SendPacket(new EventDialogPacket(eventId, prompt, face, 0, null, isdialog));
+            player.SendPacket(new EventDialogPacket(eventId, prompt, face, 0, null, isdialog, isfishing));
         }
 
         //EventDialogPacket
@@ -857,10 +857,11 @@ namespace Intersect.Server.Networking
             string opt4,
             string face,
             Guid eventId,
-            bool isdialog
+            bool isdialog,
+            bool isfishing
         )
         {
-            player.SendPacket(new EventDialogPacket(eventId, prompt, face, 1, new string[4] {opt1, opt2, opt3, opt4}, isdialog));
+            player.SendPacket(new EventDialogPacket(eventId, prompt, face, 1, new string[4] {opt1, opt2, opt3, opt4}, isdialog, isfishing));
         }
 
         public static void SendInputVariableDialog(

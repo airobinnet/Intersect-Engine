@@ -71,6 +71,8 @@ namespace Intersect.GameObjects.Events.Commands
 
         public string[] Options { get; set; } = new string[4];
 
+        public bool fishScreen { get; set; } = false;
+
         //Id of the command list(s) you follow when a particular option is selected
         public Guid[] BranchIds { get; set; } = new Guid[4];
 

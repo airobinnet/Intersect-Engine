@@ -805,6 +805,7 @@ namespace Intersect.Client.Networking
                 ed.Opt4 = packet.Responses[3];
             }
             ed.isDialog = packet.isDialog;
+            ed.isFishing = packet.isFishing;
 
             ed.EventId = packet.EventId;
             Globals.EventDialogs.Add(ed);

@@ -6,7 +6,7 @@ namespace Intersect.Network.Packets.Server
     public class EventDialogPacket : CerasPacket
     {
 
-        public EventDialogPacket(Guid eventId, string prompt, string face, byte type, string[] responses, bool isdialog)
+        public EventDialogPacket(Guid eventId, string prompt, string face, byte type, string[] responses, bool isdialog, bool isfishing)
         {
             EventId = eventId;
             Prompt = prompt;
@@ -14,6 +14,7 @@ namespace Intersect.Network.Packets.Server
             Type = type;
             Responses = responses;
             isDialog = isdialog;
+            isFishing = isfishing;
         }
 
         public Guid EventId { get; set; }
@@ -27,6 +28,8 @@ namespace Intersect.Network.Packets.Server
         public string[] Responses { get; set; }
 
         public bool isDialog { get; set; }
+
+        public bool isFishing { get; set; }
 
     }
 

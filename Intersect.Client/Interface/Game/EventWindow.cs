@@ -182,6 +182,11 @@ namespace Intersect.Client.Interface.Game
                             break;
                     }
 
+                    if (Globals.EventDialogs[0].isFishing)
+                    {
+                        mEventDialogWindow.Name = "FishWindow";
+                    }
+
                     mEventDialogWindow.LoadJsonUi(
                         GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString()
                     );

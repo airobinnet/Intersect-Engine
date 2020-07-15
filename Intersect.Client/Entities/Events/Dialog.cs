@@ -26,6 +26,8 @@ namespace Intersect.Client.Entities.Events
 
         public bool isDialog;
 
+        public bool isFishing;
+
     }
 
 }
