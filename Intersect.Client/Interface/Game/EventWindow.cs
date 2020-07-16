@@ -112,7 +112,7 @@ namespace Intersect.Client.Interface.Game
         {
             if (Globals.EventDialogs.Count > 0)
             {
-                if (mEventDialogWindow.IsHidden)
+                if (mEventDialogWindow.IsHidden || Globals.EventDialogs[0].isFishing)
                 {
                     keyTimer = Globals.System.GetTimeMs() + 1000;
                     mEventDialogWindow.Show();
@@ -152,40 +152,77 @@ namespace Intersect.Client.Interface.Game
                     mEventResponse2.Name = "";
                     mEventResponse3.Name = "";
                     mEventResponse4.Name = "";
-                    switch (maxResponse)
-                    {
-                        case 1:
-                            mEventDialogWindow.Name = "EventDialogWindow_1Response";
-                            mEventResponse1.Name = "Response1Button";
-
-                            break;
-                        case 2:
-                            mEventDialogWindow.Name = "EventDialogWindow_2Responses";
-                            mEventResponse1.Name = "Response1Button";
-                            mEventResponse2.Name = "Response2Button";
-
-                            break;
-                        case 3:
-                            mEventDialogWindow.Name = "EventDialogWindow_3Responses";
-                            mEventResponse1.Name = "Response1Button";
-                            mEventResponse2.Name = "Response2Button";
-                            mEventResponse3.Name = "Response3Button";
-
-                            break;
-                        case 4:
-                            mEventDialogWindow.Name = "EventDialogWindow_4Responses";
-                            mEventResponse1.Name = "Response1Button";
-                            mEventResponse2.Name = "Response2Button";
-                            mEventResponse3.Name = "Response3Button";
-                            mEventResponse4.Name = "Response4Button";
-
-                            break;
-                    }
-
                     if (Globals.EventDialogs[0].isFishing)
                     {
                         mEventDialogWindow.Name = "FishWindow";
+                        mEventResponse1.Name = "Response1Button";
+                        mEventResponse2.Name = "Response2Button";
+                        mEventResponse3.Name = "Response3Button";
+                        mEventResponse4.Name = "Response4Button";
+                        switch (Globals.EventDialogs[0].Prompt)
+                        {
+                            case "99":
+                                faceTex = Globals.ContentManager.GetTexture(
+                        GameContentManager.TextureType.Image, "startfishing.png");
+                                break;
+                            case "10":
+                                faceTex = Globals.ContentManager.GetTexture(
+                        GameContentManager.TextureType.Image, "fishveryfar.png");
+                                break;
+                            case "6":
+                                faceTex = Globals.ContentManager.GetTexture(
+                        GameContentManager.TextureType.Image, "fishfar.png");
+                                break;
+                            case "4":
+                                faceTex = Globals.ContentManager.GetTexture(
+                        GameContentManager.TextureType.Image, "fishclose.png");
+                                break;
+                            case "1":
+                                faceTex = Globals.ContentManager.GetTexture(
+                        GameContentManager.TextureType.Image, "fishveryclose.png");
+                                break;
+                            case "0":
+                                faceTex = Globals.ContentManager.GetTexture(
+                        GameContentManager.TextureType.Image, "fishonline.png");
+                                break;
+                            default:
+                                break;
+                        }
                     }
+                    else
+                    {
+                        switch (maxResponse)
+                        {
+                            case 1:
+                                mEventDialogWindow.Name = "EventDialogWindow_1Response";
+                                mEventResponse1.Name = "Response1Button";
+
+                                break;
+                            case 2:
+                                mEventDialogWindow.Name = "EventDialogWindow_2Responses";
+                                mEventResponse1.Name = "Response1Button";
+                                mEventResponse2.Name = "Response2Button";
+
+                                break;
+                            case 3:
+                                mEventDialogWindow.Name = "EventDialogWindow_3Responses";
+                                mEventResponse1.Name = "Response1Button";
+                                mEventResponse2.Name = "Response2Button";
+                                mEventResponse3.Name = "Response3Button";
+
+                                break;
+                            case 4:
+                                mEventDialogWindow.Name = "EventDialogWindow_4Responses";
+                                mEventResponse1.Name = "Response1Button";
+                                mEventResponse2.Name = "Response2Button";
+                                mEventResponse3.Name = "Response3Button";
+                                mEventResponse4.Name = "Response4Button";
+
+                                break;
+                        }
+                    }
+
+                    
 
                     mEventDialogWindow.LoadJsonUi(
                         GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString()
@@ -370,6 +407,10 @@ namespace Intersect.Client.Interface.Game
                     keyTimer = Globals.System.GetTimeMs() + 1000;
                     EventResponse4_Clicked(null, null);
                 }
+                if (Globals.EventDialogs[0].isFishing)
+                {
+                    mEventDialogArea.Hide();
+                }
             }
         }
 
@@ -504,11 +545,17 @@ namespace Intersect.Client.Interface.Game
             mTimer.Stop();
             mTimerFace.Stop();
             counter = 0;
-            mEventDialogLabelNoFace.ClearText();
-            mEventDialogLabel.ClearText();
-            mEventDialogWindow.RemoveModal();
-            mEventDialogWindow.IsHidden = true;
             ed.ResponseSent = 1;
+            if (!ed.isFishing)
+            {
+                mEventDialogLabelNoFace.ClearText();
+                mEventDialogLabel.ClearText();
+                mEventDialogWindow.RemoveModal();
+                mEventDialogWindow.IsHidden = true;
+            } else
+            {
+                this.Update();
+            }
         }
 
         void EventResponse2_Clicked(Base sender, ClickedEventArgs arguments)
@@ -523,11 +570,18 @@ namespace Intersect.Client.Interface.Game
             mTimer.Stop();
             mTimerFace.Stop();
             counter = 0;
-            mEventDialogLabelNoFace.ClearText();
-            mEventDialogLabel.ClearText();
-            mEventDialogWindow.RemoveModal();
-            mEventDialogWindow.IsHidden = true;
             ed.ResponseSent = 1;
+            if (!ed.isFishing)
+            {
+                mEventDialogLabelNoFace.ClearText();
+                mEventDialogLabel.ClearText();
+                mEventDialogWindow.RemoveModal();
+                mEventDialogWindow.IsHidden = true;
+            }
+            else
+            {
+                this.Update();
+            }
         }
 
         void EventResponse1_Clicked(Base sender, ClickedEventArgs arguments)
