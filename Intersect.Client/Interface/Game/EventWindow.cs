@@ -407,9 +407,15 @@ namespace Intersect.Client.Interface.Game
                     keyTimer = Globals.System.GetTimeMs() + 1000;
                     EventResponse4_Clicked(null, null);
                 }
-                if (Globals.EventDialogs[0].isFishing)
+                if (Globals.EventDialogs.Count > 0)
                 {
-                    mEventDialogArea.Hide();
+                    if (Globals.EventDialogs[0] != null)
+                    {
+                        if (Globals.EventDialogs[0].isFishing)
+                        {
+                            mEventDialogArea.Hide();
+                        }
+                    }
                 }
             }
         }
@@ -516,7 +522,7 @@ namespace Intersect.Client.Interface.Game
         //Input Handlers
         void EventResponse4_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            var ed = Globals.EventDialogs[0];
+            var ed = Globals.EventDialogs[0] ?? null;
             if (ed.ResponseSent != 0)
             {
                 return;
@@ -535,7 +541,7 @@ namespace Intersect.Client.Interface.Game
 
         void EventResponse3_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            var ed = Globals.EventDialogs[0];
+            var ed = Globals.EventDialogs[0] ?? null;
             if (ed.ResponseSent != 0)
             {
                 return;
@@ -560,7 +566,7 @@ namespace Intersect.Client.Interface.Game
 
         void EventResponse2_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            var ed = Globals.EventDialogs[0];
+            var ed = Globals.EventDialogs[0] ?? null;
             if (ed.ResponseSent != 0)
             {
                 return;
@@ -586,7 +592,7 @@ namespace Intersect.Client.Interface.Game
 
         void EventResponse1_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            var ed = Globals.EventDialogs[0];
+            var ed = Globals.EventDialogs[0] ?? null;
             if (ed.ResponseSent != 0)
             {
                 return;

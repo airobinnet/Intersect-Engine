@@ -470,6 +470,8 @@ namespace Intersect.Server.Entities
             else
             {
                 PacketSender.SendEntityPositionToAll(this);
+                PacketSender.SendEntityVitals(this);
+                PacketSender.SendEntityStats(this);
             }
         }
 
