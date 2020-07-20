@@ -522,91 +522,106 @@ namespace Intersect.Client.Interface.Game
         //Input Handlers
         void EventResponse4_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            var ed = Globals.EventDialogs[0] ?? null;
-            if (ed.ResponseSent != 0)
+            if (Globals.EventDialogs.Count > 0)
             {
-                return;
-            }
+                var ed = Globals.EventDialogs[0] ?? null;
+                if (ed.ResponseSent != 0)
+                {
+                    return;
+                }
 
-            PacketSender.SendEventResponse(4, ed);
-            mTimer.Stop();
-            mTimerFace.Stop();
-            counter = 0;
-            mEventDialogLabelNoFace.ClearText();
-            mEventDialogLabel.ClearText();
-            mEventDialogWindow.RemoveModal();
-            mEventDialogWindow.IsHidden = true;
-            ed.ResponseSent = 1;
-        }
-
-        void EventResponse3_Clicked(Base sender, ClickedEventArgs arguments)
-        {
-            var ed = Globals.EventDialogs[0] ?? null;
-            if (ed.ResponseSent != 0)
-            {
-                return;
-            }
-
-            PacketSender.SendEventResponse(3, ed);
-            mTimer.Stop();
-            mTimerFace.Stop();
-            counter = 0;
-            ed.ResponseSent = 1;
-            if (!ed.isFishing)
-            {
+                PacketSender.SendEventResponse(4, ed);
+                mTimer.Stop();
+                mTimerFace.Stop();
+                counter = 0;
                 mEventDialogLabelNoFace.ClearText();
                 mEventDialogLabel.ClearText();
                 mEventDialogWindow.RemoveModal();
                 mEventDialogWindow.IsHidden = true;
-            } else
+                ed.ResponseSent = 1;
+            }
+        }
+
+        void EventResponse3_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            if (Globals.EventDialogs.Count > 0)
             {
-                this.Update();
+                var ed = Globals.EventDialogs[0] ?? null;
+                if (ed.ResponseSent != 0)
+                {
+                    return;
+                }
+
+                PacketSender.SendEventResponse(3, ed);
+                mTimer.Stop();
+                mTimerFace.Stop();
+                counter = 0;
+                ed.ResponseSent = 1;
+                if (!ed.isFishing)
+                {
+                    mEventDialogLabelNoFace.ClearText();
+                    mEventDialogLabel.ClearText();
+                    mEventDialogWindow.RemoveModal();
+                    mEventDialogWindow.IsHidden = true;
+                }
+                else
+                {
+                    this.Update();
+                }
             }
         }
 
         void EventResponse2_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            var ed = Globals.EventDialogs[0] ?? null;
-            if (ed.ResponseSent != 0)
+            if (Globals.EventDialogs.Count > 0)
             {
-                return;
+                var ed = Globals.EventDialogs[0];
+                if (ed.ResponseSent != 0)
+                {
+                    return;
+                }
+                PacketSender.SendEventResponse(2, ed);
+                mTimer.Stop();
+                mTimerFace.Stop();
+                counter = 0;
+                ed.ResponseSent = 1;
+                if (!ed.isFishing)
+                {
+                    mEventDialogLabelNoFace.ClearText();
+                    mEventDialogLabel.ClearText();
+                    mEventDialogWindow.RemoveModal();
+                    mEventDialogWindow.IsHidden = true;
+                }
+                else
+                {
+                    this.Update();
+                }
             }
+            
 
-            PacketSender.SendEventResponse(2, ed);
-            mTimer.Stop();
-            mTimerFace.Stop();
-            counter = 0;
-            ed.ResponseSent = 1;
-            if (!ed.isFishing)
-            {
-                mEventDialogLabelNoFace.ClearText();
-                mEventDialogLabel.ClearText();
-                mEventDialogWindow.RemoveModal();
-                mEventDialogWindow.IsHidden = true;
-            }
-            else
-            {
-                this.Update();
-            }
+            
         }
 
         void EventResponse1_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            var ed = Globals.EventDialogs[0] ?? null;
-            if (ed.ResponseSent != 0)
+            if (Globals.EventDialogs.Count > 0)
             {
-                return;
-            }
+                var ed = Globals.EventDialogs[0];
+                if (ed.ResponseSent != 0)
+                {
+                    return;
+                }
 
-            PacketSender.SendEventResponse(1, ed);
-            mTimer.Stop();
-            mTimerFace.Stop();
-            counter = 0;
-            mEventDialogLabelNoFace.ClearText();
-            mEventDialogLabel.ClearText();
-            mEventDialogWindow.RemoveModal();
-            mEventDialogWindow.IsHidden = true;
-            ed.ResponseSent = 1;
+                PacketSender.SendEventResponse(1, ed);
+                mTimer.Stop();
+                mTimerFace.Stop();
+                counter = 0;
+                mEventDialogLabelNoFace.ClearText();
+                mEventDialogLabel.ClearText();
+                mEventDialogWindow.RemoveModal();
+                mEventDialogWindow.IsHidden = true;
+                ed.ResponseSent = 1;
+            }
         }
 
     }
