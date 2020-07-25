@@ -81,6 +81,9 @@ namespace Intersect.Server.Entities
         [NotMapped, JsonIgnore]
         private Guild guildInvite { get; set; }
 
+        [Column("GuildId"), NotNull]
+        public Guid? GuildId { get; set; }
+
         [Column("Equipment"), JsonIgnore]
         public string EquipmentJson
         {
@@ -339,6 +342,11 @@ namespace Intersect.Server.Entities
                 }
             }
 
+            if (GuildId != null && GuildId != Guid.Empty)
+            {
+                Guild = GuildId;
+            }
+
             if (CraftingTableId != Guid.Empty && CraftId != Guid.Empty)
             {
                 var b = CraftingTableBase.Get(CraftingTableId);
@@ -559,6 +567,7 @@ namespace Intersect.Server.Entities
             var pkt = (PlayerEntityPacket) packet;
             pkt.Gender = Gender;
             pkt.ClassId = ClassId;
+            pkt.guildId = (GuildId.HasValue) ? GuildId.Value : Guid.Empty;
 
             if (Power.IsAdmin)
             {

@@ -58,6 +58,10 @@ namespace Intersect.Client.Entities
 
         public int TargetType;
 
+        public Guid GuildId;
+
+        public string GuildName;
+
         public Player(Guid id, PlayerEntityPacket packet) : base(id, packet)
         {
             for (var i = 0; i < Options.MaxHotbar; i++)
@@ -187,6 +191,8 @@ namespace Intersect.Client.Entities
             Gender = pkt.Gender;
             Class = pkt.ClassId;
             Type = pkt.AccessLevel;
+            GuildId = pkt.guildId;
+
             CombatTimer = pkt.CombatTimeRemaining + Globals.System.GetTimeMs();
 
             if (((PlayerEntityPacket) packet).Equipment != null)
@@ -1764,6 +1770,10 @@ namespace Intersect.Client.Entities
             base.DrawName(textColor, borderColor, backgroundColor);
             DrawLabels(HeaderLabel.Text, 0, HeaderLabel.Color, textColor, borderColor, backgroundColor);
             DrawLabels(FooterLabel.Text, 1, FooterLabel.Color, textColor, borderColor, backgroundColor);
+            if (GuildId != null && GuildId != Guid.Empty)
+            {
+                DrawLabels(GuildId.ToString(), 3, FooterLabel.Color, textColor, borderColor, backgroundColor);
+            }
         }
 
         public void DrawTargets()
