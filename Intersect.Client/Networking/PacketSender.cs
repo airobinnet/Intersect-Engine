@@ -131,6 +131,11 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new UseItemPacket(slot, targetId));
         }
 
+        public static void checkGuildId(Guid player)
+        {
+            Network.SendPacket(new checkGuildIdPacket(player));
+        }
+
         public static void SendSwapSpells(int spell1, int spell2)
         {
             Network.SendPacket(new SwapSpellsPacket(spell1, spell2));

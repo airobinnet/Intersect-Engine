@@ -187,6 +187,17 @@ namespace Intersect.Client.Networking
             }
         }
 
+        //updateGuildPacket
+        private static void HandlePacket(updateGuildPacket packet)
+        {
+            if (Globals.Me.Id == packet.Player)
+            {
+                Globals.Me.GuildId = packet.GuildId;
+                Globals.Me.GuildTag = packet.Tag;
+                Globals.Me.GuildName = packet.Name;
+            }
+        }
+
         //ResourceEntityPacket
         private static void HandlePacket(ResourceEntityPacket packet)
         {

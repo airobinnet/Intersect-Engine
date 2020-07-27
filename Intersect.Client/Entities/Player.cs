@@ -62,6 +62,8 @@ namespace Intersect.Client.Entities
 
         public string GuildName;
 
+        public string GuildTag;
+
         public Player(Guid id, PlayerEntityPacket packet) : base(id, packet)
         {
             for (var i = 0; i < Options.MaxHotbar; i++)
@@ -153,6 +155,10 @@ namespace Intersect.Client.Entities
                 HandleInput();
             }
 
+            /*if (GuildId == Guid.Empty && GuildName != "")
+            {
+                PacketSender.checkGuildId(Id);
+            }*/
 
             if (!IsBusy())
             {
@@ -192,6 +198,8 @@ namespace Intersect.Client.Entities
             Class = pkt.ClassId;
             Type = pkt.AccessLevel;
             GuildId = pkt.guildId;
+            GuildName = pkt.guildName;
+            GuildTag = pkt.guildTag;
 
             CombatTimer = pkt.CombatTimeRemaining + Globals.System.GetTimeMs();
 
@@ -1770,9 +1778,10 @@ namespace Intersect.Client.Entities
             base.DrawName(textColor, borderColor, backgroundColor);
             DrawLabels(HeaderLabel.Text, 0, HeaderLabel.Color, textColor, borderColor, backgroundColor);
             DrawLabels(FooterLabel.Text, 1, FooterLabel.Color, textColor, borderColor, backgroundColor);
-            if (GuildId != null && GuildId != Guid.Empty)
+            if (GuildName != null)
+            //if (GuildId != Guid.Empty)
             {
-                DrawLabels(GuildId.ToString(), 3, FooterLabel.Color, textColor, borderColor, backgroundColor);
+                DrawLabels(GuildName, 3, FooterLabel.Color, textColor, borderColor, backgroundColor);
             }
         }
 

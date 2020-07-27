@@ -742,6 +742,11 @@ namespace Intersect.Server.Networking
                 // Decline our guild invite.
                 player.HandleGuildInvite(false);
             }
+            else if (cmd == Strings.Chat.GuildLeave)
+            {
+                // Decline our guild invite.
+                player.Guild.Leave(player);
+            }
             else
             {
                 //Search for command activated events and run them
@@ -1295,6 +1300,17 @@ namespace Intersect.Server.Networking
             }
 
             player.UseItem(packet.Slot, target);
+        }
+
+        //checkGuildIdPacket
+        public void checkGuildIdPacket(Player player)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            PacketSender.updateGuild(player);
         }
 
         //SwapSpellsPacket

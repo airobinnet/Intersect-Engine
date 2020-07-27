@@ -94,6 +94,10 @@ namespace Intersect.Server.Entities.Guilds
         public static void Create(Player player, string name, string tag)
         {
             Database.DbInterface.CreateGuild(player, name, tag);
+
+
+            PacketSender.updateGuild(player);
+            //PacketSender.SendEntityDataToProximity(player);
         }
 
         public void SetupDefaultRanks()
@@ -158,6 +162,23 @@ namespace Intersect.Server.Entities.Guilds
             PacketSender.SendChatMsg(player, Strings.Guilds.Welcome.ToString(Name), CustomColors.Alerts.Success);
             PacketSender.SendGuildMsg(this, Strings.Guilds.HasJoined.ToString(player.Name, Name), CustomColors.Alerts.Success);
 
+            PacketSender.updateGuild(player);
+            //PacketSender.SendEntityDataToProximity(player);
+
+            return true;
+        }
+
+        public bool Set(Player player)
+        {
+            // Check if this player is already in a guild.
+            if (player.Guild != null)
+            {
+                PacketSender.SendChatMsg(player, Strings.Guilds.AlreadyInGuild, CustomColors.Alerts.Error);
+                return false;
+            }
+
+            // Set this player to be in this guild.
+            player.Guild = this;
             return true;
         }
 
@@ -184,12 +205,17 @@ namespace Intersect.Server.Entities.Guilds
 
             // Remove the member from the guild.
             player.Guild = null;
+            player.GuildId = null;
             Members.Remove(player.Id);
 
 
             // Notify them they've left!
             PacketSender.SendChatMsg(player, Strings.Guilds.Goodbye.ToString(Name), CustomColors.Alerts.Success);
             PacketSender.SendGuildMsg(this, Strings.Guilds.HasLeft.ToString(player.Name, Name), CustomColors.Alerts.Info);
+
+
+            PacketSender.updateGuild(player);
+            PacketSender.SendEntityDataToProximity(player);
 
 
             return true;

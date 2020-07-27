@@ -20,6 +20,10 @@ namespace Intersect.Network.Packets.Server
 
         public Guid guildId { get; set; }
 
+        public string guildName { get; set; }
+
+        public string guildTag { get; set; }
+
     }
 
 }

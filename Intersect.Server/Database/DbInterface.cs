@@ -581,8 +581,20 @@ namespace Intersect.Server.Database
             SavePlayerDatabaseAsync();
         }
 
-        //Bags
-        public static Bag GetBag(Item item)
+        public static void CheckGuild(Player player, Guid guildId)
+        {
+            // find the guild by the guildId
+            lock (mPlayerDbLock)
+            {
+                if (sPlayerDb.Guilds.Find(guildId) != null)
+                {
+                    player.Guild = sPlayerDb.Guilds.Find(guildId);
+                }
+            }
+        }
+
+            //Bags
+            public static Bag GetBag(Item item)
         {
             return GetBag(item.BagId);
         }

@@ -437,6 +437,16 @@ namespace Intersect.Server.Networking
             }
         }
 
+        //UpdateGuild
+        public static void updateGuild(Player player)
+        {
+            if (player == null)
+            {
+                return;
+            }
+            player.SendPacket(new updateGuildPacket(player.Id, player.Guild.Id, player.Guild.Tag ?? "", player.Guild.Name ?? ""));
+        }
+
         //EntityPositionPacket
         public static void SendEntityPositionTo(Client client, Entity en)
         {

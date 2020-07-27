@@ -342,11 +342,6 @@ namespace Intersect.Server.Entities
                 }
             }
 
-            if (GuildId != null && GuildId != Guid.Empty)
-            {
-                Guild = GuildId;
-            }
-
             if (CraftingTableId != Guid.Empty && CraftId != Guid.Empty)
             {
                 var b = CraftingTableBase.Get(CraftingTableId);
@@ -565,9 +560,25 @@ namespace Intersect.Server.Entities
             packet = base.EntityPacket(packet, forPlayer);
 
             var pkt = (PlayerEntityPacket) packet;
+            if (Guild == null && GuildId != null && GuildId != Guid.Empty)
+            {
+                // check if player has a guildId set, if not guild is set up yet, assign the guildId and put the player in the guild
+                DbInterface.CheckGuild(this, GuildId.Value);
+            }
             pkt.Gender = Gender;
             pkt.ClassId = ClassId;
-            pkt.guildId = (GuildId.HasValue) ? GuildId.Value : Guid.Empty;
+            if (Guild != null)
+            {
+                pkt.guildId = GuildId.Value;
+                pkt.guildName = Guild.Name;
+                pkt.guildTag = Guild.Tag;
+            }
+            else
+            {
+                pkt.guildId = Guid.Empty;
+                pkt.guildName = "";
+                pkt.guildTag = "";
+            }
 
             if (Power.IsAdmin)
             {
