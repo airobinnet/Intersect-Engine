@@ -569,7 +569,7 @@ namespace Intersect.Server.Entities
             pkt.ClassId = ClassId;
             if (Guild != null)
             {
-                pkt.guildId = GuildId.Value;
+                pkt.guildId = (GuildId.HasValue) ? GuildId.Value : Guid.Empty;
                 pkt.guildName = Guild.Name;
                 pkt.guildTag = Guild.Tag;
             }

@@ -444,7 +444,14 @@ namespace Intersect.Server.Networking
             {
                 return;
             }
-            player.SendPacket(new updateGuildPacket(player.Id, player.Guild.Id, player.Guild.Tag ?? "", player.Guild.Name ?? ""));
+            if (player.Guild != null)
+            {
+                player.SendPacket(new updateGuildPacket(player.Id, (Guid)player.Guild.Id, player.Guild?.Tag ?? "", player.Guild?.Name ?? ""));
+            } else
+            {
+                player.SendPacket(new updateGuildPacket(player.Id, Guid.Empty, "", ""));
+            }
+            SendEntityDataToProximity(player);
         }
 
         //EntityPositionPacket
