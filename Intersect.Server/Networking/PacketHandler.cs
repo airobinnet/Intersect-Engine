@@ -714,11 +714,18 @@ namespace Intersect.Server.Networking
                 {
                     // Is our rank allowed to invite players?
                     var rank = player.Guild.GetRank(player);
-                    if (rank != null && rank.Permissions[GuildPermissions.InvitePlayers])
+                    if (rank != null)
                     {
-                        // Attempt to invite this player to our guild.
-                        var invitePlayer = Player.FindOnline(msg.Trim());
-                        invitePlayer?.InviteToGuild(player.Guild, player);
+                        if (rank.Permissions.ContainsKey(GuildPermissions.InvitePlayers)) {
+                            // Attempt to invite this player to our guild.
+                            var invitePlayer = Player.FindOnline(msg.Trim());
+                            invitePlayer?.InviteToGuild(player.Guild, player);
+                        }
+                        else
+                        {
+                            // This player is not allowed to do this cuz no rank matches this one
+                            PacketSender.SendChatMsg(player, Strings.Guilds.NoPermission, CustomColors.Alerts.Error);
+                        }
                     }
                     else
                     {

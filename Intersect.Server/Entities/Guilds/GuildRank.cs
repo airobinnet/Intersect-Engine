@@ -19,7 +19,7 @@ namespace Intersect.Server.Entities.Guilds
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(Order = 0)]
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
         [Column(Order = 1)]
         public string Title { get; set; }
@@ -33,11 +33,16 @@ namespace Intersect.Server.Entities.Guilds
         }
 
         [NotMapped]
-        public Dictionary<GuildPermissions, bool> Permissions = new Dictionary<GuildPermissions, bool>(); 
+        public Dictionary<GuildPermissions, bool> Permissions = new Dictionary<GuildPermissions, bool>();
 
-        public GuildRank() : this(Guid.NewGuid())
+        public GuildRank(bool newRank) : this(Guid.NewGuid())
         {
-            
+
+        }
+
+        public GuildRank()
+        {
+
         }
 
         public GuildRank(Guid guid)
@@ -56,7 +61,7 @@ namespace Intersect.Server.Entities.Guilds
 
         public static GuildRank Create(string title, Dictionary<GuildPermissions, bool> permissions)
         {
-            return new GuildRank() { Title = title, Permissions = permissions };
+            return new GuildRank(true) { Title = title, Permissions = permissions };
         }
     }
 }

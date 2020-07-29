@@ -54,6 +54,8 @@
 
         OpenParties,
 
+        OpenGuild,
+
         OpenSpells,
 
         OpenFriends,

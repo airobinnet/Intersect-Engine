@@ -110,7 +110,7 @@ namespace Intersect.Server.Entities.Guilds
             foreach (var rank in Options.GuildOptions.DefaultRanks)
             {
                 // Create a new rank and set it up as configured.
-                var newRank = new GuildRank() { Title = rank.Title, Permissions = rank.Permissions };
+                var newRank = new GuildRank(true) { Title = rank.Title, Permissions = rank.Permissions };
                 Ranks.Add(newRank);
 
                 // If this rank matches our default member rank setting, set it as such!
@@ -141,7 +141,6 @@ namespace Intersect.Server.Entities.Guilds
             {
                 return null;
             }
-
             return Ranks.Where(r => r.Id == Members[player.Id]).FirstOrDefault();
         }
 

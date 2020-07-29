@@ -181,6 +181,10 @@ namespace Intersect.Client.Core
                                         Interface.Interface.GameUi?.GameMenu?.TogglePartyWindow();
 
                                         break;
+                                    case Control.OpenGuild:
+                                        Interface.Interface.GameUi?.GameMenu?.ToggleGuildWindow();
+
+                                        break;
 
                                     case Control.OpenSpells:
                                         Interface.Interface.GameUi?.GameMenu?.ToggleSpellsWindow();

@@ -25,6 +25,8 @@ namespace Intersect.Client.Interface.Game
 
         private Label mTagText;
 
+        private Label mRankText;
+
         private Button mLeaveButton;
 
         //Controls
@@ -33,7 +35,7 @@ namespace Intersect.Client.Interface.Game
         //Init
         public GuildWindow(Canvas gameCanvas)
         {
-            mGuildWindow = new WindowControl(gameCanvas, Strings.Parties.title, false, "GuildWindow");
+            mGuildWindow = new WindowControl(gameCanvas, Strings.Guilds.title, false, "GuildWindow");
             mGuildWindow.DisableResizing();
             
             mLeader = new ImagePanel(mGuildWindow, "LeaderIcon");
@@ -42,6 +44,10 @@ namespace Intersect.Client.Interface.Game
             mNameText = new Label(mGuildWindow, "NameText");
             mNameText.SetTextColor(new Color(0, 0, 0, 0), Label.ControlState.Normal);
             mNameText.Text = Globals.Me.GuildName;
+
+            mRankText = new Label(mGuildWindow, "RankText");
+            mRankText.SetTextColor(new Color(0, 0, 0, 0), Label.ControlState.Normal);
+            mRankText.Text = "";
 
             mTagText = new Label(mGuildWindow, "TagText");
             mTagText.SetTextColor(new Color(0, 0, 0, 0), Label.ControlState.Normal);
@@ -67,6 +73,20 @@ namespace Intersect.Client.Interface.Game
             mNameText.Hide();
             mTagText.Hide();
             mLeaveButton.Hide();
+
+            if (Globals.Me.GuildName == null || Globals.Me.GuildName == "")
+            {
+                mNameText.Text = "No guild info, join a guild first!";
+                mNameText.Show();
+            } else
+            {
+                mNameText.Text = Globals.Me.GuildName;
+                mTagText.Text = Globals.Me.GuildTag;
+                mNameText.Show();
+                mTagText.Show();
+            }
+
+            //var rank = player.Guild.GetRank(player);
         }
 
         public void Show()

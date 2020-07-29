@@ -551,7 +551,8 @@ namespace Intersect.Client.Localization
                 {"opensettings", @"Open Settings:"},
                 {"opendebugger", @"Open Debugger:"},
                 {"openadminpanel", @"Open Admin Panel:"},
-                {"togglegui", @"Toggle Interface:"}
+                {"togglegui", @"Toggle Interface:" },
+                {"openguild", @"Open Guild Window:"}
             };
 
             public static LocalizedString edit = @"Edit Controls";
@@ -768,6 +769,8 @@ namespace Intersect.Client.Localization
             public static LocalizedString items = @"Inventory";
 
             public static LocalizedString party = @"Party";
+
+            public static LocalizedString guild = @"Guild";
 
             public static LocalizedString quest = @"Quest Log";
 
@@ -1191,6 +1194,31 @@ namespace Intersect.Client.Localization
             public static LocalizedString vital1 = @"MP:";
 
             public static LocalizedString vital1val = @"{00} / {01}";
+
+        }
+
+        public struct Guilds
+        {
+
+            public static LocalizedString inviteprompt = @"{00} has invited you to their guild. Do you accept?";
+
+            public static LocalizedString kick = @"Kick {00}";
+
+            public static LocalizedString kicklbl = @"Kick";
+
+            public static LocalizedString leader = @"Leader";
+
+            public static LocalizedString leadertip = @"Party Leader";
+
+            public static LocalizedString leave = @"Leave Guild";
+
+            public static LocalizedString leavetip = @"Leave Tip";
+
+            public static LocalizedString name = @"{00} - Lv. {01}";
+
+            public static LocalizedString guildinvite = @"Guild Invite";
+
+            public static LocalizedString title = @"Guild";
 
         }
 
