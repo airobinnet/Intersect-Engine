@@ -238,6 +238,16 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new PartyLeavePacket());
         }
 
+        public static void SendGuildLeave()
+        {
+            Network.SendPacket(new GuildLeavePacket());
+        }
+
+        public static void SendRequestGuildInfo()
+        {
+            Network.SendPacket(new RequestGuildInfoPacket());
+        }
+
         public static void SendPartyAccept(object sender, EventArgs e)
         {
             Network.SendPacket(new PartyInviteResponsePacket((Guid) ((InputBox) sender).UserData, true));

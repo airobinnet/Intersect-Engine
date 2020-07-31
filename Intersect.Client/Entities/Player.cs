@@ -64,6 +64,17 @@ namespace Intersect.Client.Entities
 
         public string GuildTag;
 
+        public DateTime GuildDate;
+
+        public Guid GuildLeaderRank;
+
+        public string GuildMembers;
+
+        public string GuildMembersNames;
+
+        public string GuildRanks;
+
+
         public Player(Guid id, PlayerEntityPacket packet) : base(id, packet)
         {
             for (var i = 0; i < Options.MaxHotbar; i++)

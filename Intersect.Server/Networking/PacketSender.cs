@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using System.Dynamic;
 using Intersect.Enums;
 using Intersect.GameObjects;
 using Intersect.GameObjects.Crafting;
@@ -24,6 +24,8 @@ using Intersect.Server.Localization;
 using Intersect.Server.Maps;
 
 using JetBrains.Annotations;
+
+using Newtonsoft.Json;
 
 namespace Intersect.Server.Networking
 {
@@ -555,6 +557,64 @@ namespace Intersect.Server.Networking
             }
 
             player.SendPacket(new ChatMsgPacket(message, clr, target));
+        }
+        public class Guilddata
+        {
+            public string Name { get; set; }
+            public int Level { get; set; }
+            public string Class { get; set; }
+            public string Map { get; set; }
+            public bool Online { get; set; }
+        }
+        //SendGuildData
+        public static void SendGuildData(Player player)
+        {
+            if (player == null)
+            {
+                return;
+            }
+            if (player.Guild != null) {
+
+                string MembersJsonNames = "";
+
+                var jsonData = player.Guild.MembersJson;
+                var memberList = new List<Guilddata>();
+
+                var jObj = JsonConvert.DeserializeObject<Dictionary<Guid, Guid>>(player.Guild.MembersJson);
+
+                foreach (var item in jObj)
+                {
+                    Guid ClassId = Guid.Empty;
+                    if (item.Key == player.Id)
+                    {
+                        memberList.Add(new Guilddata()
+                        {
+                            Name = player.Name,
+                            Level = player.Level,
+                            Class = ClassBase.GetName(player.ClassId),
+                            Map = player.Map.Name,
+                            Online = true
+                        });
+                        
+                    } else
+                    {
+                        memberList.Add(new Guilddata()
+                        {
+                            Name =  DbInterface.GetPlayer(item.Key).Name,
+                            Level = DbInterface.GetPlayer(item.Key).Level,
+                            Class = ClassBase.GetName(DbInterface.GetPlayer(item.Key).ClassId),
+                            Map = DbInterface.GetPlayer(item.Key).Map.Name,
+                            Online = DbInterface.GetPlayer(item.Key).InGame
+                        });
+                    }
+
+                    jsonData = JsonConvert.SerializeObject(memberList);
+                }
+                player.SendPacket(new GuildDataPacket(player.Guild.Id, player.Guild.Name, player.Guild.Tag, player.Guild.FoundingDate, player.Guild.LeaderRank, player.Guild.MembersJson, jsonData, player.Guild.RanksJson));
+            } else
+            {
+                return;
+            }
         }
 
         //GameDataPacket

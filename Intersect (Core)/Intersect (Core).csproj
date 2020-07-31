@@ -327,10 +327,13 @@
     <Compile Include="Network\Packets\Client\EventResponsePacket.cs" />
     <Compile Include="Network\Packets\Client\ForgetSpellPacket.cs" />
     <Compile Include="Network\Packets\Client\FriendRequestResponsePacket.cs" />
+    <Compile Include="Network\Packets\Client\RequestGuildInfoPacket.cs" />
     <Compile Include="Network\Packets\Client\HotbarSwapPacket.cs" />
     <Compile Include="Network\Packets\Client\HotbarUpdatePacket.cs" />
     <Compile Include="Network\Packets\Client\LoginPacket.cs" />
     <Compile Include="Network\Packets\Client\LogoutPacket.cs" />
+    <Compile Include="Network\Packets\Client\GuildLeavePacket.cs" />
+    <Compile Include="Network\Packets\Server\GuildDataPacket.cs" />
     <Compile Include="Network\Packets\Server\updateGuildPacket.cs" />
     <Compile Include="Network\Packets\SlotQuantityPacket.cs" />
     <Compile Include="Network\Packets\Client\SwapBankItemsPacket.cs" />

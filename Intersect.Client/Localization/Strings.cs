@@ -1220,6 +1220,20 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString title = @"Guild";
 
+            public static LocalizedString addmember = @"Add Member";
+
+            public static LocalizedString addmembertitle = @"Add Member";
+
+            public static LocalizedString addmemberprompt = @"Who would you like to add to the guild?";
+
+            public static LocalizedString createguild = @"Create Guild";
+
+            public static LocalizedString createguildprompt = @"Name and Tag? format GuildName;TAG";
+
+            public static LocalizedString removeguildmember = @"Remove guildmember";
+
+            public static LocalizedString removeguildmemberprompt = @"Do you wish to remove {00} from your guild?";
+
         }
 
         public struct QuestLog

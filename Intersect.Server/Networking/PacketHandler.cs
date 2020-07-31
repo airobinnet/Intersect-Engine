@@ -1621,6 +1621,28 @@ namespace Intersect.Server.Networking
             player.LeaveParty();
         }
 
+        //GuildLeavePacket
+        public void HandlePacket(Client client, Player player, GuildLeavePacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.Guild.Leave(player);
+        }
+
+        //RequestGuildInfoPacket
+        public void HandlePacket(Client client, Player player, RequestGuildInfoPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            PacketSender.SendGuildData(player);
+        }
+
         //QuestResponsePacket
         public void HandlePacket(Client client, Player player, QuestResponsePacket packet)
         {

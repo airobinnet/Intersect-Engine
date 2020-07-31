@@ -385,6 +385,19 @@ namespace Intersect.Client.Networking
             );
         }
 
+        //GuildDataPacket
+        private static void HandlePacket(GuildDataPacket packet)
+        {
+            Globals.Me.GuildDate = packet.Date;
+            Globals.Me.GuildId = packet.GuildId;
+            Globals.Me.GuildLeaderRank = packet.LeaderRank;
+            Globals.Me.GuildMembers = packet.Members;
+            Globals.Me.GuildMembersNames = packet.MembersNames;
+            Globals.Me.GuildName = packet.Name;
+            Globals.Me.GuildRanks = packet.Ranks;
+            Globals.Me.GuildTag = packet.Tag;
+        }
+
         //ActionMsgPacket
         private static void HandlePacket(ActionMsgPacket packet)
         {

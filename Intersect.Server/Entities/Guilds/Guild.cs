@@ -7,6 +7,7 @@ using Intersect.Enums;
 using Intersect.Logging;
 using Intersect.Server.Localization;
 using Intersect.Server.Networking;
+using Intersect.Server.Database;
 
 using JetBrains.Annotations;
 
@@ -23,7 +24,7 @@ namespace Intersect.Server.Entities.Guilds
         /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(Order = 0)]
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// The Guild's full name.
@@ -144,6 +145,20 @@ namespace Intersect.Server.Entities.Guilds
             return Ranks.Where(r => r.Id == Members[player.Id]).FirstOrDefault();
         }
 
+        public bool ChangeRank(Player player, Guid rank)
+        {
+            if (player == null)
+            {
+                return false;
+            }
+            if (!Members.ContainsKey(player.Id))
+            {
+                return false;
+            }
+            Members[player.Id] = rank;
+            return true;
+        }
+
         public bool Join(Player player, Guid rank) 
         { 
             // Check if this player is already in a guild.
@@ -203,9 +218,10 @@ namespace Intersect.Server.Entities.Guilds
             }
 
             // Remove the member from the guild.
+            Members.Remove(player.Id);
             player.Guild = null;
             player.GuildId = null;
-            Members.Remove(player.Id);
+            DbInterface.SavePlayerDatabaseAsync();
 
 
             // Notify them they've left!
