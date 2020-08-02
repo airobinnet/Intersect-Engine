@@ -445,6 +445,8 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString channeladmin = @"admin";
 
+            public static LocalizedString channelguild = @"guild";
+
             public static LocalizedString enterchat = @"Click here to chat.";
 
             public static LocalizedString enterchat1 = @"Press {00} to chat.";
@@ -1200,6 +1202,14 @@ namespace Intersect.Client.Localization
         public struct Guilds
         {
 
+            public static Dictionary<int, LocalizedString> menuoptions = new Dictionary<int, LocalizedString>
+            {
+                {0, @"PM"},
+                {1, @"Promote"},
+                {2, @"Demote"},
+                {3, @"Kick"},
+            };
+
             public static LocalizedString inviteprompt = @"{00} has invited you to their guild. Do you accept?";
 
             public static LocalizedString kick = @"Kick {00}";
@@ -1233,6 +1243,14 @@ namespace Intersect.Client.Localization
             public static LocalizedString removeguildmember = @"Remove guildmember";
 
             public static LocalizedString removeguildmemberprompt = @"Do you wish to remove {00} from your guild?";
+
+            public static LocalizedString promoteguildmember = @"Promote guildmember";
+
+            public static LocalizedString promoteguildmemberprompt = @"Do you wish to Promote {00} to {01}?";
+
+            public static LocalizedString demoteguildmember = @"Demote guildmember";
+
+            public static LocalizedString demoteguildmemberprompt = @"Do you wish to Demote {00} to {01}?";
 
         }
 

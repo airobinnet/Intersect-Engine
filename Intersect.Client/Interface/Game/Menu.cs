@@ -6,6 +6,7 @@ using Intersect.Client.General;
 using Intersect.Client.Interface.Game.Character;
 using Intersect.Client.Interface.Game.Inventory;
 using Intersect.Client.Interface.Game.Spells;
+using Intersect.Client.Interface.Game.Guild;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 

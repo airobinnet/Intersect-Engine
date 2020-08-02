@@ -561,6 +561,8 @@ namespace Intersect.Server.Networking
         public class Guilddata
         {
             public string Name { get; set; }
+            public Guid Id { get; set; }
+            public Guid Rank { get; set; }
             public int Level { get; set; }
             public string Class { get; set; }
             public string Map { get; set; }
@@ -590,6 +592,8 @@ namespace Intersect.Server.Networking
                         memberList.Add(new Guilddata()
                         {
                             Name = player.Name,
+                            Id = player.Id,
+                            Rank = item.Value,
                             Level = player.Level,
                             Class = ClassBase.GetName(player.ClassId),
                             Map = player.Map.Name,
@@ -600,7 +604,9 @@ namespace Intersect.Server.Networking
                     {
                         memberList.Add(new Guilddata()
                         {
-                            Name =  DbInterface.GetPlayer(item.Key).Name,
+                            Name = DbInterface.GetPlayer(item.Key).Name,
+                            Id = item.Key,
+                            Rank = item.Value,
                             Level = DbInterface.GetPlayer(item.Key).Level,
                             Class = ClassBase.GetName(DbInterface.GetPlayer(item.Key).ClassId),
                             Map = DbInterface.GetPlayer(item.Key).Map.Name,

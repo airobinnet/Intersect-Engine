@@ -145,17 +145,17 @@ namespace Intersect.Server.Entities.Guilds
             return Ranks.Where(r => r.Id == Members[player.Id]).FirstOrDefault();
         }
 
-        public bool ChangeRank(Player player, Guid rank)
+        public bool ChangeRank(Guid player, Guid rank)
         {
             if (player == null)
             {
                 return false;
             }
-            if (!Members.ContainsKey(player.Id))
+            if (!Members.ContainsKey(player))
             {
                 return false;
             }
-            Members[player.Id] = rank;
+            Members[player] = rank;
             return true;
         }
 

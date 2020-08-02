@@ -15,7 +15,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Intersect.Client.Interface.Game
+namespace Intersect.Client.Interface.Game.Guild
 {
 
     public class GuildWindow
@@ -27,6 +27,10 @@ namespace Intersect.Client.Interface.Game
         private List<Button> mKickButtons = new List<Button>();
 
         private List<Label> mLblnames = new List<Label>();
+
+        public List<GuildMember> GuildList = new List<GuildMember>();
+
+        private ScrollControl mMemberContainer;
 
         private ImagePanel mLeader;
 
@@ -40,9 +44,9 @@ namespace Intersect.Client.Interface.Game
 
         private Button mCreateButton;
 
-        private ListBox mMembers;
+        //private ListBox mMembers;
 
-        private int tempTimer = 1000;
+        private int tempTimer = 99;
 
         private TextBox mSearchTextbox;
 
@@ -57,6 +61,7 @@ namespace Intersect.Client.Interface.Game
         //Init
         public GuildWindow(Canvas gameCanvas)
         {
+            PacketSender.SendRequestGuildInfo();
 
             mGuildWindow = new WindowControl(gameCanvas, Strings.Guilds.title, false, "GuildWindow");
             mGuildWindow.DisableResizing();
@@ -71,7 +76,11 @@ namespace Intersect.Client.Interface.Game
             mRankText = new Label(mGuildWindow, "RankText");
             mRankText.SetTextColor(new Color(0, 0, 0, 0), Label.ControlState.Normal);
 
-            mMembers = new ListBox(mGuildWindow, "MemberList");
+            mMemberContainer = new ScrollControl(mGuildWindow, "MemberContainer");
+            mMemberContainer.EnableScroll(false, true);
+            mMemberContainer.ShouldCacheToTexture = false;
+
+            //mMembers = new ListBox(mGuildWindow, "MemberList");
 
             mTagText = new Label(mGuildWindow, "TagText");
             mTagText.SetTextColor(new Color(0, 0, 0, 0), Label.ControlState.Normal);
@@ -95,6 +104,8 @@ namespace Intersect.Client.Interface.Game
             mAddPopupButton.SetText(Strings.Guilds.addmember);
             mAddPopupButton.Clicked += addPopupButton_Clicked;
 
+            UpdateList();
+
             mGuildWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
         }
 
@@ -107,22 +118,21 @@ namespace Intersect.Client.Interface.Game
                 return;
             }
 
-            if (tempTimer >= 1000)
+            if (tempTimer >= 100)
             {
                 PacketSender.SendRequestGuildInfo();
                 UpdateList();
                 tempTimer = 0;
             }
 
-            UpdateList();
-
             mLeader.Hide();
             mNameText.Hide();
             mTagText.Hide();
             mLeaveCreateButton.Hide();
             mRankText.Hide();
-            mMembers.Hide();
+            //mMembers.Hide();
             mAddPopupButton.Hide();
+            mMemberContainer.Hide();
 
             if (Globals.Me.GuildName == null || Globals.Me.GuildName == "")
             {
@@ -131,8 +141,9 @@ namespace Intersect.Client.Interface.Game
                 mLeaveCreateButton.Show();
                 mNameText.Show();
                 mRankText.Hide();
-                mMembers.Hide();
+                //mMembers.Hide();
                 mAddPopupButton.Hide();
+                mMemberContainer.Hide();
             } else
             {
                 mNameText.Text = Globals.Me.GuildName;
@@ -142,7 +153,8 @@ namespace Intersect.Client.Interface.Game
                 mTagText.Show();
                 mRankText.Show();
                 mLeaveCreateButton.Show();
-                mMembers.Show();
+                //mMembers.Show();
+                mMemberContainer.Show();
             }
 
             if (Globals.Me.GuildMembers != null)
@@ -167,7 +179,7 @@ namespace Intersect.Client.Interface.Game
             //var rank = player.Guild.GetRank(player);
         }
 
-        public class GuildRanks
+        private class GuildRanks
         {
             public Guid Id { get; set; }
             public string Title { get; set; }
@@ -176,8 +188,9 @@ namespace Intersect.Client.Interface.Game
 
         public class GuildMembers
         {
-            //public Guid Key { get; set; }
             public string Name { get; set; }
+            public Guid Id { get; set; }
+            public Guid Rank { get; set; }
             public int Level { get; set; }
             public string Class { get; set; }
             public string Map { get; set; }
@@ -197,15 +210,19 @@ namespace Intersect.Client.Interface.Game
         public void UpdateList()
         {
             //Clear previous instances if already existing
-            if (mMembers != null)
+            if (GuildList != null)
             {
-                mMembers.Clear();
+                GuildList.Clear();
+                mMemberContainer.Children.Clear();
             }
             if (Globals.Me.GuildMembersNames != null)
             {
-                foreach (var f in JsonConvert.DeserializeObject<List<GuildMembers>>(Globals.Me.GuildMembersNames))
+                var tempList = JsonConvert.DeserializeObject<List<GuildMembers>>(Globals.Me.GuildMembersNames);
+                //foreach (var f in JsonConvert.DeserializeObject<List<GuildMembers>>(Globals.Me.GuildMembersNames))
+                for (var i = 0; i < tempList.Count; i++)
                 {
-                    var row = mMembers.AddRow(f.Name + " (lvl " + f.Level + " " + f.Class + ") Map: " + f.Map);
+                    //var row = mMembers.AddRow(f.Name + " (lvl " + f.Level + " " + f.Class + ") Map: " + f.Map);
+                    /*var row = mMembers.AddRow(String.Format("{0,-12} lvl {1,-3} {2,-10} {3,-12}", f.Name, f.Level, f.Class, f.Map));
                     row.UserData = f.Name;
                     row.Clicked += members_Clicked;
                     row.RightClicked += members_RightClicked;
@@ -217,7 +234,31 @@ namespace Intersect.Client.Interface.Game
                     {
                         row.SetTextColor(Color.Red);
                     }
-                    row.RenderColor = new Color(255, 255, 255, 255);
+                    row.RenderColor = new Color(255, 255, 255, 255);*/
+                    GuildList.Add(new GuildMember(this, i));
+                    GuildList[i].Container = new ImagePanel(mMemberContainer, "GuildMember");
+                    GuildList[i].Setup();
+
+                    GuildList[i].Container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
+
+                    GuildList[i].LoadItem();
+                    GuildList[i].Container.SetPosition(
+                    5,
+                    i * 20
+                    );
+                    /*var xPadding = GuildList[i].Container.Margin.Left + GuildList[i].Container.Margin.Right;
+                    var yPadding = GuildList[i].Container.Margin.Top + GuildList[i].Container.Margin.Bottom;
+                    GuildList[i]
+                        .Container.SetPosition(
+                            i %
+                            (mMemberContainer.Width / (GuildList[i].Container.Width + xPadding)) *
+                            (GuildList[i].Container.Width + xPadding) +
+                            xPadding,
+                            i /
+                            (mMemberContainer.Width / (GuildList[i].Container.Width + xPadding)) *
+                            (GuildList[i].Container.Height + yPadding) +
+                            yPadding
+                        );*/
                 }
             }
         }
@@ -226,8 +267,8 @@ namespace Intersect.Client.Interface.Game
         {
             var row = (ListBoxRow)sender;
 
-            /*
-            foreach (var member in Globals.Me.GuildMembers)
+            
+            /*foreach (var member in Globals.Me.GuildMembers)
             {
                 if (member.Name.ToLower() == member.Name.ToLower())
                 {
@@ -244,7 +285,6 @@ namespace Intersect.Client.Interface.Game
             if (ibox.TextValue.Trim().Length >= 3) //Don't bother sending a packet less than the char limit
             {
                 PacketSender.SendChatMsg("/guildinvite " + ibox.TextValue.ToString(), 0);
-                //PacketSender.SendAddFriend(ibox.TextValue);
             }
         }
 

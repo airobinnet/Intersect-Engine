@@ -227,6 +227,15 @@ namespace Intersect.Server.Localization
             [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString GuildLeave = @"/guildleave";
 
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString GuildPromote = @"/guildpromote";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString GuildDemote = @"/guilddemote";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString GuildKick = @"/guildkick";
+
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString toofast = @"You are chatting too fast!";
 

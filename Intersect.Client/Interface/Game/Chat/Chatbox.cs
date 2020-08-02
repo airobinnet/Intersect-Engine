@@ -88,6 +88,12 @@ namespace Intersect.Client.Interface.Game.Chat
             {
                 var menuItem = mChannelCombobox.AddItem(Strings.Chatbox.channeladmin);
                 menuItem.UserData = 3;
+
+            }//Add guild channel only if player has a guild.
+            if (Globals.Me.GuildId != null)
+            {
+                var menuItem = mChannelCombobox.AddItem(Strings.Chatbox.channelguild);
+                menuItem.UserData = 4;
             }
 
             mChatboxText = new Label(mChatboxWindow);
