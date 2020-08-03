@@ -333,6 +333,7 @@
     <Compile Include="Network\Packets\Client\LoginPacket.cs" />
     <Compile Include="Network\Packets\Client\LogoutPacket.cs" />
     <Compile Include="Network\Packets\Client\GuildLeavePacket.cs" />
+    <Compile Include="Network\Packets\Server\GuildInvitePacket.cs" />
     <Compile Include="Network\Packets\Server\GuildDataPacket.cs" />
     <Compile Include="Network\Packets\Server\updateGuildPacket.cs" />
     <Compile Include="Network\Packets\SlotQuantityPacket.cs" />

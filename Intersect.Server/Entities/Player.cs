@@ -79,7 +79,7 @@ namespace Intersect.Server.Entities
         public Guild Guild { get; set; }
 
         [NotMapped, JsonIgnore]
-        private Guild guildInvite { get; set; }
+        public Guild guildInvite { get; set; }
 
         [Column("GuildId"), NotNull]
         public Guid? GuildId { get; set; }

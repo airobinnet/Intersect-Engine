@@ -617,7 +617,13 @@ namespace Intersect.Server.Networking
                     jsonData = JsonConvert.SerializeObject(memberList);
                 }
                 player.SendPacket(new GuildDataPacket(player.Guild.Id, player.Guild.Name, player.Guild.Tag, player.Guild.FoundingDate, player.Guild.LeaderRank, player.Guild.MembersJson, jsonData, player.Guild.RanksJson));
-            } else
+            }
+            else if (player.guildInvite != null)
+            {
+                player.SendPacket(new GuildInvitePacket(player.guildInvite.Id, player.guildInvite.Name, player.guildInvite.Tag, player.guildInvite.Members.Count()));
+            }
+
+            else
             {
                 return;
             }

@@ -147,7 +147,7 @@ namespace Intersect.Client.Interface.Game.Guild
 
         private void RemoveMember(Object sender, EventArgs e)
         {
-            
+            PacketSender.SendChatMsg("/guildkick " + mTempName, 0);
         }
 
         private void PromoteMember(Object sender, EventArgs e)

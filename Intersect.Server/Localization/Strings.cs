@@ -1349,6 +1349,10 @@ namespace Intersect.Server.Localization
                    @"You have left {00}!";
 
             [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString Kicked =
+                   @"You have been kicked from {00}!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString HasJoined =
                    @"{00} has joined {01}!";
 
@@ -1357,8 +1361,16 @@ namespace Intersect.Server.Localization
                    @"{00} has left {01}!";
 
             [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString HasLeftbyKick =
+                   @"{00} has been kicked from {01}!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString LeaderCantLeave =
                    @"The leader of a guild can't leave the guild!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString LeaderCantBeKicked =
+                   @"The leader of a guild can't leave be kicked!";
         }
 
         #region Serialization

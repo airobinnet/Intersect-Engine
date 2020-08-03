@@ -42,6 +42,10 @@ namespace Intersect.Client.Interface.Game.Guild
 
         private Button mLeaveCreateButton;
 
+        private Button mAcceptInviteButton;
+
+        private Button mDeclineInviteButton;
+
         private Button mCreateButton;
 
         //private ListBox mMembers;
@@ -91,13 +95,15 @@ namespace Intersect.Client.Interface.Game.Guild
             mLeaveCreateButton.SetToolTipText(Strings.Parties.leavetip);
             mLeaveCreateButton.Clicked += leavecreate_Clicked;
 
-            /*mAddButton = new Button(mGuildWindow, "AddMemberButton");
-            mAddButton.SetText("+");
-            mAddButton.Clicked += addButton_Clicked;*/
+            mAcceptInviteButton = new Button(mGuildWindow, "AcceptInviteButton");
+            mAcceptInviteButton.Text = "Accept Invite";
+            mAcceptInviteButton.SetToolTipText("Accept Invite");
+            mAcceptInviteButton.Clicked += AcceptInvite_Clicked;
 
-            /*mTextboxContainer = new ImagePanel(mGuildWindow, "SearchContainer");
-            mSearchTextbox = new TextBox(mTextboxContainer, "SearchTextbox");
-            Interface.FocusElements.Add(mSearchTextbox);*/
+            mDeclineInviteButton = new Button(mGuildWindow, "DeclineInviteButton");
+            mDeclineInviteButton.Text = "Decline Invite";
+            mDeclineInviteButton.SetToolTipText("Decline Invite");
+            mDeclineInviteButton.Clicked += DeclineInvite_Clicked;
 
             mAddPopupButton = new Button(mGuildWindow, "AddMemberPopupButton");
             mAddPopupButton.IsHidden = true;
@@ -133,19 +139,35 @@ namespace Intersect.Client.Interface.Game.Guild
             //mMembers.Hide();
             mAddPopupButton.Hide();
             mMemberContainer.Hide();
+            mAcceptInviteButton.Hide();
+            mDeclineInviteButton.Hide();
 
             if (Globals.Me.GuildName == null || Globals.Me.GuildName == "")
             {
-                mNameText.Text = "No guild info, join a guild first!";
-                mLeaveCreateButton.Text = "Create Guild";
-                mLeaveCreateButton.Show();
-                mNameText.Show();
-                mRankText.Hide();
-                //mMembers.Hide();
-                mAddPopupButton.Hide();
-                mMemberContainer.Hide();
+                if (Globals.Me.GuildInvite != Guid.Empty)
+                {
+                    mAcceptInviteButton.Show();
+                    mDeclineInviteButton.Show();
+                    mNameText.Text = "You have a pending invite to " + Globals.Me.GuildInviteTag + ":" + Globals.Me.GuildInviteName + " with " + Globals.Me.GuildInviteMembers + " members.";
+                    mNameText.Show();
+                }
+                else
+                {
+                    mNameText.Text = "No guild info, join a guild first!";
+                    mLeaveCreateButton.Text = "Create Guild";
+                    mLeaveCreateButton.Show();
+                    mNameText.Show();
+                    mRankText.Hide();
+                    //mMembers.Hide();
+                    mAddPopupButton.Hide();
+                    mMemberContainer.Hide();
+                    mAcceptInviteButton.Hide();
+                    mDeclineInviteButton.Hide();
+                }
+                
             } else
             {
+                Globals.Me.GuildInvite = Guid.Empty;
                 mNameText.Text = Globals.Me.GuildName;
                 mTagText.Text = Globals.Me.GuildTag;
                 mLeaveCreateButton.Text = "Leave Guild";
@@ -155,12 +177,13 @@ namespace Intersect.Client.Interface.Game.Guild
                 mLeaveCreateButton.Show();
                 //mMembers.Show();
                 mMemberContainer.Show();
+                mAcceptInviteButton.Hide();
+                mDeclineInviteButton.Hide();
             }
-
+            
             if (Globals.Me.GuildMembers != null)
             {
                 var gMembers = JsonConvert.DeserializeObject<Dictionary<Guid, Guid>>(Globals.Me.GuildMembers);
-                //var gMembersNames = JsonConvert.DeserializeObject<Dictionary<string, Guid>>(Globals.Me.GuildMembersNames);
                 Guid RankId = gMembers[Globals.Me.Id];
 
                 var RankInfo = JsonConvert.DeserializeObject<List<GuildRanks>>(Globals.Me.GuildRanks);
@@ -176,7 +199,6 @@ namespace Intersect.Client.Interface.Game.Guild
 
                 }
             tempTimer++;
-            //var rank = player.Guild.GetRank(player);
         }
 
         private class GuildRanks
@@ -218,23 +240,8 @@ namespace Intersect.Client.Interface.Game.Guild
             if (Globals.Me.GuildMembersNames != null)
             {
                 var tempList = JsonConvert.DeserializeObject<List<GuildMembers>>(Globals.Me.GuildMembersNames);
-                //foreach (var f in JsonConvert.DeserializeObject<List<GuildMembers>>(Globals.Me.GuildMembersNames))
                 for (var i = 0; i < tempList.Count; i++)
                 {
-                    //var row = mMembers.AddRow(f.Name + " (lvl " + f.Level + " " + f.Class + ") Map: " + f.Map);
-                    /*var row = mMembers.AddRow(String.Format("{0,-12} lvl {1,-3} {2,-10} {3,-12}", f.Name, f.Level, f.Class, f.Map));
-                    row.UserData = f.Name;
-                    row.Clicked += members_Clicked;
-                    row.RightClicked += members_RightClicked;
-                    if (f.Online == true)
-                    {
-                        row.SetTextColor(Color.Green);
-                    }
-                    else
-                    {
-                        row.SetTextColor(Color.Red);
-                    }
-                    row.RenderColor = new Color(255, 255, 255, 255);*/
                     GuildList.Add(new GuildMember(this, i));
                     GuildList[i].Container = new ImagePanel(mMemberContainer, "GuildMember");
                     GuildList[i].Setup();
@@ -246,39 +253,10 @@ namespace Intersect.Client.Interface.Game.Guild
                     5,
                     i * 20
                     );
-                    /*var xPadding = GuildList[i].Container.Margin.Left + GuildList[i].Container.Margin.Right;
-                    var yPadding = GuildList[i].Container.Margin.Top + GuildList[i].Container.Margin.Bottom;
-                    GuildList[i]
-                        .Container.SetPosition(
-                            i %
-                            (mMemberContainer.Width / (GuildList[i].Container.Width + xPadding)) *
-                            (GuildList[i].Container.Width + xPadding) +
-                            xPadding,
-                            i /
-                            (mMemberContainer.Width / (GuildList[i].Container.Width + xPadding)) *
-                            (GuildList[i].Container.Height + yPadding) +
-                            yPadding
-                        );*/
                 }
             }
         }
-
-        void members_Clicked(Base sender, ClickedEventArgs arguments)
-        {
-            var row = (ListBoxRow)sender;
-
-            
-            /*foreach (var member in Globals.Me.GuildMembers)
-            {
-                if (member.Name.ToLower() == member.Name.ToLower())
-                {
-                    if (member.Online == true)
-                    {
-                        Interface.GameUi.SetChatboxText("/pm " + (string)row.UserData + " ");
-                    }
-                }
-            }*/
-        }
+        
         private void AddMember(Object sender, EventArgs e)
         {
             var ibox = (InputBox)sender;
@@ -296,20 +274,15 @@ namespace Intersect.Client.Interface.Game.Guild
             );
         }
 
-        void members_RightClicked(Base sender, ClickedEventArgs arguments)
+        void AcceptInvite_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            var row = (ListBoxRow)sender;
-            mTempName = (string)row.UserData;
-
-            var iBox = new InputBox(
-                Strings.Guilds.removeguildmember, Strings.Guilds.removeguildmemberprompt.ToString(mTempName), true,
-                InputBox.InputType.YesNo, RemoveMember, null, 0
-            );
+            PacketSender.SendChatMsg("/guildaccept", 0);
         }
 
-        private void RemoveMember(Object sender, EventArgs e)
+        void DeclineInvite_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            //PacketSender.SendRemoveFriend(mTempName);
+            PacketSender.SendChatMsg("/guilddecline", 0);
+            Globals.Me.GuildInvite = Guid.Empty;
         }
 
         private void CreateGuild(Object sender, EventArgs e)
@@ -318,20 +291,12 @@ namespace Intersect.Client.Interface.Game.Guild
             if (ibox.TextValue.Trim().Length >= 3) //Don't bother sending a packet less than the char limit
             {
                 PacketSender.SendChatMsg("/guildcreate " + ibox.TextValue.ToString(), 0);
-                //PacketSender.SendAddFriend(ibox.TextValue);
             }
-            //PacketSender.SendRemoveFriend(mTempName);
         }
 
         public void Hide()
         {
             mGuildWindow.IsHidden = true;
-        }
-
-        //Input Handlers
-        void kick_Clicked(Base sender, ClickedEventArgs arguments)
-        {
-            
         }
 
         void leavecreate_Clicked(Base sender, ClickedEventArgs arguments)

@@ -170,6 +170,7 @@ namespace Intersect.Server.Entities.Guilds
 
             // Set this player to be in this guild.
             player.Guild = this;
+            player.guildInvite = null;
             Members.Add(player.Id, rank);
 
             // Notify them they've joined!
@@ -227,6 +228,46 @@ namespace Intersect.Server.Entities.Guilds
             // Notify them they've left!
             PacketSender.SendChatMsg(player, Strings.Guilds.Goodbye.ToString(Name), CustomColors.Alerts.Success);
             PacketSender.SendGuildMsg(this, Strings.Guilds.HasLeft.ToString(player.Name, Name), CustomColors.Alerts.Info);
+
+
+            PacketSender.updateGuild(player);
+            PacketSender.SendEntityDataToProximity(player);
+
+
+            return true;
+        }
+
+        public bool Kick(Player player)
+        {
+            if (player == null)
+            {
+                return false;
+            }
+
+            // Does this member exist?
+            if (!Members.Keys.Contains(player.Id))
+            {
+                Log.Warn($@"Player {player.Id} cant be kicked from the Guild {this.Id} cuz hes not a member!");
+                return false;
+            }
+
+            // Can this member leave?
+            if (Members[player.Id] == LeaderRank)
+            {
+                PacketSender.SendChatMsg(player, Strings.Guilds.LeaderCantBeKicked.ToString(), CustomColors.Alerts.Error);
+                return false;
+            }
+
+            // Remove the member from the guild.
+            Members.Remove(player.Id);
+            player.Guild = null;
+            player.GuildId = null;
+            DbInterface.SavePlayerDatabaseAsync();
+
+
+            // Notify them they've left!
+            PacketSender.SendChatMsg(player, Strings.Guilds.Kicked.ToString(Name), CustomColors.Alerts.Success);
+            PacketSender.SendGuildMsg(this, Strings.Guilds.HasLeftbyKick.ToString(player.Name, Name), CustomColors.Alerts.Info);
 
 
             PacketSender.updateGuild(player);

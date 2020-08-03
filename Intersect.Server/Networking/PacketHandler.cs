@@ -719,6 +719,10 @@ namespace Intersect.Server.Networking
                         if (rank.Permissions.ContainsKey(GuildPermissions.InvitePlayers)) {
                             // Attempt to invite this player to our guild.
                             var invitePlayer = Player.FindOnline(msg.Trim());
+                            if (invitePlayer == null)
+                            {
+                                invitePlayer = Player.Find(Guid.Parse(msg.Trim()));
+                            }
                             invitePlayer?.InviteToGuild(player.Guild, player);
                         }
                         else
@@ -853,6 +857,43 @@ namespace Intersect.Server.Networking
             {
                 // Decline our guild invite.
                 player.Guild.Leave(player);
+            }
+            else if (cmd == Strings.Chat.GuildKick)
+            {
+                if (msg.Trim().Length == 0)
+                {
+                    return;
+                }
+
+                // Are we even in a guild?
+                if (player.Guild != null)
+                {
+                    // Is our rank allowed to invite players?
+                    var rank = player.Guild.GetRank(player);
+                    if (rank != null)
+                    {
+                        if (rank.Permissions.ContainsKey(GuildPermissions.KickPlayers))
+                        {
+                            var toKickPlayer = Player.Find(msg.Trim());
+                            player.Guild.Kick(toKickPlayer);
+                        }
+                        else
+                        {
+                            // This player is not allowed to do this cuz no rank matches this one
+                            PacketSender.SendChatMsg(player, Strings.Guilds.NoPermission, CustomColors.Alerts.Error);
+                        }
+                    }
+                    else
+                    {
+                        // This player is not allowed to do this!
+                        PacketSender.SendChatMsg(player, Strings.Guilds.NoPermission, CustomColors.Alerts.Error);
+                    }
+                }
+                else
+                {
+                    // They're not even in a guild!
+                    PacketSender.SendChatMsg(player, Strings.Guilds.NotInGuild, CustomColors.Alerts.Error);
+                }
             }
             else
             {

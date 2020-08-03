@@ -69,6 +69,8 @@ namespace Intersect.Client.Interface.Game.EntityPanel
 
         public Button FriendLabel;
 
+        public Button GuildLabel;
+
         public ImagePanel HpBackground;
 
         public ImagePanel HpBar;
@@ -188,6 +190,18 @@ namespace Intersect.Client.Interface.Game.EntityPanel
             FriendLabel.Clicked += friendRequest_Clicked;
             FriendLabel.IsHidden = true;
 
+            GuildLabel = new Button(EntityInfoPanel, "GuildButton");
+            GuildLabel.SetText(Strings.EntityBox.guild);
+            GuildLabel.SetToolTipText(Strings.EntityBox.guildtip.ToString(MyEntity.Name));
+            GuildLabel.Clicked += guild_Clicked;
+            if (Globals.Me.GuildId == null || Globals.Me.GuildId == Guid.Empty)
+            {
+                GuildLabel.Hide();
+            } else
+            {
+                GuildLabel.Show();
+            }
+
             EntityStatusPanel = new ImagePanel(EntityWindow, "StatusArea");
 
             SetEntity(myEntity);
@@ -234,9 +248,18 @@ namespace Intersect.Client.Interface.Game.EntityPanel
                         TradeLabel.Hide();
                         PartyLabel.Hide();
                         FriendLabel.Hide();
+                        GuildLabel.Hide();
                     }
                     else
                     {
+                        if (Globals.Me.GuildId == null || Globals.Me.GuildId == Guid.Empty)
+                        {
+                            GuildLabel.Hide();
+                        }
+                        else
+                        {
+                            GuildLabel.Show();
+                        }
                         ExpBackground.Hide();
                         ExpBar.Hide();
                         ExpLbl.Hide();
@@ -257,6 +280,7 @@ namespace Intersect.Client.Interface.Game.EntityPanel
                     PartyLabel.Hide();
                     FriendLabel.Hide();
                     EntityMap.Hide();
+                    GuildLabel.Hide();
 
                     break;
                 case EntityTypes.Event:
@@ -276,6 +300,7 @@ namespace Intersect.Client.Interface.Game.EntityPanel
                     PartyLabel.Hide();
                     FriendLabel.Hide();
                     EntityMap.Hide();
+                    GuildLabel.Hide();
 
                     break;
             }
@@ -834,6 +859,15 @@ namespace Intersect.Client.Interface.Game.EntityPanel
             EntityWindow.Hide();
             Interface.GameUi.GameCanvas.RemoveChild(EntityWindow, false);
             EntityWindow.Dispose();
+        }
+
+        //Input Handlers
+        void guild_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            if (Globals.Me.GuildId != Guid.Empty && Globals.Me.TargetIndex != Globals.Me.Id)
+            {
+                PacketSender.SendChatMsg("/guildinvite " + Globals.Me.TargetIndex.ToString(), 0);
+            }
         }
 
         //Input Handlers

@@ -238,8 +238,8 @@ namespace Intersect.Client.Interface.Game
             else
             {
                 HideWindows();
-
                 PacketSender.SendRequestGuildInfo();
+                mGuildWindow.UpdateList();
                 mGuildWindow.Show();
             }
         }

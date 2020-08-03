@@ -638,6 +638,10 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString friend = "Befriend";
 
+            public static LocalizedString guild = "Guildinvite";
+
+            public static LocalizedString guildtip = "Send {00} a guild invite.";
+
             public static LocalizedString friendtip = "Send {00} a friend request.";
 
             public static LocalizedString level = @"Lv. {00}";

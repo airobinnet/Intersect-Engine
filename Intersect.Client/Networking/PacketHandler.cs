@@ -398,6 +398,15 @@ namespace Intersect.Client.Networking
             Globals.Me.GuildTag = packet.Tag;
         }
 
+        //GuildInvitePacket
+        private static void HandlePacket(GuildInvitePacket packet)
+        {
+            Globals.Me.GuildInvite = packet.GuildId;
+            Globals.Me.GuildInviteName = packet.Name;
+            Globals.Me.GuildInviteTag = packet.Tag;
+            Globals.Me.GuildInviteMembers = packet.Members;
+        }
+
         //ActionMsgPacket
         private static void HandlePacket(ActionMsgPacket packet)
         {
