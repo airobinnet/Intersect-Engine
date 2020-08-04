@@ -1330,7 +1330,7 @@ namespace Intersect.Server.Localization
 
             [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString InvitedBy =
-                   @"{00} has invited you to join {01}! Type /guildaccept to accept or /guilddecline to decline this invite.";
+                   @"{00} has invited you to join {01}! Open the guild tab or type /guildaccept to accept or /guilddecline to decline this invite.";
 
             [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString NotInvited =
@@ -1370,7 +1370,7 @@ namespace Intersect.Server.Localization
 
             [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString LeaderCantBeKicked =
-                   @"The leader of a guild can't leave be kicked!";
+                   @"The leader of a guild can't be kicked!";
         }
 
         #region Serialization

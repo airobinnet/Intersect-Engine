@@ -107,6 +107,14 @@ namespace Intersect.Server.Networking
                         player.StartCommonEvent(evt, CommonEventTrigger.Login);
                     }
                 }
+                foreach (var playerId in player.Guild?.Members?.Keys)
+                {
+                    var tempplayer = Player.FindOnline(playerId);
+                    if (player.Id != playerId)
+                    {
+                        PacketSender.SendGuildData(tempplayer);
+                    }
+                }
             }
         }
 

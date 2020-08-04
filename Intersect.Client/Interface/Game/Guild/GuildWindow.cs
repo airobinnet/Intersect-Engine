@@ -124,11 +124,11 @@ namespace Intersect.Client.Interface.Game.Guild
                 return;
             }
 
-            if (tempTimer >= 100)
+            if (Globals.Me.GuildUpdate == true)
             {
-                PacketSender.SendRequestGuildInfo();
+                //PacketSender.SendRequestGuildInfo();
+                Globals.Me.GuildUpdate = false;
                 UpdateList();
-                tempTimer = 0;
             }
 
             mLeader.Hide();
@@ -144,7 +144,7 @@ namespace Intersect.Client.Interface.Game.Guild
 
             if (Globals.Me.GuildName == null || Globals.Me.GuildName == "")
             {
-                if (Globals.Me.GuildInvite != Guid.Empty)
+                if (Globals.Me.GuildInviteName != null)
                 {
                     mAcceptInviteButton.Show();
                     mDeclineInviteButton.Show();
@@ -198,7 +198,6 @@ namespace Intersect.Client.Interface.Game.Guild
                 }
 
                 }
-            tempTimer++;
         }
 
         private class GuildRanks
@@ -277,12 +276,19 @@ namespace Intersect.Client.Interface.Game.Guild
         void AcceptInvite_Clicked(Base sender, ClickedEventArgs arguments)
         {
             PacketSender.SendChatMsg("/guildaccept", 0);
+            Globals.Me.GuildInvite = Guid.Empty;
+            Globals.Me.GuildInviteName = null;
+            Globals.Me.GuildInviteTag = null;
+            Update();
         }
 
         void DeclineInvite_Clicked(Base sender, ClickedEventArgs arguments)
         {
             PacketSender.SendChatMsg("/guilddecline", 0);
             Globals.Me.GuildInvite = Guid.Empty;
+            Globals.Me.GuildInviteName = null;
+            Globals.Me.GuildInviteTag = null;
+            Update();
         }
 
         private void CreateGuild(Object sender, EventArgs e)

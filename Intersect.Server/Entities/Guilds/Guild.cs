@@ -156,6 +156,12 @@ namespace Intersect.Server.Entities.Guilds
                 return false;
             }
             Members[player] = rank;
+            // Find every online player in the guild and send the update.
+            foreach (var playerId in Members.Keys)
+            {
+                var tempplayer = Player.FindOnline(playerId);
+                PacketSender.SendGuildData(tempplayer);
+            }
             return true;
         }
 
@@ -177,6 +183,11 @@ namespace Intersect.Server.Entities.Guilds
             PacketSender.SendChatMsg(player, Strings.Guilds.Welcome.ToString(Name), CustomColors.Alerts.Success);
             PacketSender.SendGuildMsg(this, Strings.Guilds.HasJoined.ToString(player.Name, Name), CustomColors.Alerts.Success);
 
+            foreach (var playerId in Members.Keys)
+            {
+                var tempplayer = Player.FindOnline(playerId);
+                PacketSender.SendGuildData(tempplayer);
+            }
             PacketSender.updateGuild(player);
             //PacketSender.SendEntityDataToProximity(player);
 
@@ -228,7 +239,12 @@ namespace Intersect.Server.Entities.Guilds
             // Notify them they've left!
             PacketSender.SendChatMsg(player, Strings.Guilds.Goodbye.ToString(Name), CustomColors.Alerts.Success);
             PacketSender.SendGuildMsg(this, Strings.Guilds.HasLeft.ToString(player.Name, Name), CustomColors.Alerts.Info);
-
+            // Find every online player in the guild and send the update.
+            foreach (var playerId in Members.Keys)
+            {
+                var tempplayer = Player.FindOnline(playerId);
+                PacketSender.SendGuildData(tempplayer);
+            }
 
             PacketSender.updateGuild(player);
             PacketSender.SendEntityDataToProximity(player);
@@ -247,7 +263,7 @@ namespace Intersect.Server.Entities.Guilds
             // Does this member exist?
             if (!Members.Keys.Contains(player.Id))
             {
-                Log.Warn($@"Player {player.Id} cant be kicked from the Guild {this.Id} cuz hes not a member!");
+                Log.Warn($@"Player {player.Id} cant be kicked from the Guild {this.Id} cuz (s)hes not a member!");
                 return false;
             }
 
@@ -257,22 +273,29 @@ namespace Intersect.Server.Entities.Guilds
                 PacketSender.SendChatMsg(player, Strings.Guilds.LeaderCantBeKicked.ToString(), CustomColors.Alerts.Error);
                 return false;
             }
-
             // Remove the member from the guild.
             Members.Remove(player.Id);
-            player.Guild = null;
-            player.GuildId = null;
-            DbInterface.SavePlayerDatabaseAsync();
-
 
             // Notify them they've left!
             PacketSender.SendChatMsg(player, Strings.Guilds.Kicked.ToString(Name), CustomColors.Alerts.Success);
             PacketSender.SendGuildMsg(this, Strings.Guilds.HasLeftbyKick.ToString(player.Name, Name), CustomColors.Alerts.Info);
-
-
+            foreach (var playerId in Members.Keys)
+            {
+                var tempplayer = Player.FindOnline(playerId);
+                PacketSender.SendGuildData(tempplayer);
+            }
+            
+            player.Guild = null;
+            player.GuildId = null;
+            DbInterface.SavePlayerDatabaseAsync();
             PacketSender.updateGuild(player);
             PacketSender.SendEntityDataToProximity(player);
-
+            //log the player back out, because for some reason when changing player.Guild, that player physically logged into the game
+            //nobody should notice the player coming online i guess
+            if (player.Client == null)
+            {
+                player.TryLogout();
+            }
 
             return true;
         }

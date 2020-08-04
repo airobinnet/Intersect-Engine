@@ -307,10 +307,21 @@ namespace Intersect.Server.Entities
             }
 
             PacketSender.SendEntityLeave(this);
-
-            if (!string.IsNullOrWhiteSpace(Strings.Player.left.ToString()))
+            if (Client != null)
             {
-                PacketSender.SendGlobalMsg(Strings.Player.left.ToString(Name, Options.Instance.GameName));
+                if (!string.IsNullOrWhiteSpace(Strings.Player.left.ToString()))
+                {
+                    PacketSender.SendGlobalMsg(Strings.Player.left.ToString(Name, Options.Instance.GameName));
+                }
+            }
+
+            foreach (var playerId in Guild.Members.Keys)
+            {
+                var tempplayer = FindOnline(playerId);
+                if (playerId != Id)
+                {
+                    PacketSender.SendGuildData(tempplayer);
+                }
             }
 
             Dispose();
@@ -430,6 +441,12 @@ namespace Intersect.Server.Entities
                     else
                     {
                         MapInstance.Get(MapId).PlayerEnteredMap(this);
+                    }
+
+                    foreach (var playerId in Guild.Members.Keys)
+                    {
+                        var tempplayer = FindOnline(playerId);
+                        PacketSender.SendGuildData(tempplayer);
                     }
                 }
             }
@@ -814,6 +831,13 @@ namespace Intersect.Server.Entities
 
             PacketSender.SendChatMsg(this, Strings.Player.levelup.ToString(Level), CustomColors.Combat.LevelUp, Name);
             PacketSender.SendActionMsg(this, Strings.Combat.levelup, CustomColors.Combat.LevelUp);
+
+            foreach (var playerId in Guild.Members.Keys)
+            {
+                var tempplayer = FindOnline(playerId);
+                PacketSender.SendGuildData(tempplayer);
+            }
+
             foreach (var message in messages)
             {
                 PacketSender.SendChatMsg(this, message, CustomColors.Alerts.Info, Name);

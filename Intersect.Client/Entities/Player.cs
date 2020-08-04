@@ -58,6 +58,8 @@ namespace Intersect.Client.Entities
 
         public int TargetType;
 
+        public bool GuildUpdate = false;
+
         public Guid GuildId;
 
         public string GuildName;
