@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using System.Dynamic;
 using Intersect.Enums;
 using Intersect.GameObjects;
 using Intersect.GameObjects.Crafting;
@@ -19,11 +19,14 @@ using Intersect.Server.Database.PlayerData;
 using Intersect.Server.Database.PlayerData.Security;
 using Intersect.Server.Entities;
 using Intersect.Server.Entities.Events;
+using Intersect.Server.Entities.Guilds;
 using Intersect.Server.General;
 using Intersect.Server.Localization;
 using Intersect.Server.Maps;
 
 using JetBrains.Annotations;
+
+using Newtonsoft.Json;
 
 namespace Intersect.Server.Networking
 {
@@ -106,6 +109,17 @@ namespace Intersect.Server.Networking
                     if (evt != null)
                     {
                         player.StartCommonEvent(evt, CommonEventTrigger.Login);
+                    }
+                }
+                if (player.Guild != null)
+                {
+                    foreach (var playerId in player.Guild.Members.Keys)
+                    {
+                        var tempplayer = Player.FindOnline(playerId);
+                        if (playerId != player.Id)
+                        {
+                            PacketSender.SendGuildData(tempplayer);
+                        }
                     }
                 }
             }
@@ -467,6 +481,23 @@ namespace Intersect.Server.Networking
             }
         }
 
+        //UpdateGuild
+        public static void updateGuild(Player player)
+        {
+            if (player == null)
+            {
+                return;
+            }
+            if (player.Guild != null)
+            {
+                player.SendPacket(new updateGuildPacket(player.Id, (Guid)player.Guild.Id, player.Guild?.Tag ?? "", player.Guild?.Name ?? ""));
+            } else
+            {
+                player.SendPacket(new updateGuildPacket(player.Id, Guid.Empty, "", ""));
+            }
+            SendEntityDataToProximity(player);
+        }
+
         //EntityPositionPacket
         public static void SendEntityPositionTo(Client client, Entity en)
         {
@@ -598,6 +629,78 @@ namespace Intersect.Server.Networking
 
             player.SendPacket(new ChatMsgPacket(message, clr, target));
         }
+        public class Guilddata
+        {
+            public string Name { get; set; }
+            public Guid Id { get; set; }
+            public Guid Rank { get; set; }
+            public int Level { get; set; }
+            public string Class { get; set; }
+            public string Map { get; set; }
+            public bool Online { get; set; }
+        }
+        //SendGuildData
+        public static void SendGuildData(Player player)
+        {
+            if (player == null)
+            {
+                return;
+            }
+            if (player.Guild != null) {
+
+                string MembersJsonNames = "";
+
+                var jsonData = player.Guild.MembersJson;
+                var memberList = new List<Guilddata>();
+
+                var jObj = JsonConvert.DeserializeObject<Dictionary<Guid, Guid>>(player.Guild.MembersJson);
+
+                foreach (var item in jObj)
+                {
+                    Guid ClassId = Guid.Empty;
+                    if (item.Key == player.Id)
+                    {
+                        memberList.Add(new Guilddata()
+                        {
+                            Name = player.Name,
+                            Id = player.Id,
+                            Rank = item.Value,
+                            Level = player.Level,
+                            Class = ClassBase.GetName(player.ClassId),
+                            Map = player.Map.Name,
+                            Online = true
+                        });
+
+                    } else
+                    {
+                        memberList.Add(new Guilddata()
+                        {
+                            Name = DbInterface.GetPlayer(item.Key).Name,
+                            Id = item.Key,
+                            Rank = item.Value,
+                            Level = DbInterface.GetPlayer(item.Key).Level,
+                            Class = ClassBase.GetName(DbInterface.GetPlayer(item.Key).ClassId),
+                            Map = DbInterface.GetPlayer(item.Key).Map.Name,
+                            Online = DbInterface.GetPlayer(item.Key).InGame
+                        });
+                    }
+
+                    jsonData = JsonConvert.SerializeObject(memberList);
+                }
+                //if (player.InGuild) { // save some bandwith by only sending updates if the guildwindow is open, still todo
+                player.SendPacket(new GuildDataPacket(player.Guild.Id, player.Guild.Name, player.Guild.Tag, player.Guild.FoundingDate, player.Guild.LeaderRank, player.Guild.MembersJson, jsonData, player.Guild.RanksJson));
+                //}
+            }
+            else if (player.guildInvite != null)
+            {
+                player.SendPacket(new GuildInvitePacket(player.guildInvite.Id, player.guildInvite.Name, player.guildInvite.Tag, player.guildInvite.Members.Count()));
+            }
+
+            else
+            {
+                return;
+            }
+        }
 
         //GameDataPacket
         public static void SendGameData(Client client)
@@ -714,6 +817,28 @@ namespace Intersect.Server.Networking
                 {
                     SendChatMsg(p, message, clr, target);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Send a chat message to this guild.
+        /// </summary>
+        /// <param name="guild">TThe guild to send the message to.</param>
+        /// <param name="message">The message to send.</param>
+        /// <param name="clr">The colour of the message to send.</param>
+        /// <param name="target">???</param>
+        public static void SendGuildMsg(Guild guild, string message, Color clr, string target = "")
+        {
+            if (guild == null)
+            {
+                return;
+            }
+
+            // Find every online player in the guild and send them this message.
+            foreach (var playerId in guild.Members.Keys)
+            {
+                var player = Player.FindOnline(playerId);
+                SendChatMsg(player, message, target);
             }
         }
 
@@ -1411,6 +1536,29 @@ namespace Intersect.Server.Networking
             player.SendPacket(new BankPacket(true));
         }
 
+        //GuildBankPacket
+        public static void SendOpenGuildBank(Player player)
+        {
+            //if (player.Guild != null)
+            //{
+                for (var i = 0; i < Options.MaxBankSlots; i++)
+                {
+                    SendGuildBankUpdate(player, i);
+                }
+
+                player.SendPacket(new GuildBankPacket(false));
+            /*} else
+            {
+                SendChatMsg(player, "You're not in a guild!", Color.Red);
+            }*/
+        }
+
+        //GuildBankPacket
+        public static void SendCloseGuildBank(Player player)
+        {
+            player.SendPacket(new GuildBankPacket(true));
+        }
+
         //CraftingTablePacket
         public static void SendOpenCraftingTable(Player player, CraftingTableBase table)
         {
@@ -1569,6 +1717,24 @@ namespace Intersect.Server.Networking
                 DbInterface.SavePlayerDatabaseAsync();
             }
             player.SendPacket(new HDVPacket(hdvID, hdvItemPackets.ToArray<HDVItemPacket>()));
+        }
+
+        //GuildBankUpdatePacket
+        public static void SendGuildBankUpdate(Player player, int slot)
+        {
+            if (player.Guild.GuildBank[slot] != null && player.Guild.GuildBank[slot].ItemId != Guid.Empty && player.Guild.GuildBank[slot].Quantity > 0)
+            {
+                player.SendPacket(
+                    new GuildBankUpdatePacket(
+                        slot, player.Guild.GuildBank[slot].ItemId, player.Guild.GuildBank[slot].Quantity, player.Guild.GuildBank[slot].BagId,
+                        player.Guild.GuildBank[slot].StatBuffs
+                    )
+                );
+            }
+            else
+            {
+                player.SendPacket(new GuildBankUpdatePacket(slot, Guid.Empty, 0, null, null));
+            }
         }
 
         //GameObjectPacket

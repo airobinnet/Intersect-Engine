@@ -1668,6 +1668,8 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString openbank = @"Open Bank";
 
+            public static LocalizedString openguildbank = @"Open GuildBank";
+
             public static LocalizedString opencrafting = @"Open Crafting Table [{00}]";
 
             public static LocalizedString openshop = @"Open Shop [{00}]";
@@ -1875,6 +1877,8 @@ Tick timer saved in server config.json.";
                 {"openhdv","Open Auction House"},
                 {"spawnpet","Spawn Pet"},
                 {"despawnpet","Despawn Pet"},
+                {"openguildbank", @"Open GuildBank"},
+                {"guild", @"Guild"},
             };
 
         }

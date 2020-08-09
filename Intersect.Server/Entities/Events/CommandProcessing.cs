@@ -1430,6 +1430,19 @@ namespace Intersect.Server.Entities.Events
             callStack.Peek().WaitingForResponse = CommandInstance.EventResponse.Bank;
         }
 
+        //Open GuildBank Command
+        private static void ProcessCommand(
+            OpenGuildBankCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            player.OpenGuildBank();
+            callStack.Peek().WaitingForResponse = CommandInstance.EventResponse.GuildBank;
+        }
+
         //Open Shop Command
         private static void ProcessCommand(
             OpenShopCommand command,
@@ -1469,6 +1482,18 @@ namespace Intersect.Server.Entities.Events
             {
                 player.ClassId = command.ClassId;
                 player.RecalculateStatsAndPoints();
+            }
+
+            if (player.Guild != null)
+            {
+                foreach (var playerId in player.Guild.Members.Keys)
+                {
+                    var tempplayer = Player.FindOnline(playerId);
+                    if (playerId != player.Id)
+                    {
+                        PacketSender.SendGuildData(tempplayer);
+                    }
+                }
             }
 
             PacketSender.SendEntityDataToProximity(player);

@@ -7,6 +7,7 @@ using Intersect.Server.Database.PlayerData.Api;
 using Intersect.Server.Database.PlayerData.Players;
 using Intersect.Server.Database.PlayerData.SeedData;
 using Intersect.Server.Entities;
+using Intersect.Server.Entities.Guilds;
 
 using JetBrains.Annotations;
 
@@ -79,6 +80,12 @@ namespace Intersect.Server.Database.PlayerData
         public DbSet<BagSlot> Bag_Items { get; set; }
 
         [NotNull]
+        public DbSet<Guild> Guilds { get; set; }
+
+        [NotNull]
+        public DbSet<GuildBankSlot> Guild_Bank { get; set; }
+
+        [NotNull]
         public DbSet<MailBox> Player_MailBox { get; set; }
 
         [NotNull]
@@ -141,6 +148,7 @@ namespace Intersect.Server.Database.PlayerData
             modelBuilder.Entity<BankSlot>().HasOne(b => b.Bag);
             modelBuilder.Entity<Player>().HasMany(b => b.MailBoxs).WithOne(p => p.Player).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<MailBox>().HasOne(b => b.Sender).WithMany().OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<GuildBankSlot>().HasOne(b => b.Bag);
         }
 
         public void Seed()

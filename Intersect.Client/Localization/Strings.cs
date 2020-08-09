@@ -311,6 +311,26 @@ namespace Intersect.Client.Localization
 
         }
 
+        public struct GuildBank
+        {
+
+            public static LocalizedString deposititem = @"Deposit Item";
+
+            public static LocalizedString deposititemprompt = @"How many/much {00} would you like to deposit?";
+
+            public static LocalizedString title = @"GuildBank";
+
+            public static LocalizedString withdrawitem = @"Withdraw Item";
+
+            public static LocalizedString withdrawitemprompt = @"How many/much {00} would you like to withdraw?";
+
+            public static LocalizedString notallowedtoview = @"You are not allowed to view the guildbank";
+
+            public static LocalizedString notallowedtowithdraw = @"You are not allowed to withdraw from the guildbank";
+
+            public static LocalizedString notallowedtopost = @"You are not allowed to put items into the guildbank";
+
+        }
         public struct BanMute
         {
 
@@ -447,6 +467,8 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString channeladmin = @"admin";
 
+            public static LocalizedString channelguild = @"guild";
+
             public static LocalizedString enterchat = @"Click here to chat.";
 
             public static LocalizedString enterchat1 = @"Press {00} to chat.";
@@ -555,7 +577,8 @@ namespace Intersect.Client.Localization
                 {"opensettings", @"Open Settings:"},
                 {"opendebugger", @"Open Debugger:"},
                 {"openadminpanel", @"Open Admin Panel:"},
-                {"togglegui", @"Toggle Interface:"}
+                {"togglegui", @"Toggle Interface:" },
+                {"openguild", @"Open Guild Window:"}
             };
 
             public static LocalizedString edit = @"Edit Controls";
@@ -638,6 +661,10 @@ namespace Intersect.Client.Localization
             public static LocalizedString expval = @"{00} / {01}";
 
             public static LocalizedString friend = "Befriend";
+
+            public static LocalizedString guild = "Guildinvite";
+
+            public static LocalizedString guildtip = "Send {00} a guild invite.";
 
             public static LocalizedString friendtip = "Send {00} a friend request.";
 
@@ -792,6 +819,8 @@ namespace Intersect.Client.Localization
             public static LocalizedString items = @"Inventory";
 
             public static LocalizedString party = @"Party";
+
+            public static LocalizedString guild = @"Guild";
 
             public static LocalizedString quest = @"Quest Log";
 
@@ -1219,6 +1248,61 @@ namespace Intersect.Client.Localization
             public static LocalizedString vital1 = @"MP:";
 
             public static LocalizedString vital1val = @"{00} / {01}";
+
+        }
+
+        public struct Guilds
+        {
+
+            public static Dictionary<int, LocalizedString> menuoptions = new Dictionary<int, LocalizedString>
+            {
+                {0, @"PM"},
+                {1, @"Promote"},
+                {2, @"Demote"},
+                {3, @"Kick"},
+            };
+
+            public static LocalizedString inviteprompt = @"{00} has invited you to their guild. Do you accept?";
+
+            public static LocalizedString kick = @"Kick {00}";
+
+            public static LocalizedString kicklbl = @"Kick";
+
+            public static LocalizedString leader = @"Leader";
+
+            public static LocalizedString leadertip = @"Party Leader";
+
+            public static LocalizedString leave = @"Leave Guild";
+
+            public static LocalizedString leavetip = @"Leave Tip";
+
+            public static LocalizedString name = @"{00} - Lv. {01}";
+
+            public static LocalizedString guildinvite = @"Guild Invite";
+
+            public static LocalizedString title = @"Guild";
+
+            public static LocalizedString addmember = @"Add Member";
+
+            public static LocalizedString addmembertitle = @"Add Member";
+
+            public static LocalizedString addmemberprompt = @"Who would you like to add to the guild?";
+
+            public static LocalizedString createguild = @"Create Guild";
+
+            public static LocalizedString createguildprompt = @"Name and Tag? format GuildName;TAG";
+
+            public static LocalizedString removeguildmember = @"Remove guildmember";
+
+            public static LocalizedString removeguildmemberprompt = @"Do you wish to remove {00} from your guild?";
+
+            public static LocalizedString promoteguildmember = @"Promote guildmember";
+
+            public static LocalizedString promoteguildmemberprompt = @"Do you wish to Promote {00} to {01}?";
+
+            public static LocalizedString demoteguildmember = @"Demote guildmember";
+
+            public static LocalizedString demoteguildmemberprompt = @"Do you wish to Demote {00} to {01}?";
 
         }
 

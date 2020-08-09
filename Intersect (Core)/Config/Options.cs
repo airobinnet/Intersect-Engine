@@ -56,6 +56,8 @@ namespace Intersect
 
         [JsonProperty("Loot")] public LootOptions LootOpts = new LootOptions();
 
+        [JsonProperty("Guild")] public GuildOptions GuildOpts = new GuildOptions();
+
         public SmtpSettings SmtpSettings = new SmtpSettings();
 
         [NotNull]
@@ -144,6 +146,8 @@ namespace Intersect
         public static int PasswordResetExpirationMinutes => Instance._passResetExpirationMin;
 
         public static bool AdminOnly { get => Instance._adminOnly; set => Instance._adminOnly = value; }
+
+        public static GuildOptions GuildOptions => Instance.GuildOpts;
 
         public static bool BlockClientRegistrations
         {

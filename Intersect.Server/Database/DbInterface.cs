@@ -29,6 +29,7 @@ using Intersect.Server.Database.PlayerData;
 using Intersect.Server.Database.PlayerData.Players;
 using Intersect.Server.Database.PlayerData.Security;
 using Intersect.Server.Entities;
+using Intersect.Server.Entities.Guilds;
 using Intersect.Server.General;
 using Intersect.Server.Localization;
 using Intersect.Server.Maps;
@@ -550,6 +551,54 @@ namespace Intersect.Server.Database
             }
 
             SavePlayerDatabaseAsync();
+        }
+
+        // Guilds
+        public static void CreateGuild(
+            Player player,
+            [NotNull] string name,
+            [NotNull] string tag
+        )
+        {
+            // Generate our new guild
+            var guild = new Guild() {
+                Name = name,
+                Tag = tag,
+                FoundingDate = DateTime.Today,
+                GuildLevel = 0,
+                GuildExperience = 0
+            };
+
+            // Set up our default ranks!
+            guild.SetupDefaultRanks();
+
+            // Assign our player their guild and save the database (Assuming they've successfully joined it).
+            if (guild.Join(player, guild.LeaderRank))
+            {
+                // Add our guild to the Player Database.
+                lock (mPlayerDbLock)
+                {
+                    sPlayerDb.Guilds.Add(guild);
+                }
+                guild.ValidateLists();
+            }
+            SavePlayerDatabaseAsync();
+        }
+
+        public static void CheckGuild(Player player, Guid guildId)
+        {
+            // find the guild by the guildId
+            lock (mPlayerDbLock)
+            {
+                if (sPlayerDb.Guilds.Find(guildId) != null)
+                {
+                    player.Guild = sPlayerDb.Guilds.Find(guildId);
+                    for (var i = 0; i < Options.MaxBankSlots; i++)
+                    {
+                        player.Guild.GuildBank[i] = (GuildBankSlot)sPlayerDb.Guild_Bank.Where(gb => gb.GuildId == guildId && gb.Slot == i).First();
+                    }
+                }
+            }
         }
 
         //Bags

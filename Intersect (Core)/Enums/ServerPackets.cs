@@ -166,6 +166,8 @@ namespace Intersect.Enums
 
         PetAggression,
 
+        OpenGuildBank,
+
     }
 
 }

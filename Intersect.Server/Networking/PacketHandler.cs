@@ -22,6 +22,7 @@ using Intersect.Server.Database.PlayerData;
 using Intersect.Server.Database.PlayerData.Players;
 using Intersect.Server.Database.PlayerData.Security;
 using Intersect.Server.Entities;
+using Intersect.Server.Entities.Guilds;
 using Intersect.Server.General;
 using Intersect.Server.Localization;
 using Intersect.Server.Maps;
@@ -485,6 +486,10 @@ namespace Intersect.Server.Networking
                         cmd = Strings.Chat.admincmd;
 
                         break;
+                    case 4: // guild
+                        cmd = Strings.Chat.GuildCmd;
+
+                        break;
                 }
             }
             else
@@ -569,6 +574,23 @@ namespace Intersect.Server.Networking
                 {
                     PacketSender.SendChatMsg(player, Strings.Parties.notinparty, CustomColors.Alerts.Error);
                 }
+            }
+            else if (cmd == Strings.Chat.GuildCmd)
+            {
+                if (msg.Trim().Length == 0)
+                {
+                    return;
+                }
+
+                // Is the player in a guild?
+                if (player.Guild == null)
+                {
+                    PacketSender.SendChatMsg(player, Strings.Guilds.NotInGuild, CustomColors.Alerts.Error);
+                }
+
+                PacketSender.SendGuildMsg(
+                        player.Guild, Strings.Chat.Guild.ToString(player.Name, msg), CustomColors.Chat.GuildChat, player.Name
+                    );
             }
             else if (cmd == Strings.Chat.admincmd)
             {
@@ -663,6 +685,216 @@ namespace Intersect.Server.Networking
                 else
                 {
                     PacketSender.SendChatMsg(player, Strings.Player.offline, CustomColors.Alerts.Error);
+                }
+            }
+            else if (cmd == Strings.Chat.GuildCreate)
+            {
+                if (msg.Trim().Length == 0)
+                {
+                    return;
+                }
+
+                var arg = msg.Split(';');
+                if (arg.Length != 2)
+                {
+                    return;
+                }
+                var name = arg[0];
+                var tag = arg[1];
+
+                Guild.Create(player, name, tag);
+            }
+            else if (cmd == Strings.Chat.GuildInvite)
+            {
+                if (msg.Trim().Length == 0)
+                {
+                    return;
+                }
+
+                // Are we even in a guild?
+                if (player.Guild != null)
+                {
+                    // Is our rank allowed to invite players?
+                    var rank = player.Guild.GetRank(player);
+                    if (rank != null)
+                    {
+                        if (rank.Permissions.ContainsKey(GuildPermissions.InvitePlayers)) {
+                            // Attempt to invite this player to our guild.
+                            var invitePlayer = Player.FindOnline(msg.Trim());
+                            if (invitePlayer == null)
+                            {
+                                invitePlayer = Player.Find(Guid.Parse(msg.Trim()));
+                            }
+                            invitePlayer?.InviteToGuild(player.Guild, player);
+                        }
+                        else
+                        {
+                            // This player is not allowed to do this cuz no rank matches this one
+                            PacketSender.SendChatMsg(player, Strings.Guilds.NoPermission, CustomColors.Alerts.Error);
+                        }
+                    }
+                    else
+                    {
+                        // This player is not allowed to do this!
+                        PacketSender.SendChatMsg(player, Strings.Guilds.NoPermission, CustomColors.Alerts.Error);
+                    }
+                }
+                else
+                {
+                    // They're not even in a guild!
+                    PacketSender.SendChatMsg(player, Strings.Guilds.NotInGuild, CustomColors.Alerts.Error);
+                } 
+            }
+            else if (cmd == Strings.Chat.GuildPromote)
+            {
+                if (msg.Trim().Length == 0)
+                {
+                    return;
+                }
+
+                // Are we even in a guild?
+                if (player.Guild != null)
+                {
+                    // Is our rank allowed to invite players?
+                    var rank = player.Guild.GetRank(player);
+                    if (rank != null)
+                    {
+                        if (rank.Permissions.ContainsKey(GuildPermissions.KickPlayers))
+                        {
+                            var toPromotePlayer = Player.Find(msg.Trim());
+                            // Attempt to promote this player
+                            var RankInfo = player.Guild.Ranks;
+                            for (var i = 0; i < RankInfo.Count()-1; i++)
+                            {
+                                var currentRank = RankInfo.FirstOrDefault(n => n.Id == toPromotePlayer.Guild.GetRank(toPromotePlayer).Id);
+                                if (RankInfo[i].Id == currentRank.Id)
+                                {
+                                    if (i < RankInfo.Count()-1)
+                                    {
+                                        player.Guild.ChangeRank(toPromotePlayer.Id, RankInfo[i+1].Id);
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // This player is not allowed to do this cuz no rank matches this one
+                            PacketSender.SendChatMsg(player, Strings.Guilds.NoPermission, CustomColors.Alerts.Error);
+                        }
+                    }
+                    else
+                    {
+                        // This player is not allowed to do this!
+                        PacketSender.SendChatMsg(player, Strings.Guilds.NoPermission, CustomColors.Alerts.Error);
+                    }
+                }
+                else
+                {
+                    // They're not even in a guild!
+                    PacketSender.SendChatMsg(player, Strings.Guilds.NotInGuild, CustomColors.Alerts.Error);
+                }
+            }
+            else if (cmd == Strings.Chat.GuildDemote)
+            {
+                if (msg.Trim().Length == 0)
+                {
+                    return;
+                }
+
+                // Are we even in a guild?
+                if (player.Guild != null)
+                {
+                    // Is our rank allowed to invite players?
+                    var rank = player.Guild.GetRank(player);
+                    if (rank != null)
+                    {
+                        if (rank.Permissions.ContainsKey(GuildPermissions.KickPlayers))
+                        {
+                            var toPromotePlayer = Player.Find(msg.Trim());
+                            // Attempt to promote this player
+                            var RankInfo = player.Guild.Ranks;
+                            for (var i = 0; i < RankInfo.Count(); i++)
+                            {
+                                var currentRank = RankInfo.FirstOrDefault(n => n.Id == toPromotePlayer.Guild.GetRank(toPromotePlayer).Id);
+                                if (RankInfo[i].Id == currentRank.Id)
+                                {
+                                    if (i > 0)
+                                    {
+                                        player.Guild.ChangeRank(toPromotePlayer.Id, RankInfo[i - 1].Id);
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // This player is not allowed to do this cuz no rank matches this one
+                            PacketSender.SendChatMsg(player, Strings.Guilds.NoPermission, CustomColors.Alerts.Error);
+                        }
+                    }
+                    else
+                    {
+                        // This player is not allowed to do this!
+                        PacketSender.SendChatMsg(player, Strings.Guilds.NoPermission, CustomColors.Alerts.Error);
+                    }
+                }
+                else
+                {
+                    // They're not even in a guild!
+                    PacketSender.SendChatMsg(player, Strings.Guilds.NotInGuild, CustomColors.Alerts.Error);
+                }
+            }
+            else if (cmd == Strings.Chat.GuildInviteAccept)
+            {
+                // Accept our guild invite.
+                player.HandleGuildInvite(true);
+            }
+            else if (cmd == Strings.Chat.GuildInviteDecline)
+            {
+                // Decline our guild invite.
+                player.HandleGuildInvite(false);
+            }
+            else if (cmd == Strings.Chat.GuildLeave)
+            {
+                // Decline our guild invite.
+                player.Guild.Leave(player);
+            }
+            else if (cmd == Strings.Chat.GuildKick)
+            {
+                if (msg.Trim().Length == 0)
+                {
+                    return;
+                }
+
+                // Are we even in a guild?
+                if (player.Guild != null)
+                {
+                    // Is our rank allowed to invite players?
+                    var rank = player.Guild.GetRank(player);
+                    if (rank != null)
+                    {
+                        if (rank.Permissions.ContainsKey(GuildPermissions.KickPlayers))
+                        {
+                            var toKickPlayer = Player.Find(msg.Trim());
+                            player.Guild.Kick(toKickPlayer);
+                        }
+                        else
+                        {
+                            // This player is not allowed to do this cuz no rank matches this one
+                            PacketSender.SendChatMsg(player, Strings.Guilds.NoPermission, CustomColors.Alerts.Error);
+                        }
+                    }
+                    else
+                    {
+                        // This player is not allowed to do this!
+                        PacketSender.SendChatMsg(player, Strings.Guilds.NoPermission, CustomColors.Alerts.Error);
+                    }
+                }
+                else
+                {
+                    // They're not even in a guild!
+                    PacketSender.SendChatMsg(player, Strings.Guilds.NotInGuild, CustomColors.Alerts.Error);
                 }
             }
             else
@@ -1286,6 +1518,17 @@ namespace Intersect.Server.Networking
             player.UseItem(packet.Slot, target);
         }
 
+        //checkGuildIdPacket
+        public void checkGuildIdPacket(Player player)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            PacketSender.updateGuild(player);
+        }
+
         //SwapSpellsPacket
         public void HandlePacket(Client client, Player player, SwapSpellsPacket packet)
         {
@@ -1484,6 +1727,17 @@ namespace Intersect.Server.Networking
             player.CloseBank();
         }
 
+        //CloseGuildBankPacket
+        public void HandlePacket(Client client, Player player, CloseGuildBankPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.CloseGuildBank();
+        }
+
         //DepositItemPacket
         public void HandlePacket(Client client, Player player, DepositItemPacket packet)
         {
@@ -1506,6 +1760,28 @@ namespace Intersect.Server.Networking
             player.WithdrawItem(packet.Slot, packet.Quantity);
         }
 
+        //DepositGuildItemPacket
+        public void HandlePacket(Client client, Player player, DepositGuildItemPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.TryDepositGuildItem(packet.Slot, packet.Quantity);
+        }
+
+        //WithdrawGuildItemPacket
+        public void HandlePacket(Client client, Player player, WithdrawGuildItemPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.WithdrawGuildItem(packet.Slot, packet.Quantity);
+        }
+
         //MoveBankItemPacket
         public void HandlePacket(Client client, Player player, SwapBankItemsPacket packet)
         {
@@ -1515,6 +1791,17 @@ namespace Intersect.Server.Networking
             }
 
             player.SwapBankItems(packet.Slot1, packet.Slot2);
+        }
+
+        //MoveGuildBankItemPacket
+        public void HandlePacket(Client client, Player player, SwapGuildBankItemsPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.SwapGuildBankItems(packet.Slot1, packet.Slot2);
         }
 
         //PartyInvitePacket
@@ -1907,6 +2194,28 @@ namespace Intersect.Server.Networking
             }
 
             player.LeaveParty();
+        }
+
+        //GuildLeavePacket
+        public void HandlePacket(Client client, Player player, GuildLeavePacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.Guild.Leave(player);
+        }
+
+        //RequestGuildInfoPacket
+        public void HandlePacket(Client client, Player player, RequestGuildInfoPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            PacketSender.SendGuildData(player);
         }
 
         //QuestResponsePacket

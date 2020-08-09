@@ -1091,6 +1091,11 @@ namespace Intersect.Editor.Forms.Editors.Events
             return Strings.EventCommandList.openbank;
         }
 
+        private static string GetCommandText(OpenGuildBankCommand command, MapInstance map)
+        {
+            return Strings.EventCommandList.openguildbank;
+        }
+
         private static string GetCommandText(OpenShopCommand command, MapInstance map)
         {
             return Strings.EventCommandList.openshop.ToString(ShopBase.GetName(command.ShopId));

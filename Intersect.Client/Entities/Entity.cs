@@ -36,7 +36,9 @@ namespace Intersect.Client.Entities
 
             Name,
 
-            ChatBubble
+            ChatBubble,
+
+            Guild
 
         }
 
@@ -1351,7 +1353,23 @@ namespace Intersect.Client.Entities
             var textSize = Graphics.Renderer.MeasureText(label, Graphics.EntityNameFont, 1);
 
             var x = (int) Math.Ceiling(GetCenterPos().X);
-            var y = position == 0 ? GetLabelLocation(LabelType.Header) : GetLabelLocation(LabelType.Footer);
+            float y = 0;
+            //var y = position == 0 ? GetLabelLocation(LabelType.Header) : GetLabelLocation(LabelType.Footer);
+            switch (position)
+            {
+                case 0:
+                    y = GetLabelLocation(LabelType.Header);
+                    break;
+                case 1:
+                    y = GetLabelLocation(LabelType.Footer);
+                    break;
+                case 3:
+                    y = GetLabelLocation(LabelType.Guild);
+                    break;
+                default:
+                    y = position == 0 ? GetLabelLocation(LabelType.Header) : GetLabelLocation(LabelType.Footer);
+                    break;
+            }
 
             if (backgroundColor != Color.Transparent)
             {
@@ -1504,6 +1522,11 @@ namespace Intersect.Client.Entities
                     break;
                 case LabelType.ChatBubble:
                     y = GetLabelLocation(LabelType.Header) - 4;
+
+                    break;
+                case LabelType.Guild:
+                    
+                    y -= 20;
 
                     break;
             }

@@ -61,6 +61,34 @@ namespace Intersect.Client.Entities
         public Guid TargetIndex;
 
         public int TargetType;
+
+        public bool GuildUpdate = false;
+
+        public Guid GuildId;
+
+        public string GuildName;
+
+        public Guid GuildInvite;
+
+        public string GuildInviteName;
+
+        public string GuildInviteTag;
+
+        public int GuildInviteMembers;
+
+        public string GuildTag;
+
+        public DateTime GuildDate;
+
+        public Guid GuildLeaderRank;
+
+        public string GuildMembers;
+
+        public string GuildMembersNames;
+
+        public string GuildRanks;
+
+
         
         protected string[] mMyCustomSpriteLayers { get; set; } = new string[(int)Enums.CustomSpriteLayers.CustomCount];
 
@@ -162,6 +190,7 @@ namespace Intersect.Client.Entities
                      !Globals.MoveRouteActive &&
                      Globals.GameShop == null &&
                      Globals.InBank == false &&
+                     Globals.InGuildBank == false &&
                      Globals.InCraft == false &&
                      Globals.InTrade == false &&
                      Globals.InMailBox == false &&
@@ -195,6 +224,10 @@ namespace Intersect.Client.Entities
                 HandleInput();
             }
 
+            /*if (GuildId == Guid.Empty && GuildName != "")
+            {
+                PacketSender.checkGuildId(Id);
+            }*/
 
             if (!IsBusy() && !IsFeared())
             {
@@ -233,6 +266,10 @@ namespace Intersect.Client.Entities
             Gender = pkt.Gender;
             Class = pkt.ClassId;
             Type = pkt.AccessLevel;
+            GuildId = pkt.guildId;
+            GuildName = pkt.guildName;
+            GuildTag = pkt.guildTag;
+
             CombatTimer = pkt.CombatTimeRemaining + Globals.System.GetTimeMs();
 
             if (((PlayerEntityPacket)packet).Equipment != null)
@@ -324,7 +361,7 @@ namespace Intersect.Client.Entities
 
         public void TryUseItem(int index)
         {
-            if (Globals.GameShop == null && Globals.InBank == false && Globals.InTrade == false &&
+            if (Globals.GameShop == null && Globals.InBank == false && Globals.InGuildBank == false && Globals.InTrade == false &&
                      Globals.InMailBox == false && Globals.InSendMailBox == false && Globals.InHDV == false &&
                      !ItemOnCd(index))
             {
@@ -581,6 +618,64 @@ namespace Intersect.Client.Entities
             if (value > 0)
             {
                 PacketSender.SendWithdrawItem((int)((InputBox)sender).UserData, value);
+            }
+        }
+
+
+        //guildbank
+        public void TryDepositGuildItem(int index)
+        {
+            if (ItemBase.Get(Inventory[index].ItemId) != null)
+            {
+                if (Inventory[index].Quantity > 1)
+                {
+                    var iBox = new InputBox(
+                        Strings.GuildBank.deposititem,
+                        Strings.GuildBank.deposititemprompt.ToString(ItemBase.Get(Inventory[index].ItemId).Name), true,
+                        InputBox.InputType.NumericInput, DepositGuildItemInputBoxOkay, null, index
+                    );
+                }
+                else
+                {
+                    PacketSender.SendDepositGuildItem(index, 1);
+                }
+            }
+        }
+
+        private void DepositGuildItemInputBoxOkay(object sender, EventArgs e)
+        {
+            var value = (int)((InputBox)sender).Value;
+            if (value > 0)
+            {
+                PacketSender.SendDepositGuildItem((int)((InputBox)sender).UserData, value);
+            }
+        }
+
+        public void TryWithdrawGuildItem(int index)
+        {
+            if (Globals.GuildBank[index] != null && ItemBase.Get(Globals.GuildBank[index].ItemId) != null)
+            {
+                if (Globals.GuildBank[index].Quantity > 1)
+                {
+                    var iBox = new InputBox(
+                        Strings.GuildBank.withdrawitem,
+                        Strings.GuildBank.withdrawitemprompt.ToString(ItemBase.Get(Globals.Bank[index].ItemId).Name), true,
+                        InputBox.InputType.NumericInput, WithdrawGuildItemInputBoxOkay, null, index
+                    );
+                }
+                else
+                {
+                    PacketSender.SendWithdrawGuildItem(index, 1);
+                }
+            }
+        }
+
+        private void WithdrawGuildItemInputBoxOkay(object sender, EventArgs e)
+        {
+            var value = (int)((InputBox)sender).Value;
+            if (value > 0)
+            {
+                PacketSender.SendWithdrawGuildItem((int)((InputBox)sender).UserData, value);
             }
         }
 
@@ -2077,6 +2172,11 @@ namespace Intersect.Client.Entities
             base.DrawName(textColor, borderColor, backgroundColor);
             DrawLabels(HeaderLabel.Text, 0, HeaderLabel.Color, textColor, borderColor, backgroundColor);
             DrawLabels(FooterLabel.Text, 1, FooterLabel.Color, textColor, borderColor, backgroundColor);
+            if (GuildName != null)
+            //if (GuildId != Guid.Empty)
+            {
+                DrawLabels(GuildTag, 3, FooterLabel.Color, textColor, borderColor, backgroundColor);
+            }
         }
 
         public void DrawTargets()

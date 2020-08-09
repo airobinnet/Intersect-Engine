@@ -245,6 +245,9 @@
         SpawnPet = 600,
         DespawnPet = 601,
 
+        //Guildbank
+        OpenGuildBank = 700,
+
     }
 
 }

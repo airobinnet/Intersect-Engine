@@ -131,6 +131,11 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new UseItemPacket(slot, targetId));
         }
 
+        public static void checkGuildId(Guid player)
+        {
+            Network.SendPacket(new checkGuildIdPacket(player));
+        }
+
         public static void SendSwapSpells(int spell1, int spell2)
         {
             Network.SendPacket(new SwapSpellsPacket(spell1, spell2));
@@ -198,9 +203,26 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new WithdrawItemPacket(slot, amount));
         }
 
+
+        public static void SendDepositGuildItem(int slot, int amount)
+        {
+            Network.SendPacket(new DepositGuildItemPacket(slot, amount));
+        }
+
+        public static void SendWithdrawGuildItem(int slot, int amount)
+        {
+            Network.SendPacket(new WithdrawGuildItemPacket(slot, amount));
+        }
+
+
         public static void SendCloseBank()
         {
             Network.SendPacket(new CloseBankPacket());
+        }
+
+        public static void SendCloseGuildBank()
+        {
+            Network.SendPacket(new CloseGuildBankPacket());
         }
 
         public static void SendCloseCrafting()
@@ -211,6 +233,11 @@ namespace Intersect.Client.Networking
         public static void SendMoveBankItems(int slot1, int slot2)
         {
             Network.SendPacket(new SwapBankItemsPacket(slot1, slot2));
+        }
+
+        public static void SendMoveGuildBankItems(int slot1, int slot2)
+        {
+            Network.SendPacket(new SwapGuildBankItemsPacket(slot1, slot2));
         }
 
         public static void SendCraftItem(Guid id)
@@ -236,6 +263,16 @@ namespace Intersect.Client.Networking
         public static void SendPartyLeave()
         {
             Network.SendPacket(new PartyLeavePacket());
+        }
+
+        public static void SendGuildLeave()
+        {
+            Network.SendPacket(new GuildLeavePacket());
+        }
+
+        public static void SendRequestGuildInfo()
+        {
+            Network.SendPacket(new RequestGuildInfoPacket());
         }
 
         public static void SendPartyAccept(object sender, EventArgs e)

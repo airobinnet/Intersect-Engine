@@ -20,6 +20,7 @@ using Intersect.Server.Database;
 using Intersect.Server.Database.PlayerData.Players;
 using Intersect.Server.Database.PlayerData.Security;
 using Intersect.Server.Entities.Events;
+using Intersect.Server.Entities.Guilds;
 using Intersect.Server.General;
 using Intersect.Server.Localization;
 using Intersect.Server.Maps;
@@ -89,6 +90,14 @@ namespace Intersect.Server.Entities
         public long Exp { get; set; }
 
         public int StatPoints { get; set; }
+
+        public Guild Guild { get; set; }
+
+        [NotMapped, JsonIgnore]
+        public Guild guildInvite { get; set; }
+
+        [Column("GuildId"), NotNull]
+        public Guid? GuildId { get; set; }
 
         [Column("Equipment"), JsonIgnore]
         public string EquipmentJson
@@ -315,6 +324,7 @@ namespace Intersect.Server.Entities
             FriendRequests.Clear();
             InBag = null;
             InBank = false;
+            InGuildBank = false;
             InShop = null;
             InMailBox = false;
             InHDV = false;
@@ -340,10 +350,27 @@ namespace Intersect.Server.Entities
             }
 
             PacketSender.SendEntityLeave(this);
-
-            if (!string.IsNullOrWhiteSpace(Strings.Player.left.ToString()))
+            if (Client != null)
             {
-                PacketSender.SendGlobalMsg(Strings.Player.left.ToString(Name, Options.Instance.GameName));
+                if (!string.IsNullOrWhiteSpace(Strings.Player.left.ToString()))
+                {
+                    PacketSender.SendGlobalMsg(Strings.Player.left.ToString(Name, Options.Instance.GameName));
+                }
+            }
+
+            if (Guild != null)
+            {
+                if (Guild != null)
+                {
+                    foreach (var playerId in Guild.Members.Keys)
+                    {
+                        var tempplayer = FindOnline(playerId);
+                        if (playerId != Id)
+                        {
+                            PacketSender.SendGuildData(tempplayer);
+                        }
+                    }
+                }
             }
 
             Dispose();
@@ -580,6 +607,18 @@ namespace Intersect.Server.Entities
                     {
                         MapInstance.Get(MapId).PlayerEnteredMap(this);
                     }
+
+                    if (Guild != null)
+                    {
+                        foreach (var playerId in Guild.Members.Keys)
+                        {
+                            var tempplayer = FindOnline(playerId);
+                            if (playerId != Id)
+                            {
+                                PacketSender.SendGuildData(tempplayer);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -709,8 +748,25 @@ namespace Intersect.Server.Entities
             packet = base.EntityPacket(packet, forPlayer);
 
             var pkt = (PlayerEntityPacket) packet;
+            if (Guild == null && GuildId != null && GuildId != Guid.Empty)
+            {
+                // check if player has a guildId set, if not guild is set up yet, assign the guildId and put the player in the guild
+                DbInterface.CheckGuild(this, GuildId.Value);
+            }
             pkt.Gender = Gender;
             pkt.ClassId = ClassId;
+            if (Guild != null)
+            {
+                pkt.guildId = (GuildId.HasValue) ? GuildId.Value : Guid.Empty;
+                pkt.guildName = Guild.Name;
+                pkt.guildTag = Guild.Tag;
+            }
+            else
+            {
+                pkt.guildId = Guid.Empty;
+                pkt.guildName = "";
+                pkt.guildTag = "";
+            }
 
             if (Power.IsAdmin)
             {
@@ -949,6 +1005,19 @@ namespace Intersect.Server.Entities
 
             PacketSender.SendChatMsg(this, Strings.Player.levelup.ToString(Level), CustomColors.Combat.LevelUp, Name);
             PacketSender.SendActionMsg(this, Strings.Combat.levelup, CustomColors.Combat.LevelUp);
+
+            if (Guild != null)
+            {
+                foreach (var playerId in Guild.Members.Keys)
+                {
+                    var tempplayer = FindOnline(playerId);
+                    if (playerId != Id)
+                    {
+                        PacketSender.SendGuildData(tempplayer);
+                    }
+                }
+            }
+
             foreach (var message in messages)
             {
                 PacketSender.SendChatMsg(this, message, CustomColors.Alerts.Info, Name);
@@ -3143,7 +3212,7 @@ namespace Intersect.Server.Entities
         //Business
         public bool IsBusy()
         {
-            return InShop != null || InBank || CraftingTableId != Guid.Empty || Trading.Counterparty != null || InMailBox || InHDV;
+            return InShop != null || InBank || InGuildBank || CraftingTableId != Guid.Empty || Trading.Counterparty != null || InMailBox || InHDV;
         }
 
         //Bank
@@ -3199,6 +3268,35 @@ namespace Intersect.Server.Entities
         public void CloseHDV()
         {
             InHDV = false;
+        }
+
+        //GuildBank
+        public bool OpenGuildBank()
+        {
+            if (IsBusy())
+            {
+                return false;
+            }
+            if (Guild != null)
+            {
+                InGuildBank = true;
+                PacketSender.SendOpenGuildBank(this);
+
+                return true;
+            } else
+            {
+                PacketSender.SendChatMsg(this, "You are not in a guild!!", Color.Red);
+                return false;
+            }
+        }
+
+        public void CloseGuildBank()
+        {
+            if (InGuildBank)
+            {
+                InGuildBank = false;
+                PacketSender.SendCloseGuildBank(this);
+            }
         }
 
         public bool TryDepositItem(int slot, int amount, bool sendUpdate = true)
@@ -3475,6 +3573,279 @@ namespace Intersect.Server.Entities
             }
         }
 
+        public bool TryDepositGuildItem(int slot, int amount, bool sendUpdate = true)
+        {
+            if (!InGuildBank)
+            {
+                return false;
+            }
+
+            var itemBase = ItemBase.Get(Items[slot].ItemId);
+            if (itemBase != null)
+            {
+                if (Items[slot].ItemId != Guid.Empty)
+                {
+                    if (itemBase.IsStackable)
+                    {
+                        if (amount >= Items[slot].Quantity)
+                        {
+                            amount = Items[slot].Quantity;
+                        }
+                    }
+                    else
+                    {
+                        amount = 1;
+                    }
+
+                    //Find a spot in the bank for it!
+                    if (itemBase.IsStackable)
+                    {
+                        for (var i = 0; i < Options.MaxBankSlots; i++)
+                        {
+                            if (Guild.GuildBank[i] != null && Guild.GuildBank[i].ItemId == Items[slot].ItemId)
+                            {
+                                amount = Math.Min(amount, int.MaxValue - Bank[i].Quantity);
+                                Guild.GuildBank[i].Quantity += amount;
+
+                                //Remove Items from inventory send updates
+                                if (amount >= Items[slot].Quantity)
+                                {
+                                    Items[slot].Set(Item.None);
+                                    EquipmentProcessItemLoss(slot);
+                                }
+                                else
+                                {
+                                    Items[slot].Quantity -= amount;
+                                }
+
+                                if (sendUpdate)
+                                {
+                                    PacketSender.SendInventoryItemUpdate(this, slot);
+                                    PacketSender.SendGuildBankUpdate(this, i);
+                                }
+
+                                return true;
+                            }
+                        }
+                    }
+
+                    //Either a non stacking item, or we couldn't find the item already existing in the players inventory
+                    for (var i = 0; i < Options.MaxBankSlots; i++)
+                    {
+                        if (Guild.GuildBank[i] == null || Guild.GuildBank[i].ItemId == Guid.Empty)
+                        {
+                            Guild.GuildBank[i].Set(Items[slot]);
+                            Guild.GuildBank[i].Quantity = amount;
+
+                            //Remove Items from inventory send updates
+                            if (amount >= Items[slot].Quantity)
+                            {
+                                Items[slot].Set(Item.None);
+                                EquipmentProcessItemLoss(slot);
+                            }
+                            else
+                            {
+                                Items[slot].Quantity -= amount;
+                            }
+
+                            if (sendUpdate)
+                            {
+                                PacketSender.SendInventoryItemUpdate(this, slot);
+                                PacketSender.SendGuildBankUpdate(this, i);
+                            }
+
+                            return true;
+                        }
+                    }
+
+                    PacketSender.SendChatMsg(this, Strings.Banks.banknospace, CustomColors.Alerts.Error);
+                }
+                else
+                {
+                    PacketSender.SendChatMsg(this, Strings.Banks.depositinvalid, CustomColors.Alerts.Error);
+                }
+            }
+
+            return false;
+        }
+
+        public bool TryDepositGuildItem([NotNull] Item item, bool sendUpdate = true)
+        {
+            var itemBase = item.Descriptor;
+
+            if (itemBase == null)
+            {
+                return false;
+            }
+
+            if (item.ItemId != Guid.Empty)
+            {
+                // Find a spot in the bank for it!
+                if (itemBase.IsStackable)
+                {
+                    for (var i = 0; i < Options.MaxBankSlots; i++)
+                    {
+                        var bankSlot = Guild.GuildBank[i];
+                        if (bankSlot != null && bankSlot.ItemId == item.ItemId)
+                        {
+                            if (item.Quantity <= int.MaxValue - bankSlot.Quantity)
+                            {
+                                bankSlot.Quantity += item.Quantity;
+
+                                if (sendUpdate)
+                                {
+                                    PacketSender.SendGuildBankUpdate(this, i);
+                                }
+
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                // Either a non stacking item, or we couldn't find the item already existing in the players inventory
+                for (var i = 0; i < Options.MaxBankSlots; i++)
+                {
+                    var bankSlot = Guild.GuildBank[i];
+
+                    if (bankSlot == null || bankSlot.ItemId == Guid.Empty)
+                    {
+                        bankSlot.Set(item);
+
+                        if (sendUpdate)
+                        {
+                            PacketSender.SendGuildBankUpdate(this, i);
+                        }
+
+                        return true;
+                    }
+                }
+
+                PacketSender.SendChatMsg(this, Strings.Banks.banknospace, CustomColors.Alerts.Error);
+            }
+            else
+            {
+                PacketSender.SendChatMsg(this, Strings.Banks.depositinvalid, CustomColors.Alerts.Error);
+            }
+
+            return false;
+        }
+
+        public void WithdrawGuildItem(int slot, int amount)
+        {
+            if (!InGuildBank)
+            {
+                return;
+            }
+
+            Debug.Assert(ItemBase.Lookup != null, "ItemBase.Lookup != null");
+            Debug.Assert(Guild.GuildBank != null, "Guild.GuildBank != null");
+            Debug.Assert(Items != null, "Inventory != null");
+
+            var bankSlotItem = Guild.GuildBank[slot];
+            if (bankSlotItem == null)
+            {
+                return;
+            }
+
+            var itemBase = ItemBase.Get(bankSlotItem.ItemId);
+            var inventorySlot = -1;
+            if (itemBase == null)
+            {
+                return;
+            }
+
+            if (bankSlotItem.ItemId != Guid.Empty)
+            {
+                if (itemBase.IsStackable)
+                {
+                    if (amount >= bankSlotItem.Quantity)
+                    {
+                        amount = bankSlotItem.Quantity;
+                    }
+                }
+                else
+                {
+                    amount = 1;
+                }
+
+                //Find a spot in the inventory for it!
+                if (itemBase.IsStackable)
+                {
+                    /* Find an existing stack */
+                    for (var i = 0; i < Options.MaxInvItems; i++)
+                    {
+                        var inventorySlotItem = Items[i];
+                        if (inventorySlotItem == null)
+                        {
+                            continue;
+                        }
+
+                        if (inventorySlotItem.ItemId != bankSlotItem.ItemId)
+                        {
+                            continue;
+                        }
+
+                        inventorySlot = i;
+
+                        break;
+                    }
+                }
+
+                if (inventorySlot < 0)
+                {
+                    /* Find a free slot if we don't have one already */
+                    for (var j = 0; j < Options.MaxInvItems; j++)
+                    {
+                        if (Items[j] != null && Items[j].ItemId != Guid.Empty)
+                        {
+                            continue;
+                        }
+
+                        inventorySlot = j;
+
+                        break;
+                    }
+                }
+
+                /* If we don't have a slot send an error. */
+                if (inventorySlot < 0)
+                {
+                    PacketSender.SendChatMsg(this, Strings.Banks.inventorynospace, CustomColors.Alerts.Error);
+
+                    return; //Panda forgot this :P
+                }
+
+                /* Move the items to the inventory */
+                Debug.Assert(Items[inventorySlot] != null, "Inventory[inventorySlot] != null");
+                amount = Math.Min(amount, int.MaxValue - Items[inventorySlot].Quantity);
+
+                if (Items[inventorySlot] == null ||
+                    Items[inventorySlot].ItemId == Guid.Empty ||
+                    Items[inventorySlot].Quantity < 0)
+                {
+                    Items[inventorySlot].Set(bankSlotItem);
+                    Items[inventorySlot].Quantity = 0;
+                }
+
+                Items[inventorySlot].Quantity += amount;
+                if (amount >= bankSlotItem.Quantity)
+                {
+                    Guild.GuildBank[slot].Set(Item.None);
+                }
+                else
+                {
+                    bankSlotItem.Quantity -= amount;
+                }
+
+                PacketSender.SendInventoryItemUpdate(this, inventorySlot);
+                PacketSender.SendGuildBankUpdate(this, slot);
+            }
+            else
+            {
+                PacketSender.SendChatMsg(this, Strings.Banks.withdrawinvalid, CustomColors.Alerts.Error);
+            }
+        }
         public void SwapBankItems(int item1, int item2)
         {
             Item tmpInstance = null;
@@ -3503,6 +3874,36 @@ namespace Intersect.Server.Entities
 
             PacketSender.SendBankUpdate(this, item1);
             PacketSender.SendBankUpdate(this, item2);
+        }
+
+        public void SwapGuildBankItems(int item1, int item2)
+        {
+            Item tmpInstance = null;
+            if (Guild.GuildBank[item2] != null)
+            {
+                tmpInstance = Bank[item2].Clone();
+            }
+
+            if (Guild.GuildBank[item1] != null)
+            {
+                Guild.GuildBank[item2].Set(Guild.GuildBank[item1]);
+            }
+            else
+            {
+                Guild.GuildBank[item2].Set(Item.None);
+            }
+
+            if (tmpInstance != null)
+            {
+                Guild.GuildBank[item1].Set(tmpInstance);
+            }
+            else
+            {
+                Guild.GuildBank[item1].Set(Item.None);
+            }
+
+            PacketSender.SendGuildBankUpdate(this, item1);
+            PacketSender.SendGuildBankUpdate(this, item2);
         }
 
         //Bag
@@ -4168,6 +4569,59 @@ namespace Intersect.Server.Entities
             PacketSender.SendChatMsg(this, Strings.Trading.declined, CustomColors.Alerts.Error);
             PacketSender.SendTradeClose(this);
             Trading.Counterparty = null;
+        }
+
+        public void InviteToGuild(Guild guild, Player inviteFrom)
+        {
+            // Are we already in a guild? If so, instantly decline.
+            if (Guild != null)
+            {
+                PacketSender.SendChatMsg(inviteFrom, Strings.Guilds.PlayerAlreadyInGuild, CustomColors.Alerts.Error);
+                return;
+            }
+
+            // Did this player already receive an invite before?
+            if (guildInvite != null)
+            {
+                // Send the previous guild a message their invite is about to be overwritten.
+                PacketSender.SendGuildMsg(guildInvite, Strings.Guilds.InviteOverwritten, CustomColors.Alerts.Declined);
+            }
+
+            // Set our invite to this guild.
+            guildInvite = guild;
+
+            // Notify our players.
+            PacketSender.SendGuildMsg(guild, Strings.Guilds.PlayerInvited.ToString(this.Name, guild.Name), CustomColors.Alerts.Info);
+            PacketSender.SendChatMsg(this, Strings.Guilds.InvitedBy.ToString(inviteFrom.Name, guild.Name), CustomColors.Alerts.Info);
+        }
+
+        /// <summary>
+        /// Handle accepting a pending guild invite.
+        /// </summary>
+        /// <param name="accept">Determines whether the player accepts or declines the invite.</param>
+        /// <returns>Whether the desired action is completed accordingly.</returns>
+        public bool HandleGuildInvite(bool accept)
+        {
+            if (guildInvite == null)
+            {
+                PacketSender.SendChatMsg(this, Strings.Guilds.NotInvited, CustomColors.Alerts.Error);
+                return false;
+            }
+
+            // Do we accept?
+            if (accept)
+            {
+                // Set our invite to nothing and join the guild!
+                return guildInvite.Join(this, guildInvite.DefaultMemberRank);
+                guildInvite = null;
+            }
+            else
+            {
+                // Notify our guild the invite was declined and set the invite to nothing.
+                PacketSender.SendGuildMsg(guildInvite, Strings.Guilds.InviteDeclined.ToString(Name), CustomColors.Alerts.Info);
+                guildInvite = null;
+                return true;
+            }
         }
 
         //Parties
@@ -6061,6 +6515,8 @@ namespace Intersect.Server.Entities
 
         [NotMapped] public Guid HdvID = Guid.Empty;
         [NotMapped] public bool InHDV;
+
+        [NotMapped] public bool InGuildBank;
 
         #endregion
 

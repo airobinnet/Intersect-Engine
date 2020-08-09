@@ -192,6 +192,9 @@ namespace Intersect.Server.Localization
             public readonly LocalizedString party = @"[PARTY] {00}: {01}";
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString Guild = @"[GUILD] {00}: {01}";
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString partycmd = @"/party";
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
@@ -205,6 +208,33 @@ namespace Intersect.Server.Localization
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString replycmd = @"/reply";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString GuildCmd = @"/guild";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString GuildCreate = @"/guildcreate";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString GuildInvite = @"/guildinvite";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString GuildInviteAccept = @"/guildaccept";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString GuildInviteDecline = @"/guilddecline";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString GuildLeave = @"/guildleave";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString GuildPromote = @"/guildpromote";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString GuildDemote = @"/guilddemote";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString GuildKick = @"/guildkick";
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString toofast = @"You are chatting too fast!";
@@ -1309,6 +1339,77 @@ namespace Intersect.Server.Localization
 
         }
 
+        public sealed class GuildNamespace : LocaleNamespace
+        {
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString NotInGuild =
+                   @"You are not in a guild!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString AlreadyInGuild =
+                   @"You can not join a guild because you are already in a guild!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString PlayerAlreadyInGuild =
+                   @"This player is already in a guild!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString InviteOverwritten =
+                   @"Your guild invite sent to {00} has been overwritten by another invite.";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString InviteDeclined =
+                   @"Your guild invite sent to {00} has been declined.";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString PlayerInvited =
+                   @"{00} has been invited to join {01}.";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString InvitedBy =
+                   @"{00} has invited you to join {01}! Open the guild tab or type /guildaccept to accept or /guilddecline to decline this invite.";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString NotInvited =
+                   @"You have not been invited to join a guild.";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString NoPermission =
+                   @"You do not have permissions to do this.";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString Welcome =
+                   @"Welcome to {00}!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString Goodbye =
+                   @"You have left {00}!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString Kicked =
+                   @"You have been kicked from {00}!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString HasJoined =
+                   @"{00} has joined {01}!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString HasLeft =
+                   @"{00} has left {01}!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString HasLeftbyKick =
+                   @"{00} has been kicked from {01}!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString LeaderCantLeave =
+                   @"The leader of a guild can't leave the guild!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString LeaderCantBeKicked =
+                   @"The leader of a guild can't be kicked!";
+        }
+
         public sealed class MailNamespace : LocaleNamespace
         {
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
@@ -1457,6 +1558,8 @@ namespace Intersect.Server.Localization
 
             [NotNull] public readonly MailNamespace Mails = new MailNamespace();
 
+            [NotNull] public readonly GuildNamespace Guilds = new GuildNamespace();
+
         }
 
         // ReSharper restore MemberHidesStaticFromOuterClass
@@ -1564,6 +1667,9 @@ namespace Intersect.Server.Localization
 
         [NotNull]
         public static MailNamespace Mails => Root.Mails;
+
+        [NotNull]
+        public static GuildNamespace Guilds => Root.Guilds;
 
         #endregion
 

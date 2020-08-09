@@ -195,6 +195,7 @@
     <Compile Include="Configuration\ConfigurationHelper.cs" />
     <Compile Include="Config\ChatOptions.cs" />
     <Compile Include="Config\LootOptions.cs" />
+    <Compile Include="Config\GuildOptions.cs" />
     <Compile Include="Config\PacketOptions.cs" />
     <Compile Include="Config\PartyOptions.cs" />
     <Compile Include="Config\SecurityOptions.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="Enums\ItemHandling.cs" />
     <Compile Include="Enums\CustomSpriteLayers.cs" />
     <Compile Include="Enums\TagType.cs" />
+    <Compile Include="Enums\GuildPermissions.cs" />
     <Compile Include="ErrorHandling\ExceptionInfo.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
@@ -309,6 +311,7 @@
     <Compile Include="Network\Events\ConnectionEventArgs.cs" />
     <Compile Include="Network\NetworkStatus.cs" />
     <Compile Include="Network\PacketDispatcher.cs" />
+    <Compile Include="Network\Packets\Client\checkGuildIdPacket.cs" />
     <Compile Include="Network\Packets\Client\AbandonQuestPacket.cs" />
     <Compile Include="Network\Packets\Client\ActionHDVPacket.cs" />
     <Compile Include="Network\Packets\Client\AddHDVPacket.cs" />
@@ -326,6 +329,7 @@
     <Compile Include="Network\Packets\Client\BuyItemPacket.cs" />
     <Compile Include="Network\Packets\Client\ChatMsgPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseBagPacket.cs" />
+    <Compile Include="Network\Packets\Client\CloseGuildBankPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseBankPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseCraftingPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseShopPacket.cs" />
@@ -335,6 +339,7 @@
     <Compile Include="Network\Packets\Client\CreateCharacterPacket.cs" />
     <Compile Include="Network\Packets\Client\DeclineTradePacket.cs" />
     <Compile Include="Network\Packets\Client\DeleteCharacterPacket.cs" />
+    <Compile Include="Network\Packets\Client\DepositGuildItemPacket.cs" />
     <Compile Include="Network\Packets\Client\DepositItemPacket.cs" />
     <Compile Include="Network\Packets\Client\DirectionPacket.cs" />
     <Compile Include="Network\Packets\Client\DropItemPacket.cs" />
@@ -343,6 +348,7 @@
     <Compile Include="Network\Packets\Client\EventResponsePacket.cs" />
     <Compile Include="Network\Packets\Client\ForgetSpellPacket.cs" />
     <Compile Include="Network\Packets\Client\FriendRequestResponsePacket.cs" />
+    <Compile Include="Network\Packets\Client\RequestGuildInfoPacket.cs" />
     <Compile Include="Network\Packets\Client\HotbarSwapPacket.cs" />
     <Compile Include="Network\Packets\Client\HotbarUpdatePacket.cs" />
     <Compile Include="Network\Packets\Client\LoginPacket.cs" />
@@ -355,6 +361,14 @@
     <Compile Include="Network\Packets\Server\MailBoxPacket.cs" />
     <Compile Include="Network\Packets\Server\MailBoxsUpdatePacket.cs" />
     <Compile Include="Network\Packets\Server\MailBoxUpdatePacket.cs" />
+    <Compile Include="Network\Packets\Client\GuildLeavePacket.cs" />
+    <Compile Include="Network\Packets\Client\SwapGuildBankItemsPacket.cs" />
+    <Compile Include="Network\Packets\Client\WithdrawGuildItemPacket .cs" />
+    <Compile Include="Network\Packets\Server\GuildBankUpdatePacket.cs" />
+    <Compile Include="Network\Packets\Server\GuildBankPacket.cs" />
+    <Compile Include="Network\Packets\Server\GuildInvitePacket.cs" />
+    <Compile Include="Network\Packets\Server\GuildDataPacket.cs" />
+    <Compile Include="Network\Packets\Server\updateGuildPacket.cs" />
     <Compile Include="Network\Packets\SlotQuantityPacket.cs" />
     <Compile Include="Network\Packets\Client\SwapBankItemsPacket.cs" />
     <Compile Include="Network\Packets\Client\MovePacket.cs" />

@@ -2,6 +2,7 @@
 using Intersect.Client.General;
 using Intersect.Client.Interface.Game.Bag;
 using Intersect.Client.Interface.Game.Bank;
+using Intersect.Client.Interface.Game.GuildBank;
 using Intersect.Client.Interface.Game.Chat;
 using Intersect.Client.Interface.Game.Crafting;
 using Intersect.Client.Interface.Game.EntityPanel;
@@ -33,6 +34,8 @@ namespace Intersect.Client.Interface.Game
 
         private BankWindow mBankWindow;
 
+        private GuildBankWindow mGuildBankWindow;
+
         private Chatbox mChatBox;
 
         private CraftingWindow mCraftingWindow;
@@ -56,6 +59,8 @@ namespace Intersect.Client.Interface.Game
 
         private bool mShouldCloseBank;
 
+        private bool mShouldCloseGuildBank;
+
         private bool mShouldCloseCraftingTable;
 
         private bool mShouldCloseShop;
@@ -67,6 +72,8 @@ namespace Intersect.Client.Interface.Game
         private bool mShouldOpenBag;
 
         private bool mShouldOpenBank;
+
+        private bool mShouldOpenGuildBank;
 
         private bool mShouldOpenCraftingTable;
 
@@ -273,6 +280,29 @@ namespace Intersect.Client.Interface.Game
             mBankWindow = new BankWindow(GameCanvas);
             mShouldOpenBank = false;
             Globals.InBank = true;
+        }
+
+        //GuildBank
+        public void NotifyOpenGuildBank()
+        {
+            mShouldOpenGuildBank = true;
+        }
+
+        public void NotifyCloseGuildBank()
+        {
+            mShouldCloseGuildBank = true;
+        }
+
+        public void OpenGuildBank()
+        {
+            if (mGuildBankWindow != null)
+            {
+                mGuildBankWindow.Close();
+            }
+
+            mGuildBankWindow = new GuildBankWindow(GameCanvas);
+            mShouldOpenGuildBank = false;
+            Globals.InGuildBank = true;
         }
 
         //Bag
@@ -494,6 +524,27 @@ namespace Intersect.Client.Interface.Game
 
             mShouldCloseBank = false;
 
+            //GuildBank Update
+            if (mShouldOpenGuildBank)
+            {
+                OpenGuildBank();
+            }
+
+            if (mGuildBankWindow != null)
+            {
+                if (!mGuildBankWindow.IsVisible() || mShouldCloseGuildBank)
+                {
+                    PacketSender.SendCloseGuildBank();
+                    CloseGuildBank();
+                }
+                else
+                {
+                    mGuildBankWindow.Update();
+                }
+            }
+
+            mShouldCloseGuildBank = false;
+
             //Bag Update
             if (mShouldOpenBag)
             {
@@ -593,6 +644,14 @@ namespace Intersect.Client.Interface.Game
             Globals.InBank = false;
         }
 
+        private void CloseGuildBank()
+        {
+            mGuildBankWindow?.Close();
+            mGuildBankWindow = null;
+            Globals.InGuildBank = false;
+        }
+
+
         private void CloseBagWindow()
         {
             mBagWindow?.Close();
@@ -619,6 +678,7 @@ namespace Intersect.Client.Interface.Game
         {
             CloseBagWindow();
             CloseBank();
+            CloseGuildBank();
             CloseCraftingTable();
             CloseShop();
             CloseTrading();

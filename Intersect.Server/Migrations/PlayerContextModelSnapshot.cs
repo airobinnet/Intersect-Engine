@@ -205,6 +205,33 @@ namespace Intersect.Server.Migrations
                     b.ToTable("Player_Friends");
                 });
 
+            modelBuilder.Entity("Intersect.Server.Database.PlayerData.Players.GuildBankSlot", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("BagId");
+
+                    b.Property<Guid>("GuildId");
+
+                    b.Property<Guid>("ItemId");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<int>("Slot");
+
+                    b.Property<string>("StatBuffsJson")
+                        .HasColumnName("StatBuffs");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BagId");
+
+                    b.HasIndex("GuildId");
+
+                    b.ToTable("Guild_Bank");
+                });
+
             modelBuilder.Entity("Intersect.Server.Database.PlayerData.Players.HotbarSlot", b =>
                 {
                     b.Property<Guid>("Id")
@@ -376,6 +403,36 @@ namespace Intersect.Server.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Intersect.Server.Entities.Guilds.Guild", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("DefaultMemberRank");
+
+                    b.Property<DateTime>("FoundingDate");
+
+                    b.Property<int>("GuildExperience");
+
+                    b.Property<int>("GuildLevel");
+
+                    b.Property<Guid>("LeaderRank");
+
+                    b.Property<string>("MembersJson")
+                        .HasColumnName("Members");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("RanksJson")
+                        .HasColumnName("Ranks");
+
+                    b.Property<string>("Tag");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Guilds");
+                });
+
             modelBuilder.Entity("Intersect.Server.Entities.Player", b =>
                 {
                     b.Property<Guid>("Id")
@@ -399,6 +456,9 @@ namespace Intersect.Server.Migrations
                         .HasColumnName("FooterLabel");
 
                     b.Property<int>("Gender");
+
+                    b.Property<Guid?>("GuildId")
+                        .HasColumnName("GuildId");
 
                     b.Property<string>("HeaderLabelJson")
                         .HasColumnName("HeaderLabel");
@@ -442,6 +502,8 @@ namespace Intersect.Server.Migrations
                     b.Property<int>("Z");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GuildId");
 
                     b.HasIndex("UserId");
 
@@ -509,6 +571,18 @@ namespace Intersect.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Intersect.Server.Database.PlayerData.Players.GuildBankSlot", b =>
+                {
+                    b.HasOne("Intersect.Server.Database.PlayerData.Players.Bag", "Bag")
+                        .WithMany()
+                        .HasForeignKey("BagId");
+
+                    b.HasOne("Intersect.Server.Entities.Guilds.Guild")
+                        .WithMany("GuildBank")
+                        .HasForeignKey("GuildId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Intersect.Server.Database.PlayerData.Players.HotbarSlot", b =>
                 {
                     b.HasOne("Intersect.Server.Entities.Player", "Player")
@@ -568,6 +642,10 @@ namespace Intersect.Server.Migrations
 
             modelBuilder.Entity("Intersect.Server.Entities.Player", b =>
                 {
+                    b.HasOne("Intersect.Server.Entities.Guilds.Guild", "Guild")
+                        .WithMany()
+                        .HasForeignKey("GuildId");
+
                     b.HasOne("Intersect.Server.Database.PlayerData.User", "User")
                         .WithMany("Players")
                         .HasForeignKey("UserId")

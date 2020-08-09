@@ -20,6 +20,12 @@ namespace Intersect.Network.Packets.Server
 
         public long CombatTimeRemaining { get; set; }
 
+        public Guid guildId { get; set; }
+
+        public string guildName { get; set; }
+
+        public string guildTag { get; set; }
+
     }
 
 }

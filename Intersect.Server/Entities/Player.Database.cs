@@ -130,6 +130,10 @@ namespace Intersect.Server.Entities
             // ReSharper disable once InvertIf
             if (!player.ValidateLists())
             {
+                if (player.Guild != null)
+                {
+                    player.Guild.GuildBank = player.Guild.GuildBank.OrderBy(guildbankSlot => guildbankSlot?.Slot).ToList();
+                }
                 player.Bank = player.Bank.OrderBy(bankSlot => bankSlot?.Slot).ToList();
                 player.Items = player.Items.OrderBy(inventorySlot => inventorySlot?.Slot).ToList();
                 player.Hotbar = player.Hotbar.OrderBy(hotbarSlot => hotbarSlot?.Slot).ToList();

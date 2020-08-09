@@ -60,6 +60,7 @@ namespace Intersect.Client.Networking
         {
             Options.LoadFromServer(packet.Config);
             Globals.Bank = new Item[Options.MaxBankSlots];
+            Globals.GuildBank = new Item[Options.MaxBankSlots];
             Graphics.InitInGame();
         }
 
@@ -200,6 +201,18 @@ namespace Intersect.Client.Networking
             {
                 Globals.Entities.Add(packet.EntityId, new Pet(packet.EntityId, packet));
                 Globals.Entities[packet.EntityId].Type = packet.Aggression;
+            }
+        }
+
+        //updateGuildPacket
+        private static void HandlePacket(updateGuildPacket packet)
+        {
+            if (Globals.Me.Id == packet.Player)
+            {
+                Globals.Me.GuildId = packet.GuildId;
+                Globals.Me.GuildTag = packet.Tag;
+                Globals.Me.GuildName = packet.Name;
+                Globals.Me.GuildUpdate = true;
             }
         }
 
@@ -388,6 +401,30 @@ namespace Intersect.Client.Networking
                     packet.Target
                 )
             );
+        }
+
+        //GuildDataPacket
+        private static void HandlePacket(GuildDataPacket packet)
+        {
+            Globals.Me.GuildDate = packet.Date;
+            Globals.Me.GuildId = packet.GuildId;
+            Globals.Me.GuildLeaderRank = packet.LeaderRank;
+            Globals.Me.GuildMembers = packet.Members;
+            Globals.Me.GuildMembersNames = packet.MembersNames;
+            Globals.Me.GuildName = packet.Name;
+            Globals.Me.GuildRanks = packet.Ranks;
+            Globals.Me.GuildTag = packet.Tag;
+            Globals.Me.GuildUpdate = true;
+        }
+
+        //GuildInvitePacket
+        private static void HandlePacket(GuildInvitePacket packet)
+        {
+            Globals.Me.GuildInvite = packet.GuildId;
+            Globals.Me.GuildInviteName = packet.Name;
+            Globals.Me.GuildInviteTag = packet.Tag;
+            Globals.Me.GuildInviteMembers = packet.Members;
+            Globals.Me.GuildUpdate = true;
         }
 
         //ActionMsgPacket
@@ -1362,6 +1399,34 @@ namespace Intersect.Client.Networking
                 HandlePacket((dynamic)item);
             }
             Interface.Interface.GameUi.OpenHDV();
+        }
+
+        //GuildBankPacket
+        private static void HandlePacket(GuildBankPacket packet)
+        {
+            if (!packet.Close)
+            {
+                Interface.Interface.GameUi.NotifyOpenGuildBank();
+            }
+            else
+            {
+                Interface.Interface.GameUi.NotifyCloseGuildBank();
+            }
+        }
+
+        //GuildBankUpdatePacket
+        private static void HandlePacket(GuildBankUpdatePacket packet)
+        {
+            var slot = packet.Slot;
+            if (packet.ItemId != Guid.Empty)
+            {
+                Globals.GuildBank[slot] = new Item();
+                Globals.GuildBank[slot].Load(packet.ItemId, packet.Quantity, packet.BagId, packet.StatBuffs);
+            }
+            else
+            {
+                Globals.GuildBank[slot] = null;
+            }
         }
 
         //GameObjectPacket

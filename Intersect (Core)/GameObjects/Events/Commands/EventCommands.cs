@@ -843,6 +843,13 @@ namespace Intersect.GameObjects.Events.Commands
 
     }
 
+    public class OpenGuildBankCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.OpenGuildBank;
+
+    }
+
     public class OpenShopCommand : EventCommand
     {
 
