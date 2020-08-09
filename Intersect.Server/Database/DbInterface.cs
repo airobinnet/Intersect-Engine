@@ -563,7 +563,9 @@ namespace Intersect.Server.Database
             var guild = new Guild() {
                 Name = name,
                 Tag = tag,
-                FoundingDate = DateTime.Today
+                FoundingDate = DateTime.Today,
+                GuildLevel = 0,
+                GuildExperience = 0
             };
 
             // Set up our default ranks!
@@ -577,6 +579,7 @@ namespace Intersect.Server.Database
                 {
                     sPlayerDb.Guilds.Add(guild);
                 }
+                guild.ValidateLists();
             }
             SavePlayerDatabaseAsync();
         }
@@ -589,12 +592,16 @@ namespace Intersect.Server.Database
                 if (sPlayerDb.Guilds.Find(guildId) != null)
                 {
                     player.Guild = sPlayerDb.Guilds.Find(guildId);
+                    for (var i = 0; i < Options.MaxBankSlots; i++)
+                    {
+                        player.Guild.GuildBank[i] = (GuildBankSlot)sPlayerDb.Guild_Bank.Where(gb => gb.GuildId == guildId && gb.Slot == i).First();
+                    }
                 }
             }
         }
 
-            //Bags
-            public static Bag GetBag(Item item)
+        //Bags
+        public static Bag GetBag(Item item)
         {
             return GetBag(item.BagId);
         }

@@ -8,6 +8,7 @@ using Intersect.Logging;
 using Intersect.Server.Localization;
 using Intersect.Server.Networking;
 using Intersect.Server.Database;
+using Intersect.Server.Database.PlayerData.Players;
 
 using JetBrains.Annotations;
 
@@ -82,6 +83,21 @@ namespace Intersect.Server.Entities.Guilds
         [Column(Order = 6)]
         public DateTime FoundingDate { get; set; }
 
+        //Bank
+        [NotNull, JsonIgnore]
+        public virtual List<GuildBankSlot> GuildBank { get; set; } = new List<GuildBankSlot>();
+
+        /// <summary>
+        /// Determines which level this guild is.
+        /// </summary>
+        public int GuildLevel { get; set; }
+
+        /// <summary>
+        /// Determines the current experience of the guild.
+        /// </summary>
+        public int GuildExperience { get; set; }
+
+
         public Guild() : this(Guid.NewGuid())
         {
 
@@ -98,9 +114,17 @@ namespace Intersect.Server.Entities.Guilds
 
 
             PacketSender.updateGuild(player);
-            //PacketSender.SendEntityDataToProximity(player);
+            PacketSender.SendEntityDataToProximity(player);
         }
 
+        public bool ValidateLists()
+        {
+            var changes = false;
+            
+            changes |= SlotHelper.ValidateSlots(GuildBank, Options.MaxBankSlots);
+
+            return changes;
+        }
         public void SetupDefaultRanks()
         {
             // Clear existing ranks, if any.
@@ -189,7 +213,7 @@ namespace Intersect.Server.Entities.Guilds
                 PacketSender.SendGuildData(tempplayer);
             }
             PacketSender.updateGuild(player);
-            //PacketSender.SendEntityDataToProximity(player);
+            PacketSender.SendEntityDataToProximity(player);
 
             return true;
         }

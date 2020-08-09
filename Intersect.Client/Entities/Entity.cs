@@ -1347,7 +1347,7 @@ namespace Intersect.Client.Entities
                     break;
                 case LabelType.Guild:
                     
-                    y -= 16;
+                    y -= 20;
 
                     break;
             }

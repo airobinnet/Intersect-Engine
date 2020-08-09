@@ -94,6 +94,8 @@
     <Compile Include="General\Time.cs" />
     <Compile Include="General\Enums.cs" />
     <Compile Include="General\Globals.cs" />
+    <Compile Include="Interface\Game\GuildBank\GuildBankItem.cs" />
+    <Compile Include="Interface\Game\GuildBank\GuildBankWindow.cs" />
     <Compile Include="Interface\Game\Guild\GuildWindow.cs" />
     <Compile Include="Interface\Game\Guild\GuildMember.cs" />
     <Compile Include="Interface\Shared\Errors\ErrorWindow.cs" />

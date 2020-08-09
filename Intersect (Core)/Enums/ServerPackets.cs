@@ -164,6 +164,8 @@ namespace Intersect.Enums
 
         PlayerTarget,
 
+        OpenGuildBank,
+
     }
 
 }

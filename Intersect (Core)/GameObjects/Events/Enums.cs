@@ -215,6 +215,9 @@
         //Player Label
         PlayerLabel,
 
+        //Guildbank
+        OpenGuildBank = 700,
+
     }
 
 }

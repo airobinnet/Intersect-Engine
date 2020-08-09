@@ -1310,6 +1310,14 @@ namespace Intersect.Server.Entities
                 {
                     return;
                 }
+
+                if (targetPlayer.Guild != null && player.Guild != null)
+                {
+                    if (targetPlayer.Guild == player.Guild)
+                    {
+                        return;
+                    }
+                }
             }
 
             if (parentSpell == null)
@@ -1428,6 +1436,14 @@ namespace Intersect.Server.Entities
                     if (MapInstance.Get(target.MapId).ZoneType == MapZones.Safe)
                     {
                         return;
+                    }
+
+                    if (targetPlayer.Guild != null && player.Guild != null)
+                    {
+                        if (targetPlayer.Guild == player.Guild)
+                        {
+                            return;
+                        }
                     }
                 }
 
@@ -1619,6 +1635,13 @@ namespace Intersect.Server.Entities
                 if (MapInstance.Get(target.MapId)?.ZoneType == MapZones.Safe)
                 {
                     return;
+                }
+                if (targetPlayer.Guild != null && player.Guild != null)
+                {
+                    if (targetPlayer.Guild == player.Guild)
+                    {
+                        return;
+                    }
                 }
             }
 

@@ -311,6 +311,7 @@
     <Compile Include="Network\Packets\Client\BuyItemPacket.cs" />
     <Compile Include="Network\Packets\Client\ChatMsgPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseBagPacket.cs" />
+    <Compile Include="Network\Packets\Client\CloseGuildBankPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseBankPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseCraftingPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseShopPacket.cs" />
@@ -319,6 +320,7 @@
     <Compile Include="Network\Packets\Client\CreateCharacterPacket.cs" />
     <Compile Include="Network\Packets\Client\DeclineTradePacket.cs" />
     <Compile Include="Network\Packets\Client\DeleteCharacterPacket.cs" />
+    <Compile Include="Network\Packets\Client\DepositGuildItemPacket.cs" />
     <Compile Include="Network\Packets\Client\DepositItemPacket.cs" />
     <Compile Include="Network\Packets\Client\DirectionPacket.cs" />
     <Compile Include="Network\Packets\Client\DropItemPacket.cs" />
@@ -333,6 +335,10 @@
     <Compile Include="Network\Packets\Client\LoginPacket.cs" />
     <Compile Include="Network\Packets\Client\LogoutPacket.cs" />
     <Compile Include="Network\Packets\Client\GuildLeavePacket.cs" />
+    <Compile Include="Network\Packets\Client\SwapGuildBankItemsPacket.cs" />
+    <Compile Include="Network\Packets\Client\WithdrawGuildItemPacket .cs" />
+    <Compile Include="Network\Packets\Server\GuildBankUpdatePacket.cs" />
+    <Compile Include="Network\Packets\Server\GuildBankPacket.cs" />
     <Compile Include="Network\Packets\Server\GuildInvitePacket.cs" />
     <Compile Include="Network\Packets\Server\GuildDataPacket.cs" />
     <Compile Include="Network\Packets\Server\updateGuildPacket.cs" />

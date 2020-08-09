@@ -109,6 +109,10 @@ namespace Intersect.Client.Interface.Game.Inventory
             {
                 Globals.Me.TryTradeItem(mMySlot);
             }
+            else if (Globals.InGuildBank)
+            {
+                Globals.Me.TryDepositGuildItem(mMySlot);
+            }
             else
             {
                 Globals.Me.TryDropItem(mMySlot);

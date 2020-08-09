@@ -311,6 +311,26 @@ namespace Intersect.Client.Localization
 
         }
 
+        public struct GuildBank
+        {
+
+            public static LocalizedString deposititem = @"Deposit Item";
+
+            public static LocalizedString deposititemprompt = @"How many/much {00} would you like to deposit?";
+
+            public static LocalizedString title = @"GuildBank";
+
+            public static LocalizedString withdrawitem = @"Withdraw Item";
+
+            public static LocalizedString withdrawitemprompt = @"How many/much {00} would you like to withdraw?";
+
+            public static LocalizedString notallowedtoview = @"You are not allowed to view the guildbank";
+
+            public static LocalizedString notallowedtowithdraw = @"You are not allowed to withdraw from the guildbank";
+
+            public static LocalizedString notallowedtopost = @"You are not allowed to put items into the guildbank";
+
+        }
         public struct BanMute
         {
 

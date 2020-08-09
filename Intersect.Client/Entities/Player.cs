@@ -163,6 +163,7 @@ namespace Intersect.Client.Entities
                      !Globals.MoveRouteActive &&
                      Globals.GameShop == null &&
                      Globals.InBank == false &&
+                     Globals.InGuildBank == false &&
                      Globals.InCraft == false &&
                      Globals.InTrade == false &&
                      !Interface.Interface.HasInputFocus());
@@ -302,7 +303,7 @@ namespace Intersect.Client.Entities
 
         public void TryUseItem(int index)
         {
-            if (Globals.GameShop == null && Globals.InBank == false && Globals.InTrade == false && !ItemOnCd(index))
+            if (Globals.GameShop == null && Globals.InBank == false && Globals.InGuildBank == false && Globals.InTrade == false && !ItemOnCd(index))
             {
                 PacketSender.SendUseItem(index, TargetIndex);
             }
@@ -557,6 +558,64 @@ namespace Intersect.Client.Entities
             if (value > 0)
             {
                 PacketSender.SendWithdrawItem((int) ((InputBox) sender).UserData, value);
+            }
+        }
+
+
+        //guildbank
+        public void TryDepositGuildItem(int index)
+        {
+            if (ItemBase.Get(Inventory[index].ItemId) != null)
+            {
+                if (Inventory[index].Quantity > 1)
+                {
+                    var iBox = new InputBox(
+                        Strings.GuildBank.deposititem,
+                        Strings.GuildBank.deposititemprompt.ToString(ItemBase.Get(Inventory[index].ItemId).Name), true,
+                        InputBox.InputType.NumericInput, DepositGuildItemInputBoxOkay, null, index
+                    );
+                }
+                else
+                {
+                    PacketSender.SendDepositGuildItem(index, 1);
+                }
+            }
+        }
+
+        private void DepositGuildItemInputBoxOkay(object sender, EventArgs e)
+        {
+            var value = (int)((InputBox)sender).Value;
+            if (value > 0)
+            {
+                PacketSender.SendDepositGuildItem((int)((InputBox)sender).UserData, value);
+            }
+        }
+
+        public void TryWithdrawGuildItem(int index)
+        {
+            if (Globals.GuildBank[index] != null && ItemBase.Get(Globals.GuildBank[index].ItemId) != null)
+            {
+                if (Globals.GuildBank[index].Quantity > 1)
+                {
+                    var iBox = new InputBox(
+                        Strings.GuildBank.withdrawitem,
+                        Strings.GuildBank.withdrawitemprompt.ToString(ItemBase.Get(Globals.Bank[index].ItemId).Name), true,
+                        InputBox.InputType.NumericInput, WithdrawGuildItemInputBoxOkay, null, index
+                    );
+                }
+                else
+                {
+                    PacketSender.SendWithdrawGuildItem(index, 1);
+                }
+            }
+        }
+
+        private void WithdrawGuildItemInputBoxOkay(object sender, EventArgs e)
+        {
+            var value = (int)((InputBox)sender).Value;
+            if (value > 0)
+            {
+                PacketSender.SendWithdrawGuildItem((int)((InputBox)sender).UserData, value);
             }
         }
 
@@ -1802,7 +1861,7 @@ namespace Intersect.Client.Entities
             if (GuildName != null)
             //if (GuildId != Guid.Empty)
             {
-                DrawLabels(GuildName, 3, FooterLabel.Color, textColor, borderColor, backgroundColor);
+                DrawLabels(GuildTag, 3, FooterLabel.Color, textColor, borderColor, backgroundColor);
             }
         }
 

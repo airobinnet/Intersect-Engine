@@ -203,9 +203,26 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new WithdrawItemPacket(slot, amount));
         }
 
+
+        public static void SendDepositGuildItem(int slot, int amount)
+        {
+            Network.SendPacket(new DepositGuildItemPacket(slot, amount));
+        }
+
+        public static void SendWithdrawGuildItem(int slot, int amount)
+        {
+            Network.SendPacket(new WithdrawGuildItemPacket(slot, amount));
+        }
+
+
         public static void SendCloseBank()
         {
             Network.SendPacket(new CloseBankPacket());
+        }
+
+        public static void SendCloseGuildBank()
+        {
+            Network.SendPacket(new CloseGuildBankPacket());
         }
 
         public static void SendCloseCrafting()
@@ -216,6 +233,11 @@ namespace Intersect.Client.Networking
         public static void SendMoveBankItems(int slot1, int slot2)
         {
             Network.SendPacket(new SwapBankItemsPacket(slot1, slot2));
+        }
+
+        public static void SendMoveGuildBankItems(int slot1, int slot2)
+        {
+            Network.SendPacket(new SwapGuildBankItemsPacket(slot1, slot2));
         }
 
         public static void SendCraftItem(Guid id)

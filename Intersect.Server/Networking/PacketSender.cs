@@ -107,12 +107,15 @@ namespace Intersect.Server.Networking
                         player.StartCommonEvent(evt, CommonEventTrigger.Login);
                     }
                 }
-                foreach (var playerId in player.Guild?.Members?.Keys)
+                if (player.Guild != null)
                 {
-                    var tempplayer = Player.FindOnline(playerId);
-                    if (player.Id != playerId)
+                    foreach (var playerId in player.Guild.Members.Keys)
                     {
-                        PacketSender.SendGuildData(tempplayer);
+                        var tempplayer = Player.FindOnline(playerId);
+                        if (playerId != player.Id)
+                        {
+                            PacketSender.SendGuildData(tempplayer);
+                        }
                     }
                 }
             }
@@ -607,7 +610,7 @@ namespace Intersect.Server.Networking
                             Map = player.Map.Name,
                             Online = true
                         });
-                        
+
                     } else
                     {
                         memberList.Add(new Guilddata()
@@ -624,7 +627,9 @@ namespace Intersect.Server.Networking
 
                     jsonData = JsonConvert.SerializeObject(memberList);
                 }
+                //if (player.InGuild) { // save some bandwith by only sending updates if the guildwindow is open, still todo
                 player.SendPacket(new GuildDataPacket(player.Guild.Id, player.Guild.Name, player.Guild.Tag, player.Guild.FoundingDate, player.Guild.LeaderRank, player.Guild.MembersJson, jsonData, player.Guild.RanksJson));
+                //}
             }
             else if (player.guildInvite != null)
             {
@@ -1424,6 +1429,29 @@ namespace Intersect.Server.Networking
             player.SendPacket(new BankPacket(true));
         }
 
+        //GuildBankPacket
+        public static void SendOpenGuildBank(Player player)
+        {
+            //if (player.Guild != null)
+            //{
+                for (var i = 0; i < Options.MaxBankSlots; i++)
+                {
+                    SendGuildBankUpdate(player, i);
+                }
+
+                player.SendPacket(new GuildBankPacket(false));
+            /*} else
+            {
+                SendChatMsg(player, "You're not in a guild!", Color.Red);
+            }*/
+        }
+
+        //GuildBankPacket
+        public static void SendCloseGuildBank(Player player)
+        {
+            player.SendPacket(new GuildBankPacket(true));
+        }
+
         //CraftingTablePacket
         public static void SendOpenCraftingTable(Player player, CraftingTableBase table)
         {
@@ -1454,6 +1482,24 @@ namespace Intersect.Server.Networking
             else
             {
                 player.SendPacket(new BankUpdatePacket(slot, Guid.Empty, 0, null, null));
+            }
+        }
+
+        //GuildBankUpdatePacket
+        public static void SendGuildBankUpdate(Player player, int slot)
+        {
+            if (player.Guild.GuildBank[slot] != null && player.Guild.GuildBank[slot].ItemId != Guid.Empty && player.Guild.GuildBank[slot].Quantity > 0)
+            {
+                player.SendPacket(
+                    new GuildBankUpdatePacket(
+                        slot, player.Guild.GuildBank[slot].ItemId, player.Guild.GuildBank[slot].Quantity, player.Guild.GuildBank[slot].BagId,
+                        player.Guild.GuildBank[slot].StatBuffs
+                    )
+                );
+            }
+            else
+            {
+                player.SendPacket(new GuildBankUpdatePacket(slot, Guid.Empty, 0, null, null));
             }
         }
 

@@ -1648,6 +1648,17 @@ namespace Intersect.Server.Networking
             player.CloseBank();
         }
 
+        //CloseGuildBankPacket
+        public void HandlePacket(Client client, Player player, CloseGuildBankPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.CloseGuildBank();
+        }
+
         //DepositItemPacket
         public void HandlePacket(Client client, Player player, DepositItemPacket packet)
         {
@@ -1670,6 +1681,28 @@ namespace Intersect.Server.Networking
             player.WithdrawItem(packet.Slot, packet.Quantity);
         }
 
+        //DepositGuildItemPacket
+        public void HandlePacket(Client client, Player player, DepositGuildItemPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.TryDepositGuildItem(packet.Slot, packet.Quantity);
+        }
+
+        //WithdrawGuildItemPacket
+        public void HandlePacket(Client client, Player player, WithdrawGuildItemPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.WithdrawGuildItem(packet.Slot, packet.Quantity);
+        }
+
         //MoveBankItemPacket
         public void HandlePacket(Client client, Player player, SwapBankItemsPacket packet)
         {
@@ -1679,6 +1712,17 @@ namespace Intersect.Server.Networking
             }
 
             player.SwapBankItems(packet.Slot1, packet.Slot2);
+        }
+
+        //MoveGuildBankItemPacket
+        public void HandlePacket(Client client, Player player, SwapGuildBankItemsPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.SwapGuildBankItems(packet.Slot1, packet.Slot2);
         }
 
         //PartyInvitePacket

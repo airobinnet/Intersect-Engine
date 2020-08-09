@@ -60,6 +60,7 @@ namespace Intersect.Client.Networking
         {
             Options.LoadFromServer(packet.Config);
             Globals.Bank = new Item[Options.MaxBankSlots];
+            Globals.GuildBank = new Item[Options.MaxBankSlots];
             Graphics.InitInGame();
         }
 
@@ -1254,6 +1255,34 @@ namespace Intersect.Client.Networking
             else
             {
                 Globals.Bank[slot] = null;
+            }
+        }
+
+        //GuildBankPacket
+        private static void HandlePacket(GuildBankPacket packet)
+        {
+            if (!packet.Close)
+            {
+                Interface.Interface.GameUi.NotifyOpenGuildBank();
+            }
+            else
+            {
+                Interface.Interface.GameUi.NotifyCloseGuildBank();
+            }
+        }
+
+        //GuildBankUpdatePacket
+        private static void HandlePacket(GuildBankUpdatePacket packet)
+        {
+            var slot = packet.Slot;
+            if (packet.ItemId != Guid.Empty)
+            {
+                Globals.GuildBank[slot] = new Item();
+                Globals.GuildBank[slot].Load(packet.ItemId, packet.Quantity, packet.BagId, packet.StatBuffs);
+            }
+            else
+            {
+                Globals.GuildBank[slot] = null;
             }
         }
 

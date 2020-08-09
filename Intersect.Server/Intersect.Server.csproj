@@ -430,6 +430,8 @@
     <Compile Include="Database\MigrationBuilderExtensions.cs" />
     <Compile Include="Database\PlayerData\Api\RefreshToken.cs" />
     <Compile Include="Database\PlayerData\Ban.cs" />
+    <Compile Include="Database\PlayerData\Players\GuildBankSlot.cs" />
+    <Compile Include="Database\PlayerData\Players\IGuildOwned.cs" />
     <Compile Include="Entities\Guilds\Guild.cs" />
     <Compile Include="Entities\Guilds\GuildRank.cs" />
     <Compile Include="Database\PlayerData\Players\Bag.cs" />
@@ -485,6 +487,10 @@
     <Compile Include="Migrations\20200427153233_Guilds.cs" />
     <Compile Include="Migrations\20200427153233_Guilds.designer.cs">
       <DependentUpon>20200427153233_Guilds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20200809114945_guildspt2.cs" />
+    <Compile Include="Migrations\20200809114945_guildspt2.designer.cs">
+      <DependentUpon>20200809114945_guildspt2.cs</DependentUpon>
     </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />

@@ -31,6 +31,9 @@ namespace Intersect.Client.General
         //Bank
         public static Item[] Bank;
 
+        //GuildBank
+        public static Item[] GuildBank;
+
         public static bool ConnectionLost;
 
         //Game Systems
@@ -68,6 +71,8 @@ namespace Intersect.Client.General
         public static bool InBag = false;
 
         public static bool InBank = false;
+
+        public static bool InGuildBank = false;
 
         //Crafting station
         public static bool InCraft = false;

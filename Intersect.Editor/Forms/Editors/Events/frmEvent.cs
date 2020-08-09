@@ -667,6 +667,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new OpenBankCommand();
 
                     break;
+                case EventCommandType.OpenGuildBank:
+                    tmpCommand = new OpenGuildBankCommand();
+
+                    break;
                 case EventCommandType.OpenShop:
                     tmpCommand = new OpenShopCommand();
 
@@ -1254,6 +1258,8 @@ namespace Intersect.Editor.Forms.Editors.Events
 
                     break;
                 case EventCommandType.OpenBank:
+                    break;
+                case EventCommandType.OpenGuildBank:
                     break;
                 case EventCommandType.OpenShop:
                     cmdWindow = new EventCommandOpenShop((OpenShopCommand) command, this);
