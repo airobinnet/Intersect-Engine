@@ -148,11 +148,14 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode58,
             treeNode59,
             treeNode60});
-            System.Windows.Forms.TreeNode treeNode62 = new System.Windows.Forms.TreeNode("Send Mail");
-            System.Windows.Forms.TreeNode treeNode63 = new System.Windows.Forms.TreeNode("Open Mailbox");
-            System.Windows.Forms.TreeNode treeNode64 = new System.Windows.Forms.TreeNode("Auction House");
-            System.Windows.Forms.TreeNode treeNode65 = new System.Windows.Forms.TreeNode("Spawn Pet");
-            System.Windows.Forms.TreeNode treeNode66 = new System.Windows.Forms.TreeNode("Despawn Pet");
+            System.Windows.Forms.TreeNode treeNode62 = new System.Windows.Forms.TreeNode("Open Guild Bank");
+            System.Windows.Forms.TreeNode treeNode63 = new System.Windows.Forms.TreeNode("Guild", new System.Windows.Forms.TreeNode[] {
+            treeNode62});
+            System.Windows.Forms.TreeNode treeNode64 = new System.Windows.Forms.TreeNode("Send Mail");
+            System.Windows.Forms.TreeNode treeNode65 = new System.Windows.Forms.TreeNode("Open Mailbox");
+            System.Windows.Forms.TreeNode treeNode66 = new System.Windows.Forms.TreeNode("Auction House");
+            System.Windows.Forms.TreeNode treeNode67 = new System.Windows.Forms.TreeNode("Spawn Pet");
+            System.Windows.Forms.TreeNode treeNode68 = new System.Windows.Forms.TreeNode("Despawn Pet");
             this.lblName = new System.Windows.Forms.Label();
             this.txtEventname = new DarkUI.Controls.DarkTextBox();
             this.grpEntityOptions = new DarkUI.Controls.DarkGroupBox();
@@ -1035,21 +1038,26 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode60.Text = "Open Crafting Station";
             treeNode61.Name = "shopandbank";
             treeNode61.Text = "Shop and Bank";
-            treeNode62.Name = "sendmail";
-            treeNode62.Tag = "440";
-            treeNode62.Text = "Send Mail";
-            treeNode63.Name = "openmailbox";
-            treeNode63.Tag = "441";
-            treeNode63.Text = "Open Mailbox";
-            treeNode64.Name = "openhdv";
-            treeNode64.Tag = "447";
-            treeNode64.Text = "Auction House";
-            treeNode65.Name = "spawnpet";
-            treeNode65.Tag = "600";
-            treeNode65.Text = "Spawn Pet";
-            treeNode66.Name = "despawnpet";
-            treeNode66.Tag = "601";
-            treeNode66.Text = "Despawn Pet";
+            treeNode62.Name = "openguildbank";
+            treeNode62.Tag = "700";
+            treeNode62.Text = "Open Guild Bank";
+            treeNode63.Name = "guild";
+            treeNode63.Text = "Guild";
+            treeNode64.Name = "sendmail";
+            treeNode64.Tag = "440";
+            treeNode64.Text = "Send Mail";
+            treeNode65.Name = "openmailbox";
+            treeNode65.Tag = "441";
+            treeNode65.Text = "Open Mailbox";
+            treeNode66.Name = "openhdv";
+            treeNode66.Tag = "447";
+            treeNode66.Text = "Auction House";
+            treeNode67.Name = "spawnpet";
+            treeNode67.Tag = "600";
+            treeNode67.Text = "Spawn Pet";
+            treeNode68.Name = "despawnpet";
+            treeNode68.Tag = "601";
+            treeNode68.Text = "Despawn Pet";
             this.lstCommands.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode6,
             treeNode14,
@@ -1059,11 +1067,12 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode55,
             treeNode57,
             treeNode61,
-            treeNode62,
             treeNode63,
             treeNode64,
             treeNode65,
-            treeNode66});
+            treeNode66,
+            treeNode67,
+            treeNode68});
             this.lstCommands.Size = new System.Drawing.Size(666, 676);
             this.lstCommands.TabIndex = 2;
             this.lstCommands.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lstCommands_AfterSelect);
