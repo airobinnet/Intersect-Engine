@@ -2514,6 +2514,29 @@ namespace Intersect.Server.Entities
                 return false;
             }
 
+            if (Guild != null)
+            {
+                // Is our rank allowed to invite players?
+                var rank = Guild.GetRank(this);
+                if (rank != null)
+                {
+                    if (!rank.Permissions.ContainsKey(GuildPermissions.DepositBank))
+                    {
+                        PacketSender.SendChatMsg(this, Strings.Guilds.NoPermission, Color.Red);
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                PacketSender.SendChatMsg(this, "You are not in a guild!!", Color.Red);
+                return false;
+            }
+
             var itemBase = ItemBase.Get(Items[slot].ItemId);
             if (itemBase != null)
             {
@@ -3279,11 +3302,30 @@ namespace Intersect.Server.Entities
             }
             if (Guild != null)
             {
-                InGuildBank = true;
-                PacketSender.SendOpenGuildBank(this);
+                // Is our rank allowed to invite players?
+                var rank = Guild.GetRank(this);
+                if (rank != null)
+                {
+                    if (rank.Permissions.ContainsKey(GuildPermissions.ViewBank))
+                    {
+                        InGuildBank = true;
+                        PacketSender.SendOpenGuildBank(this);
 
-                return true;
-            } else
+                        return true;
+                    }
+                    else
+                    {
+                        PacketSender.SendChatMsg(this, Strings.Guilds.NoPermission, Color.Red);
+                        return false;
+                    }
+                }
+                else
+                {
+                    PacketSender.SendChatMsg(this, Strings.Guilds.NoPermission, Color.Red);
+                    return false;
+                }
+            }
+            else
             {
                 PacketSender.SendChatMsg(this, "You are not in a guild!!", Color.Red);
                 return false;
@@ -3401,6 +3443,29 @@ namespace Intersect.Server.Entities
 
             if (itemBase == null)
             {
+                return false;
+            }
+
+            if (Guild != null)
+            {
+                // Is our rank allowed to invite players?
+                var rank = Guild.GetRank(this);
+                if (rank != null)
+                {
+                    if (!rank.Permissions.ContainsKey(GuildPermissions.DepositBank))
+                    {
+                        PacketSender.SendChatMsg(this, Strings.Guilds.NoPermission, Color.Red);
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                PacketSender.SendChatMsg(this, "You are not in a guild!!", Color.Red);
                 return false;
             }
 
@@ -3737,7 +3802,28 @@ namespace Intersect.Server.Entities
             {
                 return;
             }
-
+            if (Guild != null)
+            {
+                // Is our rank allowed to invite players?
+                var rank = Guild.GetRank(this);
+                if (rank != null)
+                {
+                    if (!rank.Permissions.ContainsKey(GuildPermissions.WithdrawBank))
+                    {
+                        PacketSender.SendChatMsg(this, Strings.Guilds.NoPermission, Color.Red);
+                        return;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                PacketSender.SendChatMsg(this, "You are not in a guild!!", Color.Red);
+                return;
+            }
             Debug.Assert(ItemBase.Lookup != null, "ItemBase.Lookup != null");
             Debug.Assert(Guild.GuildBank != null, "Guild.GuildBank != null");
             Debug.Assert(Items != null, "Inventory != null");

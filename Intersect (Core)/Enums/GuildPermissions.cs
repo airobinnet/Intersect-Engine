@@ -14,6 +14,12 @@
 
         ChangeGuildName,
 
+        ViewBank,
+
+        DepositBank,
+
+        WithdrawBank,
+
         PermissionCount
 
     }

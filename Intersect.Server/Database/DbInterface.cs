@@ -585,6 +585,16 @@ namespace Intersect.Server.Database
             SavePlayerDatabaseAsync();
         }
 
+        public static void RemoveGuild(Guild guild)
+        {
+            // remove the guild from the Player Database.
+            lock (mPlayerDbLock)
+            {
+                sPlayerDb.Guilds.Remove(guild);
+            }
+            SavePlayerDatabaseAsync();
+        }
+
         public static void CheckGuild(Player player, Guid guildId)
         {
             // find the guild by the guildId

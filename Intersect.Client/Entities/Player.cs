@@ -76,6 +76,12 @@ namespace Intersect.Client.Entities
 
         public int GuildInviteMembers;
 
+        public int GuildInviteLevel;
+
+        public int GuildLevel;
+
+        public int GuildExperience;
+
         public string GuildTag;
 
         public DateTime GuildDate;

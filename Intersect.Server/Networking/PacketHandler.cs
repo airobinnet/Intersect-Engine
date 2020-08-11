@@ -755,7 +755,7 @@ namespace Intersect.Server.Networking
                 // Are we even in a guild?
                 if (player.Guild != null)
                 {
-                    // Is our rank allowed to invite players?
+                    // Is our rank allowed to promote players?
                     var rank = player.Guild.GetRank(player);
                     if (rank != null)
                     {
@@ -769,10 +769,13 @@ namespace Intersect.Server.Networking
                                 var currentRank = RankInfo.FirstOrDefault(n => n.Id == toPromotePlayer.Guild.GetRank(toPromotePlayer).Id);
                                 if (RankInfo[i].Id == currentRank.Id)
                                 {
-                                    if (i < RankInfo.Count()-1)
+                                    if (RankInfo.IndexOf(rank) > RankInfo.IndexOf(currentRank) && RankInfo.IndexOf(rank) > RankInfo.IndexOf(currentRank)+1)
                                     {
-                                        player.Guild.ChangeRank(toPromotePlayer.Id, RankInfo[i+1].Id);
-                                        return;
+                                        if (i < RankInfo.Count() - 1)
+                                        {
+                                            player.Guild.ChangeRank(toPromotePlayer.Id, RankInfo[i + 1].Id);
+                                            return;
+                                        }
                                     }
                                 }
                             }
@@ -805,24 +808,27 @@ namespace Intersect.Server.Networking
                 // Are we even in a guild?
                 if (player.Guild != null)
                 {
-                    // Is our rank allowed to invite players?
+                    // Is our rank allowed to demote players?
                     var rank = player.Guild.GetRank(player);
                     if (rank != null)
                     {
                         if (rank.Permissions.ContainsKey(GuildPermissions.KickPlayers))
                         {
                             var toPromotePlayer = Player.Find(msg.Trim());
-                            // Attempt to promote this player
+                            // Attempt to demote this player
                             var RankInfo = player.Guild.Ranks;
                             for (var i = 0; i < RankInfo.Count(); i++)
                             {
                                 var currentRank = RankInfo.FirstOrDefault(n => n.Id == toPromotePlayer.Guild.GetRank(toPromotePlayer).Id);
                                 if (RankInfo[i].Id == currentRank.Id)
                                 {
-                                    if (i > 0)
+                                    if (RankInfo.IndexOf(rank) > RankInfo.IndexOf(currentRank) || RankInfo.IndexOf(rank) == RankInfo.Count())
                                     {
-                                        player.Guild.ChangeRank(toPromotePlayer.Id, RankInfo[i - 1].Id);
-                                        return;
+                                        if (i > 0)
+                                        {
+                                            player.Guild.ChangeRank(toPromotePlayer.Id, RankInfo[i - 1].Id);
+                                            return;
+                                        }
                                     }
                                 }
                             }

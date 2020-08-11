@@ -44,12 +44,12 @@ namespace Intersect.Client.Interface.Game.Guild
         private string mTempName;
 
         //Slot info
-        private int mIndex;
+        private Guid mIndex;
         
         //Drag/Drop References
         private GuildWindow mGuildWindow;
 
-        public GuildMember(GuildWindow guildWindow, int index)
+        public GuildMember(GuildWindow guildWindow, Guid index)
         {
             mGuildWindow = guildWindow;
             mIndex = index;
@@ -74,10 +74,27 @@ namespace Intersect.Client.Interface.Game.Guild
             mRankText.Text = "";
 
             mMenuCombobox = new ComboBox(Container, "MenuCombobox");
+            var gMembers = JsonConvert.DeserializeObject<Dictionary<Guid, Guid>>(Globals.Me.GuildMembers);
+            Guid RankId = gMembers[Globals.Me.Id];
+
+            var RankInfo = JsonConvert.DeserializeObject<List<GuildRanks>>(Globals.Me.GuildRanks);
+
+            var rankText = RankInfo.FirstOrDefault(n => n.Id == RankId);
+            
             for (var i = 0; i < 4; i++)
             {
-                var menuItem = mMenuCombobox.AddItem(Strings.Guilds.menuoptions[i]);
-                menuItem.UserData = i;
+                if (i > 0)
+                {
+                    if (rankText.Permissions.ContainsKey(GuildPermissions.KickPlayers))
+                    {
+                        var menuItem = mMenuCombobox.AddItem(Strings.Guilds.menuoptions[i]);
+                        menuItem.UserData = i;
+                    }
+                } else
+                {
+                    var menuItem = mMenuCombobox.AddItem(Strings.Guilds.menuoptions[i]);
+                    menuItem.UserData = i;
+                }
             }
             mMenuCombobox.Hide();
             mMenuCombobox.SetText("");
@@ -103,7 +120,7 @@ namespace Intersect.Client.Interface.Game.Guild
 
         public void LoadItem()
         {
-            var MemberData = JsonConvert.DeserializeObject<List<GuildMembers>>(Globals.Me.GuildMembersNames)[mIndex];
+            var MemberData = JsonConvert.DeserializeObject<List<GuildMembers>>(Globals.Me.GuildMembersNames).Where(gm => gm.Id == mIndex).FirstOrDefault();
             var RankInfo = JsonConvert.DeserializeObject<List<GuildRanks>>(Globals.Me.GuildRanks);
             var rankText = RankInfo.FirstOrDefault(n => n.Id == MemberData.Rank).Title.ToString();
 
@@ -148,16 +165,19 @@ namespace Intersect.Client.Interface.Game.Guild
         private void RemoveMember(Object sender, EventArgs e)
         {
             PacketSender.SendChatMsg("/guildkick " + mTempName, 0);
+            mMenuCombobox.SetText("");
         }
 
         private void PromoteMember(Object sender, EventArgs e)
         {
             PacketSender.SendChatMsg("/guildpromote " + mTempName, 0);
+            mMenuCombobox.SetText("");
         }
 
         private void DemoteMember(Object sender, EventArgs e)
         {
             PacketSender.SendChatMsg("/guilddemote " + mTempName, 0);
+            mMenuCombobox.SetText("");
         }
 
         void members_RightClicked(Base sender, ClickedEventArgs arguments)
@@ -232,6 +252,7 @@ namespace Intersect.Client.Interface.Game.Guild
                     InputBox.InputType.YesNo, RemoveMember, null, 0
                 );
             }
+            mMenuCombobox.SetText("");
         }
 
         public void Update()

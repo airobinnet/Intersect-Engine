@@ -688,12 +688,12 @@ namespace Intersect.Server.Networking
                     jsonData = JsonConvert.SerializeObject(memberList);
                 }
                 //if (player.InGuild) { // save some bandwith by only sending updates if the guildwindow is open, still todo
-                player.SendPacket(new GuildDataPacket(player.Guild.Id, player.Guild.Name, player.Guild.Tag, player.Guild.FoundingDate, player.Guild.LeaderRank, player.Guild.MembersJson, jsonData, player.Guild.RanksJson));
+                player.SendPacket(new GuildDataPacket(player.Guild.Id, player.Guild.Name, player.Guild.Tag, player.Guild.FoundingDate, player.Guild.LeaderRank, player.Guild.MembersJson, jsonData, player.Guild.RanksJson,player.Guild.GuildLevel, player.Guild.GuildExperience));
                 //}
             }
             else if (player.guildInvite != null)
             {
-                player.SendPacket(new GuildInvitePacket(player.guildInvite.Id, player.guildInvite.Name, player.guildInvite.Tag, player.guildInvite.Members.Count()));
+                player.SendPacket(new GuildInvitePacket(player.guildInvite.Id, player.guildInvite.Name, player.guildInvite.Tag, player.guildInvite.Members.Count(),player.guildInvite.GuildLevel));
             }
 
             else

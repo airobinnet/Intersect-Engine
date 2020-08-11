@@ -294,8 +294,16 @@ namespace Intersect.Server.Entities.Guilds
             // Can this member leave?
             if (Members[player.Id] == LeaderRank)
             {
-                PacketSender.SendChatMsg(player, Strings.Guilds.LeaderCantBeKicked.ToString(), CustomColors.Alerts.Error);
-                return false;
+                if (Members.Count == 1)
+                {
+                    Disband(player);
+                    return false;
+                }
+                else
+                {
+                    PacketSender.SendChatMsg(player, Strings.Guilds.LeaderCantBeKicked.ToString(), CustomColors.Alerts.Error);
+                    return false;
+                }
             }
             // Remove the member from the guild.
             Members.Remove(player.Id);
@@ -320,6 +328,28 @@ namespace Intersect.Server.Entities.Guilds
             {
                 player.TryLogout();
             }
+
+            return true;
+        }
+
+        public bool Disband(Player player)
+        {
+            // Remove the member from the guild.
+            Members.Remove(player.Id);
+
+            foreach (var playerId in Members.Keys)
+            {
+                var tempplayer = Player.FindOnline(playerId);
+                PacketSender.SendGuildData(tempplayer);
+            }
+
+            player.Guild = null;
+            player.GuildId = null;
+            PacketSender.SendEntityDataToProximity(player);
+            DbInterface.RemoveGuild(this);
+            PacketSender.SendChatMsg(player, Strings.Guilds.Disband.ToString(Name), CustomColors.Alerts.Success);
+            DbInterface.SavePlayerDatabaseAsync();
+            PacketSender.updateGuild(player);
 
             return true;
         }

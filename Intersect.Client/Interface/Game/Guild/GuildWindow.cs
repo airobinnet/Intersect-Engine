@@ -48,6 +48,8 @@ namespace Intersect.Client.Interface.Game.Guild
 
         private Button mCreateButton;
 
+        private ComboBox orderCB;
+
         //private ListBox mMembers;
 
         private int tempTimer = 99;
@@ -61,6 +63,8 @@ namespace Intersect.Client.Interface.Game.Guild
 
         //Controls
         private WindowControl mGuildWindow;
+
+        private int sortMode = 0;
 
         //Init
         public GuildWindow(Canvas gameCanvas)
@@ -110,6 +114,15 @@ namespace Intersect.Client.Interface.Game.Guild
             mAddPopupButton.SetText(Strings.Guilds.addmember);
             mAddPopupButton.Clicked += addPopupButton_Clicked;
 
+            orderCB = new ComboBox(mGuildWindow, "orderCB");
+            orderCB.AddItem("Sort by Name", "", 0);
+            orderCB.AddItem("Sort by Class", "", 1);
+            orderCB.AddItem("Sort by Level", "", 2);
+            orderCB.AddItem("Sort by Map", "", 3);
+            orderCB.AddItem("Sort by Rank", "", 4);
+            orderCB.AddItem("Sort by Status", "", 5);
+            orderCB.ItemSelected += orderCB_Selected;
+
             UpdateList();
 
             mGuildWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
@@ -141,6 +154,7 @@ namespace Intersect.Client.Interface.Game.Guild
             mMemberContainer.Hide();
             mAcceptInviteButton.Hide();
             mDeclineInviteButton.Hide();
+            orderCB.Hide();
 
             if (Globals.Me.GuildName == null || Globals.Me.GuildName == "")
             {
@@ -148,7 +162,7 @@ namespace Intersect.Client.Interface.Game.Guild
                 {
                     mAcceptInviteButton.Show();
                     mDeclineInviteButton.Show();
-                    mNameText.Text = "You have a pending invite to " + Globals.Me.GuildInviteTag + ":" + Globals.Me.GuildInviteName + " with " + Globals.Me.GuildInviteMembers + " members.";
+                    mNameText.Text = "You have a pending invite to " + Globals.Me.GuildInviteTag + ":" + Globals.Me.GuildInviteName + " (lvl " + Globals.Me.GuildInviteLevel + ")" + " with " + Globals.Me.GuildInviteMembers + " members.";
                     mNameText.Show();
                 }
                 else
@@ -163,6 +177,7 @@ namespace Intersect.Client.Interface.Game.Guild
                     mMemberContainer.Hide();
                     mAcceptInviteButton.Hide();
                     mDeclineInviteButton.Hide();
+                    orderCB.Hide();
                 }
                 
             } else
@@ -179,6 +194,8 @@ namespace Intersect.Client.Interface.Game.Guild
                 mMemberContainer.Show();
                 mAcceptInviteButton.Hide();
                 mDeclineInviteButton.Hide();
+                orderCB.Show();
+                mAddPopupButton.Hide();
             }
             
             if (Globals.Me.GuildMembers != null)
@@ -195,9 +212,18 @@ namespace Intersect.Client.Interface.Game.Guild
                 if (rankText.Permissions.ContainsKey(GuildPermissions.InvitePlayers))
                 {
                     mAddPopupButton.Show();
+                } else
+                {
+                    mAddPopupButton.Hide();
                 }
 
-                }
+            }
+        }
+
+        private void orderCB_Selected(Base sender, ItemSelectedEventArgs arguments)
+        {
+            sortMode = (int)arguments.SelectedItem.UserData;
+            UpdateList();
         }
 
         private class GuildRanks
@@ -236,12 +262,39 @@ namespace Intersect.Client.Interface.Game.Guild
                 GuildList.Clear();
                 mMemberContainer.Children.Clear();
             }
+
             if (Globals.Me.GuildMembersNames != null)
             {
-                var tempList = JsonConvert.DeserializeObject<List<GuildMembers>>(Globals.Me.GuildMembersNames);
-                for (var i = 0; i < tempList.Count; i++)
+                var itemList = JsonConvert.DeserializeObject<List<GuildMembers>>(Globals.Me.GuildMembersNames);
+                
+                if (sortMode == 0)
                 {
-                    GuildList.Add(new GuildMember(this, i));
+                    itemList = itemList.OrderBy(o => o.Name).ToList();
+                }
+                if (sortMode == 1)
+                {
+                    itemList = itemList.OrderBy(o => o.Class).ToList();
+                }
+                if (sortMode == 2)
+                {
+                    itemList = itemList.OrderBy(o => o.Level).ToList();
+                }
+                if (sortMode == 3)
+                {
+                    itemList = itemList.OrderBy(o => o.Map).ToList();
+                }
+                if (sortMode == 4)
+                {
+                    itemList = itemList.OrderBy(o => o.Rank).ToList();
+                }
+                if (sortMode == 5)
+                {
+                    itemList = itemList.OrderByDescending(o => o.Online).ToList();
+                }
+
+                for (var i = 0; i < itemList.Count; i++)
+                {
+                    GuildList.Add(new GuildMember(this, itemList[i].Id));
                     GuildList[i].Container = new ImagePanel(mMemberContainer, "GuildMember");
                     GuildList[i].Setup();
 

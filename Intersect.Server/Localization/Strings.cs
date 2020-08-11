@@ -1390,6 +1390,10 @@ namespace Intersect.Server.Localization
                    @"You have been kicked from {00}!";
 
             [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString Disband =
+                   @"You have disbanded {00}!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString HasJoined =
                    @"{00} has joined {01}!";
 
