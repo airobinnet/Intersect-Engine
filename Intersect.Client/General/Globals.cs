@@ -160,6 +160,8 @@ namespace Intersect.Client.General
 
         public static bool InHDV = false;
 
+        public static bool IsSteamRunning = false;
+
         public static Entity GetEntity(Guid id, EntityTypes type)
         {
             if (Entities.ContainsKey(id))

@@ -187,6 +187,9 @@
     <Reference Include="Costura, Version=3.3.3.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.3.3.3\lib\net40\Costura.dll</HintPath>
     </Reference>
+    <Reference Include="Facepunch.Steamworks.Win64, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Facepunch.Steamworks.2.3.3\lib\net46\Facepunch.Steamworks.Win64.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=2018.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.2018.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
@@ -812,6 +815,7 @@
     <EmbeddedResource Include="Resources\libe_sqlite3_x86.so" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="steam_api64.dll" />
     <EmbeddedResource Include="Resources\notifications\PasswordReset.html" />
     <EmbeddedResource Include="Resources\e_sqlite3x64.dll" />
     <EmbeddedResource Include="Resources\e_sqlite3x86.dll" />

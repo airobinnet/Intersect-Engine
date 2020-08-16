@@ -23,6 +23,8 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.ComponentModel;
 
+using Steamworks;
+
 // ReSharper disable All
 
 namespace Intersect.Client.Core
@@ -143,6 +145,19 @@ namespace Intersect.Client.Core
 
             _ExpiredTicks = 0;
 
+            try
+            {
+                SteamClient.Init(1280220);
+                Globals.IsSteamRunning = true;
+                var ticket = SteamUser.GetAuthSessionTicket();
+                SteamUtils.OverlayNotificationPosition = NotificationPosition.BottomLeft;
+            }
+            catch (Exception e)
+            {
+                Console.Out.WriteLine(e.ToString());
+                Globals.IsSteamRunning = false;
+            }
+
             // == Do the rest of your program.
             //Simulated by a Console.ReadKey
             // etc...
@@ -158,6 +173,7 @@ namespace Intersect.Client.Core
             //Destroy Game
             //TODO - Destroy Graphics and Networking peacefully
             //Network.Close();
+            if (Globals.IsSteamRunning) SteamClient.Shutdown();
             client.Dispose();
             Interface.Interface.DestroyGwen();
             Graphics.Renderer.Close();
@@ -214,6 +230,8 @@ namespace Intersect.Client.Core
 
         public static void Update()
         {
+            if (Globals.IsSteamRunning) SteamClient.RunCallbacks();
+
             if (_ExpiredTicks == 600) {
                 if (client != null)
                 {

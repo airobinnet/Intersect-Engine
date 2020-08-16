@@ -13,6 +13,12 @@ using Intersect.Client.Interface.Game.Chat;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.Utilities;
+using Intersect.Client;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using Steamworks;
 
 namespace Intersect.Client.Interface.Menu
 {
@@ -53,6 +59,13 @@ namespace Intersect.Client.Interface.Menu
 
         private bool mUseSavedPass;
 
+        private ImagePanel mSteamAvatar;
+
+        private Label mSteamLabel;
+
+
+        private Texture2D _UserAvatar;
+
         //Init
         public LoginWindow(Canvas parent, MainMenu mainMenu, ImagePanel parentPanel)
         {
@@ -67,6 +80,13 @@ namespace Intersect.Client.Interface.Menu
             mLoginHeader.SetText(Strings.Login.title);
 
             mUsernameBackground = new ImagePanel(mLoginWindow, "UsernamePanel");
+
+            //SteamAvatar
+            mSteamAvatar = new ImagePanel(mLoginWindow, "SteamAvatar");
+
+            //Steam Username Label
+            mSteamLabel = new Label(mSteamAvatar, "SteamLabel");
+            mSteamLabel.SetText("");
 
             //Login Username Label
             mUsernameLabel = new Label(mUsernameBackground, "UsernameLabel");
@@ -107,7 +127,17 @@ namespace Intersect.Client.Interface.Menu
             mBackBtn.SetText(Strings.Login.back);
             mBackBtn.Clicked += BackBtn_Clicked;
 
-            LoadCredentials();
+            CheckSteam();
+
+            if (!Globals.IsSteamRunning)
+            {
+                LoadCredentials();
+            } else
+            {
+                mUsernameLabel.Hide();
+                mUsernameLabel.Hide();
+                mUsernameTextbox.Hide();
+            }
 
             mLoginWindow.LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString());
 
@@ -133,7 +163,15 @@ namespace Intersect.Client.Interface.Menu
         {
             if (Networking.Network.Connected)
             {
-                return;
+                if (Globals.IsSteamRunning)
+                {
+                    mUsernameTextbox.Text = SteamClient.SteamId.Value.ToString();
+                    mUsernameBackground.Hide();
+                    mUsernameLabel.Hide();
+                    mUsernameTextbox.Hide();
+                    mSteamLabel.Text = "You are logged in with steam as " + SteamClient.Name;
+                }
+                    return;
             }
 
             Hide();
@@ -225,8 +263,32 @@ namespace Intersect.Client.Interface.Menu
             ChatboxMsg.ClearMessages();
         }
 
+        private void CheckSteam()
+        {
+            if (Globals.IsSteamRunning)
+            {
+                mUsernameTextbox.Text = SteamClient.SteamId.Value.ToString();
+                
+                foreach (var a in SteamUserStats.Achievements)
+                {
+                    if (a.Identifier == "NEW_ACHIEVEMENT_1_0" && a.State == false)
+                    {
+                        a.Trigger();
+                    }
+                }
+            }
+            else
+            {
+                Hide();
+                mMainMenu.Hide();
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("","Error connecting to Steam!"));
+            }
+
+        }
+
         private void LoadCredentials()
         {
+            
             var name = Globals.Database.LoadPreference("Username");
             if (string.IsNullOrEmpty(name))
             {
