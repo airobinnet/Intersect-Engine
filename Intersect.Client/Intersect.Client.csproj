@@ -98,6 +98,7 @@
     <Compile Include="General\Enums.cs" />
     <Compile Include="General\Globals.cs" />
     <Compile Include="HDV.cs" />
+    <Compile Include="Interface\Game\CashShop\CashShopWindow.cs" />
     <Compile Include="Interface\Game\HDV\HDVItem.cs" />
     <Compile Include="Interface\Game\HDV\HDVSellItem.cs" />
     <Compile Include="Interface\Game\HDV\HDVWindow.cs" />

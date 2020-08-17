@@ -7,6 +7,7 @@ using Intersect.Client.Interface.Game.Character;
 using Intersect.Client.Interface.Game.Inventory;
 using Intersect.Client.Interface.Game.Spells;
 using Intersect.Client.Interface.Game.Guild;
+using Intersect.Client.Interface.Game.CashShop;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 
@@ -48,6 +49,12 @@ namespace Intersect.Client.Interface.Game
         [NotNull] private readonly Button mPartyButton;
 
         [NotNull] private readonly ImagePanel mGuildBackground;
+
+        [NotNull] private readonly ImagePanel mCashShopBackground;
+
+        [NotNull] private readonly Button mCashShopButton;
+
+        [NotNull] private readonly CashShopWindow mCashShopWindow;
 
         [NotNull] private readonly Button mGuildButton;
 
@@ -123,6 +130,11 @@ namespace Intersect.Client.Interface.Game
             mGuildButton.SetToolTipText(Strings.GameMenu.guild);
             mGuildButton.Clicked += GuildBtn_Clicked;
 
+            mCashShopBackground = new ImagePanel(mMenuContainer, "CashShopContainer");
+            mCashShopButton = new Button(mCashShopBackground, "CashShopButton");
+            mCashShopButton.SetToolTipText("Cash Shop");
+            mCashShopButton.Clicked += CashShopBtn_Clicked;
+
             mMenuBackground = new ImagePanel(mMenuContainer, "MenuContainer");
             mMenuButton = new Button(mMenuBackground, "MenuButton");
             mMenuButton.SetToolTipText(Strings.GameMenu.Menu);
@@ -138,6 +150,7 @@ namespace Intersect.Client.Interface.Game
             mSpellsWindow = new SpellsWindow(gameCanvas);
             mCharacterWindow = new CharacterWindow(gameCanvas);
             mQuestsWindow = new QuestsWindow(gameCanvas);
+            mCashShopWindow = new CashShopWindow(gameCanvas);
         }
 
         //Methods
@@ -149,6 +162,7 @@ namespace Intersect.Client.Interface.Game
             mPartyWindow.Update();
             mGuildWindow.Update();
             mFriendsWindow.Update();
+            mCashShopWindow.Update();
             mQuestsWindow.Update(updateQuestLog);
         }
 
@@ -171,6 +185,7 @@ namespace Intersect.Client.Interface.Game
             mGuildWindow.Hide();
             mQuestsWindow.Hide();
             mSpellsWindow.Hide();
+            mCashShopWindow.Hide();
         }
 
         public void ToggleCharacterWindow()
@@ -257,6 +272,19 @@ namespace Intersect.Client.Interface.Game
             }
         }
 
+        public void ToggleCashShopWindow()
+        {
+            if (mCashShopWindow.IsVisible())
+            {
+                mCashShopWindow.Hide();
+            }
+            else
+            {
+                HideWindows();
+                mCashShopWindow.Show();
+            }
+        }
+
         public void ToggleSpellsWindow()
         {
             if (mSpellsWindow.IsVisible())
@@ -279,6 +307,11 @@ namespace Intersect.Client.Interface.Game
         private void PartyBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             TogglePartyWindow();
+        }
+
+        private void CashShopBtn_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            ToggleCashShopWindow();
         }
 
         private void GuildBtn_Clicked(Base sender, ClickedEventArgs arguments)

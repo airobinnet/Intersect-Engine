@@ -60,6 +60,9 @@
     <Reference Include="DiscordRPC, Version=1.0.150.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DiscordRichPresence.1.0.150\lib\net35\DiscordRPC.dll</HintPath>
     </Reference>
+    <Reference Include="Facepunch.Steamworks.Win64, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Facepunch.Steamworks.2.3.3\lib\net46\Facepunch.Steamworks.Win64.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=2018.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.2018.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
@@ -316,6 +319,7 @@
     <Compile Include="Network\Packets\Client\ActionHDVPacket.cs" />
     <Compile Include="Network\Packets\Client\AddHDVPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseHDVPacket.cs" />
+    <Compile Include="Network\Packets\Client\SendSteamMTxnAuthorizedPacket.cs" />
     <Compile Include="Network\Packets\Client\LoginCheckPacket.cs" />
     <Compile Include="Network\Packets\Server\HasAccountPacket.cs" />
     <Compile Include="Network\Packets\Server\HDVItemPacket.cs" />
@@ -635,6 +639,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="steam_api64.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

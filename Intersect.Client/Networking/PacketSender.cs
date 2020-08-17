@@ -6,6 +6,7 @@ using Intersect.Client.General;
 using Intersect.Client.Interface.Game;
 using Intersect.Client.Maps;
 using Intersect.Network.Packets.Client;
+using Steamworks;
 
 namespace Intersect.Client.Networking
 {
@@ -44,6 +45,11 @@ namespace Intersect.Client.Networking
             {
                 MapInstance.MapRequests.Add(mapId, Globals.System.GetTimeMs() + 3000);
             }
+        }
+
+        public static void SendSteamMTxnAuthorized(AppId appid, ulong orderid, bool authorized)
+        {
+            Network.SendPacket(new SendSteamMTxnAuthorizedPacket(appid,orderid,authorized));
         }
 
         public static void SendMove()

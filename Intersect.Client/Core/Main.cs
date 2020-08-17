@@ -172,17 +172,13 @@ namespace Intersect.Client.Core
         {
             if (authorized)
             {
-                SteamFriends.OpenWebOverlay("https://floor100.com/steamshopclaim.php?orderid=" + orderid);
-                /*var client = new RestClient("https://partner.steam-api.com/ISteamMicroTxnSandbox/QueryTxn/v2/?key=3640925ABA2FA8E6E238A31B0C7E289A&appid=1280220&orderid=" + orderid);
-                client.Timeout = -1;
-                var request = new RestRequest(Method.GET);
-                request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-                request.AddParameter("application/x-www-form-urlencoded", "", ParameterType.RequestBody);
-                IRestResponse response = client.Execute(request);
-                Console.WriteLine(response.Content);*/
+                PacketSender.SendSteamMTxnAuthorized(appid, orderid, authorized);
             } else
             {
-                SteamFriends.OpenWebOverlay("https://floor100.com/steamshoperror.php?orderid=" + orderid);
+                Interface.Interface.MsgboxErrors.Add(
+                    new KeyValuePair<string, string>("", "Could not authorize your payment (orderid: "  + orderid + ") to steam, please try again!")
+                );
+                //SteamFriends.OpenWebOverlay("https://floor100.com/steamshoperror.php?orderid=" + orderid);
             }
         }
 

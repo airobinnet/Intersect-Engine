@@ -31,6 +31,9 @@ using Intersect.Utilities;
 
 using JetBrains.Annotations;
 
+using RestSharp;
+using Newtonsoft.Json;
+
 namespace Intersect.Server.Networking
 {
 
@@ -247,6 +250,100 @@ namespace Intersect.Server.Networking
         }
 
         #region "Client Packets"
+        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
+        public class CashItem
+        {
+            [JsonProperty("itemid")]
+            public int Itemid { get; set; }
+
+            [JsonProperty("qty")]
+            public int Qty { get; set; }
+
+            [JsonProperty("amount")]
+            public int Amount { get; set; }
+
+            [JsonProperty("vat")]
+            public int Vat { get; set; }
+
+            [JsonProperty("itemstatus")]
+            public string Itemstatus { get; set; }
+        }
+
+        public class CashParams
+        {
+            [JsonProperty("orderid")]
+            public string Orderid { get; set; }
+
+            [JsonProperty("transid")]
+            public string Transid { get; set; }
+
+            [JsonProperty("steamid")]
+            public string Steamid { get; set; }
+
+            [JsonProperty("status")]
+            public string Status { get; set; }
+
+            [JsonProperty("currency")]
+            public string Currency { get; set; }
+
+            [JsonProperty("time")]
+            public DateTime Time { get; set; }
+
+            [JsonProperty("country")]
+            public string Country { get; set; }
+
+            [JsonProperty("usstate")]
+            public string Usstate { get; set; }
+
+            [JsonProperty("timecreated")]
+            public DateTime Timecreated { get; set; }
+
+            [JsonProperty("items")]
+            public List<CashItem> Items { get; set; }
+        }
+
+        public class CashResponse
+        {
+            [JsonProperty("result")]
+            public string Result { get; set; }
+
+            [JsonProperty("params")]
+            public CashParams Params { get; set; }
+        }
+
+        public class CashRoot
+        {
+            [JsonProperty("response")]
+            public CashResponse Response { get; set; }
+        }
+
+        // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
+        public class CashFParams
+        {
+            [JsonProperty("orderid")]
+            public string Orderid { get; set; }
+
+            [JsonProperty("transid")]
+            public string Transid { get; set; }
+        }
+
+        public class CashFResponse
+        {
+            [JsonProperty("result")]
+            public string Result { get; set; }
+
+            [JsonProperty("params")]
+            public CashFParams Params { get; set; }
+        }
+
+        public class CashFRoot
+        {
+            [JsonProperty("response")]
+            public CashFResponse Response { get; set; }
+        }
+
+
+
 
         //PingPacket
         public void HandlePacket(Client client, Player player, PingPacket packet)
@@ -371,6 +468,64 @@ namespace Intersect.Server.Networking
             else
             {
                 PacketSender.SendHasAccount(client, false);
+            }
+        }
+
+        public static Guid ToGuid(int value)
+        {
+            byte[] bytes = new byte[16];
+            BitConverter.GetBytes(value).CopyTo(bytes, 0);
+            return new Guid(bytes);
+        }
+
+        //SendSteamMTxnAuthorizedPacket
+        public void HandlePacket(Client client, Player player, SendSteamMTxnAuthorizedPacket packet)
+        {
+            var rclient = new RestClient("https://partner.steam-api.com/ISteamMicroTxnSandbox/QueryTxn/v2/?key=3640925ABA2FA8E6E238A31B0C7E289A&appid=1280220&orderid=" + packet.OrderId);
+            rclient.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddParameter("application/x-www-form-urlencoded", "", ParameterType.RequestBody);
+            IRestResponse response = rclient.Execute(request);
+            //Console.WriteLine(response.Content);
+            Console.WriteLine("received an order, checking if authorized...\r\n");
+            CashRoot myDeserializedClass = JsonConvert.DeserializeObject<CashRoot>(response.Content);
+            if (myDeserializedClass.Response.Result == "OK" && myDeserializedClass.Response.Params.Status == "Approved")
+            {
+                Console.WriteLine("Order has been approved, finalizing the order\r\n");
+                var fclient = new RestClient("https://partner.steam-api.com/ISteamMicroTxnSandbox/FinalizeTxn/v2/");
+                fclient.Timeout = -1;
+                var frequest = new RestRequest(Method.POST);
+                frequest.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+                frequest.AddParameter("key", "3640925ABA2FA8E6E238A31B0C7E289A");
+                frequest.AddParameter("appid", "1280220");
+                frequest.AddParameter("orderid", packet.OrderId);
+                IRestResponse fresponse = fclient.Execute(frequest);
+                //Console.WriteLine(fresponse.Content);
+                CashFRoot myDeserializedClassF = JsonConvert.DeserializeObject<CashFRoot>(fresponse.Content);
+                if (myDeserializedClassF.Response.Result == "OK")
+                {
+
+                    if (myDeserializedClass.Response.Params.Items[0].Itemid != null)
+                    {
+                        if (myDeserializedClass.Response.Params.Items[0].Itemid == 1)
+                        {
+                            if (ItemBase.Get(Guid.Parse("641b6f47-d14d-4277-b8ef-dd5d6eebe4a6")) != null)
+                            {
+                                var tempItem = ItemBase.Get(Guid.Parse("641b6f47-d14d-4277-b8ef-dd5d6eebe4a6"));
+
+                                Console.WriteLine("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
+
+                                player.TryGiveItem(tempItem.Id, myDeserializedClass.Response.Params.Items[0].Qty);
+                                PacketSender.SendChatMsg(player, "Thank you for your purchase, you can find the item(s) in your inventory or bank");
+                            }
+                        }
+                        else if (myDeserializedClass.Response.Params.Items[0].Itemid == 2)
+                        {
+
+                        }
+                    }
+                }
             }
         }
 

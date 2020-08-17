@@ -324,7 +324,6 @@ namespace Intersect.Client.Interface.Menu
         {
             Hide();
             mLoginWindow.Show();
-            SteamFriends.OpenWebOverlay("https://floor100.com/steamshop.php?steamid=" + SteamClient.SteamId);
         }
 
         void RegisterButton_Clicked(Base sender, ClickedEventArgs arguments)
