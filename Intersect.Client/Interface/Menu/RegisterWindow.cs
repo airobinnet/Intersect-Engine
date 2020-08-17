@@ -13,6 +13,8 @@ using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.Utilities;
 
+using Steamworks;
+
 namespace Intersect.Client.Interface.Menu
 {
 
@@ -54,6 +56,10 @@ namespace Intersect.Client.Interface.Menu
         private Label mUsernameLabel;
 
         private TextBox mUsernameTextbox;
+
+        private ImagePanel mSteamBackground;
+
+        private Label mSteamLabel;
 
         //Init
         public RegisterWindow(Canvas parent, MainMenu mainMenu, ImagePanel parentPanel)
@@ -122,7 +128,19 @@ namespace Intersect.Client.Interface.Menu
             mBackBtn.SetText(Strings.Registration.back);
             mBackBtn.Clicked += BackBtn_Clicked;
 
-            mRegistrationPanel.LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString());
+            //mSteamBackground
+            mSteamBackground = new ImagePanel(mRegistrationPanel, "SteamBackground");
+
+            //Steam Username Label
+            mSteamLabel = new Label(mSteamBackground, "SteamLabel");
+            mSteamLabel.SetText("");
+
+            CheckSteam();
+
+            if (!Globals.IsSteamRunning)
+            { }
+
+                mRegistrationPanel.LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString());
         }
 
         public bool IsHidden => mRegistrationPanel.IsHidden;
@@ -135,6 +153,14 @@ namespace Intersect.Client.Interface.Menu
                 Hide();
                 mMainMenu.Show();
                 Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Errors.lostconnection));
+            }
+            if (Globals.IsSteamRunning)
+            {
+                mUsernameTextbox.Text = SteamClient.SteamId.Value.ToString();
+                mUsernameBackground.Hide();
+                mUsernameLabel.Hide();
+                mUsernameTextbox.Hide();
+                mSteamLabel.Text = "You are logged in with steam as " + SteamClient.Name;
             }
         }
 
@@ -154,6 +180,20 @@ namespace Intersect.Client.Interface.Menu
             {
                 return BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(password ?? ""))).Replace("-", "");
             }
+        }
+
+        private void CheckSteam()
+        {
+            if (Globals.IsSteamRunning)
+            {
+                mUsernameTextbox.Text = SteamClient.SteamId.Value.ToString();
+            }
+            else
+            {
+                Hide();
+                mMainMenu.Hide();
+            }
+
         }
 
         void TryRegister()

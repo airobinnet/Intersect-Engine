@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RestSharp;
 
 using Intersect.Client.Framework.File_Management;
 using Intersect.Client.Framework.Graphics;
@@ -149,8 +150,8 @@ namespace Intersect.Client.Core
             {
                 SteamClient.Init(1280220);
                 Globals.IsSteamRunning = true;
-                var ticket = SteamUser.GetAuthSessionTicket();
                 SteamUtils.OverlayNotificationPosition = NotificationPosition.BottomLeft;
+                SteamUser.OnMicroTxnAuthorizationResponse += SteamUser_OnMicroTxnAuthorizationResponse;
             }
             catch (Exception e)
             {
@@ -167,6 +168,23 @@ namespace Intersect.Client.Core
             //client.Dispose();
         }
 
+        private static void SteamUser_OnMicroTxnAuthorizationResponse(AppId appid, ulong orderid, bool authorized)
+        {
+            if (authorized)
+            {
+                SteamFriends.OpenWebOverlay("https://floor100.com/steamshopclaim.php?orderid=" + orderid);
+                /*var client = new RestClient("https://partner.steam-api.com/ISteamMicroTxnSandbox/QueryTxn/v2/?key=3640925ABA2FA8E6E238A31B0C7E289A&appid=1280220&orderid=" + orderid);
+                client.Timeout = -1;
+                var request = new RestRequest(Method.GET);
+                request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+                request.AddParameter("application/x-www-form-urlencoded", "", ParameterType.RequestBody);
+                IRestResponse response = client.Execute(request);
+                Console.WriteLine(response.Content);*/
+            } else
+            {
+                SteamFriends.OpenWebOverlay("https://floor100.com/steamshoperror.php?orderid=" + orderid);
+            }
+        }
 
         public static void DestroyGame()
         {

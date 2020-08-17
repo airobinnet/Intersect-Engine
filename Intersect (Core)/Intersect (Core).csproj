@@ -316,6 +316,8 @@
     <Compile Include="Network\Packets\Client\ActionHDVPacket.cs" />
     <Compile Include="Network\Packets\Client\AddHDVPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseHDVPacket.cs" />
+    <Compile Include="Network\Packets\Client\LoginCheckPacket.cs" />
+    <Compile Include="Network\Packets\Server\HasAccountPacket.cs" />
     <Compile Include="Network\Packets\Server\HDVItemPacket.cs" />
     <Compile Include="Network\Packets\Server\HDVPacket.cs" />
     <Compile Include="Network\Packets\Server\PetAggressionPacket.cs" />

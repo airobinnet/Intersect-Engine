@@ -1212,6 +1212,12 @@ namespace Intersect.Server.Networking
             client.SendPacket(new CharacterCreationPacket());
         }
 
+        //SendHasAccount
+        public static void SendHasAccount(Client client, bool hasaccount)
+        {
+            client.SendPacket(new HasAccountPacket(hasaccount));
+        }
+
         //CharactersPacket
         public static void SendPlayerCharacters(Client client)
         {

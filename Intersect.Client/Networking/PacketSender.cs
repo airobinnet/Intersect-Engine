@@ -23,6 +23,11 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new LoginPacket(username, password));
         }
 
+        public static void SendLoginCheck(string username)
+        {
+            Network.SendPacket(new LoginCheckPacket(username));
+        }
+
         public static void SendLogout(bool characterSelect = false)
         {
             Network.SendPacket(new LogoutPacket(characterSelect));

@@ -10,9 +10,12 @@ using Intersect.Client.Interface.Shared;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.Network;
+using Intersect.Enums;
 using Intersect.Network.Events;
 
 using JetBrains.Annotations;
+
+using Steamworks;
 
 namespace Intersect.Client.Interface.Menu
 {
@@ -152,6 +155,8 @@ namespace Intersect.Client.Interface.Menu
             //Credits Controls
             mCreditsWindow = new CreditsWindow(mMenuCanvas, this);
 
+            CheckSteam();
+
             UpdateDisabled();
         }
 
@@ -161,9 +166,35 @@ namespace Intersect.Client.Interface.Menu
             NetworkStatusChanged -= HandleNetworkStatusChanged;
         }
 
+        private void CheckSteam()
+        {
+            if (Globals.IsSteamRunning)
+            {
+                PacketSender.SendLoginCheck(SteamClient.SteamId.Value.ToString());
+            }
+            else
+            {
+                Hide();
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", "Error connecting to Steam!"));
+            }
+
+        }
         //Methods
         public void Update()
         {
+            if (Globals.HasAccount)
+            {
+                mLoginButton.Show();
+                mLoginButton.Enable();
+                mRegisterButton.Hide();
+                mRegisterButton.Disable();
+            } else
+            {
+                mLoginButton.Hide();
+                mLoginButton.Disable();
+                mRegisterButton.Show();
+                mRegisterButton.Enable();
+            }
             if (mShouldOpenCharacterSelection)
             {
                 CreateCharacterSelection();
@@ -293,6 +324,7 @@ namespace Intersect.Client.Interface.Menu
         {
             Hide();
             mLoginWindow.Show();
+            SteamFriends.OpenWebOverlay("https://floor100.com/steamshop.php?steamid=" + SteamClient.SteamId);
         }
 
         void RegisterButton_Clicked(Base sender, ClickedEventArgs arguments)

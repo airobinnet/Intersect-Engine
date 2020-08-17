@@ -127,6 +127,8 @@ namespace Intersect.Client.General
 
         public static bool NeedsMaps = true;
 
+        public static bool HasAccount = false;
+
         //Event Guid and the Map its associated with
         public static Dictionary<Guid, Dictionary<Guid, EventEntityPacket>> PendingEvents =
             new Dictionary<Guid, Dictionary<Guid, EventEntityPacket>>();

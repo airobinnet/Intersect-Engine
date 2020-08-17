@@ -1038,6 +1038,12 @@ namespace Intersect.Client.Networking
             }
         }
 
+        //HasAccountPacket
+        private static void HandlePacket(HasAccountPacket packet)
+        {
+            Globals.HasAccount = packet.HasAccount;
+        }
+
         //CharacterCreationPacket
         private static void HandlePacket(CharacterCreationPacket packet)
         {

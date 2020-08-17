@@ -358,6 +358,22 @@ namespace Intersect.Server.Networking
             }
         }
 
+        //LoginCheckPacket
+        public void HandlePacket(Client client, Player player, LoginCheckPacket packet)
+        {
+
+            if (DbInterface.AccountExists(packet.Username))
+            {
+                PacketSender.SendHasAccount(client, true);
+
+                return;
+            }
+            else
+            {
+                PacketSender.SendHasAccount(client, false);
+            }
+        }
+
         //LogoutPacket
         public void HandlePacket(Client client, Player player, LogoutPacket packet)
         {

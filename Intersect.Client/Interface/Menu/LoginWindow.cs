@@ -153,9 +153,9 @@ namespace Intersect.Client.Interface.Menu
 
         private void _usernameTextbox_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            Globals.InputManager.OpenKeyboard(
+            /*Globals.InputManager.OpenKeyboard(
                 GameInput.KeyboardType.Normal, mUsernameTextbox.Text, false, false, false
-            );
+            );*/
         }
 
         //Methods
@@ -268,7 +268,8 @@ namespace Intersect.Client.Interface.Menu
             if (Globals.IsSteamRunning)
             {
                 mUsernameTextbox.Text = SteamClient.SteamId.Value.ToString();
-                
+
+
                 foreach (var a in SteamUserStats.Achievements)
                 {
                     if (a.Identifier == "NEW_ACHIEVEMENT_1_0" && a.State == false)
@@ -281,7 +282,6 @@ namespace Intersect.Client.Interface.Menu
             {
                 Hide();
                 mMainMenu.Hide();
-                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("","Error connecting to Steam!"));
             }
 
         }
