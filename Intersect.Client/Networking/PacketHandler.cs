@@ -1042,6 +1042,11 @@ namespace Intersect.Client.Networking
         private static void HandlePacket(HasAccountPacket packet)
         {
             Globals.HasAccount = packet.HasAccount;
+
+            if (packet.HasAccount == false)
+            {
+                Interface.Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", "It looks like this is your first time logging in, please register an account!"));
+            }
         }
 
         //CharacterCreationPacket

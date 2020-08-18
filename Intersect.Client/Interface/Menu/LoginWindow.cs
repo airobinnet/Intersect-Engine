@@ -127,11 +127,14 @@ namespace Intersect.Client.Interface.Menu
             mBackBtn.SetText(Strings.Login.back);
             mBackBtn.Clicked += BackBtn_Clicked;
 
+
+            LoadCredentials();
+
             CheckSteam();
 
             if (!Globals.IsSteamRunning)
             {
-                LoadCredentials();
+
             } else
             {
                 mUsernameLabel.Hide();

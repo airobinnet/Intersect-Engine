@@ -15,6 +15,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+using System.Timers;
 using Steamworks;
 
 namespace Intersect.Client.Interface.Game.CashShop
@@ -23,6 +24,14 @@ namespace Intersect.Client.Interface.Game.CashShop
     public class CashShopWindow
     {
         private Label mNameText;
+
+        private ImagePanel mShop1Item;
+
+        private ImagePanel mShop2Item;
+
+        private ImagePanel mShop3Item;
+
+        private ImagePanel mShop4Item;
 
         private Button mBuy1Button;
 
@@ -48,11 +57,13 @@ namespace Intersect.Client.Interface.Game.CashShop
         //Controls
         private WindowControl mCashShopWindow;
 
+        private Timer mTimer;
+
+        private bool imageSwitch = false;
+
         //Init
         public CashShopWindow(Canvas gameCanvas)
         {
-            PacketSender.SendRequestGuildInfo();
-
             mCashShopWindow = new WindowControl(gameCanvas, "Cash Shop", false, "CashShopWindow");
             mCashShopWindow.DisableResizing();
             
@@ -61,29 +72,69 @@ namespace Intersect.Client.Interface.Game.CashShop
             mNameText.Text = "Cash Shop";
 
             mBuy1Button = new Button(mCashShopWindow, "Buy1Button");
-            mBuy1Button.Text = "Buy Pack 1";
+            mBuy1Button.Text = "Buy";
             mBuy1Button.SetToolTipText("Buy pack 1");
             mBuy1Button.Clicked += mBuy1Button_Clicked;
 
             mBuy2Button = new Button(mCashShopWindow, "Buy2Button");
-            mBuy2Button.Text = "Buy Pack 2";
+            mBuy2Button.Text = "Buy";
             mBuy2Button.SetToolTipText("Buy pack 2");
             mBuy2Button.Clicked += mBuy2Button_Clicked;
 
             mBuy3Button = new Button(mCashShopWindow, "Buy3Button");
-            mBuy3Button.Text = "Buy Pack 3";
+            mBuy3Button.Text = "Buy";
             mBuy3Button.SetToolTipText("Buy pack 3");
             mBuy3Button.Clicked += mBuy3Button_Clicked;
 
             mBuy4Button = new Button(mCashShopWindow, "Buy4Button");
-            mBuy4Button.Text = "Buy Pack 4";
+            mBuy4Button.Text = "Buy";
             mBuy4Button.SetToolTipText("Buy pack 4");
             mBuy4Button.Clicked += mBuy4Button_Clicked;
 
+            mShop1Item = new ImagePanel(mCashShopWindow, "Shop1Item");
+            mShop1Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop1item.png");
 
-            UpdateList();
+            mShop2Item = new ImagePanel(mCashShopWindow, "Shop2Item");
+            mShop2Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop2item.png");
+
+            mShop3Item = new ImagePanel(mCashShopWindow, "Shop3Item");
+            mShop3Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop3item.png");
+
+            mShop4Item = new ImagePanel(mCashShopWindow, "Shop4Item");
+            mShop4Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop4item.png");
+
+            mTimer = new Timer();
+            mTimer.Interval = 500;
+            mTimer.Elapsed += mTimer_Tick;
+
+            Start();
 
             mCashShopWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
+        }
+
+        private void mTimer_Tick(object sender, ElapsedEventArgs elapsedEventArg)
+        {
+            if (!imageSwitch)
+            {
+                mShop1Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop1item.png");
+                mShop2Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop2item.png");
+                mShop3Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop3item.png");
+                mShop4Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop4Item.png");
+                imageSwitch = true;
+            }
+            else
+            {
+                mShop1Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop1itema.png");
+                mShop2Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop2itema.png");
+                mShop3Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop3itema.png");
+                mShop4Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop4itema.png");
+                imageSwitch = false;
+            }
+        }
+
+        public void Start()
+        {
+            mTimer.Start();
         }
 
         //Methods

@@ -481,6 +481,9 @@ namespace Intersect.Server.Networking
         //SendSteamMTxnAuthorizedPacket
         public void HandlePacket(Client client, Player player, SendSteamMTxnAuthorizedPacket packet)
         {
+            //Check the steam API with RESTSharp
+            var sw1 = new Stopwatch();
+            sw1.Start();
             var rclient = new RestClient("https://partner.steam-api.com/ISteamMicroTxnSandbox/QueryTxn/v2/?key=3640925ABA2FA8E6E238A31B0C7E289A&appid=1280220&orderid=" + packet.OrderId);
             rclient.Timeout = -1;
             var request = new RestRequest(Method.GET);
@@ -488,11 +491,18 @@ namespace Intersect.Server.Networking
             request.AddParameter("application/x-www-form-urlencoded", "", ParameterType.RequestBody);
             IRestResponse response = rclient.Execute(request);
             //Console.WriteLine(response.Content);
-            Console.WriteLine("received an order, checking if authorized...\r\n");
+            Log.Debug("received an order, checking if authorized...\r\n");
+            //Deserialize the json response with a prebuilt class CashRoot
             CashRoot myDeserializedClass = JsonConvert.DeserializeObject<CashRoot>(response.Content);
+            sw1.Stop();
+            Log.Debug("Took " + sw1.ElapsedMilliseconds + "ms to authorize!");
+            //If the transaction result is OK AND the Status is Approved, continue
             if (myDeserializedClass.Response.Result == "OK" && myDeserializedClass.Response.Params.Status == "Approved")
             {
-                Console.WriteLine("Order has been approved, finalizing the order\r\n");
+                //Finalize the order through the Steam API again
+                var sw2 = new Stopwatch();
+                sw2.Start();
+                Log.Debug("Order has been approved, finalizing the order\r\n");
                 var fclient = new RestClient("https://partner.steam-api.com/ISteamMicroTxnSandbox/FinalizeTxn/v2/");
                 fclient.Timeout = -1;
                 var frequest = new RestRequest(Method.POST);
@@ -503,6 +513,8 @@ namespace Intersect.Server.Networking
                 IRestResponse fresponse = fclient.Execute(frequest);
                 //Console.WriteLine(fresponse.Content);
                 CashFRoot myDeserializedClassF = JsonConvert.DeserializeObject<CashFRoot>(fresponse.Content);
+                sw2.Stop();
+                Log.Debug("Took " + sw2.ElapsedMilliseconds + "ms to finalize!");
                 if (myDeserializedClassF.Response.Result == "OK")
                 {
 
@@ -510,11 +522,12 @@ namespace Intersect.Server.Networking
                     {
                         if (myDeserializedClass.Response.Params.Items[0].Itemid == 1)
                         {
+                            //give angel wings pack
                             if (ItemBase.Get(Guid.Parse("641b6f47-d14d-4277-b8ef-dd5d6eebe4a6")) != null)
                             {
                                 var tempItem = ItemBase.Get(Guid.Parse("641b6f47-d14d-4277-b8ef-dd5d6eebe4a6"));
 
-                                Console.WriteLine("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
+                                Log.Debug("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
 
                                 player.TryGiveItem(tempItem.Id, myDeserializedClass.Response.Params.Items[0].Qty);
                                 PacketSender.SendChatMsg(player, "Thank you for your purchase, you can find the item(s) in your inventory or bank");
@@ -522,7 +535,42 @@ namespace Intersect.Server.Networking
                         }
                         else if (myDeserializedClass.Response.Params.Items[0].Itemid == 2)
                         {
+                            //give 1$ pack
+                            if (ItemBase.Get(Guid.Parse("4c49247d-2332-4873-a1fe-b46160fd8719")) != null)
+                            {
+                                var tempItem = ItemBase.Get(Guid.Parse("4c49247d-2332-4873-a1fe-b46160fd8719"));
 
+                                Log.Debug("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
+
+                                player.TryGiveItem(tempItem.Id, myDeserializedClass.Response.Params.Items[0].Qty);
+                                PacketSender.SendChatMsg(player, "Thank you for your purchase, you can find the item(s) in your inventory or bank");
+                            }
+                        }
+                        else if (myDeserializedClass.Response.Params.Items[0].Itemid == 3)
+                        {
+                            //give 5$ pack
+                            if (ItemBase.Get(Guid.Parse("3b35b64d-8b67-4aff-a651-1955cc4a1085")) != null)
+                            {
+                                var tempItem = ItemBase.Get(Guid.Parse("3b35b64d-8b67-4aff-a651-1955cc4a1085"));
+
+                                Log.Debug("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
+
+                                player.TryGiveItem(tempItem.Id, myDeserializedClass.Response.Params.Items[0].Qty);
+                                PacketSender.SendChatMsg(player, "Thank you for your purchase, you can find the item(s) in your inventory or bank");
+                            }
+                        }
+                        else if (myDeserializedClass.Response.Params.Items[0].Itemid == 4)
+                        {
+                            //give pink haired fairy pet
+                            if (ItemBase.Get(Guid.Parse("9cdb349e-7be2-425f-8cdb-d6803f5ab46b")) != null)
+                            {
+                                var tempItem = ItemBase.Get(Guid.Parse("9cdb349e-7be2-425f-8cdb-d6803f5ab46b"));
+
+                                Log.Debug("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
+
+                                player.TryGiveItem(tempItem.Id, myDeserializedClass.Response.Params.Items[0].Qty);
+                                PacketSender.SendChatMsg(player, "Thank you for your purchase, you can find the item(s) in your inventory or bank");
+                            }
                         }
                     }
                 }
