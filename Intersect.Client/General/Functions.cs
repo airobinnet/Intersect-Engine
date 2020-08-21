@@ -55,6 +55,11 @@ namespace Intersect.Client
             return result;
         }
 
+        public static async Task<AuthTicket> startAuth(SteamId steamid)
+        {
+            return await SteamUser.GetAuthSessionTicketAsync();
+        }
+
         public static async Task<List<LeaderboardEntry>> FindLeaderboard(string name, int entryCount)
         {
             var leaderboard = await SteamUserStats.FindLeaderboardAsync(name);

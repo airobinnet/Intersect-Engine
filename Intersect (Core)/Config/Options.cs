@@ -58,6 +58,8 @@ namespace Intersect
 
         [JsonProperty("Guild")] public GuildOptions GuildOpts = new GuildOptions();
 
+        [JsonProperty("CashShop")] public CashShopOptions CashShopOpts = new CashShopOptions();
+
         public SmtpSettings SmtpSettings = new SmtpSettings();
 
         [NotNull]
@@ -148,6 +150,8 @@ namespace Intersect
         public static bool AdminOnly { get => Instance._adminOnly; set => Instance._adminOnly = value; }
 
         public static GuildOptions GuildOptions => Instance.GuildOpts;
+
+        public static CashShopOptions CashShopOptions => Instance.CashShopOpts;
 
         public static bool BlockClientRegistrations
         {

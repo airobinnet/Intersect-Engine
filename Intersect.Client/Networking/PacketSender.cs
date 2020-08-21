@@ -47,9 +47,19 @@ namespace Intersect.Client.Networking
             }
         }
 
+        public static void SendSteamAuth(SteamId steamId, AuthTicket authTicket)
+        {
+            Network.SendPacket(new SendSteamAuthPacket(steamId, authTicket));
+        }
+
         public static void SendSteamMTxnAuthorized(AppId appid, ulong orderid, bool authorized)
         {
             Network.SendPacket(new SendSteamMTxnAuthorizedPacket(appid,orderid,authorized));
+        }
+
+        public static void OpenCashShop(Guid shopid)
+        {
+            Network.SendPacket(new OpenCashShopPacket(shopid));
         }
 
         public static void SendMove()

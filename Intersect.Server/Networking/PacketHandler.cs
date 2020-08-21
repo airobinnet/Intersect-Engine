@@ -34,6 +34,8 @@ using JetBrains.Annotations;
 using RestSharp;
 using Newtonsoft.Json;
 
+using Steamworks;
+
 namespace Intersect.Server.Networking
 {
 
@@ -342,7 +344,36 @@ namespace Intersect.Server.Networking
             public CashFResponse Response { get; set; }
         }
 
+        // AuthRoot myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
+        public class AuthParams
+        {
+            [JsonProperty("result")]
+            public string Result { get; set; }
 
+            [JsonProperty("steamid")]
+            public string Steamid { get; set; }
+
+            [JsonProperty("ownersteamid")]
+            public string Ownersteamid { get; set; }
+
+            [JsonProperty("vacbanned")]
+            public bool Vacbanned { get; set; }
+
+            [JsonProperty("publisherbanned")]
+            public bool Publisherbanned { get; set; }
+        }
+
+        public class AuthResponse
+        {
+            [JsonProperty("params")]
+            public AuthParams Params { get; set; }
+        }
+
+        public class AuthRoot
+        {
+            [JsonProperty("response")]
+            public AuthResponse Response { get; set; }
+        }
 
 
         //PingPacket
@@ -471,11 +502,36 @@ namespace Intersect.Server.Networking
             }
         }
 
+        public void HandlePacket(Client client, Player player, OpenCashShopPacket packet)
+        {
+            player.OpenShop(ShopBase.Get(packet.ShopId));
+        }
+
         public static Guid ToGuid(int value)
         {
             byte[] bytes = new byte[16];
             BitConverter.GetBytes(value).CopyTo(bytes, 0);
             return new Guid(bytes);
+        }
+
+        //SendSteamAuthPacket
+        public void HandlePacket(Client client, Player player, SendSteamAuthPacket packet)
+        {
+            string result = BitConverter.ToString(packet.Ticket.Data).Replace("-", "");
+            var rclient = new RestClient("https://partner.steam-api.com/ISteamUserAuth/AuthenticateUserTicket/v1/?key=3640925ABA2FA8E6E238A31B0C7E289A&appid=1280220&ticket=" + result);
+            //Console.WriteLine(result);
+            Log.Debug("authenticating user with steam...\r\n");
+            rclient.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.AddParameter("application/x-www-form-urlencoded", "", ParameterType.RequestBody);
+            IRestResponse response = rclient.Execute(request);
+            Console.WriteLine(response.Content);
+            AuthRoot myDeserializedClass = JsonConvert.DeserializeObject<AuthRoot>(response.Content);
+            if (myDeserializedClass.Response.Params.Result == "OK" && myDeserializedClass.Response.Params.Publisherbanned == false && myDeserializedClass.Response.Params.Vacbanned == false)
+            {
+
+            }
         }
 
         //SendSteamMTxnAuthorizedPacket
@@ -523,9 +579,9 @@ namespace Intersect.Server.Networking
                         if (myDeserializedClass.Response.Params.Items[0].Itemid == 1)
                         {
                             //give angel wings pack
-                            if (ItemBase.Get(Guid.Parse("641b6f47-d14d-4277-b8ef-dd5d6eebe4a6")) != null)
+                            if (ItemBase.Get(Options.CashShopOptions.ShopItem1Guid) != null)
                             {
-                                var tempItem = ItemBase.Get(Guid.Parse("641b6f47-d14d-4277-b8ef-dd5d6eebe4a6"));
+                                var tempItem = ItemBase.Get(Options.CashShopOptions.ShopItem1Guid);
 
                                 Log.Debug("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
 
@@ -536,9 +592,9 @@ namespace Intersect.Server.Networking
                         else if (myDeserializedClass.Response.Params.Items[0].Itemid == 2)
                         {
                             //give 1$ pack
-                            if (ItemBase.Get(Guid.Parse("4c49247d-2332-4873-a1fe-b46160fd8719")) != null)
+                            if (ItemBase.Get(Options.CashShopOptions.ShopItem2Guid) != null)
                             {
-                                var tempItem = ItemBase.Get(Guid.Parse("4c49247d-2332-4873-a1fe-b46160fd8719"));
+                                var tempItem = ItemBase.Get(Options.CashShopOptions.ShopItem2Guid);
 
                                 Log.Debug("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
 
@@ -549,9 +605,9 @@ namespace Intersect.Server.Networking
                         else if (myDeserializedClass.Response.Params.Items[0].Itemid == 3)
                         {
                             //give 5$ pack
-                            if (ItemBase.Get(Guid.Parse("3b35b64d-8b67-4aff-a651-1955cc4a1085")) != null)
+                            if (ItemBase.Get(Options.CashShopOptions.ShopItem3Guid) != null)
                             {
-                                var tempItem = ItemBase.Get(Guid.Parse("3b35b64d-8b67-4aff-a651-1955cc4a1085"));
+                                var tempItem = ItemBase.Get(Options.CashShopOptions.ShopItem3Guid);
 
                                 Log.Debug("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
 
@@ -562,9 +618,9 @@ namespace Intersect.Server.Networking
                         else if (myDeserializedClass.Response.Params.Items[0].Itemid == 4)
                         {
                             //give pink haired fairy pet
-                            if (ItemBase.Get(Guid.Parse("9cdb349e-7be2-425f-8cdb-d6803f5ab46b")) != null)
+                            if (ItemBase.Get(Options.CashShopOptions.ShopItem4Guid) != null)
                             {
-                                var tempItem = ItemBase.Get(Guid.Parse("9cdb349e-7be2-425f-8cdb-d6803f5ab46b"));
+                                var tempItem = ItemBase.Get(Options.CashShopOptions.ShopItem4Guid);
 
                                 Log.Debug("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
 

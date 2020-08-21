@@ -63,9 +63,6 @@ namespace Intersect.Client.Interface.Menu
 
         private Label mSteamLabel;
 
-
-        private Texture2D _UserAvatar;
-
         //Init
         public LoginWindow(Canvas parent, MainMenu mainMenu, ImagePanel parentPanel)
         {

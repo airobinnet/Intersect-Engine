@@ -200,6 +200,7 @@
     <Compile Include="Config\LootOptions.cs" />
     <Compile Include="Config\GuildOptions.cs" />
     <Compile Include="Config\PacketOptions.cs" />
+    <Compile Include="Config\CashshopOptions.cs" />
     <Compile Include="Config\PartyOptions.cs" />
     <Compile Include="Config\SecurityOptions.cs" />
     <Compile Include="Core\ApplicationContext.cs" />
@@ -318,7 +319,9 @@
     <Compile Include="Network\Packets\Client\AbandonQuestPacket.cs" />
     <Compile Include="Network\Packets\Client\ActionHDVPacket.cs" />
     <Compile Include="Network\Packets\Client\AddHDVPacket.cs" />
+    <Compile Include="Network\Packets\Client\OpenCashShopPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseHDVPacket.cs" />
+    <Compile Include="Network\Packets\Client\SendSteamAuthPacket.cs" />
     <Compile Include="Network\Packets\Client\SendSteamMTxnAuthorizedPacket.cs" />
     <Compile Include="Network\Packets\Client\LoginCheckPacket.cs" />
     <Compile Include="Network\Packets\Server\HasAccountPacket.cs" />

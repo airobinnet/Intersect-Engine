@@ -16,6 +16,7 @@ using Intersect.Network.Events;
 using JetBrains.Annotations;
 
 using Steamworks;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Intersect.Client.Interface.Menu
 {
@@ -70,6 +71,8 @@ namespace Intersect.Client.Interface.Menu
         private bool mShouldOpenCharacterCreation;
 
         private bool mShouldOpenCharacterSelection;
+
+        private GraphicsDevice mGraphicsDevice;
 
         //Init
         public MainMenu(Canvas menuCanvas)

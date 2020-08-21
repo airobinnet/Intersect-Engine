@@ -25,14 +25,6 @@ namespace Intersect.Client.Interface.Game.CashShop
     {
         private Label mNameText;
 
-        private ImagePanel mShop1Item;
-
-        private ImagePanel mShop2Item;
-
-        private ImagePanel mShop3Item;
-
-        private ImagePanel mShop4Item;
-
         private Button mBuy1Button;
 
         private Button mBuy2Button;
@@ -40,6 +32,16 @@ namespace Intersect.Client.Interface.Game.CashShop
         private Button mBuy3Button;
 
         private Button mBuy4Button;
+
+        private Button mBuy5Button;
+
+        private Button mBuy6Button;
+
+        private Button mShop1Button;
+
+        private Button mShop2Button;
+
+        private Button mShop3Button;
 
         private ComboBox orderCB;
 
@@ -72,36 +74,49 @@ namespace Intersect.Client.Interface.Game.CashShop
             mNameText.Text = "Cash Shop";
 
             mBuy1Button = new Button(mCashShopWindow, "Buy1Button");
-            mBuy1Button.Text = "Buy";
+            mBuy1Button.Text = "";
             mBuy1Button.SetToolTipText("Buy pack 1");
             mBuy1Button.Clicked += mBuy1Button_Clicked;
 
             mBuy2Button = new Button(mCashShopWindow, "Buy2Button");
-            mBuy2Button.Text = "Buy";
+            mBuy2Button.Text = "";
             mBuy2Button.SetToolTipText("Buy pack 2");
             mBuy2Button.Clicked += mBuy2Button_Clicked;
 
             mBuy3Button = new Button(mCashShopWindow, "Buy3Button");
-            mBuy3Button.Text = "Buy";
+            mBuy3Button.Text = "";
             mBuy3Button.SetToolTipText("Buy pack 3");
             mBuy3Button.Clicked += mBuy3Button_Clicked;
 
             mBuy4Button = new Button(mCashShopWindow, "Buy4Button");
-            mBuy4Button.Text = "Buy";
+            mBuy4Button.Text = "";
             mBuy4Button.SetToolTipText("Buy pack 4");
             mBuy4Button.Clicked += mBuy4Button_Clicked;
 
-            mShop1Item = new ImagePanel(mCashShopWindow, "Shop1Item");
-            mShop1Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop1item.png");
+            mBuy5Button = new Button(mCashShopWindow, "Buy5Button");
+            mBuy5Button.Text = "";
+            mBuy5Button.SetToolTipText("Buy pack 5");
+            mBuy5Button.Clicked += mBuy5Button_Clicked;
 
-            mShop2Item = new ImagePanel(mCashShopWindow, "Shop2Item");
-            mShop2Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop2item.png");
+            mBuy6Button = new Button(mCashShopWindow, "Buy6Button");
+            mBuy6Button.Text = "";
+            mBuy6Button.SetToolTipText("Buy pack 6");
+            mBuy6Button.Clicked += mBuy6Button_Clicked;
 
-            mShop3Item = new ImagePanel(mCashShopWindow, "Shop3Item");
-            mShop3Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop3item.png");
+            mShop1Button = new Button(mCashShopWindow, "OpenShop1");
+            mShop1Button.Text = "";
+            mShop1Button.SetToolTipText("Open Pets Shop");
+            mShop1Button.Clicked += mOpenShop1Button_Clicked;
 
-            mShop4Item = new ImagePanel(mCashShopWindow, "Shop4Item");
-            mShop4Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop4item.png");
+            mShop2Button = new Button(mCashShopWindow, "OpenShop2");
+            mShop2Button.Text = "";
+            mShop2Button.SetToolTipText("Open Cosmetics Shop");
+            mShop2Button.Clicked += mOpenShop2Button_Clicked;
+
+            mShop3Button = new Button(mCashShopWindow, "OpenShop3");
+            mShop3Button.Text = "";
+            mShop3Button.SetToolTipText("Open Boosts Shop");
+            mShop3Button.Clicked += mOpenShop3Button_Clicked;
 
             mTimer = new Timer();
             mTimer.Interval = 500;
@@ -114,22 +129,7 @@ namespace Intersect.Client.Interface.Game.CashShop
 
         private void mTimer_Tick(object sender, ElapsedEventArgs elapsedEventArg)
         {
-            if (!imageSwitch)
-            {
-                mShop1Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop1item.png");
-                mShop2Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop2item.png");
-                mShop3Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop3item.png");
-                mShop4Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop4Item.png");
-                imageSwitch = true;
-            }
-            else
-            {
-                mShop1Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop1itema.png");
-                mShop2Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop2itema.png");
-                mShop3Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop3itema.png");
-                mShop4Item.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, "shop4itema.png");
-                imageSwitch = false;
-            }
+           
         }
 
         public void Start()
@@ -170,22 +170,48 @@ namespace Intersect.Client.Interface.Game.CashShop
 
         void mBuy1Button_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            SteamFriends.OpenWebOverlay("https://floor100.com/steamshop.php?item=1&steamid=" + SteamClient.SteamId);
+            SteamFriends.OpenWebOverlay("https://floor100.com/steamshop.php?item=" + Options.CashShopOptions.ShopItem1 + "&steamid=" + SteamClient.SteamId);
         }
 
         void mBuy2Button_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            SteamFriends.OpenWebOverlay("https://floor100.com/steamshop.php?item=2&steamid=" + SteamClient.SteamId);
+            SteamFriends.OpenWebOverlay("https://floor100.com/steamshop.php?item=" + Options.CashShopOptions.ShopItem2 + "&steamid=" + SteamClient.SteamId);
         }
 
         void mBuy3Button_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            SteamFriends.OpenWebOverlay("https://floor100.com/steamshop.php?item=3&steamid=" + SteamClient.SteamId);
+            SteamFriends.OpenWebOverlay("https://floor100.com/steamshop.php?item=" + Options.CashShopOptions.ShopItem3 + "&steamid=" + SteamClient.SteamId);
         }
 
         void mBuy4Button_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            SteamFriends.OpenWebOverlay("https://floor100.com/steamshop.php?item=4&steamid=" + SteamClient.SteamId);
+            SteamFriends.OpenWebOverlay("https://floor100.com/steamshop.php?item=" + Options.CashShopOptions.ShopItem4 + "&steamid=" + SteamClient.SteamId);
+        }
+
+        void mBuy5Button_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            SteamFriends.OpenWebOverlay("https://floor100.com/steamshop.php?item=" + Options.CashShopOptions.ShopItem5 + "&steamid=" + SteamClient.SteamId);
+        }
+
+        void mBuy6Button_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            SteamFriends.OpenWebOverlay("https://floor100.com/steamshop.php?item=" + Options.CashShopOptions.ShopItem6 + "&steamid=" + SteamClient.SteamId);
+        }
+
+
+        void mOpenShop1Button_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            PacketSender.OpenCashShop(Options.CashShopOptions.ShopLink1);
+        }
+
+        void mOpenShop2Button_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            PacketSender.OpenCashShop(Options.CashShopOptions.ShopLink2);
+        }
+
+        void mOpenShop3Button_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            PacketSender.OpenCashShop(Options.CashShopOptions.ShopLink3);
         }
 
     }
