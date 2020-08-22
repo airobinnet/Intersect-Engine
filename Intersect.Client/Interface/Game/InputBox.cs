@@ -92,6 +92,7 @@ namespace Intersect.Client.Interface.Game
             if (inputtype == InputType.NumericInput)
             {
                 mNumericTextbox.Focus();
+                Interface.FocusElements.Add(mNumericTextbox);
             }
 
             mTextboxBg = new ImagePanel(mMyWindow, "Textbox");
@@ -173,6 +174,7 @@ namespace Intersect.Client.Interface.Game
                         mNoButton.Show();
                         mNumericTextboxBg.Show();
                         mTextboxBg.Hide();
+
 
                         break;
                     case InputType.TextInput:

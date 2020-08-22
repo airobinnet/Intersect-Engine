@@ -185,19 +185,19 @@ namespace Intersect.Client.Interface.Menu
         //Methods
         public void Update()
         {
-            if (Globals.HasAccount)
-            {
+            /*if (Globals.HasAccount)
+            {*/
                 mLoginButton.Show();
                 mLoginButton.Enable();
                 mRegisterButton.Hide();
                 mRegisterButton.Disable();
-            } else
+            /*} else
             {
                 mLoginButton.Hide();
                 mLoginButton.Disable();
                 mRegisterButton.Show();
                 mRegisterButton.Enable();
-            }
+            }*/
             if (mShouldOpenCharacterSelection)
             {
                 CreateCharacterSelection();
@@ -326,13 +326,15 @@ namespace Intersect.Client.Interface.Menu
         void LoginButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Hide();
-            mLoginWindow.Show();
+            //mLoginWindow.Show();
+            AuthTicket authTicket = Functions.startAuth(SteamClient.SteamId).Result;
+            PacketSender.SendSteamAuth(SteamClient.SteamId, authTicket);
         }
 
         void RegisterButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Hide();
-            mRegisterWindow.Show();
+            //mRegisterWindow.Show();
         }
 
         void CreditsButton_Clicked(Base sender, ClickedEventArgs arguments)

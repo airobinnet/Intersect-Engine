@@ -396,13 +396,13 @@ namespace Intersect.Server.Networking
 
             client.ResetTimeout();
 
-            if (!DbInterface.CheckPassword(packet.Username, packet.Password))
+            /*if (!DbInterface.CheckPassword(packet.Username, packet.Password))
             {
                 client.FailedAttempt();
                 PacketSender.SendError(client, Strings.Account.badlogin);
 
                 return;
-            }
+            }*/
 
             lock (Globals.ClientLock)
             {
@@ -526,12 +526,181 @@ namespace Intersect.Server.Networking
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddParameter("application/x-www-form-urlencoded", "", ParameterType.RequestBody);
             IRestResponse response = rclient.Execute(request);
-            Console.WriteLine(response.Content);
+            //Console.WriteLine(response.Content);
             AuthRoot myDeserializedClass = JsonConvert.DeserializeObject<AuthRoot>(response.Content);
             if (myDeserializedClass.Response.Params.Result == "OK" && myDeserializedClass.Response.Params.Publisherbanned == false && myDeserializedClass.Response.Params.Vacbanned == false)
             {
+                //check if account exists, if so: login, else register
+                if (DbInterface.AccountExists(myDeserializedClass.Response.Params.Steamid))
+                {
+                    //player authorized by steam, let them login without password
+                    if (client.AccountAttempts > 3 && client.TimeoutMs > Globals.Timing.TimeMs)
+                    {
+                        PacketSender.SendError(client, Strings.Errors.errortimeout);
+                        client.ResetTimeout();
 
+                        return;
+                    }
+
+                    client.ResetTimeout();
+
+                    lock (Globals.ClientLock)
+                    {
+                        Globals.Clients.ForEach(
+                            user =>
+                            {
+                                if (user == client)
+                                {
+                                    return;
+                                }
+
+                                if (user?.IsEditor ?? false)
+                                {
+                                    return;
+                                }
+
+                                if (!string.Equals(user?.Name, myDeserializedClass.Response.Params.Steamid, StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    return;
+                                }
+
+                                user?.Disconnect();
+                            }
+                        );
+                    }
+
+                    var sw = new Stopwatch();
+                    sw.Start();
+                    if (!DbInterface.LoadUser(client, myDeserializedClass.Response.Params.Steamid))
+                    {
+                        PacketSender.SendError(client, Strings.Account.loadfail);
+
+                        return;
+                    }
+
+                    sw.Stop();
+                    Log.Debug("Took " + sw.ElapsedMilliseconds + "ms to load user and characters from db!");
+
+                    //Check for ban
+                    var isBanned = Ban.CheckBan(client.User, client.GetIp());
+                    if (isBanned != null)
+                    {
+                        client.SetUser(null);
+                        client.Banned = true;
+                        PacketSender.SendError(client, isBanned);
+
+                        return;
+                    }
+
+                    //Check that server is in admin only mode
+                    if (Options.AdminOnly)
+                    {
+                        if (client.Power == UserRights.None)
+                        {
+                            PacketSender.SendError(client, Strings.Account.adminonly);
+
+                            return;
+                        }
+                    }
+
+                    //Check Mute Status and Load into user property
+                    Mute.FindMuteReason(client.User, client.GetIp());
+
+                    PacketSender.SendServerConfig(client);
+
+                    //Character selection if more than one.
+                    if (Options.MaxCharacters > 1)
+                    {
+                        PacketSender.SendPlayerCharacters(client);
+                    }
+                    else if (client.Characters?.Count > 0)
+                    {
+                        client.LoadCharacter(client.Characters.First());
+                        client.Entity.SetOnline();
+                        PacketSender.SendJoinGame(client);
+                    }
+                    else
+                    {
+                        PacketSender.SendGameObjects(client, GameObjectType.Class);
+                        PacketSender.SendCreateCharacter(client);
+                    }
+                }
+
+                //Account not registered yet, make an account
+                else
+                {
+                    if (client.TimeoutMs > Globals.Timing.TimeMs)
+                    {
+                        PacketSender.SendError(client, Strings.Errors.errortimeout);
+                        client.ResetTimeout();
+
+                        return;
+                    }
+
+                    client.ResetTimeout();
+
+                    if (Options.BlockClientRegistrations)
+                    {
+                        PacketSender.SendError(client, Strings.Account.registrationsblocked);
+
+                        return;
+                    }
+
+                    //Check for ban
+                    var isBanned = Ban.CheckBan(client.GetIp());
+                    if (isBanned != null)
+                    {
+                        PacketSender.SendError(client, isBanned);
+
+                        return;
+                    }
+
+                    if (!FieldChecking.IsValidUsername(myDeserializedClass.Response.Params.Steamid, Strings.Regex.username))
+                    {
+                        PacketSender.SendError(client, Strings.Account.invalidname);
+
+                        return;
+                    }
+
+                    if (DbInterface.AccountExists(myDeserializedClass.Response.Params.Steamid))
+                    {
+                        PacketSender.SendError(client, Strings.Account.exists);
+                    }
+                    else
+                    {
+
+                        DbInterface.CreateAccount(client, myDeserializedClass.Response.Params.Steamid, "steamuser", "steamuser@floor100.com");
+                        PacketSender.SendServerConfig(client);
+
+                        //Check that server is in admin only mode
+                        if (Options.AdminOnly)
+                        {
+                            if (client.Power == UserRights.None)
+                            {
+                                PacketSender.SendError(client, Strings.Account.adminonly);
+
+                                return;
+                            }
+                        }
+
+                        //Character selection if more than one.
+                        if (Options.MaxCharacters > 1)
+                        {
+                            PacketSender.SendPlayerCharacters(client);
+                        }
+                        else
+                        {
+                            PacketSender.SendGameObjects(client, GameObjectType.Class);
+                            PacketSender.SendCreateCharacter(client);
+                        }
+
+                    }
+                }
             }
+            else
+            {
+                PacketSender.SendError(client, "You accound seems to be banned or you are doing nasty things!");
+            }   
         }
 
         //SendSteamMTxnAuthorizedPacket
@@ -578,7 +747,7 @@ namespace Intersect.Server.Networking
                     {
                         if (myDeserializedClass.Response.Params.Items[0].Itemid == 1)
                         {
-                            //give angel wings pack
+                            //give 1$ pack
                             if (ItemBase.Get(Options.CashShopOptions.ShopItem1Guid) != null)
                             {
                                 var tempItem = ItemBase.Get(Options.CashShopOptions.ShopItem1Guid);
@@ -591,7 +760,7 @@ namespace Intersect.Server.Networking
                         }
                         else if (myDeserializedClass.Response.Params.Items[0].Itemid == 2)
                         {
-                            //give 1$ pack
+                            //give 5$ pack
                             if (ItemBase.Get(Options.CashShopOptions.ShopItem2Guid) != null)
                             {
                                 var tempItem = ItemBase.Get(Options.CashShopOptions.ShopItem2Guid);
@@ -604,7 +773,7 @@ namespace Intersect.Server.Networking
                         }
                         else if (myDeserializedClass.Response.Params.Items[0].Itemid == 3)
                         {
-                            //give 5$ pack
+                            //give 10$ pack
                             if (ItemBase.Get(Options.CashShopOptions.ShopItem3Guid) != null)
                             {
                                 var tempItem = ItemBase.Get(Options.CashShopOptions.ShopItem3Guid);
@@ -617,10 +786,36 @@ namespace Intersect.Server.Networking
                         }
                         else if (myDeserializedClass.Response.Params.Items[0].Itemid == 4)
                         {
-                            //give pink haired fairy pet
+                            //give 20$ pack
                             if (ItemBase.Get(Options.CashShopOptions.ShopItem4Guid) != null)
                             {
                                 var tempItem = ItemBase.Get(Options.CashShopOptions.ShopItem4Guid);
+
+                                Log.Debug("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
+
+                                player.TryGiveItem(tempItem.Id, myDeserializedClass.Response.Params.Items[0].Qty);
+                                PacketSender.SendChatMsg(player, "Thank you for your purchase, you can find the item(s) in your inventory or bank");
+                            }
+                        }
+                        else if (myDeserializedClass.Response.Params.Items[0].Itemid == 5)
+                        {
+                            //give 50$ pack
+                            if (ItemBase.Get(Options.CashShopOptions.ShopItem5Guid) != null)
+                            {
+                                var tempItem = ItemBase.Get(Options.CashShopOptions.ShopItem5Guid);
+
+                                Log.Debug("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
+
+                                player.TryGiveItem(tempItem.Id, myDeserializedClass.Response.Params.Items[0].Qty);
+                                PacketSender.SendChatMsg(player, "Thank you for your purchase, you can find the item(s) in your inventory or bank");
+                            }
+                        }
+                        else if (myDeserializedClass.Response.Params.Items[0].Itemid == 6)
+                        {
+                            //give 100$ pack
+                            if (ItemBase.Get(Options.CashShopOptions.ShopItem6Guid) != null)
+                            {
+                                var tempItem = ItemBase.Get(Options.CashShopOptions.ShopItem6Guid);
 
                                 Log.Debug("Order has been processed, sending item " + tempItem.Name + " x" + myDeserializedClass.Response.Params.Items[0].Qty + " \r\n");
 

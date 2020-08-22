@@ -150,11 +150,8 @@ namespace Intersect.Client.Core
             {
                 SteamClient.Init(1280220);
                 Globals.IsSteamRunning = true;
-                AuthTicket authTicket = Functions.startAuth(SteamClient.SteamId).Result;
-                PacketSender.SendSteamAuth(SteamClient.SteamId, authTicket);
                 SteamUtils.OverlayNotificationPosition = NotificationPosition.BottomLeft;
                 SteamUser.OnMicroTxnAuthorizationResponse += SteamUser_OnMicroTxnAuthorizationResponse;
-                SteamUser.OnValidateAuthTicketResponse += SteamUser_OnOnValidateAuthTicketResponse;
             }
             catch (Exception e)
             {
@@ -183,14 +180,6 @@ namespace Intersect.Client.Core
                 );
                 //SteamFriends.OpenWebOverlay("https://floor100.com/steamshoperror.php?orderid=" + orderid);
             }
-        }
-
-        private static void SteamUser_OnOnValidateAuthTicketResponse(SteamId steamid, SteamId ownerid, AuthResponse authorized)
-        {
-            //PacketSender.SendSteamAuth(steamid, authorized);
-            Interface.Interface.MsgboxErrors.Add(
-                     new KeyValuePair<string, string>("", "auth: " + authorized + ".")
-                 );
         }
 
         public static void DestroyGame()

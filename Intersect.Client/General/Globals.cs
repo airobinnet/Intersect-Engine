@@ -44,6 +44,8 @@ namespace Intersect.Client.General
         //GuildBank
         public static Item[] GuildBank;
 
+        public static List<PvpPlayer> PvpList;
+
         public static bool ConnectionLost;
 
         // Mail
@@ -180,6 +182,17 @@ namespace Intersect.Client.General
             }
 
             return null;
+        }
+
+
+        public class PvpPlayer
+        {
+            public Guid playerId;
+
+            public string Name;
+
+            public int Level;
+
         }
 
     }

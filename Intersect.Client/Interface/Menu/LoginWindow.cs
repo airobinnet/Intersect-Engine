@@ -227,7 +227,7 @@ namespace Intersect.Client.Interface.Menu
                 return;
             }
 
-            if (!Networking.Network.Connected)
+            /*if (!Networking.Network.Connected)
             {
                 Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Errors.notconnected));
 
@@ -255,10 +255,11 @@ namespace Intersect.Client.Interface.Menu
             if (!mUseSavedPass)
             {
                 password = ComputePasswordHash(mPasswordTextbox?.Text?.Trim());
-            }
+            }*/
 
-            PacketSender.SendLogin(mUsernameTextbox?.Text, password);
-            SaveCredentials();
+            PacketSender.SendLogin(SteamClient.SteamId.ToString(), "steampaswsword");
+            //PacketSender.SendLogin(mUsernameTextbox?.Text, password);
+            //SaveCredentials();
             Globals.WaitingOnServer = true;
             ChatboxMsg.ClearMessages();
         }

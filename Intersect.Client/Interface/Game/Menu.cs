@@ -41,6 +41,10 @@ namespace Intersect.Client.Interface.Game
 
         [NotNull] private readonly Button mMenuButton;
 
+        [NotNull] private readonly ImagePanel mPvpBackground;
+
+        [NotNull] private readonly Button mPvpButton;
+
         //Menu Container
         private readonly ImagePanel mMenuContainer;
 
@@ -73,6 +77,8 @@ namespace Intersect.Client.Interface.Game
         [NotNull] private readonly Button mSpellsButton;
 
         [NotNull] private readonly SpellsWindow mSpellsWindow;
+
+        [NotNull] private readonly PvpWindow mPvpWindow;
 
         private int mBackgroundHeight = 42;
 
@@ -135,6 +141,11 @@ namespace Intersect.Client.Interface.Game
             mCashShopButton.SetToolTipText("Cash Shop");
             mCashShopButton.Clicked += CashShopBtn_Clicked;
 
+            mPvpBackground = new ImagePanel(mMenuContainer, "PvpContainer");
+            mPvpButton = new Button(mPvpBackground, "PvpButton");
+            mPvpButton.SetToolTipText("Pvp");
+            mPvpButton.Clicked += PvpBtn_Clicked;
+
             mMenuBackground = new ImagePanel(mMenuContainer, "MenuContainer");
             mMenuButton = new Button(mMenuBackground, "MenuButton");
             mMenuButton.SetToolTipText(Strings.GameMenu.Menu);
@@ -150,6 +161,7 @@ namespace Intersect.Client.Interface.Game
             mSpellsWindow = new SpellsWindow(gameCanvas);
             mCharacterWindow = new CharacterWindow(gameCanvas);
             mQuestsWindow = new QuestsWindow(gameCanvas);
+            mPvpWindow = new PvpWindow(gameCanvas);
             mCashShopWindow = new CashShopWindow(gameCanvas);
         }
 
@@ -163,6 +175,7 @@ namespace Intersect.Client.Interface.Game
             mGuildWindow.Update();
             mFriendsWindow.Update();
             mCashShopWindow.Update();
+            mPvpWindow.Update();
             mQuestsWindow.Update(updateQuestLog);
         }
 
@@ -186,6 +199,7 @@ namespace Intersect.Client.Interface.Game
             mQuestsWindow.Hide();
             mSpellsWindow.Hide();
             mCashShopWindow.Hide();
+            mPvpWindow.Hide();
         }
 
         public void ToggleCharacterWindow()
@@ -259,6 +273,19 @@ namespace Intersect.Client.Interface.Game
             }
         }
 
+        public void TogglePvpWindow()
+        {
+            if (mPvpWindow.IsVisible())
+            {
+                mPvpWindow.Hide();
+            }
+            else
+            {
+                HideWindows();
+                mPvpWindow.Show();
+            }
+        }
+
         public void ToggleQuestsWindow()
         {
             if (mQuestsWindow.IsVisible())
@@ -317,6 +344,11 @@ namespace Intersect.Client.Interface.Game
         private void GuildBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             ToggleGuildWindow();
+        }
+
+        private void PvpBtn_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            TogglePvpWindow();
         }
 
         private void FriendsBtn_Clicked(Base sender, ClickedEventArgs arguments)
