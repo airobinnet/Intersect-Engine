@@ -251,6 +251,9 @@
         //CreateGuild
         CreateGuild = 701,
 
+        //GiveGuildExperience
+        GiveGuildExperience = 702,
+
     }
 
 }

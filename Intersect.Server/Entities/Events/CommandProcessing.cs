@@ -437,6 +437,18 @@ namespace Intersect.Server.Entities.Events
             player.GiveExperience(command.Exp);
         }
 
+        //Give Guild Experience Command
+        private static void ProcessCommand(
+            GiveGuildExperienceCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            player.Guild?.GiveExperience(command.Exp);
+        }
+
         //Change Level Command
         private static void ProcessCommand(
             ChangeLevelCommand command,

@@ -1882,6 +1882,7 @@ Tick timer saved in server config.json.";
                 {"openguildbank", @"Open GuildBank"},
                 {"guild", @"Guild"},
                 {"createguild", @"Create Guild" },
+                {"giveguildexperience", @"Give Guild Experience" },
             };
 
         }

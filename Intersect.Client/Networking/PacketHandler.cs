@@ -426,9 +426,9 @@ namespace Intersect.Client.Networking
             Globals.Me.GuildName = packet.Name;
             Globals.Me.GuildRanks = packet.Ranks;
             Globals.Me.GuildTag = packet.Tag;
-            Globals.Me.GuildUpdate = true;
             Globals.Me.GuildLevel = packet.GuildLevel;
             Globals.Me.GuildExperience = packet.GuildExperience;
+            Globals.Me.GuildUpdate = true;
         }
 
         //GuildInvitePacket

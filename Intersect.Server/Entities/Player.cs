@@ -4688,8 +4688,10 @@ namespace Intersect.Server.Entities
             // Did this player already receive an invite before?
             if (guildInvite != null)
             {
+                PacketSender.SendChatMsg(inviteFrom, Strings.Guilds.PlayerAlreadyInvited, CustomColors.Alerts.Error);
+                return;
                 // Send the previous guild a message their invite is about to be overwritten.
-                PacketSender.SendGuildMsg(guildInvite, Strings.Guilds.InviteOverwritten, CustomColors.Alerts.Declined);
+                //PacketSender.SendGuildMsg(guildInvite, Strings.Guilds.InviteOverwritten, CustomColors.Alerts.Declined);
             }
 
             // Set our invite to this guild.

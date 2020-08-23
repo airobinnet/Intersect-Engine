@@ -20,6 +20,8 @@ namespace Intersect.Client.Interface.Game.Guild
 
     public class GuildWindow
     {
+        public float CurExpWidth;
+
         private Button mAddButton;
 
         private Button mAddPopupButton;
@@ -39,6 +41,14 @@ namespace Intersect.Client.Interface.Game.Guild
         private Label mTagText;
 
         private Label mRankText;
+
+        private Label mGuildLevel;
+
+        private Label mGuildExperience;
+
+        public ImagePanel ExpBackground;
+
+        public ImagePanel ExperienceBar;
 
         private Button mLeaveCreateButton;
 
@@ -65,6 +75,8 @@ namespace Intersect.Client.Interface.Game.Guild
         private WindowControl mGuildWindow;
 
         private int sortMode = 0;
+
+        private long mLastUpdateTime;
 
         //Init
         public GuildWindow(Canvas gameCanvas)
@@ -93,6 +105,17 @@ namespace Intersect.Client.Interface.Game.Guild
             mTagText = new Label(mGuildWindow, "TagText");
             mTagText.SetTextColor(new Color(0, 0, 0, 0), Label.ControlState.Normal);
             mTagText.Text = Globals.Me.GuildTag;
+
+            mGuildLevel = new Label(mGuildWindow, "GuildLevelText");
+            mGuildLevel.SetTextColor(new Color(0, 0, 0, 0), Label.ControlState.Normal);
+            mGuildLevel.Text = Globals.Me.GuildLevel.ToString();
+
+            mGuildExperience = new Label(mGuildWindow, "GuildExperienceText");
+            mGuildExperience.SetTextColor(new Color(0, 0, 0, 0), Label.ControlState.Normal);
+            mGuildExperience.Text = Globals.Me.GuildExperience.ToString();
+
+            ExpBackground = new ImagePanel(mGuildWindow, "EXPBackground");
+            ExperienceBar = new ImagePanel(mGuildWindow, "ExperienceBar");
 
             mLeaveCreateButton = new Button(mGuildWindow, "LeaveCreateGuildButton");
             mLeaveCreateButton.Text = "Create Guild";
@@ -126,6 +149,9 @@ namespace Intersect.Client.Interface.Game.Guild
             UpdateList();
 
             mGuildWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
+
+
+            mLastUpdateTime = Globals.System.GetTimeMs();
         }
 
         //Methods
@@ -155,6 +181,10 @@ namespace Intersect.Client.Interface.Game.Guild
             mAcceptInviteButton.Hide();
             mDeclineInviteButton.Hide();
             orderCB.Hide();
+            mGuildExperience.Hide();
+            mGuildLevel.Hide();
+            ExpBackground.Hide();
+            ExperienceBar.Hide();
 
             if (Globals.Me.GuildName == null || Globals.Me.GuildName == "")
             {
@@ -178,6 +208,10 @@ namespace Intersect.Client.Interface.Game.Guild
                     mAcceptInviteButton.Hide();
                     mDeclineInviteButton.Hide();
                     orderCB.Hide();
+                    mGuildExperience.Hide();
+                    mGuildLevel.Hide();
+                    ExpBackground.Hide();
+                    ExperienceBar.Hide();
                 }
                 
             } else
@@ -196,6 +230,15 @@ namespace Intersect.Client.Interface.Game.Guild
                 mDeclineInviteButton.Hide();
                 orderCB.Show();
                 mAddPopupButton.Hide();
+                mGuildExperience.Show();
+                mGuildLevel.Show();
+                ExpBackground.Show();
+                ExperienceBar.Show();
+
+                //Time since this window was last updated (for bar animations)
+                var elapsedTime = (Globals.System.GetTimeMs() - mLastUpdateTime) / 1000.0f;
+
+                UpdateXpBar(elapsedTime);
             }
             
             if (Globals.Me.GuildMembers != null)
@@ -218,6 +261,8 @@ namespace Intersect.Client.Interface.Game.Guild
                 }
 
             }
+
+            mLastUpdateTime = Globals.System.GetTimeMs();
         }
 
         private void orderCB_Selected(Base sender, ItemSelectedEventArgs arguments)
@@ -307,6 +352,9 @@ namespace Intersect.Client.Interface.Game.Guild
                     );
                 }
             }
+
+            var elapsedTime = (Globals.System.GetTimeMs() - mLastUpdateTime) / 1000.0f;
+            UpdateXpBar(elapsedTime);
         }
         
         private void AddMember(Object sender, EventArgs e)
@@ -364,6 +412,65 @@ namespace Intersect.Client.Interface.Game.Guild
                 //leave guild
                 PacketSender.SendGuildLeave();
             }
+        }
+
+        private void UpdateXpBar(float elapsedTime)
+        {
+            float guildExpWidth = 1;
+            float MaxLvlExp = 5000;
+
+            MaxLvlExp = Options.GuildOptions.GuildLevels[Globals.Me.GuildLevel];
+
+            if (MaxLvlExp > 0)
+            {
+                guildExpWidth = (float)Globals.Me.GuildExperience /
+                                 (float)MaxLvlExp;
+
+                mGuildExperience.Text = Strings.EntityBox.expval.ToString(
+                    (float)Globals.Me.GuildExperience, MaxLvlExp
+                );
+            }
+            else
+            {
+                guildExpWidth = 1f;
+                mGuildExperience.Text = Strings.EntityBox.maxlevel;
+            }
+
+            guildExpWidth *= ExpBackground.Width;
+            if (Math.Abs((int)guildExpWidth - CurExpWidth) < 0.01)
+            {
+                return;
+            }
+
+            if ((int)guildExpWidth > CurExpWidth)
+            {
+                CurExpWidth += 100f * elapsedTime;
+                if (CurExpWidth > (int)guildExpWidth)
+                {
+                    CurExpWidth = guildExpWidth;
+                }
+            }
+            else
+            {
+                CurExpWidth -= 100f * elapsedTime;
+                if (CurExpWidth < guildExpWidth)
+                {
+                    CurExpWidth = guildExpWidth;
+                }
+            }
+
+            if (CurExpWidth == 0)
+            {
+                ExperienceBar.IsHidden = true;
+            }
+            else
+            {
+                ExperienceBar.Width = (int)CurExpWidth;
+                ExperienceBar.SetTextureRect(0, 0, (int)CurExpWidth, ExperienceBar.Height);
+                ExperienceBar.IsHidden = false;
+            }
+
+            mGuildLevel.Text = Globals.Me.GuildLevel.ToString();
         }
 
     }

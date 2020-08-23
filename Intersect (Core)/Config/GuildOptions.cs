@@ -29,49 +29,128 @@ namespace Intersect.Config
         /// </summary>
         public string DefaultMemberRank = "New Member";
 
-        public List<GuildRankOptions> DefaultRanks = new List<GuildRankOptions>() { 
-
-        //New Member
-        //uncomment next part the first time you start the server, then comment it again
-        //why? cuz else it duplicates each reboot and i dont know how to fix that
-        /*new GuildRankOptions() {
-            Title = "New Member",
-            Permissions = new Dictionary<GuildPermissions, bool>() {
-                { GuildPermissions.UseGuildChat, true },
-            }
-        },
-
-        // Member
-        new GuildRankOptions() {
-            Title = "Member",
-            Permissions = new Dictionary<GuildPermissions, bool>() {
-                { GuildPermissions.UseGuildChat, true },
-                { GuildPermissions.InvitePlayers, true },
-            }
-        },
-
-        // Officer
-        new GuildRankOptions() {
-            Title = "Officer",
-            Permissions = new Dictionary<GuildPermissions, bool>() {
-                { GuildPermissions.UseGuildChat, true },
-                { GuildPermissions.InvitePlayers, true },
-                { GuildPermissions.KickPlayers, true },
-            }
-        },
-
-        // Leader
-        new GuildRankOptions() {
-            Title = "Leader",
-            Permissions = new Dictionary<GuildPermissions, bool>() {
-                { GuildPermissions.UseGuildChat, true },
-                { GuildPermissions.InvitePlayers, true },
-                { GuildPermissions.KickPlayers, true },
-                { GuildPermissions.ChangeGuildName, true },
-                { GuildPermissions.ChangeGuildTag, true },
-            }
-        },*/
+        public List<int> GuildLevels = new List<int>()
+        {
+            5000,
+            50000,
+            100000,
+            250000,
+            1000000,
+            0
         };
+
+        public List<GuildRankOptions> DefaultRanks = new List<GuildRankOptions>() {
+
+            //New Member
+            //copy paste the next part into your config
+            /*{
+            "Permissions": {
+              "UseGuildChat": true
+            },
+            "Title": "New Member"
+          },
+          {
+            "Permissions": {
+              "UseGuildChat": true,
+              "InvitePlayers": true,
+              "ViewBank": true,
+              "DepositBank": true
+            },
+            "Title": "Member"
+          },
+          {
+            "Permissions": {
+              "UseGuildChat": true,
+              "InvitePlayers": true,
+              "KickPlayers": true,
+              "ViewBank": true,
+              "DepositBank": true,
+              "WithdrawBank": true
+            },
+            "Title": "Officer"
+          },
+          {
+            "Permissions": {
+              "UseGuildChat": true,
+              "InvitePlayers": true,
+              "KickPlayers": true,
+              "ChangeGuildName": true,
+              "ChangeGuildTag": true,
+              "ViewBank": true,
+              "DepositBank": true,
+              "WithdrawBank": true
+            },
+            "Title": "Leader"
+          }*/
+
+            //you can also uncomment next part the first time you start the server, then comment it again
+            //why? cuz else it duplicates each reboot and i dont know how to fix that
+            // I FIXED IT!!!!!
+
+            new GuildRankOptions() {
+                Title = "New Member",
+                Permissions = new Dictionary<GuildPermissions, bool>() {
+                    { GuildPermissions.UseGuildChat, true },
+                }
+            },
+
+            // Member
+            new GuildRankOptions() {
+                Title = "Member",
+                Permissions = new Dictionary<GuildPermissions, bool>() {
+                    { GuildPermissions.UseGuildChat, true },
+                    { GuildPermissions.InvitePlayers, true },
+                    { GuildPermissions.ViewBank, true },
+                    { GuildPermissions.DepositBank, true },
+                }
+            },
+
+            // Officer
+            new GuildRankOptions() {
+                Title = "Officer",
+                Permissions = new Dictionary<GuildPermissions, bool>() {
+                    { GuildPermissions.UseGuildChat, true },
+                    { GuildPermissions.InvitePlayers, true },
+                    { GuildPermissions.KickPlayers, true },
+                    { GuildPermissions.ViewBank, true },
+                    { GuildPermissions.DepositBank, true },
+                }
+            },
+
+            // Leader
+            new GuildRankOptions() {
+                Title = "Leader",
+                Permissions = new Dictionary<GuildPermissions, bool>() {
+                    { GuildPermissions.UseGuildChat, true },
+                    { GuildPermissions.InvitePlayers, true },
+                    { GuildPermissions.KickPlayers, true },
+                    { GuildPermissions.ChangeGuildName, true },
+                    { GuildPermissions.ChangeGuildTag, true },
+                    { GuildPermissions.ViewBank, true },
+                    { GuildPermissions.DepositBank, true },
+                    { GuildPermissions.WithdrawBank, true },
+                }
+            },
+        };
+
+        [OnDeserializing]
+        internal void OnDeserializingMethod(StreamingContext context)
+        {
+            GuildLevels.Clear();
+            DefaultRanks.Clear();
+        }
+
+        [OnDeserialized]
+        internal void OnDeserializedMethod(StreamingContext context)
+        {
+            Validate();
+        }
+
+        public void Validate()
+        {
+            GuildLevels = new List<int>(GuildLevels.Distinct());
+            DefaultRanks = new List<GuildRankOptions>(DefaultRanks.Distinct());
+        }
     }
 
     /// <summary>
@@ -83,4 +162,5 @@ namespace Intersect.Config
 
         public Dictionary<GuildPermissions, bool> Permissions = new Dictionary<GuildPermissions, bool>();
     }
+
 }

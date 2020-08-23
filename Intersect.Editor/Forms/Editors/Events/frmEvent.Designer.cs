@@ -150,14 +150,16 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode60});
             System.Windows.Forms.TreeNode treeNode62 = new System.Windows.Forms.TreeNode("Create Guild");
             System.Windows.Forms.TreeNode treeNode63 = new System.Windows.Forms.TreeNode("Open Guild Bank");
-            System.Windows.Forms.TreeNode treeNode64 = new System.Windows.Forms.TreeNode("Guild", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode64 = new System.Windows.Forms.TreeNode("Give Guild Experience");
+            System.Windows.Forms.TreeNode treeNode65 = new System.Windows.Forms.TreeNode("Guild", new System.Windows.Forms.TreeNode[] {
             treeNode62,
-            treeNode63});
-            System.Windows.Forms.TreeNode treeNode65 = new System.Windows.Forms.TreeNode("Send Mail");
-            System.Windows.Forms.TreeNode treeNode66 = new System.Windows.Forms.TreeNode("Open Mailbox");
-            System.Windows.Forms.TreeNode treeNode67 = new System.Windows.Forms.TreeNode("Auction House");
-            System.Windows.Forms.TreeNode treeNode68 = new System.Windows.Forms.TreeNode("Spawn Pet");
-            System.Windows.Forms.TreeNode treeNode69 = new System.Windows.Forms.TreeNode("Despawn Pet");
+            treeNode63,
+            treeNode64});
+            System.Windows.Forms.TreeNode treeNode66 = new System.Windows.Forms.TreeNode("Send Mail");
+            System.Windows.Forms.TreeNode treeNode67 = new System.Windows.Forms.TreeNode("Open Mailbox");
+            System.Windows.Forms.TreeNode treeNode68 = new System.Windows.Forms.TreeNode("Auction House");
+            System.Windows.Forms.TreeNode treeNode69 = new System.Windows.Forms.TreeNode("Spawn Pet");
+            System.Windows.Forms.TreeNode treeNode70 = new System.Windows.Forms.TreeNode("Despawn Pet");
             this.lblName = new System.Windows.Forms.Label();
             this.txtEventname = new DarkUI.Controls.DarkTextBox();
             this.grpEntityOptions = new DarkUI.Controls.DarkGroupBox();
@@ -1046,23 +1048,26 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode63.Name = "openguildbank";
             treeNode63.Tag = "700";
             treeNode63.Text = "Open Guild Bank";
-            treeNode64.Name = "guild";
-            treeNode64.Text = "Guild";
-            treeNode65.Name = "sendmail";
-            treeNode65.Tag = "440";
-            treeNode65.Text = "Send Mail";
-            treeNode66.Name = "openmailbox";
-            treeNode66.Tag = "441";
-            treeNode66.Text = "Open Mailbox";
-            treeNode67.Name = "openhdv";
-            treeNode67.Tag = "447";
-            treeNode67.Text = "Auction House";
-            treeNode68.Name = "spawnpet";
-            treeNode68.Tag = "600";
-            treeNode68.Text = "Spawn Pet";
-            treeNode69.Name = "despawnpet";
-            treeNode69.Tag = "601";
-            treeNode69.Text = "Despawn Pet";
+            treeNode64.Name = "giveguildexperience";
+            treeNode64.Tag = "702";
+            treeNode64.Text = "Give Guild Experience";
+            treeNode65.Name = "guild";
+            treeNode65.Text = "Guild";
+            treeNode66.Name = "sendmail";
+            treeNode66.Tag = "440";
+            treeNode66.Text = "Send Mail";
+            treeNode67.Name = "openmailbox";
+            treeNode67.Tag = "441";
+            treeNode67.Text = "Open Mailbox";
+            treeNode68.Name = "openhdv";
+            treeNode68.Tag = "447";
+            treeNode68.Text = "Auction House";
+            treeNode69.Name = "spawnpet";
+            treeNode69.Tag = "600";
+            treeNode69.Text = "Spawn Pet";
+            treeNode70.Name = "despawnpet";
+            treeNode70.Tag = "601";
+            treeNode70.Text = "Despawn Pet";
             this.lstCommands.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode6,
             treeNode14,
@@ -1072,12 +1077,12 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode55,
             treeNode57,
             treeNode61,
-            treeNode64,
             treeNode65,
             treeNode66,
             treeNode67,
             treeNode68,
-            treeNode69});
+            treeNode69,
+            treeNode70});
             this.lstCommands.Size = new System.Drawing.Size(666, 676);
             this.lstCommands.TabIndex = 2;
             this.lstCommands.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lstCommands_AfterSelect);

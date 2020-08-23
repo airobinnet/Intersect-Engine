@@ -1354,6 +1354,10 @@ namespace Intersect.Server.Localization
                    @"This player is already in a guild!";
 
             [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public readonly LocalizedString PlayerAlreadyInvited =
+                   @"This player is already invited to a guild!";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public readonly LocalizedString InviteOverwritten =
                    @"Your guild invite sent to {00} has been overwritten by another invite.";
 

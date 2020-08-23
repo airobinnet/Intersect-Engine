@@ -92,6 +92,12 @@
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_CreateGuild.Designer.cs">
       <DependentUpon>EventCommand_CreateGuild.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_GiveGuildExperience.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_GiveGuildExperience.Designer.cs">
+      <DependentUpon>EventCommand_GiveGuildExperience.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_HDV.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -713,6 +719,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_CreateGuild.resx">
       <DependentUpon>EventCommand_CreateGuild.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_GiveGuildExperience.resx">
+      <DependentUpon>EventCommand_GiveGuildExperience.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_HDV.resx">
       <DependentUpon>EventCommand_HDV.cs</DependentUpon>

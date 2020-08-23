@@ -1193,7 +1193,7 @@ namespace Intersect.Server.Networking
                             var invitePlayer = Player.FindOnline(msg.Trim());
                             if (invitePlayer == null)
                             {
-                                invitePlayer = Player.Find(Guid.Parse(msg.Trim()));
+                                invitePlayer = Player.Find(msg.Trim());
                             }
                             invitePlayer?.InviteToGuild(player.Guild, player);
                         }

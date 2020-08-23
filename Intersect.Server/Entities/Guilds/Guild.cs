@@ -353,5 +353,57 @@ namespace Intersect.Server.Entities.Guilds
 
             return true;
         }
+
+        public void GiveExperience(long amount)
+        {
+            GuildExperience += (int)amount;
+            if (GuildExperience < 0)
+            {
+                GuildExperience = 0;
+            }
+
+            if (!CheckLevelUp())
+            {
+                if (amount > 0)
+                {
+                    PacketSender.SendGuildMsg(this, "The Guild gained " + (int)amount + " experience.", CustomColors.Alerts.Info);
+                    foreach (var playerId in Members.Keys)
+                    {
+                        var tempplayer = Player.FindOnline(playerId);
+                        PacketSender.SendGuildData(tempplayer);
+                    }
+                }
+            }
+        }
+
+        private bool CheckLevelUp()
+        {
+            float MaxLvlExp = 5000;
+
+            MaxLvlExp = Options.GuildOptions.GuildLevels[GuildLevel];
+            
+            var levelCount = 0;
+            while (GuildExperience >= MaxLvlExp &&
+                   MaxLvlExp > 0)
+            {
+                GuildExperience -= (int)MaxLvlExp;
+                levelCount++;
+            }
+
+            if (levelCount <= 0)
+            {
+                return false;
+            }
+
+            GuildLevel = GuildLevel + levelCount;
+            PacketSender.SendGuildMsg(this, "The Guild leveled up to level " + (int)GuildLevel + ".", CustomColors.Alerts.Info);
+            foreach (var playerId in Members.Keys)
+            {
+                var tempplayer = Player.FindOnline(playerId);
+                PacketSender.SendGuildData(tempplayer);
+            }
+
+            return true;
+        }
     }
 }

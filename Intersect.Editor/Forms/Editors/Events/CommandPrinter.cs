@@ -653,6 +653,11 @@ namespace Intersect.Editor.Forms.Editors.Events
             return Strings.EventCommandList.giveexp.ToString(command.Exp);
         }
 
+        private static string GetCommandText(GiveGuildExperienceCommand command, MapInstance map)
+        {
+            return Strings.EventCommandList.giveexp.ToString(command.Exp);
+        }
+
         private static string GetCommandText(ChangeLevelCommand command, MapInstance map)
         {
             return Strings.EventCommandList.setlevel.ToString(command.Level);

@@ -351,6 +351,15 @@ namespace Intersect.GameObjects.Events.Commands
 
     }
 
+    public class GiveGuildExperienceCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.GiveGuildExperience;
+
+        public long Exp { get; set; }
+
+    }
+
     public class ChangeLevelCommand : EventCommand
     {
 
