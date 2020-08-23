@@ -141,6 +141,9 @@ namespace Intersect.Server.Entities
         [NotMapped]
         public long ExperienceToNextLevel => GetExperienceToNextLevel(Level);
 
+        [NotMapped]
+        public Guid CreateGuildItem;
+
         public Guid emptyguid;
 
         public static Player FindOnline(Guid id)
@@ -2191,7 +2194,10 @@ namespace Intersect.Server.Entities
                             return;
                         }
 
-                        TryTakeItem(Items[slot], 1);
+                        if (itemBase.DestroySpell)
+                        {
+                            TryTakeItem(Items[slot], 1);
+                        }
 
                         break;
                     case ItemTypes.Bag:
@@ -3292,6 +3298,19 @@ namespace Intersect.Server.Entities
         {
             InHDV = false;
         }
+
+        public void OpenGuildCreate(Guid itemId)
+        {
+            InGuildCreate = true;
+            PacketSender.SendOpenGuildCreate(this, itemId);
+        }
+
+        public void CloseGuildCreate()
+        {
+            InGuildCreate = false;
+            PacketSender.SendCloseGuildCreate(this);
+        }
+
 
         //GuildBank
         public bool OpenGuildBank()
@@ -6603,6 +6622,7 @@ namespace Intersect.Server.Entities
         [NotMapped] public bool InHDV;
 
         [NotMapped] public bool InGuildBank;
+        [NotMapped] public bool InGuildCreate;
 
         #endregion
 

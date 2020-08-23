@@ -1679,6 +1679,18 @@ namespace Intersect.Server.Networking
             player.SendPacket(new RemoveHDVItemPacket(removeItem));
         }
 
+        //openguildcreate
+        public static void SendOpenGuildCreate(Player player, Guid itemId)
+        {
+            player.SendPacket(new SendOpenGuildCreatePacket(itemId, false));
+        }
+
+        //close guildcreate
+        public static void SendCloseGuildCreate(Player player)
+        {
+            player.SendPacket(new SendOpenGuildCreatePacket(Guid.Empty, true));
+        }
+
         public static void SendOpenHDV(Player player, Guid hdvID)
         {
             player.HdvID = hdvID;

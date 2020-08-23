@@ -248,6 +248,7 @@ namespace Intersect.Editor.Forms.Editors
             lblSpell.Text = Strings.ItemEditor.spell;
             chkQuickCast.Text = Strings.ItemEditor.quickcast;
             chkDestroy.Text = Strings.ItemEditor.destroyspell;
+            chkDestroyEventItem.Text = Strings.ItemEditor.destroyspell;
 
             grpEvent.Text = Strings.ItemEditor.eventpanel;
 
@@ -440,11 +441,17 @@ namespace Intersect.Editor.Forms.Editors
                 cmbTeachSpell.SelectedIndex = SpellBase.ListIndex(mEditorItem.SpellId) + 1;
                 chkQuickCast.Checked = mEditorItem.QuickCast;
                 chkDestroy.Checked = mEditorItem.DestroySpell;
+                chkQuickCast.Enabled = true;
+                chkQuickCast.Visible = true;
+                chkDestroy.Enabled = true;
+                chkDestroy.Visible = true;
                 grpSpell.Visible = true;
+                
             }
             else if (cmbType.SelectedIndex == (int) ItemTypes.Event)
             {
                 cmbEvent.SelectedIndex = EventBase.ListIndex(mEditorItem.EventId) + 1;
+                chkDestroyEventItem.Checked = mEditorItem.DestroySpell;
                 grpEvent.Visible = true;
             }
             else if (cmbType.SelectedIndex == (int) ItemTypes.Equipment)
@@ -940,6 +947,11 @@ namespace Intersect.Editor.Forms.Editors
         private void chkDestroy_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem.DestroySpell = chkDestroy.Checked;
+        }
+
+        private void chkDestroyEventItem_CheckedChanged(object sender, EventArgs e)
+        {
+            mEditorItem.DestroySpell = chkDestroyEventItem.Checked;
         }
 
         private void cmbRarity_SelectedIndexChanged(object sender, EventArgs e)

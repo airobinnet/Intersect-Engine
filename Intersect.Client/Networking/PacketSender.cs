@@ -62,6 +62,12 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new OpenCashShopPacket(shopid));
         }
 
+        public static void SendCreateGuild(string name, string tag)
+        {
+            Network.SendPacket(new SendCreateGuildPacket(name, tag));
+        }
+
+
         public static void SendMove()
         {
             Network.SendPacket(new MovePacket(Globals.Me.CurrentMap, Globals.Me.X, Globals.Me.Y, Globals.Me.Dir));
@@ -239,6 +245,12 @@ namespace Intersect.Client.Networking
         public static void SendCloseBank()
         {
             Network.SendPacket(new CloseBankPacket());
+        }
+
+
+        public static void SendCloseGuildCreate()
+        {
+            Network.SendPacket(new CloseGuildCreatePacket());
         }
 
         public static void SendCloseGuildBank()

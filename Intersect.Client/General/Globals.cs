@@ -44,6 +44,9 @@ namespace Intersect.Client.General
         //GuildBank
         public static Item[] GuildBank;
 
+        //GuildCreateItem
+        public static Guid GuildCreateItem;
+
         public static List<PvpPlayer> PvpList;
 
         public static bool ConnectionLost;
@@ -88,6 +91,8 @@ namespace Intersect.Client.General
         public static bool InBank = false;
 
         public static bool InGuildBank = false;
+
+        public static bool InGuildCreate = false;
 
         //Crafting station
         public static bool InCraft = false;

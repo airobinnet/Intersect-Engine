@@ -553,6 +553,36 @@ namespace Intersect.Server.Database
             SavePlayerDatabaseAsync();
         }
 
+        public static bool CheckGuildName(string gName)
+        {
+            lock (mPlayerDbLock)
+            {
+                foreach (Guild guild in sPlayerDb.Guilds)
+                {
+                    if (guild.Name == gName)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        public static bool CheckGuildTag(string gTag)
+        {
+            lock (mPlayerDbLock)
+            {
+                foreach (Guild guild in sPlayerDb.Guilds)
+                {
+                    if (guild.Tag == gTag)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
         // Guilds
         public static void CreateGuild(
             Player player,

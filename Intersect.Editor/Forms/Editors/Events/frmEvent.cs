@@ -755,6 +755,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new DespawnPetCommand();
 
                     break;
+                case EventCommandType.CreateGuild:
+                    tmpCommand = new CreateGuildCommand();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1354,6 +1358,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     cmdWindow = new EventCommandSpawnPet(this, mCurrentMap, MyEvent, (SpawnPetCommand)command);
                     break;
                 case EventCommandType.DespawnPet:
+                    break;
+                case EventCommandType.CreateGuild:
+                    cmdWindow = new EventCommandCreateGuild((CreateGuildCommand)command, CurrentPage, this);
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

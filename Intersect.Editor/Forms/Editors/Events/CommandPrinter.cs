@@ -1230,7 +1230,7 @@ namespace Intersect.Editor.Forms.Editors.Events
         private static string GetCommandText(HDVCommand command, MapInstance map)
         {
             HDVBase hdv = HDVBase.Get(command.HDVid);
-            return $"Ouvrir HDV ({hdv?.Name})";
+            return $"Open AH ({hdv?.Name})";
         }
 
         private static string GetVariableModText(SetVariableCommand command, IntegerVariableMod mod)
@@ -1418,7 +1418,11 @@ namespace Intersect.Editor.Forms.Editors.Events
         {
             return Strings.EventCommandList.friendlyspells.ToString(SpellBase.GetName(command.spell));
         }
-
+        
+        private static string GetCommandText(CreateGuildCommand command, MapInstance map)
+        {
+            return Strings.EventCommandList.createguild.ToString(ItemBase.GetName(command.ItemId));
+        }
     }
 
 }

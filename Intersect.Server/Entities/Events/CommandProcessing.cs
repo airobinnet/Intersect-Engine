@@ -552,6 +552,20 @@ namespace Intersect.Server.Entities.Events
             callStack.Push(tmpStack);
         }
 
+        //Create Guild Command
+        private static void ProcessCommand(
+            CreateGuildCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            player.OpenGuildCreate(command.ItemId);
+            player.CreateGuildItem = command.ItemId;
+        }
+
+
         //Take Items By tag Command
         private static void ProcessCommand(
             ChangeItemsByTag command,

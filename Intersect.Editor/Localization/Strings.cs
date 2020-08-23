@@ -1800,6 +1800,8 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString openmailbox = @"Open Mail Box";
 
+            public static LocalizedString createguild = @"Create Guild (req item: {00})";
+
 
         }
 
@@ -1879,6 +1881,7 @@ Tick timer saved in server config.json.";
                 {"despawnpet","Despawn Pet"},
                 {"openguildbank", @"Open GuildBank"},
                 {"guild", @"Guild"},
+                {"createguild", @"Create Guild" },
             };
 
         }

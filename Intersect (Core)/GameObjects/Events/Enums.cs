@@ -248,6 +248,9 @@
         //Guildbank
         OpenGuildBank = 700,
 
+        //CreateGuild
+        CreateGuild = 701,
+
     }
 
 }

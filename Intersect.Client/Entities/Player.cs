@@ -202,6 +202,7 @@ namespace Intersect.Client.Entities
                      Globals.InMailBox == false &&
                      Globals.InSendMailBox == false &&
                      Globals.InHDV == false &&
+                     Globals.InGuildCreate == false &&
                      !Interface.Interface.HasInputFocus());
         }
 

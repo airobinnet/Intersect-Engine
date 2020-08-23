@@ -993,4 +993,15 @@ namespace Intersect.GameObjects.Events.Commands
 
         public Guid HDVid { get; set; }
     }
+
+
+    public class CreateGuildCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.CreateGuild;
+
+        public Guid ItemId { get; set; }
+
+    }
+    
 }

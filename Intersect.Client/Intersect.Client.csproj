@@ -99,6 +99,7 @@
     <Compile Include="General\Globals.cs" />
     <Compile Include="HDV.cs" />
     <Compile Include="Interface\Game\CashShop\CashShopWindow.cs" />
+    <Compile Include="Interface\Game\GuildCreateItem.cs" />
     <Compile Include="Interface\Game\PvpWindow.cs" />
     <Compile Include="Interface\Game\HDV\HDVItem.cs" />
     <Compile Include="Interface\Game\HDV\HDVSellItem.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Interface\Game\GuildBank\GuildBankWindow.cs" />
     <Compile Include="Interface\Game\Guild\GuildWindow.cs" />
     <Compile Include="Interface\Game\Guild\GuildMember.cs" />
+    <Compile Include="Interface\Game\GuildCreateWindow.cs" />
     <Compile Include="Interface\Shared\Errors\ErrorWindow.cs" />
     <Compile Include="Items\Item.cs" />
     <Compile Include="Items\MapItem.cs" />

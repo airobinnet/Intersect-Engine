@@ -209,10 +209,22 @@ namespace Intersect.Client.Networking
         {
             if (Globals.Me.Id == packet.Player)
             {
-                Globals.Me.GuildId = packet.GuildId;
-                Globals.Me.GuildTag = packet.Tag;
-                Globals.Me.GuildName = packet.Name;
-                Globals.Me.GuildUpdate = true;
+                if (packet.GuildId == Guid.Empty)
+                {
+                    Globals.Me.GuildId = Guid.Empty;
+                    Globals.Me.GuildTag = null;
+                    Globals.Me.GuildName = null;
+                    Globals.Me.GuildMembers = null;
+                    Globals.Me.GuildMembersNames = null;
+                    Globals.Me.GuildUpdate = true;
+                }
+                else
+                {
+                    Globals.Me.GuildId = packet.GuildId;
+                    Globals.Me.GuildTag = packet.Tag;
+                    Globals.Me.GuildName = packet.Name;
+                    Globals.Me.GuildUpdate = true;
+                }
             }
         }
 
@@ -1425,6 +1437,20 @@ namespace Intersect.Client.Networking
             else
             {
                 Interface.Interface.GameUi.NotifyCloseGuildBank();
+            }
+        }
+
+        //GuildBankPacket
+        private static void HandlePacket(SendOpenGuildCreatePacket packet)
+        {
+            if (!packet.Close)
+            {
+                Globals.GuildCreateItem = packet.ItemId;
+                Interface.Interface.GameUi.NotifyOpenGuildCreate();
+            }
+            else
+            {
+                Interface.Interface.GameUi.NotifyCloseGuildCreate();
             }
         }
 

@@ -36,6 +36,8 @@ namespace Intersect.Client.Interface.Game
 
         private GuildBankWindow mGuildBankWindow;
 
+        private GuildCreateWindow mGuildCreateWindow;
+
         private Chatbox mChatBox;
 
         private CraftingWindow mCraftingWindow;
@@ -51,6 +53,7 @@ namespace Intersect.Client.Interface.Game
         private ShopWindow mShopWindow;
 
         private SendMailBoxWindow mSendMailBoxWindow;
+
         private MailBoxWindow mMailBoxWindow;
 
         private HDVWindow mHDVWindow;
@@ -74,6 +77,10 @@ namespace Intersect.Client.Interface.Game
         private bool mShouldOpenBank;
 
         private bool mShouldOpenGuildBank;
+
+        private bool mShouldOpenGuildCreate;
+
+        private bool mShouldCloseGuildCreate;
 
         private bool mShouldOpenCraftingTable;
 
@@ -280,6 +287,32 @@ namespace Intersect.Client.Interface.Game
             mBankWindow = new BankWindow(GameCanvas);
             mShouldOpenBank = false;
             Globals.InBank = true;
+        }
+
+        //GuildCreate
+        public void NotifyOpenGuildCreate()
+        {
+            mShouldOpenGuildCreate = true;
+
+        }
+
+        public void NotifyCloseGuildCreate()
+        {
+            mShouldCloseGuildCreate = true;
+
+        }
+
+        public void OpenGuildCreate()
+        {
+            if (mGuildCreateWindow != null)
+            {
+                mGuildCreateWindow.Close();
+            }
+
+            mGuildCreateWindow = new GuildCreateWindow(GameCanvas);
+            mGuildCreateWindow.UpdateItem();
+            mShouldOpenGuildCreate = false;
+            Globals.InGuildCreate = true;
         }
 
         //GuildBank
@@ -503,6 +536,28 @@ namespace Intersect.Client.Interface.Game
                 Globals.InHDV = false;
             }
 
+            //GuildCreate Update
+            if (mShouldOpenGuildCreate)
+            {
+                OpenGuildCreate();
+            }
+
+            if (mGuildCreateWindow != null)
+            {
+                if (!mGuildCreateWindow.IsVisible() || mShouldCloseGuildCreate)
+                {
+                    PacketSender.SendCloseGuildCreate();
+                    CloseGuildCreate();
+                }
+                else
+                {
+                    mGuildCreateWindow.Update();
+                }
+            }
+
+            mShouldCloseGuildCreate = false;
+
+
             //Bank Update
             if (mShouldOpenBank)
             {
@@ -644,6 +699,13 @@ namespace Intersect.Client.Interface.Game
             Globals.InBank = false;
         }
 
+        private void CloseGuildCreate()
+        {
+            mGuildCreateWindow?.Close();
+            mGuildCreateWindow = null;
+            Globals.InGuildCreate = false;
+        }
+
         private void CloseGuildBank()
         {
             mGuildBankWindow?.Close();
@@ -682,6 +744,7 @@ namespace Intersect.Client.Interface.Game
             CloseCraftingTable();
             CloseShop();
             CloseTrading();
+            CloseGuildCreate();
             GameCanvas.Dispose();
         }
 

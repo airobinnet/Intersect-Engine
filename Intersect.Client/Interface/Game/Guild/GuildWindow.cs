@@ -169,7 +169,7 @@ namespace Intersect.Client.Interface.Game.Guild
                 {
                     mNameText.Text = "No guild info, join a guild first!";
                     mLeaveCreateButton.Text = "Create Guild";
-                    mLeaveCreateButton.Show();
+                    mLeaveCreateButton.Hide();
                     mNameText.Show();
                     mRankText.Hide();
                     //mMembers.Hide();
@@ -344,15 +344,6 @@ namespace Intersect.Client.Interface.Game.Guild
             Update();
         }
 
-        private void CreateGuild(Object sender, EventArgs e)
-        {
-            var ibox = (InputBox)sender;
-            if (ibox.TextValue.Trim().Length >= 3) //Don't bother sending a packet less than the char limit
-            {
-                PacketSender.SendChatMsg("/guildcreate " + ibox.TextValue.ToString(), 0);
-            }
-        }
-
         public void Hide()
         {
             mGuildWindow.IsHidden = true;
@@ -363,10 +354,10 @@ namespace Intersect.Client.Interface.Game.Guild
             if (Globals.Me.GuildName == null || Globals.Me.GuildName == "")
             {
                 //create guild
-                var iBox = new InputBox(
+                /*var iBox = new InputBox(
                 Strings.Guilds.createguild, Strings.Guilds.createguildprompt, true, InputBox.InputType.TextInput,
                 CreateGuild, null, 0
-            );
+            );*/
             }
             else
             {

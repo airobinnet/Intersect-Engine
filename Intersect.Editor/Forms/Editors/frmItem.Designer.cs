@@ -68,6 +68,7 @@ namespace Intersect.Editor.Forms.Editors
             this.lblName = new System.Windows.Forms.Label();
             this.txtName = new DarkUI.Controls.DarkTextBox();
             this.grpEquipment = new DarkUI.Controls.DarkGroupBox();
+            this.chkHideHair = new DarkUI.Controls.DarkCheckBox();
             this.cmbHitAnimation = new DarkUI.Controls.DarkComboBox();
             this.lblHitAnimation = new System.Windows.Forms.Label();
             this.grpRegen = new DarkUI.Controls.DarkGroupBox();
@@ -189,7 +190,7 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemPaste = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripItemUndo = new System.Windows.Forms.ToolStripButton();
-            this.chkHideHair = new DarkUI.Controls.DarkCheckBox();
+            this.chkDestroyEventItem = new DarkUI.Controls.DarkCheckBox();
             this.grpItems.SuspendLayout();
             this.grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudCooldown)).BeginInit();
@@ -770,6 +771,17 @@ namespace Intersect.Editor.Forms.Editors
             this.grpEquipment.TabStop = false;
             this.grpEquipment.Text = "Equipment";
             this.grpEquipment.Visible = false;
+            // 
+            // chkHideHair
+            // 
+            this.chkHideHair.AutoSize = true;
+            this.chkHideHair.Location = new System.Drawing.Point(530, 821);
+            this.chkHideHair.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkHideHair.Name = "chkHideHair";
+            this.chkHideHair.Size = new System.Drawing.Size(110, 24);
+            this.chkHideHair.TabIndex = 62;
+            this.chkHideHair.Text = "Hide Hair?";
+            this.chkHideHair.CheckedChanged += new System.EventHandler(this.chkHideHair_CheckedChanged);
             // 
             // cmbHitAnimation
             // 
@@ -2182,13 +2194,14 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpEvent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpEvent.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpEvent.Controls.Add(this.chkDestroyEventItem);
             this.grpEvent.Controls.Add(this.cmbEvent);
             this.grpEvent.ForeColor = System.Drawing.Color.Gainsboro;
             this.grpEvent.Location = new System.Drawing.Point(0, 408);
             this.grpEvent.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpEvent.Name = "grpEvent";
             this.grpEvent.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpEvent.Size = new System.Drawing.Size(304, 88);
+            this.grpEvent.Size = new System.Drawing.Size(304, 152);
             this.grpEvent.TabIndex = 42;
             this.grpEvent.TabStop = false;
             this.grpEvent.Text = "Event";
@@ -2425,10 +2438,10 @@ namespace Intersect.Editor.Forms.Editors
             // pnlContainer
             // 
             this.pnlContainer.AutoScroll = true;
-            this.pnlContainer.Controls.Add(this.grpGeneral);
             this.pnlContainer.Controls.Add(this.grpEquipment);
             this.pnlContainer.Controls.Add(this.grpEvent);
             this.pnlContainer.Controls.Add(this.grpSpell);
+            this.pnlContainer.Controls.Add(this.grpGeneral);
             this.pnlContainer.Controls.Add(this.grpBags);
             this.pnlContainer.Controls.Add(this.grpConsumable);
             this.pnlContainer.Location = new System.Drawing.Point(332, 52);
@@ -2613,16 +2626,18 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemUndo.Text = "Undo";
             this.toolStripItemUndo.Click += new System.EventHandler(this.toolStripItemUndo_Click);
             // 
-            // chkHideHair
+            // chkDestroyEventItem
             // 
-            this.chkHideHair.AutoSize = true;
-            this.chkHideHair.Location = new System.Drawing.Point(530, 821);
-            this.chkHideHair.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.chkHideHair.Name = "chkHideHair";
-            this.chkHideHair.Size = new System.Drawing.Size(110, 24);
-            this.chkHideHair.TabIndex = 62;
-            this.chkHideHair.Text = "Hide Hair?";
-            this.chkHideHair.CheckedChanged += new System.EventHandler(this.chkHideHair_CheckedChanged);
+            this.chkDestroyEventItem.AutoSize = true;
+            this.chkDestroyEventItem.Checked = true;
+            this.chkDestroyEventItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkDestroyEventItem.Location = new System.Drawing.Point(16, 83);
+            this.chkDestroyEventItem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkDestroyEventItem.Name = "chkDestroyEventItem";
+            this.chkDestroyEventItem.Size = new System.Drawing.Size(157, 24);
+            this.chkDestroyEventItem.TabIndex = 30;
+            this.chkDestroyEventItem.Text = "Destroy On Use?";
+            this.chkDestroyEventItem.CheckedChanged += new System.EventHandler(this.chkDestroyEventItem_CheckedChanged);
             // 
             // FrmItem
             // 
@@ -2694,6 +2709,7 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudCritChance)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDamage)).EndInit();
             this.grpEvent.ResumeLayout(false);
+            this.grpEvent.PerformLayout();
             this.grpConsumable.ResumeLayout(false);
             this.grpConsumable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudIntervalPercentage)).EndInit();
@@ -2867,5 +2883,6 @@ namespace Intersect.Editor.Forms.Editors
         private DarkComboBox cmbHitAnimation;
         private Label lblHitAnimation;
         private DarkCheckBox chkHideHair;
+        private DarkCheckBox chkDestroyEventItem;
     }
 }

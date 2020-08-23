@@ -1157,7 +1157,7 @@ namespace Intersect.Server.Networking
                     PacketSender.SendChatMsg(player, Strings.Player.offline, CustomColors.Alerts.Error);
                 }
             }
-            else if (cmd == Strings.Chat.GuildCreate)
+            /*else if (cmd == Strings.Chat.GuildCreate)
             {
                 if (msg.Trim().Length == 0)
                 {
@@ -1173,7 +1173,7 @@ namespace Intersect.Server.Networking
                 var tag = arg[1];
 
                 Guild.Create(player, name, tag);
-            }
+            }*/
             else if (cmd == Strings.Chat.GuildInvite)
             {
                 if (msg.Trim().Length == 0)
@@ -2203,6 +2203,17 @@ namespace Intersect.Server.Networking
             player.CloseBank();
         }
 
+        //ClosGuildCreatePacket
+        public void HandlePacket(Client client, Player player, CloseGuildCreatePacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.CloseGuildCreate();
+        }
+
         //CloseGuildBankPacket
         public void HandlePacket(Client client, Player player, CloseGuildBankPacket packet)
         {
@@ -2609,6 +2620,46 @@ namespace Intersect.Server.Networking
             {
                 PacketSender.SendChatMsg(player, "Can't find item in your inventory!", CustomColors.Alerts.Declined);
             }
+        }
+
+        //SendCreateGuildPacket
+        public void HandlePacket(Client client, Player player, SendCreateGuildPacket packet)
+        {
+            var GuildName = DbInterface.CheckGuildName(packet.Name);
+            var GuildTag = DbInterface.CheckGuildTag(packet.Tag);
+
+            if (packet.Name.Trim().Length < 4 || packet.Name.Trim().Length > 20)
+            {
+                PacketSender.SendChatMsg(player, "Guildname has to be between 4 and 20 characters!", CustomColors.Alerts.Declined);
+                return;
+            }
+
+            if (packet.Tag.Trim().Length < 3 || packet.Tag.Trim().Length > 4)
+            {
+                PacketSender.SendChatMsg(player, "Guildname has to be between 3 and 4 characters!", CustomColors.Alerts.Declined);
+                return;
+            }
+
+            if (!GuildName)
+            {
+                PacketSender.SendChatMsg(player, "Guildname is already taken, try again!", CustomColors.Alerts.Declined);
+                player.CloseGuildCreate();
+                return;
+            }
+            if (!GuildTag)
+            {
+                PacketSender.SendChatMsg(player, "Guildtag is already taken, try again!", CustomColors.Alerts.Declined);
+                player.CloseGuildCreate();
+                return;
+            }
+            var GuildCreateItem = ItemBase.Get(player.CreateGuildItem);
+            var itemSlot = player.FindInventoryItemSlot(GuildCreateItem.Id);
+            if (itemSlot != null && player.TryTakeItem(itemSlot, 1))
+            {
+                DbInterface.CreateGuild(player, packet.Name, packet.Tag);
+                player.CloseGuildCreate();
+            }
+
         }
 
         //PartyInviteResponsePacket
