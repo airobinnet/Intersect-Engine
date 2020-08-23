@@ -71,7 +71,8 @@ namespace Intersect.Client.Interface.Game.GuildBank
 
             X = mGuildBankWindow.X;
             Y = mGuildBankWindow.Y;
-            for (var i = 0; i < Options.MaxBankSlots; i++)
+            var MaxSlots = Math.Min(Globals.Me.GuildLevel * Options.GuildOptions.GuildBankSlotsIncrease, Options.MaxBankSlots);
+            for (var i = 0; i < MaxSlots; i++)
             {
                 if (Globals.GuildBank[i] != null && Globals.GuildBank[i].ItemId != Guid.Empty)
                 {
@@ -108,7 +109,8 @@ namespace Intersect.Client.Interface.Game.GuildBank
 
         private void InitItemContainer()
         {
-            for (var i = 0; i < Options.MaxBankSlots; i++)
+            var MaxSlots = Math.Min(Globals.Me.GuildLevel * Options.GuildOptions.GuildBankSlotsIncrease, Options.MaxBankSlots);
+            for (var i = 0; i < MaxSlots; i++)
             {
                 Items.Add(new GuildBankItem(this, i));
                 Items[i].Container = new ImagePanel(mItemContainer, "GuildBankItem");

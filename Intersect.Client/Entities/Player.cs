@@ -2182,7 +2182,13 @@ namespace Intersect.Client.Entities
             if (GuildName != null)
             //if (GuildId != Guid.Empty)
             {
-                DrawLabels(GuildTag, 3, FooterLabel.Color, textColor, borderColor, backgroundColor);
+                if (Options.GuildOptions.ShowGuildTag)
+                {
+                    DrawLabels(GuildTag, 3, FooterLabel.Color, textColor, borderColor, backgroundColor);
+                } else
+                {
+                    DrawLabels(GuildName, 3, FooterLabel.Color, textColor, borderColor, backgroundColor);
+                }
             }
         }
 

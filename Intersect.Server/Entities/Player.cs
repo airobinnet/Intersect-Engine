@@ -3321,7 +3321,12 @@ namespace Intersect.Server.Entities
             }
             if (Guild != null)
             {
-                // Is our rank allowed to invite players?
+                if (Guild.GuildLevel == 0)
+                {
+                    PacketSender.SendChatMsg(this, "Level up your guild to unlock the guildbank.", Color.Red);
+                    return false;
+                }
+                // Is our rank allowed to view the bank?
                 var rank = Guild.GetRank(this);
                 if (rank != null)
                 {
@@ -3467,7 +3472,7 @@ namespace Intersect.Server.Entities
 
             if (Guild != null)
             {
-                // Is our rank allowed to invite players?
+                // Is our rank allowed to deposit items?
                 var rank = Guild.GetRank(this);
                 if (rank != null)
                 {
@@ -3823,7 +3828,7 @@ namespace Intersect.Server.Entities
             }
             if (Guild != null)
             {
-                // Is our rank allowed to invite players?
+                // Is our rank allowed to withdraw items?
                 var rank = Guild.GetRank(this);
                 if (rank != null)
                 {
@@ -4678,6 +4683,17 @@ namespace Intersect.Server.Entities
 
         public void InviteToGuild(Guild guild, Player inviteFrom)
         {
+            var MaxMembers = 5;
+            if (inviteFrom.Guild.GuildLevel > 0)
+            {
+                MaxMembers += inviteFrom.Guild.GuildLevel * Options.GuildOptions.MemberIncrease;
+            }
+
+            if (inviteFrom.Guild.Members.Count >= MaxMembers)
+            {
+                PacketSender.SendChatMsg(inviteFrom, "You can't invite any more players, level up the guild or kick people!", CustomColors.Alerts.Error);
+                return;
+            }
             // Are we already in a guild? If so, instantly decline.
             if (Guild != null)
             {

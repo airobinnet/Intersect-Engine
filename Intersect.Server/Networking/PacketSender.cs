@@ -1545,18 +1545,13 @@ namespace Intersect.Server.Networking
         //GuildBankPacket
         public static void SendOpenGuildBank(Player player)
         {
-            //if (player.Guild != null)
-            //{
-                for (var i = 0; i < Options.MaxBankSlots; i++)
-                {
-                    SendGuildBankUpdate(player, i);
-                }
-
-                player.SendPacket(new GuildBankPacket(false));
-            /*} else
+            var MaxSlots = Math.Min(player.Guild.GuildLevel * Options.GuildOptions.GuildBankSlotsIncrease, Options.MaxBankSlots);
+            for (var i = 0; i < MaxSlots; i++)
             {
-                SendChatMsg(player, "You're not in a guild!", Color.Red);
-            }*/
+                SendGuildBankUpdate(player, i);
+            }
+
+            player.SendPacket(new GuildBankPacket(false));
         }
 
         //GuildBankPacket

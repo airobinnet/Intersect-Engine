@@ -29,6 +29,22 @@ namespace Intersect.Config
         /// </summary>
         public string DefaultMemberRank = "New Member";
 
+        /// <summary>
+        /// Configures how many extra members a guild can invite each level (starts with 5)
+        /// </summary>
+        public int MemberIncrease = 5;
+
+        /// <summary>
+        /// Configures how many extra guildbank slots a guild can have each level (starts with 10)
+        /// Guildbanks unlock at level 1
+        /// </summary>
+        public int GuildBankSlotsIncrease = 5;
+
+        /// <summary>
+        /// Configures the experience needed to level up the guild.
+        /// Guilds start at level 0
+        /// enter 0 for the last level
+        /// </summary>
         public List<int> GuildLevels = new List<int>()
         {
             5000,
@@ -38,54 +54,10 @@ namespace Intersect.Config
             1000000,
             0
         };
-
+        /// <summary>
+        /// Configures the default ranks and their permissions for a guild.
+        /// </summary>
         public List<GuildRankOptions> DefaultRanks = new List<GuildRankOptions>() {
-
-            //New Member
-            //copy paste the next part into your config
-            /*{
-            "Permissions": {
-              "UseGuildChat": true
-            },
-            "Title": "New Member"
-          },
-          {
-            "Permissions": {
-              "UseGuildChat": true,
-              "InvitePlayers": true,
-              "ViewBank": true,
-              "DepositBank": true
-            },
-            "Title": "Member"
-          },
-          {
-            "Permissions": {
-              "UseGuildChat": true,
-              "InvitePlayers": true,
-              "KickPlayers": true,
-              "ViewBank": true,
-              "DepositBank": true,
-              "WithdrawBank": true
-            },
-            "Title": "Officer"
-          },
-          {
-            "Permissions": {
-              "UseGuildChat": true,
-              "InvitePlayers": true,
-              "KickPlayers": true,
-              "ChangeGuildName": true,
-              "ChangeGuildTag": true,
-              "ViewBank": true,
-              "DepositBank": true,
-              "WithdrawBank": true
-            },
-            "Title": "Leader"
-          }*/
-
-            //you can also uncomment next part the first time you start the server, then comment it again
-            //why? cuz else it duplicates each reboot and i dont know how to fix that
-            // I FIXED IT!!!!!
 
             new GuildRankOptions() {
                 Title = "New Member",
