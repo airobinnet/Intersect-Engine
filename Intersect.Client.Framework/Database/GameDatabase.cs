@@ -43,7 +43,7 @@ namespace Intersect.Client.Framework.Database
             TargetResolution = LoadPreference("Resolution", 0);
             TargetFps = LoadPreference("Fps", 0);
             FullScreen = LoadPreference("Fullscreen", false);
-            HideOthersOnWindowOpen = LoadPreference("HideOthersOnWindowOpen", true);
+            HideOthersOnWindowOpen = LoadPreference("HideOthersOnWindowOpen", false);
         }
 
         public virtual void SavePreferences()

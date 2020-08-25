@@ -117,6 +117,8 @@ namespace Intersect.Client.Interface.Game.Guild
             ExpBackground = new ImagePanel(mGuildWindow, "EXPBackground");
             ExperienceBar = new ImagePanel(mGuildWindow, "ExperienceBar");
 
+            CurExpWidth = -1;
+
             mLeaveCreateButton = new Button(mGuildWindow, "LeaveCreateGuildButton");
             mLeaveCreateButton.Text = "Create Guild";
             mLeaveCreateButton.SetToolTipText(Strings.Parties.leavetip);

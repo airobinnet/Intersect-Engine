@@ -120,7 +120,7 @@ namespace Intersect.Config
 
         public void Validate()
         {
-            GuildLevels = new List<int>(GuildLevels.Distinct());
+            GuildLevels = new List<int>(GuildLevels);
             DefaultRanks = new List<GuildRankOptions>(DefaultRanks.Distinct());
         }
     }

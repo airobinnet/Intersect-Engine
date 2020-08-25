@@ -540,6 +540,12 @@ namespace Intersect.Server.Entities
             {
                 return;
             }
+            //needs testing!!
+            if (spellBase.SpellType == SpellTypes.CombatSpell &&
+                targetType == SpellTargetTypes.AoE)
+            {
+                range = spellBase.Combat?.HitRadius ?? 0;
+            }
 
             if (!InRangeOf(Target, range))
             {
