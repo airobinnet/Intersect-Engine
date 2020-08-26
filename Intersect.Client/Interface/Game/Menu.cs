@@ -270,6 +270,7 @@ namespace Intersect.Client.Interface.Game
                 PacketSender.SendRequestGuildInfo();
                 mGuildWindow.UpdateList();
                 mGuildWindow.Show();
+                mGuildWindow.CurExpWidth = -1;
             }
         }
 

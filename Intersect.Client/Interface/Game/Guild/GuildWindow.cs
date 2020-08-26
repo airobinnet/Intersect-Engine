@@ -219,6 +219,7 @@ namespace Intersect.Client.Interface.Game.Guild
             } else
             {
                 Globals.Me.GuildInvite = Guid.Empty;
+                mGuildLevel.Text = Globals.Me.GuildLevel.ToString();
                 mNameText.Text = Globals.Me.GuildName;
                 mTagText.Text = Globals.Me.GuildTag;
                 mLeaveCreateButton.Text = "Leave Guild";
@@ -303,6 +304,7 @@ namespace Intersect.Client.Interface.Game.Guild
 
         public void UpdateList()
         {
+
             //Clear previous instances if already existing
             if (GuildList != null)
             {
@@ -425,6 +427,15 @@ namespace Intersect.Client.Interface.Game.Guild
 
             if (MaxLvlExp > 0)
             {
+                if (Globals.Me.GuildExperience <= 1)
+                {
+                    mGuildExperience.Text = Strings.EntityBox.expval.ToString(
+                      (float)Globals.Me.GuildExperience, MaxLvlExp
+                  );
+                    ExperienceBar.Width = 1;
+                    return;
+                }
+
                 guildExpWidth = (float)Globals.Me.GuildExperience /
                                  (float)MaxLvlExp;
 
