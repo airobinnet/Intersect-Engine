@@ -20,6 +20,9 @@ namespace Intersect.Client.Interface.Game
 
         private Label mInfoText;
 
+        private ListBox mTopList;
+
+
         //Temp variables
         private string mTempName;
 
@@ -36,6 +39,8 @@ namespace Intersect.Client.Interface.Game
             currentLevel = new Label(mPvpWindow, "LevelText");
             currentLevel.SetTextColor(new Color(0, 0, 0, 0), Label.ControlState.Normal);
             currentLevel.Text = "Your level is " + Globals.Me.Level;
+
+            mTopList = new ListBox(mPvpWindow, "TopList");
 
             UpdateList();
 
@@ -81,6 +86,17 @@ namespace Intersect.Client.Interface.Game
 
         public void UpdateList()
         {
+            //Clear previous instances if already existing
+            if (mTopList != null)
+            {
+                mTopList.Clear();
+            }
+            /*foreach (var f in Globals.Me.PvpToplist)
+            {
+                var row = mTopList.AddRow(f);
+                row.UserData = f;
+                row.SetTextColor(Color.Green);
+            }*/
         }
 
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 using Intersect.Enums;
 using Intersect.ErrorHandling;
@@ -515,7 +516,7 @@ namespace Intersect.Server.Networking
         }
 
         //SendSteamAuthPacket
-        public void HandlePacket(Client client, Player player, SendSteamAuthPacket packet)
+        public async void HandlePacket(Client client, Player player, SendSteamAuthPacket packet)
         {
             string result = BitConverter.ToString(packet.Ticket.Data).Replace("-", "");
             var rclient = new RestClient("https://partner.steam-api.com/ISteamUserAuth/AuthenticateUserTicket/v1/?key=3640925ABA2FA8E6E238A31B0C7E289A&appid=1280220&ticket=" + result);
@@ -525,7 +526,11 @@ namespace Intersect.Server.Networking
             var request = new RestRequest(Method.GET);
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddParameter("application/x-www-form-urlencoded", "", ParameterType.RequestBody);
-            IRestResponse response = rclient.Execute(request);
+            var cancellationTokenSource3 = new CancellationTokenSource();
+
+            var response =
+                await rclient.ExecuteAsync(request, cancellationTokenSource3.Token);
+            //IRestResponse response = rclient.Execute(request);
             //Console.WriteLine(response.Content);
             AuthRoot myDeserializedClass = JsonConvert.DeserializeObject<AuthRoot>(response.Content);
             if (myDeserializedClass.Response.Params.Result == "OK" && myDeserializedClass.Response.Params.Publisherbanned == false && myDeserializedClass.Response.Params.Vacbanned == false)
@@ -704,21 +709,22 @@ namespace Intersect.Server.Networking
         }
 
         //SendSteamMTxnAuthorizedPacket
-        public void HandlePacket(Client client, Player player, SendSteamMTxnAuthorizedPacket packet)
+        public async void HandlePacket(Client client, Player player, SendSteamMTxnAuthorizedPacket packet)
         {
             //Check the steam API with RESTSharp
             var sw1 = new Stopwatch();
             sw1.Start();
             var rclient = new RestClient("https://partner.steam-api.com/ISteamMicroTxnSandbox/QueryTxn/v2/?key=3640925ABA2FA8E6E238A31B0C7E289A&appid=1280220&orderid=" + packet.OrderId);
-            rclient.Timeout = -1;
             var request = new RestRequest(Method.GET);
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             request.AddParameter("application/x-www-form-urlencoded", "", ParameterType.RequestBody);
-            IRestResponse response = rclient.Execute(request);
-            //Console.WriteLine(response.Content);
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            var restResponse =
+                await rclient.ExecuteAsync(request, cancellationTokenSource.Token);
             Log.Debug("received an order, checking if authorized...\r\n");
             //Deserialize the json response with a prebuilt class CashRoot
-            CashRoot myDeserializedClass = JsonConvert.DeserializeObject<CashRoot>(response.Content);
+            CashRoot myDeserializedClass = JsonConvert.DeserializeObject<CashRoot>(restResponse.Content);
             sw1.Stop();
             Log.Debug("Took " + sw1.ElapsedMilliseconds + "ms to authorize!");
             //If the transaction result is OK AND the Status is Approved, continue
@@ -735,8 +741,10 @@ namespace Intersect.Server.Networking
                 frequest.AddParameter("key", "3640925ABA2FA8E6E238A31B0C7E289A");
                 frequest.AddParameter("appid", "1280220");
                 frequest.AddParameter("orderid", packet.OrderId);
-                IRestResponse fresponse = fclient.Execute(frequest);
-                //Console.WriteLine(fresponse.Content);
+                var cancellationTokenSource2 = new CancellationTokenSource();
+
+                var fresponse =
+                    await rclient.ExecuteAsync(request, cancellationTokenSource2.Token);
                 CashFRoot myDeserializedClassF = JsonConvert.DeserializeObject<CashFRoot>(fresponse.Content);
                 sw2.Stop();
                 Log.Debug("Took " + sw2.ElapsedMilliseconds + "ms to finalize!");
