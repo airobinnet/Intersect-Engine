@@ -40,9 +40,9 @@ namespace Intersect.Client.Framework.Database
         {
             MusicVolume = LoadPreference("MusicVolume", 25);
             SoundVolume = LoadPreference("SoundVolume", 25);
-            TargetResolution = LoadPreference("Resolution", 0);
+            TargetResolution = LoadPreference("Resolution", 11);
             TargetFps = LoadPreference("Fps", 0);
-            FullScreen = LoadPreference("Fullscreen", false);
+            FullScreen = LoadPreference("Fullscreen", true);
             HideOthersOnWindowOpen = LoadPreference("HideOthersOnWindowOpen", false);
         }
 

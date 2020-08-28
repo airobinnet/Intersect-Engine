@@ -1972,6 +1972,12 @@ namespace Intersect.Server.Networking
             SendDataToProximityPrivate(en.MapId, new ActionMsgPacket(en.MapId, en.X, en.Y, message, color), en);
         }
 
+        public static void SendCrit(Guid playerId)
+        {
+            Player player = Player.FindOnline(playerId);
+            player.SendPacket(new CritPacket());
+        }
+
         //ActionMsgPacket
         //public static void SendActionMsgSelf(Event ev, string message, Color color, bool self)
         //{

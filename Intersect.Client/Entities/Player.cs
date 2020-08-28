@@ -94,8 +94,16 @@ namespace Intersect.Client.Entities
 
         public string GuildRanks;
 
+        public float ShakeOffsetX;
 
-        
+        public float ShakeOffsetY;
+
+        public int ShakeTimer;
+
+        public int ShakeNumber = 0;
+
+        public bool StartShake = false;
+
         protected string[] mMyCustomSpriteLayers { get; set; } = new string[(int)Enums.CustomSpriteLayers.CustomCount];
 
         public GameTexture[] CustomSpriteLayersTexture { get; set; } = new GameTexture[(int)Enums.CustomSpriteLayers.CustomCount];
@@ -224,6 +232,26 @@ namespace Intersect.Client.Entities
 
         public override bool Update()
         {
+            if (StartShake)
+            {
+                if (ShakeNumber < 8)
+                {
+                    Random random = new Random();
+
+                    ShakeOffsetX = random.Next(-15,15);
+                    ShakeOffsetY = random.Next(-15, 15);
+
+                    ShakeNumber++;
+                } else
+                {
+                    ShakeNumber = 0;
+                    ShakeOffsetX = 0;
+                    ShakeOffsetY = 0;
+                    StartShake = false;
+                    Interface.Interface.GameUi.Hotbar.HotbarWindow.Redraw();
+                    Interface.Interface.GameUi.PlayerBox.EntityStatusPanel.Redraw();
+                }
+            }
             
 
             if (Globals.Me == this && !IsFeared())

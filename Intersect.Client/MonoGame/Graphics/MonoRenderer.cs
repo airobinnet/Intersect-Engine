@@ -92,7 +92,11 @@ namespace Intersect.Client.MonoGame.Graphics
 
         private GameRenderTexture mWhiteTexture;
 
-        public MonoRenderer(GraphicsDeviceManager graphics, ContentManager contentManager, [NotNull] Game monoGame)
+        private float ShakeX = 0f;
+
+        private float ShakeY = 0f;
+
+    public MonoRenderer(GraphicsDeviceManager graphics, ContentManager contentManager, [NotNull] Game monoGame)
         {
             mGame = monoGame;
             mGraphics = graphics;
@@ -332,13 +336,22 @@ namespace Intersect.Client.MonoGame.Graphics
                     useEffect = (Effect) shader.GetShader();
                     shader.ResetChanged();
                 }
+                
+
+                if (Globals.Me != null)
+                {
+                    ShakeX = Globals.Me.ShakeOffsetX;
+                    ShakeY = Globals.Me.ShakeOffsetY;
+                }
+
 
                 mSpriteBatch.Begin(
                     drawImmediate ? SpriteSortMode.Immediate : SpriteSortMode.Deferred, blend, SamplerState.PointClamp,
                     null, rs, useEffect,
                     Matrix.CreateRotationZ(0f) *
                     Matrix.CreateScale(new Vector3(1, 1, 1)) *
-                    Matrix.CreateTranslation(-view.X, -view.Y, 0)
+                    //Matrix.CreateTranslation(-view.X, -view.Y, 0)
+                    Matrix.CreateTranslation(-view.X + ShakeX, -view.Y + ShakeY, 0)
                 );
 
                 mCurrentSpriteView = view;
@@ -636,6 +649,7 @@ namespace Intersect.Client.MonoGame.Graphics
                 ty += height / 2f;
             }
 
+
             if (renderTarget == null)
             {
                 if (isUi)
@@ -733,7 +747,6 @@ namespace Intersect.Client.MonoGame.Graphics
 
             var allowedResolutions = new[]
             {
-                new Resolution(800, 600),
                 new Resolution(1024, 768),
                 new Resolution(1024, 720),
                 new Resolution(1280, 720),
@@ -800,7 +813,7 @@ namespace Intersect.Client.MonoGame.Graphics
             mGraphics.PreferredBackBufferHeight = resolution.Y;
 
             UpdateGraphicsState(
-                mGraphics?.PreferredBackBufferWidth ?? 800, mGraphics?.PreferredBackBufferHeight ?? 600, true
+                mGraphics?.PreferredBackBufferWidth ?? 1024, mGraphics?.PreferredBackBufferHeight ?? 768, true
             );
 
             if (mWhiteTexture == null)
@@ -908,7 +921,7 @@ namespace Intersect.Client.MonoGame.Graphics
             mBasicEffect.Projection = projection;
             mBasicEffect.View = Matrix.CreateRotationZ(0f) *
                                 Matrix.CreateScale(new Vector3(1, 1, 1)) *
-                                Matrix.CreateTranslation(-view.X, -view.Y, 0);
+                                Matrix.CreateTranslation(-view.X + ShakeX, -view.Y + ShakeY, 0);
 
             return;
         }

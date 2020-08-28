@@ -1980,6 +1980,10 @@ namespace Intersect.Server.Entities
             else
             {
                 PacketSender.SendActionMsg(enemy, Strings.Combat.critical, CustomColors.Combat.Critical);
+                if (enemy.GetType() == typeof(Player)) {
+
+                    PacketSender.SendCrit(enemy.Id);
+                }
             }
 
             //Calculate Damages

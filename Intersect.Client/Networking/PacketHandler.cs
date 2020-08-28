@@ -415,6 +415,11 @@ namespace Intersect.Client.Networking
             );
         }
 
+        private static void HandlePacket(CritPacket packet)
+        {
+            Globals.Me.StartShake = true;
+        }
+
         //GuildDataPacket
         private static void HandlePacket(GuildDataPacket packet)
         {

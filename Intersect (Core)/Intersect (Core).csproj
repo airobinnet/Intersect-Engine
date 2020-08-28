@@ -327,6 +327,7 @@
     <Compile Include="Network\Packets\Client\SendSteamAuthPacket.cs" />
     <Compile Include="Network\Packets\Client\SendSteamMTxnAuthorizedPacket.cs" />
     <Compile Include="Network\Packets\Client\LoginCheckPacket.cs" />
+    <Compile Include="Network\Packets\Server\CritPacket.cs" />
     <Compile Include="Network\Packets\Server\HasAccountPacket.cs" />
     <Compile Include="Network\Packets\Server\HDVItemPacket.cs" />
     <Compile Include="Network\Packets\Server\HDVPacket.cs" />
