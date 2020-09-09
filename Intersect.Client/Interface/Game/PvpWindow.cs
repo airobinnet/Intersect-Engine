@@ -63,7 +63,7 @@ namespace Intersect.Client.Interface.Game
             }
             else
             {
-                mInfoText.Text = "Go to Floor 1 and queue for 1vs1 Arena.\r\nOpen World pvp starts at Floor 3.";
+                mInfoText.Text = "Go to Floor 1 and queue for 1vs1 Arena.\r\nOpen World pvp starts on Floor 3.";
             }
             mInfoText.Show();
             currentLevel.Show();
