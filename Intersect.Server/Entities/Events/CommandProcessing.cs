@@ -537,7 +537,13 @@ namespace Intersect.Server.Entities.Events
 
             if (command.Add)
             {
-                success = player.TryGiveItem(command.ItemId, command.Quantity, command.ItemHandling);
+                Item item = new Item(command.ItemId, command.Quantity, true);
+                for (var j = 0; j < (int)Stats.StatCount; j++)
+                {
+                    item.StatBuffs[j] = Randomization.Next(ItemBase.Get(item.ItemId).StatsGiven[j], ItemBase.Get(item.ItemId).StatGrowths[j] + 1);
+                }
+
+                success = player.TryGiveItem(item, command.ItemHandling);
             }
             else
             {

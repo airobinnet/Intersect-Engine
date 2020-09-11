@@ -178,6 +178,17 @@ namespace Intersect.GameObjects
 
         public bool HideHair { get; set; }
 
+        [Column("StatGrowths")]
+        [JsonIgnore]
+        public string StatGrowthsJson
+        {
+            get => DatabaseUtils.SaveIntArray(StatGrowths, (int)Stats.StatCount);
+            set => StatGrowths = DatabaseUtils.LoadIntArray(value, (int)Stats.StatCount);
+        }
+
+        [NotMapped]
+        public int[] StatGrowths { get; set; }
+
         public int StatGrowth { get; set; }
 
         public int Tool { get; set; } = -1;

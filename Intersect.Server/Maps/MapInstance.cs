@@ -322,7 +322,7 @@ namespace Intersect.Server.Maps
                     var r = new Random();
                     for (var i = 0; i < (int) Stats.StatCount; i++)
                     {
-                        MapItems[MapItems.Count - 1].StatBuffs[i] = r.Next(-1 * item.StatGrowth, item.StatGrowth + 1);
+                        MapItems[MapItems.Count - 1].StatBuffs[i] = r.Next(item.StatsGiven[i], item.StatGrowths[i] + 1);
                     }
                 }
 

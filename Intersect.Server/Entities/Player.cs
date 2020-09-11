@@ -4650,9 +4650,12 @@ namespace Intersect.Server.Entities
                     continue;
                 }
 
-                if (!TryGiveItem(offer.ItemId, offer.Quantity))
+                Item item = new Item(offer.ItemId, offer.Quantity, false);
+                item.StatBuffs = offer.StatBuffs;
+
+                if (!TryGiveItem(item))
                 {
-                    MapInstance.Get(MapId)?.SpawnItem(X, Y, offer, offer.Quantity, Id);
+                    MapInstance.Get(MapId)?.SpawnItem(X, Y, item, item.Quantity, Id);
                     PacketSender.SendChatMsg(this, Strings.Trading.itemsdropped, CustomColors.Alerts.Error);
                 }
 

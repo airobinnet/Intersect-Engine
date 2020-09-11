@@ -49,8 +49,8 @@ namespace Intersect.Server.Database
             {
                 // TODO: What the fuck?
                 StatBuffs[i] = Randomization.Next(
-                    -descriptor.StatGrowth,
-                    descriptor.StatGrowth + 1
+                    -descriptor.StatsGiven[i],
+                    descriptor.StatGrowths[i] + 1
                 );
             }
         }

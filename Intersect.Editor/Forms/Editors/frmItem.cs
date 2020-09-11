@@ -302,6 +302,13 @@ namespace Intersect.Editor.Forms.Editors
                 nudSpdPercentage.Value = mEditorItem.PercentageStatsGiven[4];
                 nudMSPercentage.Value = mEditorItem.PercentageStatsGiven[5];
 
+                nudRange0.Value = mEditorItem.StatGrowths[0];
+                nudRange1.Value = mEditorItem.StatGrowths[1];
+                nudRange2.Value = mEditorItem.StatGrowths[2];
+                nudRange3.Value = mEditorItem.StatGrowths[3];
+                nudRange4.Value = mEditorItem.StatGrowths[4];
+                nudRange5.Value = mEditorItem.StatGrowths[5];
+
                 nudHealthBonus.Value = mEditorItem.VitalsGiven[0];
                 nudManaBonus.Value = mEditorItem.VitalsGiven[1];
                 nudHPPercentage.Value = mEditorItem.PercentageVitalsGiven[0];
@@ -315,7 +322,6 @@ namespace Intersect.Editor.Forms.Editors
                 cmbAttackSpeedModifier.SelectedIndex = mEditorItem.AttackSpeedModifier;
                 nudAttackSpeedValue.Value = mEditorItem.AttackSpeedValue;
                 nudScaling.Value = mEditorItem.Scaling;
-                nudRange.Value = mEditorItem.StatGrowth;
                 chkBound.Checked = Convert.ToBoolean(mEditorItem.Bound);
                 chkStackable.Checked = Convert.ToBoolean(mEditorItem.Stackable);
                 chkHideHair.Checked = Convert.ToBoolean(mEditorItem.HideHair);
@@ -787,9 +793,34 @@ namespace Intersect.Editor.Forms.Editors
             mEditorItem.Effect.Percentage = (int) nudEffectPercent.Value;
         }
 
-        private void nudRange_ValueChanged(object sender, EventArgs e)
+        private void nudRange0_ValueChanged(object sender, EventArgs e)
         {
-            mEditorItem.StatGrowth = (int) nudRange.Value;
+            mEditorItem.StatGrowths[0] = (int)nudRange0.Value;
+        }
+
+        private void nudRange1_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.StatGrowths[1] = (int)nudRange1.Value;
+        }
+
+        private void nudRange2_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.StatGrowths[2] = (int)nudRange2.Value;
+        }
+
+        private void nudRange3_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.StatGrowths[3] = (int)nudRange3.Value;
+        }
+
+        private void nudRange4_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.StatGrowths[4] = (int)nudRange4.Value;
+        }
+
+        private void nudRange5_ValueChanged(object sender, EventArgs e)
+        {
+            mEditorItem.StatGrowths[5] = (int)nudRange5.Value;
         }
 
         private void nudStr_ValueChanged(object sender, EventArgs e)
