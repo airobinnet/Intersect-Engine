@@ -23,6 +23,8 @@ namespace Intersect.GameObjects
 
         [NotMapped] public List<NpcDrop> Drops = new List<NpcDrop>();
 
+        [NotMapped] public List<NpcDropPool> DropPools = new List<NpcDropPool>();
+
         [NotMapped] public int[] MaxVital = new int[(int) Vitals.VitalCount];
 
         [NotMapped] public ConditionLists PlayerCanAttackConditions = new ConditionLists();
@@ -131,7 +133,14 @@ namespace Intersect.GameObjects
         public int AttackSpeedValue { get; set; }
 
         //Common Events
-        [Column("DropPool")]
+        [Column("DropPools")]
+        [JsonIgnore]
+        public string JsonDropPools
+        {
+            get => JsonConvert.SerializeObject(DropPools);
+            set => DropPools = JsonConvert.DeserializeObject<List<NpcDropPool>>(value ?? "[]");
+        }
+        /*
         public Guid DropPoolId { get; set; }
 
         [NotMapped]
@@ -140,7 +149,7 @@ namespace Intersect.GameObjects
         {
             get => DropPoolBase.Get(DropPoolId);
             set => DropPoolId = value?.Id ?? Guid.Empty;
-        }
+        }*/
 
         [Column("OnDeathEvent")]
         public Guid OnDeathEventId { get; set; }
@@ -271,6 +280,17 @@ namespace Intersect.GameObjects
         public double Chance;
 
         public Guid ItemId;
+
+        public int Quantity;
+
+    }
+
+    public class NpcDropPool
+    {
+
+        public double Chance;
+
+        public Guid DropPoolId;
 
         public int Quantity;
 

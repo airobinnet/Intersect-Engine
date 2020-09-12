@@ -106,7 +106,7 @@ namespace Intersect.Editor.Forms.Editors
             }
             foreach (ItemPool pool in mEditorItem.ItemPool)
             {
-                lstItems.Items.Add($"{ItemBase.Get(pool.ItemId).Name} x{pool.Quantity}, {pool.Chance.ToString("0.00")}% chance");
+                lstItems.Items.Add($"{ItemBase.Get(pool.ItemId).Name} x{pool.MinQuantity}-{pool.MaxQuantity}, {pool.Chance.ToString("0.00")}% chance");
             }
         }
 
@@ -163,7 +163,7 @@ namespace Intersect.Editor.Forms.Editors
             if (mEditorItem != null && lstDropLoot.Focused)
             {
                 if (DarkMessageBox.ShowWarning(
-                        "Etes vous sur de vouloir supprimer la drop pool", "Supprimer la drop pool", DarkDialogButton.YesNo,
+                        "Do you really want to delete this drop pool?", "Delete it!", DarkDialogButton.YesNo,
                         Properties.Resources.Icon
                     ) ==
                     DialogResult.Yes)
@@ -186,7 +186,8 @@ namespace Intersect.Editor.Forms.Editors
                 mEditorItem.ItemPool.Add(new ItemPool()
                 {
                     ItemId = ItemId,
-                    Quantity = (int)nudDropAmount.Value,
+                    MinQuantity = (int)nudDropMinAmount.Value,
+                    MaxQuantity = (int)nudDropMaxAmount.Value,
                     Chance = (double)nudDropChance.Value
                 });
             }

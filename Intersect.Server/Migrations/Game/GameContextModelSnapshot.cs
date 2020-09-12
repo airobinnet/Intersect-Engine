@@ -406,9 +406,6 @@ namespace Intersect.Server.Migrations.Game
                     b.Property<Guid>("DeathAnimationId")
                         .HasColumnName("DeathAnimation");
 
-                    b.Property<Guid>("DropPoolId")
-                        .HasColumnName("DropPool");
-
                     b.Property<long>("Experience");
 
                     b.Property<byte>("FleeHealthPercentage");
@@ -419,6 +416,9 @@ namespace Intersect.Server.Migrations.Game
 
                     b.Property<string>("JsonAggroList")
                         .HasColumnName("AggroList");
+
+                    b.Property<string>("JsonDropPools")
+                        .HasColumnName("DropPools");
 
                     b.Property<string>("JsonDrops")
                         .HasColumnName("Drops");

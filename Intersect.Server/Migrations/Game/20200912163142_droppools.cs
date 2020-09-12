@@ -7,11 +7,10 @@ namespace Intersect.Server.Migrations.Game
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<Guid>(
-                name: "DropPool",
+            migrationBuilder.AddColumn<string>(
+                name: "DropPools",
                 table: "Npcs",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+                nullable: true);
 
             migrationBuilder.CreateTable(
                 name: "DropPool",
@@ -34,7 +33,7 @@ namespace Intersect.Server.Migrations.Game
                 name: "DropPool");
 
             migrationBuilder.DropColumn(
-                name: "DropPool",
+                name: "DropPools",
                 table: "Npcs");
         }
     }

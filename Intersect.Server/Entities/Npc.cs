@@ -133,10 +133,11 @@ namespace Intersect.Server.Entities
 
         public override void Die(int dropitems = 100, Entity killer = null)
         {
-            if (Base.DropPoolId != Guid.Empty)
+            if (Base.DropPools.Count > 0 && killer != null)
             {
                 DropPool(killer);
             }
+
             if (Base.DeathAnimationId != null)
             {
                 PacketSender.SendAnimationToProximity(
@@ -144,6 +145,7 @@ namespace Intersect.Server.Entities
                                 (sbyte)Dir
                             );
             }
+
             base.Die(dropitems, killer);
             MapInstance.Get(MapId).RemoveEntity(this);
             PacketSender.SendEntityDie(this);
@@ -152,13 +154,26 @@ namespace Intersect.Server.Entities
 
         public void DropPool(Entity killer)
         {
-            if (Base.DropPool.ItemPool.Count > 0)
+            var tempX = Base.DropPools.Count;
+            var i = 0;
+            while (i < Base.DropPools.Count)
             {
-                foreach (ItemPool ip in Base.DropPool.ItemPool)
+                var tempDP = DropPoolBase.Get(Base.DropPools[i].DropPoolId);
+                var luck = 1.0 + (killer != null ? killer.GetLuck() : 0) / 100.0;
+                double dropRng = (Randomization.NextDouble() * 100.0);
+                
+                if (dropRng >= Base.DropPools[i].Chance * luck)
                 {
-                    if (DropPoolItem(ItemBase.Get(ip.ItemId), ip.Quantity, ip.Chance, killer))
+                    i++;
+                }
+                else
+                {
+                    foreach (ItemPool ip in tempDP.ItemPool)
                     {
-                        return;
+                        if (DropPoolItem(ItemBase.Get(ip.ItemId), Randomization.Next(ip.MinQuantity, ip.MaxQuantity + 1), ip.Chance, killer))
+                        {
+                            i++;
+                        }
                     }
                 }
             }

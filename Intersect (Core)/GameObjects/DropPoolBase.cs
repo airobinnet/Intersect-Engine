@@ -44,7 +44,8 @@ namespace Intersect.GameObjects
     public class ItemPool
     {
         public Guid ItemId;
-        public int Quantity;
+        public int MinQuantity;
+        public int MaxQuantity;
         public double Chance;
 
     }

@@ -93,6 +93,11 @@ namespace Intersect.Editor.Forms.Editors
             cmbDropItem.Items.Clear();
             cmbDropItem.Items.Add(Strings.General.none);
             cmbDropItem.Items.AddRange(ItemBase.Names);
+
+            cmbDropPoolItem.Items.Clear();
+            cmbDropPoolItem.Items.Add(Strings.General.none);
+            cmbDropPoolItem.Items.AddRange(DropPoolBase.Names);
+
             cmbAttackAnimation.Items.Clear();
             cmbAttackAnimation.Items.Add(Strings.General.none);
             cmbAttackAnimation.Items.AddRange(AnimationBase.Names);
@@ -230,11 +235,6 @@ namespace Intersect.Editor.Forms.Editors
             lblAttackAnimation.Text = Strings.NpcEditor.attackanimation;
             lblDeathAnimation.Text = Strings.NpcEditor.deathanimation;
 
-
-            dmbDropPool.Items.Clear();
-            dmbDropPool.Items.Add("Any");
-            dmbDropPool.Items.AddRange(DropPoolBase.Names);
-
             //Searching/Sorting
             btnChronological.ToolTipText = Strings.NpcEditor.sortchronologically;
             txtSearch.Text = Strings.NpcEditor.searchplaceholder;
@@ -302,8 +302,6 @@ namespace Intersect.Editor.Forms.Editors
                 cmbAttackSpeedModifier.SelectedIndex = mEditorItem.AttackSpeedModifier;
                 nudAttackSpeedValue.Value = mEditorItem.AttackSpeedValue;
 
-                dmbDropPool.SelectedIndex = DropPoolBase.ListIndex(mEditorItem.DropPoolId) + 1;
-
                 //Regen
                 nudHpRegen.Value = mEditorItem.VitalRegen[(int) Vitals.Health];
                 nudMpRegen.Value = mEditorItem.VitalRegen[(int) Vitals.Mana];
@@ -345,6 +343,7 @@ namespace Intersect.Editor.Forms.Editors
                 }
 
                 UpdateDropValues();
+                UpdateDropPoolValues();
 
                 DrawNpcSprite();
                 if (mChanged.IndexOf(mEditorItem) == -1)
@@ -449,6 +448,43 @@ namespace Intersect.Editor.Forms.Editors
             if (keepIndex && index < lstDrops.Items.Count)
             {
                 lstDrops.SelectedIndex = index;
+            }
+        }
+
+        private void UpdateDropPoolValues(bool keepIndex = false)
+        {
+            var index = lstDropPools.SelectedIndex;
+            lstDropPools.Items.Clear();
+
+            var droppools = mEditorItem.DropPools.ToArray();
+            foreach (var drop in droppools)
+            {
+                if (DropPoolBase.Get(drop.DropPoolId) == null)
+                {
+                    mEditorItem.DropPools.Remove(drop);
+                }
+            }
+
+            for (var i = 0; i < mEditorItem.DropPools.Count; i++)
+            {
+                if (mEditorItem.DropPools[i].DropPoolId != Guid.Empty)
+                {
+                    lstDropPools.Items.Add(
+                        Strings.NpcEditor.dropdisplay.ToString(
+                            DropPoolBase.GetName(mEditorItem.DropPools[i].DropPoolId), mEditorItem.DropPools[i].Quantity,
+                            mEditorItem.DropPools[i].Chance
+                        )
+                    );
+                }
+                else
+                {
+                    lstDropPools.Items.Add(TextUtils.None);
+                }
+            }
+
+            if (keepIndex && index < lstDropPools.Items.Count)
+            {
+                lstDropPools.SelectedIndex = index;
             }
         }
 
@@ -753,6 +789,16 @@ namespace Intersect.Editor.Forms.Editors
             UpdateDropValues(true);
         }
 
+        private void cmbDropPoolItem_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstDropPools.SelectedIndex > -1 && lstDropPools.SelectedIndex < mEditorItem.DropPools.Count)
+            {
+                mEditorItem.DropPools[lstDropPools.SelectedIndex].DropPoolId = DropPoolBase.IdFromList(cmbDropPoolItem.SelectedIndex - 1);
+            }
+
+            UpdateDropPoolValues(true);
+        }
+
         private void nudDropAmount_ValueChanged(object sender, EventArgs e)
         {
             // This should never be below 1. We shouldn't accept giving 0 items!
@@ -767,6 +813,20 @@ namespace Intersect.Editor.Forms.Editors
             UpdateDropValues(true);
         }
 
+        private void nudDropPoolAmount_ValueChanged(object sender, EventArgs e)
+        {
+            // This should never be below 1. We shouldn't accept giving 0 items!
+            nudDropPoolAmount.Value = Math.Max(1, nudDropPoolAmount.Value);
+
+            if (lstDropPools.SelectedIndex < lstDropPools.Items.Count)
+            {
+                return;
+            }
+
+            mEditorItem.DropPools[(int)lstDropPools.SelectedIndex].Quantity = (int)nudDropPoolAmount.Value;
+            UpdateDropPoolValues(true);
+        }
+
         private void lstDrops_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstDrops.SelectedIndex > -1)
@@ -774,6 +834,16 @@ namespace Intersect.Editor.Forms.Editors
                 cmbDropItem.SelectedIndex = ItemBase.ListIndex(mEditorItem.Drops[lstDrops.SelectedIndex].ItemId) + 1;
                 nudDropAmount.Value = mEditorItem.Drops[lstDrops.SelectedIndex].Quantity;
                 nudDropChance.Value = (decimal) mEditorItem.Drops[lstDrops.SelectedIndex].Chance;
+            }
+        }
+
+        private void lstDropPools_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstDropPools.SelectedIndex > -1)
+            {
+                cmbDropPoolItem.SelectedIndex = DropPoolBase.ListIndex(mEditorItem.DropPools[lstDropPools.SelectedIndex].DropPoolId) + 1;
+                nudDropPoolAmount.Value = mEditorItem.DropPools[lstDropPools.SelectedIndex].Quantity;
+                nudDropPoolChance.Value = (decimal)mEditorItem.DropPools[lstDropPools.SelectedIndex].Chance;
             }
         }
 
@@ -799,6 +869,28 @@ namespace Intersect.Editor.Forms.Editors
             UpdateDropValues(true);
         }
 
+        private void btnDropPoolAdd_Click(object sender, EventArgs e)
+        {
+            mEditorItem.DropPools.Add(new NpcDropPool());
+            mEditorItem.DropPools[mEditorItem.DropPools.Count - 1].DropPoolId = DropPoolBase.IdFromList(cmbDropPoolItem.SelectedIndex - 1);
+            mEditorItem.DropPools[mEditorItem.DropPools.Count - 1].Quantity = (int)nudDropPoolAmount.Value;
+            mEditorItem.DropPools[mEditorItem.DropPools.Count - 1].Chance = (double)nudDropPoolChance.Value;
+
+            UpdateDropPoolValues();
+        }
+
+        private void btnDropPoolRemove_Click(object sender, EventArgs e)
+        {
+            if (lstDropPools.SelectedIndex > -1)
+            {
+                var i = lstDropPools.SelectedIndex;
+                lstDropPools.Items.RemoveAt(i);
+                mEditorItem.DropPools.RemoveAt(i);
+            }
+
+            UpdateDropPoolValues(true);
+        }
+
         private void nudDropChance_ValueChanged(object sender, EventArgs e)
         {
             if (lstDrops.SelectedIndex < lstDrops.Items.Count)
@@ -808,6 +900,17 @@ namespace Intersect.Editor.Forms.Editors
 
             mEditorItem.Drops[(int) lstDrops.SelectedIndex].Chance = (double) nudDropChance.Value;
             UpdateDropValues(true);
+        }
+
+        private void nudDropPoolChance_ValueChanged(object sender, EventArgs e)
+        {
+            if (lstDropPools.SelectedIndex < lstDropPools.Items.Count)
+            {
+                return;
+            }
+
+            mEditorItem.DropPools[(int)lstDropPools.SelectedIndex].Chance = (double)nudDropPoolChance.Value;
+            UpdateDropPoolValues(true);
         }
 
         private void nudLevel_ValueChanged(object sender, EventArgs e)
@@ -921,19 +1024,6 @@ namespace Intersect.Editor.Forms.Editors
         private void nudAttackSpeedValue_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.AttackSpeedValue = (int) nudAttackSpeedValue.Value;
-        }
-
-        private void dmbDropPool_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (dmbDropPool.SelectedIndex > 0)
-            {
-                mEditorItem.DropPoolId = DropPoolBase.IdFromList(dmbDropPool.SelectedIndex - 1);
-                //Console.WriteLine(mEditorItem.DropPool.Name);
-            }
-            else
-            {
-                mEditorItem.DropPoolId = Guid.Empty;
-            }
         }
 
         #region "Item List - Folders, Searching, Sorting, Etc"
