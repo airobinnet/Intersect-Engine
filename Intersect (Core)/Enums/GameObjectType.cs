@@ -64,6 +64,9 @@ namespace Intersect.Enums
         [GameObjectInfo(typeof(PetBase), "pets")]
         Pet,
 
+        [GameObjectInfo(typeof(DropPoolBase), "drop_pool")]
+        DropPool,
+
         [GameObjectInfo(typeof(TimeBase), "")]
         Time
 

@@ -771,6 +771,10 @@ namespace Intersect.Server.Database
                     HDVBase.Lookup.Clear();
 
                     break;
+                case GameObjectType.DropPool:
+                    DropPoolBase.Lookup.Clear();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -911,6 +915,13 @@ namespace Intersect.Server.Database
                             HDVBase.Lookup.Set(psw.Id, psw);
                         }
                         break;
+                    case GameObjectType.DropPool:
+                        foreach (var psw in sGameDb.DropPool)
+                        {
+                            DropPoolBase.Lookup.Set(psw.Id, psw);
+                        }
+
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(gameObjectType), gameObjectType, null);
                 }
@@ -1009,6 +1020,9 @@ namespace Intersect.Server.Database
                     break;
                 case GameObjectType.HDVs:
                     dbObj = new HDVBase(predefinedid);
+                    break;
+                case GameObjectType.DropPool:
+                    dbObj = new DropPoolBase(predefinedid);
                     break;
 
                 default:
@@ -1138,6 +1152,11 @@ namespace Intersect.Server.Database
                         HDVBase.Lookup.Set(dbObj.Id, dbObj);
 
                         break;
+                    case GameObjectType.DropPool:
+                        sGameDb.DropPool.Add((DropPoolBase)dbObj);
+                        DropPoolBase.Lookup.Set(dbObj.Id, dbObj);
+
+                        break;
 
                     default:
                         throw new ArgumentOutOfRangeException(nameof(gameObjectType), gameObjectType, null);
@@ -1253,6 +1272,10 @@ namespace Intersect.Server.Database
                         break;
                     case GameObjectType.HDVs:
                         sGameDb.HDVs.Remove((HDVBase)gameObject);
+
+                        break;
+                    case GameObjectType.DropPool:
+                        sGameDb.DropPool.Remove((DropPoolBase)gameObject);
 
                         break;
                 }

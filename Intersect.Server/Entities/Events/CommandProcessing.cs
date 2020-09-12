@@ -1554,6 +1554,17 @@ namespace Intersect.Server.Entities.Events
         }
 
         private static void ProcessCommand(
+            DropChanceItemCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            player.DropChanceItem(ItemBase.Get(command.ItemId), Randomization.Next(command.Min, command.Max + 1), command.DropChance);
+        }
+
+        private static void ProcessCommand(
             HDVCommand command,
             Player player,
             Event instance,

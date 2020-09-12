@@ -1056,6 +1056,12 @@ namespace Intersect.Editor.Forms.Editors.Events
             }
         }
 
+        private static string GetCommandText(DropChanceItemCommand command, MapInstance map)
+        {
+            ItemBase item = ItemBase.Get(command.ItemId);
+            return $"Drop item {item?.Name} x {command.Min} - {command.Max} with {command.DropChance.ToString("0.00")}% chance.";
+        }
+
         private static string GetCommandText(PlayBgmCommand command, MapInstance map)
         {
             return Strings.EventCommandList.playbgm.ToString(command.File);

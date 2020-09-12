@@ -80,6 +80,8 @@ namespace Intersect.Editor.Forms
 
         private frmHDV mFrmHDV;
 
+        private FrmDropPool mFrmDropPool;
+
         //General Editting Variables
         bool mTMouseDown;
 
@@ -1615,6 +1617,14 @@ namespace Intersect.Editor.Forms
                             mPetEditor.Show();
                         }
                         break;
+                    case GameObjectType.DropPool:
+                        if (mFrmDropPool == null || mFrmDropPool.Visible == false)
+                        {
+                            mFrmDropPool = new FrmDropPool();
+                            mFrmDropPool.InitEditor();
+                            mFrmDropPool.Show();
+                        }
+                        break;
                     default:
                         return;
                 }
@@ -1824,6 +1834,11 @@ namespace Intersect.Editor.Forms
         private void hDVToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PacketSender.SendOpenEditor(GameObjectType.HDVs);
+        }
+
+        private void dropTableEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PacketSender.SendOpenEditor(GameObjectType.DropPool);
         }
 
         private void createUpdate(string path, Update existingUpdate)

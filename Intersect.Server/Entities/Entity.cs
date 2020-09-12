@@ -2525,6 +2525,41 @@ namespace Intersect.Server.Entities
             return false;
         }
 
+        public virtual double GetLuck()
+        {
+            return 0.0;
+        }
+
+        public virtual bool DropChanceItem(ItemBase item, int quantity, double dropChance)
+        {
+            if (item == null)
+            {
+                return false;
+            }
+            if (this.GetType() == typeof(Player))
+            {
+                if (item.Bound)
+                {
+                    return false;
+                }
+                Player player = this as Player;
+                var luck = 1.0 + (player != null ? player.GetLuck() : 0) / 100.0;
+                double dropRng = (Randomization.NextDouble() * 100.0);
+                if (dropRng >= dropChance * luck)
+                {
+                    return false;
+                }
+                Item nItem = new Item(item.Id, quantity);
+                if (player.TryGiveItem(nItem) == false)
+                {
+                    var map = MapInstance.Get(MapId);
+                    map?.SpawnItem(X, Y, nItem, quantity);
+                }
+                return true;
+            }
+            return false;
+        }
+
         //These functions only work when one block away.
         protected bool IsFacingTarget(Entity target)
         {

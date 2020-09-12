@@ -101,6 +101,9 @@ namespace Intersect.Server.Database.GameData
         //AH
         public DbSet<HDVBase> HDVs { get; set; }
 
+        //Drop Pools
+        public DbSet<DropPoolBase> DropPool { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }

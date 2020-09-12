@@ -254,6 +254,8 @@
         //GiveGuildExperience
         GiveGuildExperience = 702,
 
+        DropChanceItem = 602
+
     }
 
 }

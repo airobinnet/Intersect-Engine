@@ -230,6 +230,11 @@ namespace Intersect.Editor.Forms.Editors
             lblAttackAnimation.Text = Strings.NpcEditor.attackanimation;
             lblDeathAnimation.Text = Strings.NpcEditor.deathanimation;
 
+
+            dmbDropPool.Items.Clear();
+            dmbDropPool.Items.Add("Any");
+            dmbDropPool.Items.AddRange(DropPoolBase.Names);
+
             //Searching/Sorting
             btnChronological.ToolTipText = Strings.NpcEditor.sortchronologically;
             txtSearch.Text = Strings.NpcEditor.searchplaceholder;
@@ -297,6 +302,8 @@ namespace Intersect.Editor.Forms.Editors
                 cmbAttackSpeedModifier.SelectedIndex = mEditorItem.AttackSpeedModifier;
                 nudAttackSpeedValue.Value = mEditorItem.AttackSpeedValue;
 
+                dmbDropPool.SelectedIndex = DropPoolBase.ListIndex(mEditorItem.DropPoolId) + 1;
+
                 //Regen
                 nudHpRegen.Value = mEditorItem.VitalRegen[(int) Vitals.Health];
                 nudMpRegen.Value = mEditorItem.VitalRegen[(int) Vitals.Mana];
@@ -345,6 +352,7 @@ namespace Intersect.Editor.Forms.Editors
                     mChanged.Add(mEditorItem);
                     mEditorItem.MakeBackup();
                 }
+
             }
             else
             {
@@ -913,6 +921,19 @@ namespace Intersect.Editor.Forms.Editors
         private void nudAttackSpeedValue_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.AttackSpeedValue = (int) nudAttackSpeedValue.Value;
+        }
+
+        private void dmbDropPool_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (dmbDropPool.SelectedIndex > 0)
+            {
+                mEditorItem.DropPoolId = DropPoolBase.IdFromList(dmbDropPool.SelectedIndex - 1);
+                //Console.WriteLine(mEditorItem.DropPool.Name);
+            }
+            else
+            {
+                mEditorItem.DropPoolId = Guid.Empty;
+            }
         }
 
         #region "Item List - Folders, Searching, Sorting, Etc"

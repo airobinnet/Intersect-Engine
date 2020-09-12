@@ -763,6 +763,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new GiveGuildExperienceCommand();
 
                     break;
+                case EventCommandType.DropChanceItem:
+                    tmpCommand = new DropChanceItemCommand();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1370,6 +1374,9 @@ namespace Intersect.Editor.Forms.Editors.Events
                 case EventCommandType.GiveGuildExperience:
                     cmdWindow = new EventCommandGiveGuildExperience((GiveGuildExperienceCommand)command, this);
 
+                    break;
+                case EventCommandType.DropChanceItem:
+                    cmdWindow = new EventCommand_DropChance((DropChanceItemCommand)command, this);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

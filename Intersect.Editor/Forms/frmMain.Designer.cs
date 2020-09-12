@@ -115,6 +115,7 @@ namespace Intersect.Editor.Forms
             this.variableEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timeEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hDVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PetEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.postQuestionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportBugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,7 +124,7 @@ namespace Intersect.Editor.Forms
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.packClientTexturesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.packageUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.PetEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dropTableEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -804,7 +805,8 @@ namespace Intersect.Editor.Forms
             this.variableEditorToolStripMenuItem,
             this.timeEditorToolStripMenuItem,
             this.hDVToolStripMenuItem,
-            this.PetEditorToolStripMenuItem});
+            this.PetEditorToolStripMenuItem,
+            this.dropTableEditorToolStripMenuItem});
             this.contentEditorsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.contentEditorsToolStripMenuItem.Name = "contentEditorsToolStripMenuItem";
             this.contentEditorsToolStripMenuItem.Size = new System.Drawing.Size(147, 29);
@@ -930,6 +932,14 @@ namespace Intersect.Editor.Forms
             this.hDVToolStripMenuItem.Text = "Auction House";
             this.hDVToolStripMenuItem.Click += new System.EventHandler(this.hDVToolStripMenuItem_Click);
             // 
+            // PetEditorToolStripMenuItem
+            // 
+            this.PetEditorToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.PetEditorToolStripMenuItem.Name = "PetEditorToolStripMenuItem";
+            this.PetEditorToolStripMenuItem.Size = new System.Drawing.Size(271, 30);
+            this.PetEditorToolStripMenuItem.Text = "Pets";
+            this.PetEditorToolStripMenuItem.Click += new System.EventHandler(this.PetEditorToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1010,13 +1020,13 @@ namespace Intersect.Editor.Forms
             this.packageUpdateToolStripMenuItem.Text = "Package Update";
             this.packageUpdateToolStripMenuItem.Click += new System.EventHandler(this.packageUpdateToolStripMenuItem_Click);
             // 
-            // PetEditorToolStripMenuItem
+            // dropTableEditorToolStripMenuItem
             // 
-            this.PetEditorToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.PetEditorToolStripMenuItem.Name = "PetEditorToolStripMenuItem";
-            this.PetEditorToolStripMenuItem.Size = new System.Drawing.Size(271, 30);
-            this.PetEditorToolStripMenuItem.Text = "Pets";
-            this.PetEditorToolStripMenuItem.Click += new System.EventHandler(this.PetEditorToolStripMenuItem_Click);
+            this.dropTableEditorToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.dropTableEditorToolStripMenuItem.Name = "dropTableEditorToolStripMenuItem";
+            this.dropTableEditorToolStripMenuItem.Size = new System.Drawing.Size(271, 30);
+            this.dropTableEditorToolStripMenuItem.Text = "Drop Table Editor";
+            this.dropTableEditorToolStripMenuItem.Click += new System.EventHandler(this.dropTableEditorToolStripMenuItem_Click);
             // 
             // FrmMain
             // 
@@ -1140,5 +1150,6 @@ namespace Intersect.Editor.Forms
         private ToolStripMenuItem packageUpdateToolStripMenuItem;
         private ToolStripMenuItem hDVToolStripMenuItem;
         private ToolStripMenuItem PetEditorToolStripMenuItem;
+        private ToolStripMenuItem dropTableEditorToolStripMenuItem;
     }
 }

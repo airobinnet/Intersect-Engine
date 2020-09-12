@@ -543,6 +543,19 @@ namespace Intersect.Editor.Networking
                         HDVBase.Lookup.Set(id, hdv);
                     }
                     break;
+                case GameObjectType.DropPool:
+                    if (deleted)
+                    {
+                        var dp = DropPoolBase.Get(id);
+                        dp.Delete();
+                    }
+                    else
+                    {
+                        var dp = new DropPoolBase(id);
+                        dp.Load(json);
+                        DropPoolBase.Lookup.Set(id, dp);
+                    }
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

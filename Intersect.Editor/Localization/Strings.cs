@@ -222,6 +222,7 @@ namespace Intersect.Editor.Localization
             return Strings.EventConditionDesc.questinprogress.ToString(QuestBase.GetName(condition.QuestId));
         }
 
+
         public static string GetEventConditionalDesc(QuestCompletedCondition condition)
         {
             return Strings.EventConditionDesc.questcompleted.ToString(QuestBase.GetName(condition.QuestId));
@@ -1883,6 +1884,7 @@ Tick timer saved in server config.json.";
                 {"guild", @"Guild"},
                 {"createguild", @"Create Guild" },
                 {"giveguildexperience", @"Give Guild Experience" },
+                {"dropchance","Item Drop Chance"},
             };
 
         }

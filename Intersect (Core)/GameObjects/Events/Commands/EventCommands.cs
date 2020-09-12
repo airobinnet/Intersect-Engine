@@ -174,6 +174,21 @@ namespace Intersect.GameObjects.Events.Commands
 
     }
 
+    public class DropChanceItemCommand : EventCommand
+    {
+        public override EventCommandType Type { get; } = EventCommandType.DropChanceItem;
+
+        public Guid ItemId { get; set; }
+
+        public int Min { get; set; }
+
+        public int Max { get; set; }
+
+        public double DropChance { get; set; }
+
+
+    }
+
     public class AddChatboxTextCommand : EventCommand
     {
 

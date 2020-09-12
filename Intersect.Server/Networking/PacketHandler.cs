@@ -3970,6 +3970,10 @@ namespace Intersect.Server.Networking
                     obj = HDVBase.Get(id);
 
                     break;
+                case GameObjectType.DropPool:
+                    obj = DropPoolBase.Get(id);
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -4082,6 +4086,9 @@ namespace Intersect.Server.Networking
                     break;
                 case GameObjectType.HDVs:
                     obj = HDVBase.Get(id);
+                    break;
+                case GameObjectType.DropPool:
+                    obj = DropPoolBase.Get(id);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

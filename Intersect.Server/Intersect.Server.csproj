@@ -562,6 +562,10 @@
     <Compile Include="Migrations\Game\20200911164644_statrange.designer.cs">
       <DependentUpon>20200911164644_statrange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Game\20200912010104_droppools.cs" />
+    <Compile Include="Migrations\Game\20200912010104_droppools.designer.cs">
+      <DependentUpon>20200912010104_droppools.cs</DependentUpon>
+    </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />
     <Compile Include="Networking\Helpers\NetDebug.cs" />
