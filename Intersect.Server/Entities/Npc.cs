@@ -151,6 +151,17 @@ namespace Intersect.Server.Entities
             PacketSender.SendEntityDie(this);
             PacketSender.SendEntityLeave(this);
         }
+        
+        public class NpcDropPoolItems
+        {
+            
+            public Guid DropPoolItemId;
+
+            public int minValue;
+
+            public int maxValue;
+
+        }
 
         public void DropPool(Entity killer)
         {
@@ -159,19 +170,36 @@ namespace Intersect.Server.Entities
             while (i < Base.DropPools.Count)
             {
                 var tempDP = DropPoolBase.Get(Base.DropPools[i].DropPoolId);
+
                 var luck = 1.0 + (killer != null ? killer.GetLuck() : 0) / 100.0;
                 double dropRng = (Randomization.NextDouble() * 100.0);
-                
+
                 if (dropRng >= Base.DropPools[i].Chance * luck)
                 {
                     i++;
                 }
                 else
                 {
+                    var tempValue = 0;
+                    List<NpcDropPoolItems> NpcDropPoolItems = new List<NpcDropPoolItems>();
                     foreach (ItemPool ip in tempDP.ItemPool)
                     {
-                        if (DropPoolItem(ItemBase.Get(ip.ItemId), Randomization.Next(ip.MinQuantity, ip.MaxQuantity + 1), ip.Chance, killer))
+                        NpcDropPoolItems TempItem = new NpcDropPoolItems();
+                        TempItem.DropPoolItemId = ip.ItemId;
+                        TempItem.minValue = tempValue;
+                        TempItem.maxValue = tempValue + (int)ip.Chance;
+                        tempValue = TempItem.maxValue;
+
+                        NpcDropPoolItems.Add(TempItem);
+                    }
+                    var Picker = Randomization.Next(0, tempValue);
+
+                    foreach (NpcDropPoolItems dpi in NpcDropPoolItems)
+                    {
+                        if (Picker <= dpi.maxValue && Picker >= dpi.minValue)
                         {
+                            var TempItemToGive = tempDP.ItemPool.Where(item => item.ItemId == dpi.DropPoolItemId).FirstOrDefault();
+                            DropPoolItem(ItemBase.Get(TempItemToGive.ItemId), Randomization.Next(TempItemToGive.MinQuantity, TempItemToGive.MaxQuantity + 1), TempItemToGive.Chance, killer);
                             i++;
                         }
                     }
@@ -189,17 +217,45 @@ namespace Intersect.Server.Entities
             {
                 return false;
             }
-            var luck = 1.0 + (killer != null ? killer.GetLuck() : 0) / 100.0;
-            double dropRng = (Randomization.NextDouble() * 100.0);
-            if (dropRng >= dropChance * luck)
-            {
-                return false;
-            }
+
             Item nItem = new Item(item.Id, quantity, true);
             var map = MapInstance.Get(MapId);
-            map?.SpawnItem(X, Y, nItem, quantity);
 
-            return true;
+            //Find tiles to spawn items
+            var tiles = new List<TileHelper>();
+            for (var x = X - Options.ItemDropRange; x <= X + Options.ItemDropRange; x++)
+            {
+                for (var y = Y - Options.ItemDropRange; y <= Y + Options.ItemDropRange; y++)
+                {
+                    var tileHelper = new TileHelper(MapId, x, y);
+                    if (tileHelper.TryFix())
+                    {
+                        //Tile is valid.. let's see if its open
+                        map = MapInstance.Get(tileHelper.GetMapId());
+                        if (map != null)
+                        {
+                            if (!map.TileBlocked(tileHelper.GetX(), tileHelper.GetY()))
+                            {
+                                tiles.Add(tileHelper);
+                            }
+                        }
+                    }
+                }
+            }
+            if (tiles.Count > 0)
+            {
+                var tile = tiles[Randomization.Next(tiles.Count)];
+                map = MapInstance.Get(tile.GetMapId());
+                map?.SpawnItem(tile.GetX(), tile.GetY(), nItem, quantity, killer.Id);
+                return true;
+            }
+            else
+            {
+                map = MapInstance.Get(MapId);
+                map?.SpawnItem(X, Y, nItem, quantity, killer.Id);
+                return true;
+            }
+
         }
 
         //Targeting
