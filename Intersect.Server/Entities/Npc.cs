@@ -242,6 +242,13 @@ namespace Intersect.Server.Entities
                     }
                 }
             }
+            if (item.ItemType == ItemTypes.Equipment)
+            {
+                for (var j = 0; j < (int)Stats.StatCount; j++)
+                {
+                    nItem.StatBuffs[j] = Randomization.Next(ItemBase.Get(nItem.ItemId).StatsGiven[j], ItemBase.Get(nItem.ItemId).StatGrowths[j] + 1);
+                }
+            }
             if (tiles.Count > 0)
             {
                 var tile = tiles[Randomization.Next(tiles.Count)];
