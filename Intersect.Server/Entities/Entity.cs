@@ -1483,7 +1483,7 @@ namespace Intersect.Server.Entities
                                         xpreceived = target.Level * tradeskill.Descriptor.WeaponUnlocks[0].WeaponXpGain / 100;
                                     }
                                 }
-                                else
+                                else if (target.GetType() == typeof(Npc))
                                 {
                                     var enemy = (Npc)target;
                                     var BasicXp = 1;
@@ -1493,7 +1493,15 @@ namespace Intersect.Server.Entities
                                     }
                                     xpreceived = BasicXp * tradeskill.Descriptor.WeaponUnlocks[0].WeaponXpGain / 100;
                                 }
-                                me.GiveTradeSkillExperience(tradeskill.TradeSkillId, xpreceived);
+                                else
+                                {
+                                    xpreceived = 0;
+                                }
+                                if (xpreceived > 0)
+                                {
+
+                                    me.GiveTradeSkillExperience(tradeskill.TradeSkillId, xpreceived);
+                                }
                                 extradamage = 1 + (tradeskill.CurrentLevel * tradeskill.Descriptor.WeaponUnlocks[0].DamageIncrease) / 100;
                             }
                         }
@@ -1710,7 +1718,7 @@ namespace Intersect.Server.Entities
                                         xpreceived = target.Level * tradeskill.Descriptor.SkillUnlocks.FirstOrDefault(f => f.Skill == spellBase.Id).SkillXpGain / 100;
                                     }
                                 }
-                                else
+                                else if (target.GetType() == typeof(Npc))
                                 {
                                     var enemy = (Npc)target;
                                     var BasicXp = 1;
@@ -1720,7 +1728,14 @@ namespace Intersect.Server.Entities
                                     }
                                     xpreceived = BasicXp * tradeskill.Descriptor.SkillUnlocks.FirstOrDefault(f => f.Skill == spellBase.Id).SkillXpGain / 100;
                                 }
-                                me.GiveTradeSkillExperience(tradeskill.TradeSkillId, xpreceived);
+                                else
+                                {
+                                    xpreceived = 0;
+                                }
+                                if (xpreceived > 0)
+                                {
+                                    me.GiveTradeSkillExperience(tradeskill.TradeSkillId, xpreceived);
+                                }
                                 extradamage = 1 + (tradeskill.CurrentLevel * tradeskill.Descriptor.SkillUnlocks.FirstOrDefault(f => f.Skill == spellBase.Id).DamageIncrease) / 100;
                             }
                         }
@@ -2012,7 +2027,7 @@ namespace Intersect.Server.Entities
                                     xpreceived = target.Level * tradeskill.Descriptor.WeaponUnlocks[0].WeaponXpGain / 100;
                                 }
                             }
-                            else
+                            else if (target.GetType() == typeof(Npc))
                             {
                                 var enemy = (Npc)target;
                                 var BasicXp = 1;
@@ -2022,7 +2037,14 @@ namespace Intersect.Server.Entities
                                 }
                                 xpreceived = BasicXp * tradeskill.Descriptor.WeaponUnlocks[0].WeaponXpGain / 100;
                             }
-                            me.GiveTradeSkillExperience(tradeskill.TradeSkillId, xpreceived);
+                            else
+                            {
+                                xpreceived = 0;
+                            }
+                            if (xpreceived > 0)
+                            {
+                                me.GiveTradeSkillExperience(tradeskill.TradeSkillId, xpreceived);
+                            }
                             extradamage = 1+(tradeskill.CurrentLevel * tradeskill.Descriptor.WeaponUnlocks[0].DamageIncrease)/100;
                         }
                     }

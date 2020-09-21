@@ -72,8 +72,6 @@ namespace Intersect.Client.Interface.Game.TradeSkills
 
             mTradeSkillInfoWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 
-            Interface.InputBlockingElements.Add(mTradeSkillInfoWindow);
-
             LoadTradeSkillInfo(mTradeSkillId);
 
             tempX = x;
