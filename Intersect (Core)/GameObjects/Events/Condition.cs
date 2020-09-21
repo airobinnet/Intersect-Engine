@@ -48,6 +48,9 @@ namespace Intersect.GameObjects.Events
 
         MapHasTag,
 
+        HasTradeSkill,
+
+        TradeSkillHasLevel,
     }
 
     public class Condition
@@ -305,4 +308,23 @@ namespace Intersect.GameObjects.Events
 
     }
 
+    public class HasTradeSkillCondition : Condition
+    {
+
+        public override ConditionTypes Type { get; } = ConditionTypes.HasTradeSkill;
+
+        public Guid TradeSkill { get; set; }
+
+    }
+
+    public class TradeSkillHasLevelCondition : Condition
+    {
+
+        public override ConditionTypes Type { get; } = ConditionTypes.TradeSkillHasLevel;
+
+        public Guid TradeSkill { get; set; }
+
+        public int TradeSkillLevel { get; set; }
+
+    }
 }

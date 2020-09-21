@@ -210,6 +210,10 @@ namespace Intersect.Client.Core
                                         PacketSender.SendOpenAdminWindow();
 
                                         break;
+                                    case Control.OpenTradeSkills:
+                                        Interface.Interface.GameUi?.GameMenu?.ToggleTradeSkillWindow();
+
+                                        break;
                                 }
 
                                 break;

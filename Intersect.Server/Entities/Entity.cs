@@ -113,6 +113,10 @@ namespace Intersect.Server.Entities
         [NotNull, JsonIgnore]
         public virtual List<InventorySlot> Items { get; set; } = new List<InventorySlot>();
 
+        //TradeSkills
+        [NotNull, JsonIgnore]
+        public virtual List<TradeSkillSlot> TradeSkills { get; set; } = new List<TradeSkillSlot>();
+
         //Spells
         [NotNull, JsonIgnore]
         public virtual List<SpellSlot> Spells { get; set; } = new List<SpellSlot>();
@@ -1456,8 +1460,47 @@ namespace Intersect.Server.Entities
 
             if (parentSpell == null)
             {
+
+                long xpreceived = 0;
+                var extradamage = 0;
+                if (parentItem != null && parentItem.Tags.Count() > 0)
+                {
+                    foreach (var tradeskill in TradeSkills)
+                    {
+                        if (tradeskill.Descriptor?.WeaponUnlocks?.Count() > 0)
+                        {
+                            if (parentItem.Tags.Contains(tradeskill.Descriptor?.WeaponUnlocks[0].WeaponTag))
+                            {
+                                var me = (Player)this;
+                                if (target.GetType() == typeof(Player))
+                                {
+                                    if (target.Level < Level)
+                                    {
+                                        xpreceived = 0;
+                                    }
+                                    else
+                                    {
+                                        xpreceived = target.Level * tradeskill.Descriptor.WeaponUnlocks[0].WeaponXpGain / 100;
+                                    }
+                                }
+                                else
+                                {
+                                    var enemy = (Npc)target;
+                                    var BasicXp = 1;
+                                    if (enemy.Base.Experience > 0)
+                                    {
+                                        BasicXp = Math.Max((int)enemy.Base.Experience, 1);
+                                    }
+                                    xpreceived = BasicXp * tradeskill.Descriptor.WeaponUnlocks[0].WeaponXpGain / 100;
+                                }
+                                me.GiveTradeSkillExperience(tradeskill.TradeSkillId, xpreceived);
+                                extradamage = 1 + (tradeskill.CurrentLevel * tradeskill.Descriptor.WeaponUnlocks[0].DamageIncrease) / 100;
+                            }
+                        }
+                    }
+                }
                 Attack(
-                    target, parentItem.Damage, 0, (DamageType) parentItem.DamageType, (Stats) parentItem.ScalingStat,
+                    target, parentItem.Damage * Math.Max(extradamage, 1), 0, (DamageType) parentItem.DamageType, (Stats) parentItem.ScalingStat,
                     parentItem.Scaling, parentItem.CritChance, parentItem.CritMultiplier, null, null, true
                 );
             }
@@ -1644,8 +1687,47 @@ namespace Intersect.Server.Entities
             if ((spellBase.Combat.Effect != StatusTypes.OnHit || onHitTrigger) &&
                 spellBase.Combat.Effect != StatusTypes.Shield)
             {
+
+                long xpreceived = 0;
+                var extradamage = 0;
+                if (spellBase != null)
+                {
+                    foreach (var tradeskill in TradeSkills)
+                    {
+                        if (tradeskill.Descriptor.SkillUnlocks?.Count > 0)
+                        {
+                            if (tradeskill.Descriptor.SkillUnlocks.FirstOrDefault(f => f.Skill == spellBase.Id) != null)
+                            {
+                                var me = (Player)this;
+                                if (target.GetType() == typeof(Player))
+                                {
+                                    if (target.Level < Level)
+                                    {
+                                        xpreceived = 0;
+                                    }
+                                    else
+                                    {
+                                        xpreceived = target.Level * tradeskill.Descriptor.SkillUnlocks.FirstOrDefault(f => f.Skill == spellBase.Id).SkillXpGain / 100;
+                                    }
+                                }
+                                else
+                                {
+                                    var enemy = (Npc)target;
+                                    var BasicXp = 1;
+                                    if (enemy.Base.Experience > 0)
+                                    {
+                                        BasicXp = Math.Max((int)enemy.Base.Experience, 1);
+                                    }
+                                    xpreceived = BasicXp * tradeskill.Descriptor.SkillUnlocks.FirstOrDefault(f => f.Skill == spellBase.Id).SkillXpGain / 100;
+                                }
+                                me.GiveTradeSkillExperience(tradeskill.TradeSkillId, xpreceived);
+                                extradamage = 1 + (tradeskill.CurrentLevel * tradeskill.Descriptor.SkillUnlocks.FirstOrDefault(f => f.Skill == spellBase.Id).DamageIncrease) / 100;
+                            }
+                        }
+                    }
+                }
                 Attack(
-                    target, damageHealth, damageMana, (DamageType) spellBase.Combat.DamageType,
+                    target, damageHealth * Math.Max(extradamage, 1), damageMana, (DamageType) spellBase.Combat.DamageType,
                     (Stats) spellBase.Combat.ScalingStat, spellBase.Combat.Scaling, spellBase.Combat.CritChance,
                     spellBase.Combat.CritMultiplier, deadAnimations, aliveAnimations
                 );
@@ -1908,9 +1990,47 @@ namespace Intersect.Server.Entities
                     }
                 }
             }
+            long xpreceived = 0;
+            var extradamage = 0;
+            if (weapon != null && weapon.Tags.Count() > 0)
+            {
+                foreach (var tradeskill in TradeSkills)
+                {
+                    if (tradeskill.Descriptor?.WeaponUnlocks?.Count() > 0)
+                    {
+                        if (weapon.Tags.Contains(tradeskill.Descriptor?.WeaponUnlocks[0].WeaponTag))
+                        {
+                            var me = (Player)this;
+                            if (target.GetType() == typeof(Player))
+                            {
+                                if (target.Level < Level)
+                                {
+                                    xpreceived = 0;
+                                }
+                                else
+                                {
+                                    xpreceived = target.Level * tradeskill.Descriptor.WeaponUnlocks[0].WeaponXpGain / 100;
+                                }
+                            }
+                            else
+                            {
+                                var enemy = (Npc)target;
+                                var BasicXp = 1;
+                                if (enemy.Base.Experience > 0)
+                                {
+                                    BasicXp = Math.Max((int)enemy.Base.Experience, 1);
+                                }
+                                xpreceived = BasicXp * tradeskill.Descriptor.WeaponUnlocks[0].WeaponXpGain / 100;
+                            }
+                            me.GiveTradeSkillExperience(tradeskill.TradeSkillId, xpreceived);
+                            extradamage = 1+(tradeskill.CurrentLevel * tradeskill.Descriptor.WeaponUnlocks[0].DamageIncrease)/100;
+                        }
+                    }
+                }
+            }
 
             Attack(
-                target, baseDamage, 0, damageType, scalingStat, scaling, critChance, critMultiplier, deadAnimations,
+                target, baseDamage * Math.Max(extradamage,1), 0, damageType, scalingStat, scaling, critChance, critMultiplier, deadAnimations,
                 aliveAnimations, true
             );
             if (weapon != null)

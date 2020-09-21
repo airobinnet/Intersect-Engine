@@ -138,6 +138,7 @@ namespace Intersect.Server.Entities
                 player.Items = player.Items.OrderBy(inventorySlot => inventorySlot?.Slot).ToList();
                 player.Hotbar = player.Hotbar.OrderBy(hotbarSlot => hotbarSlot?.Slot).ToList();
                 player.Spells = player.Spells.OrderBy(spellSlot => spellSlot?.Slot).ToList();
+                player.TradeSkills = player.TradeSkills.OrderBy(TradeSkillSlot => TradeSkillSlot?.Slot).ToList();
             }
 
             return player;
@@ -219,6 +220,7 @@ namespace Intersect.Server.Entities
                     .Include(p => p.Variables)
                     .Include(p => p.Items)
                     .Include(p => p.Spells)
+                    .Include(p => p.TradeSkills)
                     .Include(p => p.MailBoxs)
                     .ThenInclude(p => p.Sender)
             ) ??
@@ -239,6 +241,7 @@ namespace Intersect.Server.Entities
                     .Include(p => p.Variables)
                     .Include(p => p.Items)
                     .Include(p => p.Spells)
+                    .Include(p => p.TradeSkills)
                     .Include(p => p.MailBoxs)
                     .ThenInclude(p => p.Sender)
             ) ??
@@ -260,6 +263,7 @@ namespace Intersect.Server.Entities
                     .Include(p => p.Variables)
                     .Include(p => p.Items)
                     .Include(p => p.Spells)
+                    .Include(p => p.TradeSkills)
                     .Include(p => p.MailBoxs)
                     .ThenInclude(p => p.Sender)
             ) ??
@@ -276,6 +280,7 @@ namespace Intersect.Server.Entities
                     .Include(p => p.Variables)
                     .Include(p => p.Items)
                     .Include(p => p.Spells)
+                    .Include(p => p.TradeSkills)
                     .Include(p => p.MailBoxs)
                     .ThenInclude(p => p.Sender)
                     .FirstOrDefault()
@@ -293,6 +298,7 @@ namespace Intersect.Server.Entities
                     .Include(p => p.Variables)
                     .Include(p => p.Items)
                     .Include(p => p.Spells)
+                    .Include(p => p.TradeSkills)
                     .Include(p => p.MailBoxs)
                     .ThenInclude(p => p.Sender)
                     .FirstOrDefault()

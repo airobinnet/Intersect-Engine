@@ -366,6 +366,17 @@ namespace Intersect.GameObjects.Events.Commands
 
     }
 
+    public class GiveTradeSkillExperienceCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.GiveTradeSkillExperience;
+
+        public Guid TradeskillId { get; set; }
+
+        public long Exp { get; set; }
+
+    }
+
     public class GiveGuildExperienceCommand : EventCommand
     {
 
@@ -429,6 +440,66 @@ namespace Intersect.GameObjects.Events.Commands
 
             return base.GetCopyData(commandLists, copyLists);
         }
+
+        public override void FixBranchIds(Dictionary<Guid, Guid> idDict)
+        {
+            for (var i = 0; i < BranchIds.Length; i++)
+            {
+                if (idDict.ContainsKey(BranchIds[i]))
+                {
+                    BranchIds[i] = idDict[BranchIds[i]];
+                }
+            }
+        }
+
+    }
+
+    public class ChangeTradeSkillCommand : EventCommand
+    {
+
+        //For Json Deserialization
+        public ChangeTradeSkillCommand()
+        {
+        }
+
+        public ChangeTradeSkillCommand(Dictionary<Guid, List<EventCommand>> commandLists)
+        {
+            for (var i = 0; i < BranchIds.Length; i++)
+            {
+                BranchIds[i] = Guid.NewGuid();
+                commandLists.Add(BranchIds[i], new List<EventCommand>());
+            }
+        }
+
+        public override EventCommandType Type { get; } = EventCommandType.ChangeTradeSkill;
+
+        public Guid TradeSkillId { get; set; }
+
+        public bool Add { get; set; } //If !Add then Remove
+
+        public Guid[] BranchIds { get; set; } =
+            new Guid[2]; //Branch[0] is the event commands to execute when given/taken successfully, Branch[1] is for when they're not.
+
+        public override string GetCopyData(
+            Dictionary<Guid, List<EventCommand>> commandLists,
+            Dictionary<Guid, List<EventCommand>> copyLists
+        )
+        {
+            foreach (var branch in BranchIds)
+            {
+                if (branch != Guid.Empty && commandLists.ContainsKey(branch))
+                {
+                    copyLists.Add(branch, commandLists[branch]);
+                    foreach (var cmd in commandLists[branch])
+                    {
+                        cmd.GetCopyData(commandLists, copyLists);
+                    }
+                }
+            }
+
+            return base.GetCopyData(commandLists, copyLists);
+        }
+
 
         public override void FixBranchIds(Dictionary<Guid, Guid> idDict)
         {

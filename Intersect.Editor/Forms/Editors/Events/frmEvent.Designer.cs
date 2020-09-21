@@ -161,6 +161,11 @@ namespace Intersect.Editor.Forms.Editors.Events
             System.Windows.Forms.TreeNode treeNode69 = new System.Windows.Forms.TreeNode("Spawn Pet");
             System.Windows.Forms.TreeNode treeNode70 = new System.Windows.Forms.TreeNode("Despawn Pet");
             System.Windows.Forms.TreeNode treeNode71 = new System.Windows.Forms.TreeNode("Item Drop Chance");
+            System.Windows.Forms.TreeNode treeNode72 = new System.Windows.Forms.TreeNode("Change Tradeskill");
+            System.Windows.Forms.TreeNode treeNode73 = new System.Windows.Forms.TreeNode("Give Tradeskill Experience");
+            System.Windows.Forms.TreeNode treeNode74 = new System.Windows.Forms.TreeNode("Tradeskills", new System.Windows.Forms.TreeNode[] {
+            treeNode72,
+            treeNode73});
             this.lblName = new System.Windows.Forms.Label();
             this.txtEventname = new DarkUI.Controls.DarkTextBox();
             this.grpEntityOptions = new DarkUI.Controls.DarkGroupBox();
@@ -1072,6 +1077,14 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode71.Name = "dropchance";
             treeNode71.Tag = "602";
             treeNode71.Text = "Item Drop Chance";
+            treeNode72.Name = "changetradeskill";
+            treeNode72.Tag = "801";
+            treeNode72.Text = "Change Tradeskill";
+            treeNode73.Name = "givetradeskillexperience";
+            treeNode73.Tag = "802";
+            treeNode73.Text = "Give Tradeskill Experience";
+            treeNode74.Name = "tradeskills";
+            treeNode74.Text = "Tradeskills";
             this.lstCommands.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode6,
             treeNode14,
@@ -1087,7 +1100,8 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode68,
             treeNode69,
             treeNode70,
-            treeNode71});
+            treeNode71,
+            treeNode74});
             this.lstCommands.Size = new System.Drawing.Size(666, 676);
             this.lstCommands.TabIndex = 2;
             this.lstCommands.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lstCommands_AfterSelect);

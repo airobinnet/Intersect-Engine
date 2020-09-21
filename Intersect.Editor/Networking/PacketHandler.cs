@@ -556,6 +556,19 @@ namespace Intersect.Editor.Networking
                         DropPoolBase.Lookup.Set(id, dp);
                     }
                     break;
+                case GameObjectType.Tradeskill:
+                    if (deleted)
+                    {
+                        var ts = TradeSkillBase.Get(id);
+                        ts.Delete();
+                    }
+                    else
+                    {
+                        var ts = new TradeSkillBase(id);
+                        ts.Load(json);
+                        TradeSkillBase.Lookup.Set(id, ts);
+                    }
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

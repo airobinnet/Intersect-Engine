@@ -970,6 +970,40 @@ namespace Intersect.Client.Networking
             }
         }
 
+
+        //TradeSkillsPacket
+        private static void HandlePacket(TradeSkillsPacket packet)
+        {
+            Globals.Me.TradeSkills = new TradeSkill[Options.MaxTradeSkills];
+
+            for (var i = 0; i < Options.MaxTradeSkills; i++)
+            {
+                Globals.Me.TradeSkills[i] = new TradeSkill();
+            }
+
+            foreach (var tds in packet.Slots)
+            {
+                HandlePacket((dynamic)tds);
+            }
+            Interface.Interface.GameUi?.NotifyUpdateTradeSkillWindow();
+        }
+
+        //TradeSkillUpdatePacket
+        private static void HandlePacket(TradeSkillUpdatePacket packet)
+        {
+            if (Globals.Me != null)
+            {
+                Globals.Me.TradeSkills[packet.Slot].Load(packet.TradeSkillId, packet.Unlocked, packet.Level, packet.Xp);
+
+                if (Globals.Me.TradeSkillUpdatedDelegate != null)
+                {
+                    Globals.Me.TradeSkillUpdatedDelegate();
+                }
+
+                Interface.Interface.GameUi?.NotifyUpdateTradeSkillWindow();
+            }
+        }
+
         //SpellsPacket
         private static void HandlePacket(SpellsPacket packet)
         {
@@ -1442,6 +1476,19 @@ namespace Intersect.Client.Networking
             else
             {
                 Interface.Interface.GameUi.NotifyCloseGuildBank();
+            }
+        }
+
+        //TradeSkillInfoPacket
+        private static void HandlePacket(TradeSkillInfoPacket packet)
+        {
+            if (!packet.Close)
+            {
+                Interface.Interface.GameUi.NotifyCloseTradeSkillInfo();
+            }
+            else
+            {
+                Interface.Interface.GameUi.NotifyOpenTradeSkillInfo();
             }
         }
 

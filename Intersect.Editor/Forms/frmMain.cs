@@ -82,6 +82,8 @@ namespace Intersect.Editor.Forms
 
         private FrmDropPool mFrmDropPool;
 
+        private FrmTradeSkills mFrmTradeSkill;
+
         //General Editting Variables
         bool mTMouseDown;
 
@@ -1151,6 +1153,11 @@ namespace Intersect.Editor.Forms
             PacketSender.SendOpenEditor(GameObjectType.Pet);
         }
 
+        private void tradeSkillEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PacketSender.SendOpenEditor(GameObjectType.Tradeskill);
+        }
+
         private void spellEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PacketSender.SendOpenEditor(GameObjectType.Spell);
@@ -1623,6 +1630,14 @@ namespace Intersect.Editor.Forms
                             mFrmDropPool = new FrmDropPool();
                             mFrmDropPool.InitEditor();
                             mFrmDropPool.Show();
+                        }
+                        break;
+                    case GameObjectType.Tradeskill:
+                        if (mFrmTradeSkill == null || mFrmTradeSkill.Visible == false)
+                        {
+                            mFrmTradeSkill = new FrmTradeSkills();
+                            mFrmTradeSkill.InitEditor();
+                            mFrmTradeSkill.Show();
                         }
                         break;
                     default:

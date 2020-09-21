@@ -767,6 +767,14 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new DropChanceItemCommand();
 
                     break;
+                case EventCommandType.ChangeTradeSkill:
+                    tmpCommand = new ChangeTradeSkillCommand();
+
+                    break;
+                case EventCommandType.GiveTradeSkillExperience:
+                    tmpCommand = new GiveTradeSkillExperienceCommand();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1377,6 +1385,14 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.DropChanceItem:
                     cmdWindow = new EventCommand_DropChance((DropChanceItemCommand)command, this);
+                    break;
+                case EventCommandType.ChangeTradeSkill:
+                    cmdWindow = new EventCommandChangeTradeSkill((ChangeTradeSkillCommand)command, CurrentPage, this);
+                    break;
+
+                case EventCommandType.GiveTradeSkillExperience:
+                    cmdWindow = new EventCommandGiveTradeSkillExperience((GiveTradeSkillExperienceCommand)command, this);
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

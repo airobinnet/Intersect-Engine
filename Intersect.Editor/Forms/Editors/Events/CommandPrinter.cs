@@ -655,7 +655,12 @@ namespace Intersect.Editor.Forms.Editors.Events
 
         private static string GetCommandText(GiveGuildExperienceCommand command, MapInstance map)
         {
-            return Strings.EventCommandList.giveexp.ToString(command.Exp);
+            return Strings.EventCommandList.givegexp.ToString(command.Exp);
+        }
+
+        private static string GetCommandText(GiveTradeSkillExperienceCommand command, MapInstance map)
+        {
+            return Strings.EventCommandList.givetsexp.ToString(TradeSkillBase.Get(command.TradeskillId).Name, command.Exp);
         }
 
         private static string GetCommandText(ChangeLevelCommand command, MapInstance map)
@@ -674,6 +679,20 @@ namespace Intersect.Editor.Forms.Editors.Events
 
             return Strings.EventCommandList.changespells.ToString(
                 Strings.EventCommandList.forget.ToString(SpellBase.GetName(command.SpellId))
+            );
+        }
+
+        private static string GetCommandText(ChangeTradeSkillCommand command, MapInstance map)
+        {
+            if (command.Add)
+            {
+                return Strings.EventCommandList.changetradeskill.ToString(
+                    Strings.EventCommandList.givetradeskill.ToString(TradeSkillBase.GetName(command.TradeSkillId))
+                );
+            }
+
+            return Strings.EventCommandList.changetradeskill.ToString(
+                Strings.EventCommandList.taketradeskill.ToString(TradeSkillBase.GetName(command.TradeSkillId))
             );
         }
 

@@ -79,6 +79,8 @@ namespace Intersect
 
         public static int MaxPlayerSkills => Instance.PlayerOpts.MaxSpells;
 
+        public static int MaxTradeSkills => Instance.PlayerOpts.MaxTradeSkills;
+
         public static int MaxBankSlots => Instance.PlayerOpts.MaxBank;
 
         public static int MaxCharacters => Instance.PlayerOpts.MaxCharacters;

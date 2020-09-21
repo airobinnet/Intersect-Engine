@@ -431,6 +431,8 @@
     <Compile Include="Database\GameData\GameContext.cs" />
     <Compile Include="Database\GameData\Migrations\Beta6Migration.cs" />
     <Compile Include="Database\IntersectDbContext.cs" />
+    <Compile Include="Database\PlayerData\Players\TradeSkillSlot.cs" />
+    <Compile Include="Database\TradeSkill.cs" />
     <Compile Include="Database\Logging\LoggingContext.cs" />
     <Compile Include="Database\Logging\RequestLog.cs" />
     <Compile Include="Database\MigrationBuilderExtensions.cs" />
@@ -497,6 +499,10 @@
     <Compile Include="Migrations\20200601181145_AHExpiracy.cs" />
     <Compile Include="Migrations\20200601181145_AHExpiracy.designer.cs">
       <DependentUpon>20200601181145_AHExpiracy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20200915184629_TradeSkills.cs" />
+    <Compile Include="Migrations\20200915184629_TradeSkills.designer.cs">
+      <DependentUpon>20200915184629_TradeSkills.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Game\20200423004850_AddingTagSystem.cs" />
     <Compile Include="Migrations\Game\20200423004850_AddingTagSystem.designer.cs">
@@ -565,6 +571,14 @@
     <Compile Include="Migrations\Game\20200912163142_droppools.cs" />
     <Compile Include="Migrations\Game\20200912163142_droppools.designer.cs">
       <DependentUpon>20200912163142_droppools.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20200914234106_TradeSkills.cs" />
+    <Compile Include="Migrations\Game\20200914234106_TradeSkills.designer.cs">
+      <DependentUpon>20200914234106_TradeSkills.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20200920161022_tradeskills2.cs" />
+    <Compile Include="Migrations\Game\20200920161022_tradeskills2.designer.cs">
+      <DependentUpon>20200920161022_tradeskills2.cs</DependentUpon>
     </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />

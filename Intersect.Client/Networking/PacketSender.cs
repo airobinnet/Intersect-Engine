@@ -241,12 +241,15 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new WithdrawGuildItemPacket(slot, amount));
         }
 
+        public static void SendCloseTradeSkillInfo()
+        {
+            Network.SendPacket(new CloseTradeSkillInfoPacket());
+        }
 
         public static void SendCloseBank()
         {
             Network.SendPacket(new CloseBankPacket());
         }
-
 
         public static void SendCloseGuildCreate()
         {

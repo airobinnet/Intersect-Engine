@@ -356,6 +356,30 @@ namespace Intersect.Server.Migrations
                     b.ToTable("Player_Spells");
                 });
 
+            modelBuilder.Entity("Intersect.Server.Database.PlayerData.Players.TradeSkillSlot", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CurrentLevel");
+
+                    b.Property<int>("CurrentXp");
+
+                    b.Property<Guid>("PlayerId");
+
+                    b.Property<int>("Slot");
+
+                    b.Property<Guid>("TradeSkillId");
+
+                    b.Property<bool>("Unlocked");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("Player_Tradeskills");
+                });
+
             modelBuilder.Entity("Intersect.Server.Database.PlayerData.Players.Variable", b =>
                 {
                     b.Property<Guid>("Id")
@@ -628,6 +652,14 @@ namespace Intersect.Server.Migrations
                 {
                     b.HasOne("Intersect.Server.Entities.Player", "Player")
                         .WithMany("Spells")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Intersect.Server.Database.PlayerData.Players.TradeSkillSlot", b =>
+                {
+                    b.HasOne("Intersect.Server.Entities.Player", "Player")
+                        .WithMany("TradeSkills")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

@@ -104,6 +104,9 @@ namespace Intersect.Server.Database.GameData
         //Drop Pools
         public DbSet<DropPoolBase> DropPool { get; set; }
 
+        //TradeSkills
+        public DbSet<TradeSkillBase> TradeSkill { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }

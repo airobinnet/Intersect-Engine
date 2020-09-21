@@ -90,6 +90,8 @@ namespace Intersect.Client.Entities
         //Inventory/Spells/Equipment
         public Item[] Inventory = new Item[Options.MaxInvItems];
 
+        public TradeSkill[] TradeSkills = new TradeSkill[Options.MaxTradeSkills];
+
         public bool InView = true;
 
         public bool IsLocal = false;
@@ -207,6 +209,11 @@ namespace Intersect.Client.Entities
                 {
                     Equipment[i] = Guid.Empty;
                     MyEquipment[i] = -1;
+                }
+
+                for (var i = 0; i < Options.MaxTradeSkills; i++)
+                {
+                    TradeSkills[i] = new TradeSkill();
                 }
             }
 

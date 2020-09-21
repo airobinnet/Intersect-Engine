@@ -85,6 +85,7 @@
     <Compile Include="Entities\Events\Event.cs" />
     <Compile Include="Entities\Events\Dialog.cs" />
     <Compile Include="Entities\Events\Hold.cs" />
+    <Compile Include="Entities\TradeSkill.cs" />
     <Compile Include="Entities\Label.cs" />
     <Compile Include="Entities\PartyMember.cs" />
     <Compile Include="Entities\Player.cs" />
@@ -100,6 +101,10 @@
     <Compile Include="General\Globals.cs" />
     <Compile Include="HDV.cs" />
     <Compile Include="Interface\Game\CashShop\CashShopWindow.cs" />
+    <Compile Include="Interface\Game\TradeSkills\TradeSkillUnlock.cs" />
+    <Compile Include="Interface\Game\TradeSkills\TradeskillInfoWindow.cs" />
+    <Compile Include="Interface\Game\TradeSkills\TradeSkillItem.cs" />
+    <Compile Include="Interface\Game\TradeSkills\TradeSkillWindow.cs" />
     <Compile Include="Interface\Game\GuildCreateItem.cs" />
     <Compile Include="Interface\Game\PvpWindow.cs" />
     <Compile Include="Interface\Game\HDV\HDVItem.cs" />

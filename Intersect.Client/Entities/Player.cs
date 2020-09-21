@@ -30,6 +30,8 @@ namespace Intersect.Client.Entities
 
         public delegate void InventoryUpdated();
 
+        public delegate void TradeSkillUpdated();
+
         public Guid Class;
 
         public long Experience = 0;
@@ -41,6 +43,8 @@ namespace Intersect.Client.Entities
         public HotbarInstance[] Hotbar = new HotbarInstance[Options.MaxHotbar];
 
         public InventoryUpdated InventoryUpdatedDelegate;
+
+        public TradeSkillUpdated TradeSkillUpdatedDelegate;
 
         public Dictionary<Guid, long> ItemCooldowns = new Dictionary<Guid, long>();
 

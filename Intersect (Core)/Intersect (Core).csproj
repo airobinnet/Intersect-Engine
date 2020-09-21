@@ -233,6 +233,7 @@
     <Compile Include="CustomColors.cs" />
     <Compile Include="Enums\ItemHandling.cs" />
     <Compile Include="Enums\CustomSpriteLayers.cs" />
+    <Compile Include="Enums\TradeSkillTypes.cs" />
     <Compile Include="Enums\TagType.cs" />
     <Compile Include="Enums\GuildPermissions.cs" />
     <Compile Include="ErrorHandling\ExceptionInfo.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="GameObjects\HDVBase.cs" />
     <Compile Include="GameObjects\DropPoolBase.cs" />
     <Compile Include="GameObjects\Maps\MapPetSpawn.cs" />
+    <Compile Include="GameObjects\TradeSkillBase.cs" />
     <Compile Include="GameObjects\PetBase.cs" />
     <Compile Include="GameObjects\Switches and Variables\VariableValue.cs" />
     <Compile Include="IO\ConsoleContext.cs" />
@@ -321,6 +323,7 @@
     <Compile Include="Network\Packets\Client\AbandonQuestPacket.cs" />
     <Compile Include="Network\Packets\Client\ActionHDVPacket.cs" />
     <Compile Include="Network\Packets\Client\AddHDVPacket.cs" />
+    <Compile Include="Network\Packets\Client\CloseTradeSkillInfoPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseGuildCreatePacket.cs" />
     <Compile Include="Network\Packets\Client\OpenCashShopPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseHDVPacket.cs" />
@@ -328,10 +331,13 @@
     <Compile Include="Network\Packets\Client\SendSteamAuthPacket.cs" />
     <Compile Include="Network\Packets\Client\SendSteamMTxnAuthorizedPacket.cs" />
     <Compile Include="Network\Packets\Client\LoginCheckPacket.cs" />
+    <Compile Include="Network\Packets\Server\TradeSkillInfoPacket.cs" />
     <Compile Include="Network\Packets\Server\CritPacket.cs" />
     <Compile Include="Network\Packets\Server\HasAccountPacket.cs" />
     <Compile Include="Network\Packets\Server\HDVItemPacket.cs" />
     <Compile Include="Network\Packets\Server\HDVPacket.cs" />
+    <Compile Include="Network\Packets\Server\TradeSkillsPacket.cs" />
+    <Compile Include="Network\Packets\Server\TradeSkillUpdatePacket.cs" />
     <Compile Include="Network\Packets\Server\PetAggressionPacket.cs" />
     <Compile Include="Network\Packets\Server\PetEntityPacket.cs" />
     <Compile Include="Network\Packets\Server\SendOpenGuildCreatePacket.cs" />

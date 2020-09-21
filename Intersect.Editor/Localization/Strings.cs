@@ -266,6 +266,16 @@ namespace Intersect.Editor.Localization
             return Strings.EventConditionDesc.HasFreeInventorySlots.ToString(condition.Quantity);
         }
 
+        public static string GetEventConditionalDesc(HasTradeSkillCondition condition)
+        {
+            return Strings.EventConditionDesc.HasTradeSkill.ToString(TradeSkillBase.GetName(condition.TradeSkill));
+        }
+
+        public static string GetEventConditionalDesc(TradeSkillHasLevelCondition condition)
+        {
+            return Strings.EventConditionDesc.HasTradeSkillLevel.ToString(TradeSkillBase.GetName(condition.TradeSkill), condition.TradeSkillLevel);
+        }
+
         public static string GetVariableComparisonString(VariableCompaison comparison)
         {
             return "";
@@ -1095,6 +1105,96 @@ Tick timer saved in server config.json.";
 
         }
 
+        public struct TradeSkillEditor
+        {
+
+            public static LocalizedString cancel = @"Cancel";
+
+            public static LocalizedString copy = @"Copy Tradeskill";
+
+            public static LocalizedString tradeskills = @"Tradeskills";
+
+            public static Dictionary<int, LocalizedString> types = new Dictionary<int, LocalizedString>
+            {
+                {0, @"Normal"},
+                {1, @"Weapon"},
+                {2, @"Craft"},
+                {3, @"Spell"},
+            };
+
+
+            public static LocalizedString picture = @"Picture";
+
+            public static LocalizedString xpbase = @"Base XP:";
+
+            public static LocalizedString delete = @"Delete Tradeskill";
+
+            public static LocalizedString deletecraft = @"Delete";
+
+            public static LocalizedString deleteprompt =
+                @"Are you sure you want to delete this tradeskill? This action cannot be reverted!";
+
+            public static LocalizedString deletetitle = @"Delete Tradeskill";
+
+            public static LocalizedString duplicatecraft = @"Duplicate";
+
+            public static LocalizedString folderlabel = @"Folder:";
+
+            public static LocalizedString foldertitle = @"Add Folder";
+
+            public static LocalizedString folderprompt = @"Enter a name for the folder you'd like to add:";
+
+            public static LocalizedString general = @"General";
+
+            public static LocalizedString craft = @"Craft:";
+
+            public static LocalizedString craftlistitem = @"Craft: {00} unlock at lvl {01}";
+
+            public static LocalizedString spelllistitem = @"Spell: {00}; Damage Increase: {01}; XP Gain: {02}";
+
+            public static LocalizedString craftnone = @"None";
+
+            public static LocalizedString craftunlock = @"Unlock at level:";
+
+            public static LocalizedString craftype = @"Craft Skill";
+
+            public static LocalizedString weapontype = @"Weapon Skill";
+
+            public static LocalizedString weapontag = @"Weapon with tag:";
+
+            public static LocalizedString weapondamageincrease = @"Damage increase per level:";
+
+            public static LocalizedString type = @"Skill Type:";
+
+            public static LocalizedString name = @"Name:";
+
+            public static LocalizedString New = @"New Trrradeskill";
+
+            public static LocalizedString newcraft = @"New";
+
+            public static LocalizedString paste = @"Paste Trrradeskill";
+
+            public static LocalizedString save = @"Save";
+
+            public static LocalizedString searchplaceholder = @"Search...";
+
+            public static LocalizedString sortchronologically = @"Order Chronologically";
+
+            public static LocalizedString xpincrease = @"XP Increase:";
+
+            public static LocalizedString title = @"Tradeskill Editor";
+
+            public static LocalizedString undo = @"Undo Changes";
+
+            public static LocalizedString undoprompt =
+                @"Are you sure you want to undo changes made to this Trrradeskill? This action cannot be reverted!";
+
+            public static LocalizedString undotitle = @"Undo Changes";
+
+            public static LocalizedString successrate = @"Success Rate";
+
+        }
+
         public struct Directions
         {
 
@@ -1258,6 +1358,40 @@ Tick timer saved in server config.json.";
             public static LocalizedString okay = @"Ok";
 
             public static LocalizedString title = @"Change Gender";
+
+        }
+
+        public struct EventChangeTradeSkill
+        {
+
+            public static LocalizedString action = @"Action:";
+
+            public static Dictionary<int, LocalizedString> actions = new Dictionary<int, LocalizedString>
+            {
+                {0, @"Give"},
+                {1, @"Take"},
+            };
+
+            public static LocalizedString amount = @"Amount:";
+
+            public static LocalizedString cancel = @"Cancel";
+
+            public static LocalizedString item = @"Tradeskill:";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString Method = @"Method:";
+
+            [NotNull, JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static Dictionary<int, LocalizedString> Methods = new Dictionary<int, LocalizedString>
+            {
+                {0, @"Normal"},
+                {1, @"Allow Overflow"},
+                {2, @"Up to Amount" },
+            };
+
+            public static LocalizedString okay = @"Ok";
+
+            public static LocalizedString title = @"Change Tradeskill";
 
         }
 
@@ -1526,6 +1660,8 @@ Tick timer saved in server config.json.";
             public static LocalizedString animationrotatedir = @"Rotate Relative To Direction";
 
             public static LocalizedString changeitems = @"Change Player Items [{00}]";
+            
+            public static LocalizedString changetradeskill = @"Change Player Tradeskill [{00}]";
 
             public static LocalizedString equipitem = @"Equip Player Item [{00}]";
 
@@ -1617,7 +1753,13 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString give = @"Give: Item {00}";
 
+            public static LocalizedString givetradeskill = @"Give: Tradeskill {00}";
+
             public static LocalizedString giveexp = @"Give Player {00} Experience";
+
+            public static LocalizedString givegexp = @"Give Guild {00} Experience";
+
+            public static LocalizedString givetsexp = @"Give Tradeskill {00}: {01} Experience";
 
             public static LocalizedString globalswitch = @"Set Global Switch {00} to {01}";
 
@@ -1777,6 +1919,8 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString take = @"Take: Item {00}";
 
+            public static LocalizedString taketradeskill = @"Take: Tradeskill {00}";
+
             public static LocalizedString changeitemsbytag = @"Change Items by Tag: {00}";
 
             public static LocalizedString taskundefined = @"Undefined";
@@ -1885,6 +2029,9 @@ Tick timer saved in server config.json.";
                 {"createguild", @"Create Guild" },
                 {"giveguildexperience", @"Give Guild Experience" },
                 {"dropchance","Item Drop Chance"},
+                {"tradeskills","Tradeskills"},
+                {"changetradeskill","Change Tradeskill"},
+                {"givetradeskillexperience","Give Tradeskill Experience"},
             };
 
         }
@@ -1969,6 +2116,8 @@ Tick timer saved in server config.json.";
                 {20, @"Has Item With Tag..."},
                 {21, @"Map has Npc With Tag..."},
                 {22, @"Map has Tag..." },
+                {23, @"Has Tradeskill..." },
+                {24, @"Has Tradeskill with level..." },
             };
 
             public static LocalizedString endrange = @"End Range:";
@@ -2188,6 +2337,10 @@ Tick timer saved in server config.json.";
             [NotNull, JsonProperty]
             public static LocalizedString HasFreeInventorySlots = @"Player has {00} free inventory slot(s)";
 
+            public static LocalizedString HasTradeSkill = @"Player has {00}";
+
+            public static LocalizedString HasTradeSkillLevel = @"Player has {00} with level {01}";
+
             public static Dictionary<int, LocalizedString> selfswitches = new Dictionary<int, LocalizedString>
             {
                 {0, @"A"},
@@ -2383,6 +2536,21 @@ Tick timer saved in server config.json.";
             public static LocalizedString okay = @"Ok";
 
             public static LocalizedString title = @"Give Experience";
+
+        }
+
+        public struct EventGiveTradeSkillExperience
+        {
+
+            public static LocalizedString cancel = @"Cancel";
+
+            public static LocalizedString label = @"Give Tradeskill Experience:";
+
+            public static LocalizedString okay = @"Ok";
+
+            public static LocalizedString tradeskill = @"Tradeskill";
+
+            public static LocalizedString title = @"Give Tradeskill Experience";
 
         }
 

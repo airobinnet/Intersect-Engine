@@ -254,7 +254,10 @@
         //GiveGuildExperience
         GiveGuildExperience = 702,
 
-        DropChanceItem = 602
+        DropChanceItem = 602,
+
+        ChangeTradeSkill = 801,
+        GiveTradeSkillExperience = 802,
 
     }
 

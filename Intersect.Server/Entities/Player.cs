@@ -163,8 +163,9 @@ namespace Intersect.Server.Entities
             changes |= SlotHelper.ValidateSlots(Spells, Options.MaxPlayerSkills);
             changes |= SlotHelper.ValidateSlots(Items, Options.MaxInvItems);
             changes |= SlotHelper.ValidateSlots(Bank, Options.MaxBankSlots);
-			
-			if (Hotbar.Count < Options.MaxHotbar)
+            //changes |= SlotHelper.ValidateSlots(TradeSkills, Options.MaxTradeSkills);
+
+            if (Hotbar.Count < Options.MaxHotbar)
             {
                 Hotbar.Sort((a, b) => a?.Slot - b?.Slot ?? 0);
                 for (var i = Hotbar.Count; i < Options.MaxHotbar; i++)
@@ -188,6 +189,19 @@ namespace Intersect.Server.Entities
             var classBase = ClassBase.Get(ClassId);
 
             return classBase?.ExperienceToNextLevel(level) ?? ClassBase.DEFAULT_BASE_EXPERIENCE;
+        }
+
+        private int GetExperienceToNextTradeSkillLevel(TradeSkillSlot tradeskill, int level)
+        {
+            if (level >= tradeskill.Descriptor.MaxLevel)
+            {
+                return -1;
+            }
+
+            //var xptonextlvl = tradeskill.Descriptor.XPBase+(tradeskill.Descriptor.XPIncrease * level);
+            var xptonextlvl = Math.Round(tradeskill.Descriptor.XPBase * (decimal)Math.Pow(1 + ((double)tradeskill.Descriptor.XPIncrease / 100), ((double)level - 1) / 3));
+
+            return (int)xptonextlvl;
         }
 
         public void SetOnline()
@@ -224,6 +238,14 @@ namespace Intersect.Server.Entities
                 if (spl.SpellId != Guid.Empty && SpellBase.Get(spl.SpellId) == null)
                 {
                     spl.Set(new Spell());
+                }
+            }
+
+            foreach (var trds in TradeSkills)
+            {
+                if (trds.TradeSkillId != Guid.Empty && TradeSkillBase.Get(trds.TradeSkillId) == null)
+                {
+                    trds.Set(new TradeSkill());
                 }
             }
 
@@ -1065,6 +1087,104 @@ namespace Intersect.Server.Entities
                 }
                 PacketSender.SendExperience(this);
             }
+        }
+
+        //Tradeskill Leveling
+        public void SetTradeSkillLevel(TradeSkillSlot tradeskill, int level, bool resetExperience = false)
+        {
+            if (level < 1)
+            {
+                return;
+            }
+
+            tradeskill.CurrentLevel = Math.Min(tradeskill.Descriptor.MaxLevel, level);
+            if (resetExperience || tradeskill.CurrentLevel == tradeskill.Descriptor.MaxLevel)
+            {
+                tradeskill.CurrentXp = 0;
+            }
+
+            PacketSender.SendTradeSkills(this);
+        }
+
+        public void TradeSkillLevelUp(TradeSkillSlot tradeskill, bool resetExperience = true, int levels = 1)
+        {
+            var messages = new List<string>();
+            if (tradeskill.CurrentLevel < tradeskill.Descriptor.MaxLevel)
+            {
+                for (var i = 0; i < levels; i++)
+                {
+                    SetTradeSkillLevel(tradeskill, tradeskill.CurrentLevel + 1, resetExperience);
+                }
+            }
+
+            PacketSender.SendChatMsg(this, "You leveled up " + tradeskill.Descriptor.Name + " to level " + tradeskill.CurrentLevel, CustomColors.Combat.LevelUp, Name);
+            PacketSender.SendActionMsg(this, "You leveled up " + tradeskill.Descriptor.Name + " to level " + tradeskill.CurrentLevel, CustomColors.Combat.LevelUp);
+
+            foreach (var message in messages)
+            {
+                PacketSender.SendChatMsg(this, message, CustomColors.Alerts.Info, Name);
+            }
+            
+            PacketSender.SendTradeSkills(this);
+        }
+
+        public void GiveTradeSkillExperience(Guid tradeskillid, long amount)
+        {
+            foreach (var tradeskill in TradeSkills)
+            {
+                if (tradeskill.TradeSkillId == tradeskillid)
+                {
+                    if (tradeskill.CurrentLevel == tradeskill.Descriptor.MaxLevel)
+                    {
+                        return;
+                    }
+
+                    tradeskill.CurrentXp += (int)(amount * GetExpMultiplier() / 100);
+                    if (tradeskill.CurrentXp < 0)
+                    {
+                        tradeskill.CurrentXp = 0;
+                    }
+
+                    if (!CheckTradeSkillLevelUp(tradeskill))
+                    {
+                        if (amount > 0)
+                        {
+                            PacketSender.SendChatMsg(this, "You gained " + (int)(amount * GetExpMultiplier() / 100) + " " + tradeskill.Descriptor.Name + " experience.", Color.Pink);
+                            PacketSender.SendActionMsgPrivate(this, " " + tradeskill.Descriptor.Name + " Exp +" + (int)(amount * GetExpMultiplier() / 100), Color.Pink);
+                        }
+                        PacketSender.SendTradeSkills(this);
+                    }
+                }
+            }
+        }
+
+        private bool CheckTradeSkillLevelUp(TradeSkillSlot tradeskill)
+        {
+            var levelCount = 0;
+            while (tradeskill.CurrentXp >= GetExperienceToNextTradeSkillLevel(tradeskill, tradeskill.CurrentLevel + levelCount) &&
+                   GetExperienceToNextTradeSkillLevel(tradeskill, tradeskill.CurrentLevel + levelCount) > 0)
+            {
+                tradeskill.CurrentXp -= GetExperienceToNextTradeSkillLevel(tradeskill, tradeskill.CurrentLevel + levelCount);
+
+                levelCount++;
+            }
+
+            if (levelCount <= 0)
+            {
+                return false;
+            }
+
+            TradeSkillLevelUp(tradeskill, false, levelCount);
+
+            if (tradeskill.Descriptor.LevelUpAnimationId != Guid.Empty)
+            {
+                PacketSender.SendAnimationToProximity(
+                    tradeskill.Descriptor.LevelUpAnimationId, -1, Guid.Empty, MapId, (byte)X, (byte)Y,
+                    0
+                );
+            }
+
+            return true;
         }
 
         private bool CheckLevelUp()
@@ -2614,6 +2734,59 @@ namespace Intersect.Server.Entities
             return count;
         }
 
+        public bool TryGiveTradeSkill(Guid tradeskillid)
+        {
+            
+            TradeSkill tradeskill = new TradeSkill(tradeskillid, true, 0, 0);
+
+            for (var j = 0; j < TradeSkills.Count; j++)
+            {
+                if (TradeSkills[j].TradeSkillId == tradeskillid)
+                {
+                    PacketSender.SendChatMsg(this, "You already know the skill: " + TradeSkillBase.Get(tradeskillid).Name, Color.Red);
+                    PacketSender.SendTradeSkills(this);
+                    return false;
+                }
+            }
+
+            if (TradeSkills.Count >= Options.MaxTradeSkills)
+            {
+                PacketSender.SendChatMsg(this, "You reached the maximum amount of tradeskills allowed!", Color.Red);
+                return false;
+            }
+
+            else
+            {
+                TradeSkills.Add(new TradeSkillSlot(TradeSkills.Count));
+                TradeSkills[TradeSkills.Count - 1].Set(tradeskill);
+                PacketSender.SendChatMsg(this, "You learned the skill: " + TradeSkillBase.Get(tradeskillid).Name, Color.Green);
+                PacketSender.SendTradeSkills(this);
+                return true;
+            }
+        }
+
+        public bool TryTakeTradeSkill(Guid tradeskillid)
+        {
+            TradeSkill tradeskill = new TradeSkill(tradeskillid, true, 0, 0);
+            for (var j = 0; j < TradeSkills.Count; j++)
+            {
+                if (TradeSkills[j].TradeSkillId == tradeskillid)
+                {
+                    TradeSkills.RemoveAll(s => s.TradeSkillId == tradeskillid);
+                    PacketSender.SendChatMsg(this, "You forgot the skill: " + TradeSkillBase.Get(tradeskillid).Name, Color.Red);
+                    for (var i = 0; i < TradeSkills.Count; i++)
+                    {
+                        TradeSkills[i].Slot = i;
+                    }
+                    PacketSender.SendTradeSkills(this);
+                    return true;
+                }
+            }
+            PacketSender.SendChatMsg(this, "You don't have the skill: " + TradeSkillBase.Get(tradeskillid).Name, Color.Yellow);
+            PacketSender.SendTradeSkills(this);
+            return false;
+        }
+
         public override int GetWeaponDamage()
         {
             if (Equipment[Options.WeaponIndex] > -1 && Equipment[Options.WeaponIndex] < Options.MaxInvItems)
@@ -3256,6 +3429,11 @@ namespace Intersect.Server.Entities
             PacketSender.SendOpenBank(this);
 
             return true;
+        }
+
+        public void CloseTradeSkillInfo()
+        {
+            PacketSender.SendCloseTradeSkillInfo(this);
         }
 
         public void CloseBank()

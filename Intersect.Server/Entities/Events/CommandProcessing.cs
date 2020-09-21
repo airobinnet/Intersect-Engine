@@ -437,6 +437,18 @@ namespace Intersect.Server.Entities.Events
             player.GiveExperience(command.Exp);
         }
 
+        //Give Tradeskill Experience Command
+        private static void ProcessCommand(
+            GiveTradeSkillExperienceCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            player.GiveTradeSkillExperience(command.TradeskillId, command.Exp);
+        }
+
         //Give Guild Experience Command
         private static void ProcessCommand(
             GiveGuildExperienceCommand command,
@@ -568,6 +580,26 @@ namespace Intersect.Server.Entities.Events
             };
 
             callStack.Push(tmpStack);
+        }
+
+
+        //Change Items Command
+        private static void ProcessCommand(
+            ChangeTradeSkillCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            if (command.Add)
+            {
+                player.TryGiveTradeSkill(command.TradeSkillId);
+            }
+            else
+            {
+                player.TryTakeTradeSkill(command.TradeSkillId);
+            }
         }
 
         //Create Guild Command

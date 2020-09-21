@@ -775,6 +775,10 @@ namespace Intersect.Server.Database
                     DropPoolBase.Lookup.Clear();
 
                     break;
+                case GameObjectType.Tradeskill:
+                    TradeSkillBase.Lookup.Clear();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -922,6 +926,13 @@ namespace Intersect.Server.Database
                         }
 
                         break;
+                    case GameObjectType.Tradeskill:
+                        foreach (var psw in sGameDb.TradeSkill)
+                        {
+                            TradeSkillBase.Lookup.Set(psw.Id, psw);
+                        }
+
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(gameObjectType), gameObjectType, null);
                 }
@@ -1023,6 +1034,9 @@ namespace Intersect.Server.Database
                     break;
                 case GameObjectType.DropPool:
                     dbObj = new DropPoolBase(predefinedid);
+                    break;
+                case GameObjectType.Tradeskill:
+                    dbObj = new TradeSkillBase(predefinedid);
                     break;
 
                 default:
@@ -1157,6 +1171,11 @@ namespace Intersect.Server.Database
                         DropPoolBase.Lookup.Set(dbObj.Id, dbObj);
 
                         break;
+                    case GameObjectType.Tradeskill:
+                        sGameDb.TradeSkill.Add((TradeSkillBase)dbObj);
+                        TradeSkillBase.Lookup.Set(dbObj.Id, dbObj);
+
+                        break;
 
                     default:
                         throw new ArgumentOutOfRangeException(nameof(gameObjectType), gameObjectType, null);
@@ -1276,6 +1295,10 @@ namespace Intersect.Server.Database
                         break;
                     case GameObjectType.DropPool:
                         sGameDb.DropPool.Remove((DropPoolBase)gameObject);
+
+                        break;
+                    case GameObjectType.Tradeskill:
+                        sGameDb.TradeSkill.Remove((TradeSkillBase)gameObject);
 
                         break;
                 }

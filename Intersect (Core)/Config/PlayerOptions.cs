@@ -16,6 +16,8 @@
 
         public int MaxSpells = 35;
 
+        public int MaxTradeSkills = 10;
+
         public int MaxStat = 255;
 
         public int RequestTimeout = 300000;

@@ -2211,6 +2211,17 @@ namespace Intersect.Server.Networking
             player.CloseBank();
         }
 
+        //CloseBankPacket
+        public void HandlePacket(Client client, Player player, CloseTradeSkillInfoPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.CloseTradeSkillInfo();
+        }
+
         //ClosGuildCreatePacket
         public void HandlePacket(Client client, Player player, CloseGuildCreatePacket packet)
         {
@@ -3974,6 +3985,10 @@ namespace Intersect.Server.Networking
                     obj = DropPoolBase.Get(id);
 
                     break;
+                case GameObjectType.Tradeskill:
+                    obj = TradeSkillBase.Get(id);
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -4089,6 +4104,9 @@ namespace Intersect.Server.Networking
                     break;
                 case GameObjectType.DropPool:
                     obj = DropPoolBase.Get(id);
+                    break;
+                case GameObjectType.Tradeskill:
+                    obj = TradeSkillBase.Get(id);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

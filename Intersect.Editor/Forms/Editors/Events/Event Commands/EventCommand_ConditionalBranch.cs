@@ -382,6 +382,24 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     }
 
                     break;
+                case ConditionTypes.HasTradeSkill:
+                    Condition = new HasTradeSkillCondition();
+                    if (cmbTradeSkill.Items.Count > 0)
+                    {
+                        cmbTradeSkill.SelectedIndex = 0;
+                    }
+                    nudTradeSkillLevel.Value = 0;
+
+                    break;
+                case ConditionTypes.TradeSkillHasLevel:
+                    Condition = new TradeSkillHasLevelCondition();
+                    if (cmbTradeSkill.Items.Count > 0)
+                    {
+                        cmbTradeSkill.SelectedIndex = 0;
+                    }
+                    nudTradeSkillLevel.Value = 0;
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -406,6 +424,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             grpFreeInventorySlots.Hide();
             grpHasItemWTag.Hide();
             grpEquippedItemTag.Hide();
+            grpTradeSkill.Hide();
             switch (type)
             {
                 case ConditionTypes.VariableIs:
@@ -524,6 +543,20 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     ShowTagCombo(TagType.Map);
                     grpEquippedItemTag.Text = Strings.EventConditional.maphastag;
 
+                    break;
+                case ConditionTypes.HasTradeSkill:
+                    grpTradeSkill.Show();
+                    nudTradeSkillLevel.Hide();
+                    lblTradeSkillLevel.Hide();
+                    cmbTradeSkill.Items.Clear();
+                    cmbTradeSkill.Items.AddRange(TradeSkillBase.Names);
+                    break;
+                case ConditionTypes.TradeSkillHasLevel:
+                    grpTradeSkill.Show();
+                    nudTradeSkillLevel.Show();
+                    lblTradeSkillLevel.Show();
+                    cmbTradeSkill.Items.Clear();
+                    cmbTradeSkill.Items.AddRange(TradeSkillBase.Names);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -1134,6 +1167,16 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             nudFreeInventorySlots.Value = condition.Quantity;
         }
 
+        private void SetupFormValues(HasTradeSkillCondition condition)
+        {
+            cmbTradeSkill.SelectedIndex = TradeSkillBase.ListIndex(condition.TradeSkill);
+        }
+
+        private void SetupFormValues(TradeSkillHasLevelCondition condition)
+        {
+            cmbTradeSkill.SelectedIndex = TradeSkillBase.ListIndex(condition.TradeSkill);
+            nudTradeSkillLevel.Value = condition.TradeSkillLevel;
+        }
 
         #endregion
 
@@ -1295,6 +1338,16 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             condition.Quantity = (int)nudHasItemWTag.Value;
         }
 
+        private void SaveFormValues(HasTradeSkillCondition condition)
+        {
+            condition.TradeSkill = TradeSkillBase.IdFromList(cmbTradeSkill.SelectedIndex);
+        }
+
+        private void SaveFormValues(TradeSkillHasLevelCondition condition)
+        {
+            condition.TradeSkill = TradeSkillBase.IdFromList(cmbTradeSkill.SelectedIndex);
+            condition.TradeSkillLevel = (int)nudTradeSkillLevel.Value;
+        }
         #endregion
     }
 

@@ -67,6 +67,9 @@ namespace Intersect.Enums
         [GameObjectInfo(typeof(DropPoolBase), "drop_pool")]
         DropPool,
 
+        [GameObjectInfo(typeof(TradeSkillBase), "tradeskill")]
+        Tradeskill,
+
         [GameObjectInfo(typeof(TimeBase), "")]
         Time
 

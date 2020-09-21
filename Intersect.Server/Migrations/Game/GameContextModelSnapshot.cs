@@ -787,6 +787,44 @@ namespace Intersect.Server.Migrations.Game
                     b.ToTable("Time");
                 });
 
+            modelBuilder.Entity("Intersect.GameObjects.TradeSkillBase", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Folder");
+
+                    b.Property<string>("Icon");
+
+                    b.Property<string>("JsonCraftUnlocks")
+                        .HasColumnName("CraftUnlocks");
+
+                    b.Property<string>("JsonSkillUnlocks")
+                        .HasColumnName("SkillUnlocks");
+
+                    b.Property<string>("JsonWeaponUnlocks")
+                        .HasColumnName("WeaponUnlocks");
+
+                    b.Property<Guid>("LevelUpAnimationId")
+                        .HasColumnName("LevelUpAnimation");
+
+                    b.Property<int>("MaxLevel");
+
+                    b.Property<string>("Name");
+
+                    b.Property<long>("TimeCreated");
+
+                    b.Property<int>("TradeskillType");
+
+                    b.Property<int>("XPBase");
+
+                    b.Property<int>("XPIncrease");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TradeSkill");
+                });
+
             modelBuilder.Entity("Intersect.Server.Maps.MapInstance", b =>
                 {
                     b.Property<Guid>("Id")

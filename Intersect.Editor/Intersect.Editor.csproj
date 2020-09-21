@@ -86,6 +86,12 @@
     <Compile Include="Core\Preferences.cs" />
     <Compile Include="Core\Program.cs" />
     <Compile Include="Entities\Animation.cs" />
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeTradeSkill.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeTradeSkill.Designer.cs">
+      <DependentUpon>EventCommand_ChangeTradeSkill.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_DropChance.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -97,6 +103,12 @@
     </Compile>
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_CreateGuild.Designer.cs">
       <DependentUpon>EventCommand_CreateGuild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_GiveTradeSkillExperience.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_GiveTradeSkillExperience.Designer.cs">
+      <DependentUpon>EventCommand_GiveTradeSkillExperience.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_GiveGuildExperience.cs">
       <SubType>UserControl</SubType>
@@ -115,6 +127,12 @@
     </Compile>
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SpawnPet.Designer.cs">
       <DependentUpon>EventCommand_SpawnPet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Editors\frmTradeSkills.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\frmTradeSkills.Designer.cs">
+      <DependentUpon>frmTradeSkills.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Editors\frmHDV.cs">
       <SubType>Form</SubType>
@@ -729,11 +747,17 @@
     <EmbeddedResource Include="Forms\Editors\EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeTradeSkill.resx">
+      <DependentUpon>EventCommand_ChangeTradeSkill.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_DropChance.resx">
       <DependentUpon>EventCommand_DropChance.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_CreateGuild.resx">
       <DependentUpon>EventCommand_CreateGuild.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_GiveTradeSkillExperience.resx">
+      <DependentUpon>EventCommand_GiveTradeSkillExperience.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_GiveGuildExperience.resx">
       <DependentUpon>EventCommand_GiveGuildExperience.cs</DependentUpon>
@@ -743,6 +767,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_SpawnPet.resx">
       <DependentUpon>EventCommand_SpawnPet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\frmTradeSkills.resx">
+      <DependentUpon>frmTradeSkills.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\frmHDV.resx">
       <DependentUpon>frmHDV.cs</DependentUpon>

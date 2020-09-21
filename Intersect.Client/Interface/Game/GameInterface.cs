@@ -11,9 +11,11 @@ using Intersect.Client.Interface.Game.Hotbar;
 using Intersect.Client.Interface.Game.Mail;
 using Intersect.Client.Interface.Game.Shop;
 using Intersect.Client.Interface.Game.Trades;
+using Intersect.Client.Interface.Game.TradeSkills;
 using Intersect.Client.Networking;
 using Intersect.Enums;
 using Intersect.GameObjects;
+using System;
 
 using JetBrains.Annotations;
 
@@ -58,9 +60,13 @@ namespace Intersect.Client.Interface.Game
 
         private HDVWindow mHDVWindow;
 
+        private TradeSkillInfoWindow mTradeSkillInfoWindow;
+
         private bool mShouldCloseBag;
 
         private bool mShouldCloseBank;
+
+        private bool mShouldCloseTradeSkillInfo;
 
         private bool mShouldCloseGuildBank;
 
@@ -75,6 +81,8 @@ namespace Intersect.Client.Interface.Game
         private bool mShouldOpenBag;
 
         private bool mShouldOpenBank;
+
+        private bool mShouldOpenTradeSkillInfo;
 
         private bool mShouldOpenGuildBank;
 
@@ -91,6 +99,8 @@ namespace Intersect.Client.Interface.Game
         private bool mShouldUpdateQuestLog = true;
 
         private bool mShouldUpdateFriendsList;
+
+        private bool mShouldUpdateTradeSkillWindow;
 
         private string mTradingTarget;
 
@@ -127,6 +137,8 @@ namespace Intersect.Client.Interface.Game
 
             mEventWindow = new EventWindow(GameCanvas);
             mQuestOfferWindow = new QuestOfferWindow(GameCanvas);
+            mTradeSkillInfoWindow = new TradeSkillInfoWindow(GameCanvas,Guid.Empty,0,0);
+            mTradeSkillInfoWindow.Hide();
             mDebugMenu = new DebugMenu(GameCanvas);
         }
 
@@ -140,6 +152,12 @@ namespace Intersect.Client.Interface.Game
         public void NotifyUpdateFriendsList()
         {
             mShouldUpdateFriendsList = true;
+        }
+
+
+        public void NotifyUpdateTradeSkillWindow()
+        {
+            mShouldUpdateTradeSkillWindow = true;
         }
 
         //Admin Window
@@ -287,6 +305,41 @@ namespace Intersect.Client.Interface.Game
             mBankWindow = new BankWindow(GameCanvas);
             mShouldOpenBank = false;
             Globals.InBank = true;
+        }
+
+
+        //TradeSkillInfo
+        public void NotifyOpenTradeSkillInfo()
+        {
+            mShouldOpenTradeSkillInfo = true;
+        }
+
+        public void NotifyCloseTradeSkillInfo()
+        {
+            mShouldCloseTradeSkillInfo = true;
+        }
+
+        public void OpenTradeSkillInfo(Guid tradeskill, int x, int y)
+        {
+            if (mTradeSkillInfoWindow != null)
+            {
+                mTradeSkillInfoWindow.Close();
+            }
+
+            mTradeSkillInfoWindow = new TradeSkillInfoWindow(GameCanvas, tradeskill,  x,  y);
+            mShouldOpenTradeSkillInfo = false;
+            mTradeSkillInfoWindow.Update();
+        }
+
+
+        public void MoveTradeSkillInfo( int x, int y)
+        {
+            if (mTradeSkillInfoWindow == null)
+            {
+                return;
+            }
+
+            mTradeSkillInfoWindow.Move(x,y);
         }
 
         //GuildCreate
@@ -557,7 +610,6 @@ namespace Intersect.Client.Interface.Game
 
             mShouldCloseGuildCreate = false;
 
-
             //Bank Update
             if (mShouldOpenBank)
             {
@@ -672,6 +724,12 @@ namespace Intersect.Client.Interface.Game
             if (mShouldUpdateFriendsList)
             {
                 GameMenu.UpdateFriendsList();
+            }
+
+            if (mShouldUpdateTradeSkillWindow)
+            {
+                GameMenu.UpdateTradeSkillWindow();
+                mShouldUpdateTradeSkillWindow = false;
             }
 
             mShouldCloseTrading = false;

@@ -359,6 +359,7 @@ namespace Intersect.Server.Networking
                 SendQuestsProgress(player);
                 SendItemCooldowns(player);
                 SendSpellCooldowns(player);
+                SendTradeSkills(player);
             }
 
             //If a player, send equipment to all (for paperdolls)
@@ -1105,6 +1106,45 @@ namespace Intersect.Server.Networking
             );
         }
 
+
+        //TradeSkillsPacket
+        public static void SendTradeSkills(Player player)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            var tradeskill = new TradeSkillUpdatePacket[player.TradeSkills.Count];
+            for (var i = 0; i < player.TradeSkills.Count; i++)
+            {
+                tradeskill[i] = new TradeSkillUpdatePacket(
+                    i, player.TradeSkills[i].TradeSkillId, player.TradeSkills[i].Unlocked, player.TradeSkills[i].CurrentLevel,
+                    player.TradeSkills[i].CurrentXp
+                );
+            }
+
+            player.SendPacket(new TradeSkillsPacket(tradeskill));
+        }
+
+
+        //InventoryUpdatePacket
+        public static void SendTradeSkillUpdate(Player player, int i)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.SendPacket(
+                new TradeSkillUpdatePacket(
+                    i, player.TradeSkills[i].TradeSkillId, player.TradeSkills[i].Unlocked, player.TradeSkills[i].CurrentLevel,
+                    player.TradeSkills[i].CurrentXp
+                )
+            );
+        }
+
+
         //SpellsPacket
         public static void SendPlayerSpells(Player player)
         {
@@ -1542,6 +1582,12 @@ namespace Intersect.Server.Networking
             player.SendPacket(new BankPacket(true));
         }
 
+        //SendCloseTradeSkillInfo
+        public static void SendCloseTradeSkillInfo(Player player)
+        {
+            player.SendPacket(new TradeSkillInfoPacket(true));
+        }
+
         //GuildBankPacket
         public static void SendOpenGuildBank(Player player)
         {
@@ -1882,6 +1928,12 @@ namespace Intersect.Server.Networking
                     break;
                 case GameObjectType.DropPool:
                     foreach (var obj in DropPoolBase.Lookup)
+                    {
+                        SendGameObject(client, obj.Value, false, false, packetList);
+                    }
+                    break;
+                case GameObjectType.Tradeskill:
+                    foreach (var obj in TradeSkillBase.Lookup)
                     {
                         SendGameObject(client, obj.Value, false, false, packetList);
                     }

@@ -721,6 +721,46 @@ namespace Intersect.Server.Entities.Events
             return false;
         }
 
+        public static bool MeetsCondition(
+            TradeSkillHasLevelCondition condition,
+            Player player,
+            Event eventInstance,
+            QuestBase questBase
+        )
+        {
+            foreach (var tradeskill in player.TradeSkills)
+            {
+                if (tradeskill.TradeSkillId == condition.TradeSkill)
+                {
+                    if (tradeskill.CurrentLevel >= condition.TradeSkillLevel)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        public static bool MeetsCondition(
+            HasTradeSkillCondition condition,
+            Player player,
+            Event eventInstance,
+            QuestBase questBase
+        )
+        {
+            foreach (var tradeskill in player.TradeSkills)
+            {
+                if (tradeskill.TradeSkillId == condition.TradeSkill)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 
 }

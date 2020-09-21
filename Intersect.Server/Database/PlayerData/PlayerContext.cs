@@ -91,6 +91,9 @@ namespace Intersect.Server.Database.PlayerData
         [NotNull]
         public DbSet<HDV> HDV { get; set; }
 
+        [NotNull]
+        public DbSet<TradeSkillSlot> Player_Tradeskills { get; set; }
+
         internal async ValueTask Commit(
             bool commit = false,
             CancellationToken cancellationToken = default(CancellationToken)
@@ -128,6 +131,8 @@ namespace Intersect.Server.Database.PlayerData
 
             modelBuilder.Entity<Player>().HasMany(b => b.Items).WithOne(p => p.Player);
 
+            modelBuilder.Entity<Player>().HasMany(b => b.TradeSkills).WithOne(p => p.Player);
+
             modelBuilder.Entity<Player>().HasMany(b => b.Variables).WithOne(p => p.Player);
             modelBuilder.Entity<Variable>().HasIndex(p => new {p.VariableId, CharacterId = p.PlayerId}).IsUnique();
 
@@ -149,6 +154,7 @@ namespace Intersect.Server.Database.PlayerData
             modelBuilder.Entity<Player>().HasMany(b => b.MailBoxs).WithOne(p => p.Player).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<MailBox>().HasOne(b => b.Sender).WithMany().OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<GuildBankSlot>().HasOne(b => b.Bag);
+            modelBuilder.Entity<TradeSkillSlot>().HasOne(b => b.Player);
         }
 
         public void Seed()

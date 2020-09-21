@@ -578,7 +578,8 @@ namespace Intersect.Client.Localization
                 {"opendebugger", @"Open Debugger:"},
                 {"openadminpanel", @"Open Admin Panel:"},
                 {"togglegui", @"Toggle Interface:" },
-                {"openguild", @"Open Guild Window:"}
+                {"openguild", @"Open Guild Window:"},
+                {"opentradeskills", @"Open Tradeskills:"}
             };
 
             public static LocalizedString edit = @"Edit Controls";
