@@ -5,7 +5,6 @@ namespace Intersect.Client.Entities.Events
 
     public class Dialog
     {
-
         public Guid EventId;
 
         public string Face = "";

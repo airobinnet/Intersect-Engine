@@ -166,6 +166,7 @@ namespace Intersect.Editor.Forms.Editors.Events
             System.Windows.Forms.TreeNode treeNode74 = new System.Windows.Forms.TreeNode("Tradeskills", new System.Windows.Forms.TreeNode[] {
             treeNode72,
             treeNode73});
+            System.Windows.Forms.TreeNode treeNode75 = new System.Windows.Forms.TreeNode("Change Class Window");
             this.lblName = new System.Windows.Forms.Label();
             this.txtEventname = new DarkUI.Controls.DarkTextBox();
             this.grpEntityOptions = new DarkUI.Controls.DarkGroupBox();
@@ -1085,6 +1086,9 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode73.Text = "Give Tradeskill Experience";
             treeNode74.Name = "tradeskills";
             treeNode74.Text = "Tradeskills";
+            treeNode75.Name = "changeclasswindow";
+            treeNode75.Tag = "901";
+            treeNode75.Text = "Change Class Window";
             this.lstCommands.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode6,
             treeNode14,
@@ -1101,7 +1105,8 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode69,
             treeNode70,
             treeNode71,
-            treeNode74});
+            treeNode74,
+            treeNode75});
             this.lstCommands.Size = new System.Drawing.Size(666, 676);
             this.lstCommands.TabIndex = 2;
             this.lstCommands.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lstCommands_AfterSelect);

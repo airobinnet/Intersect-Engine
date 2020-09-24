@@ -868,6 +868,23 @@ namespace Intersect.Client.Networking
             Globals.EventDialogs.Add(ed);
         }
 
+        //ClassChangePacket
+        private static void HandlePacket(ClassChangePacket packet)
+        {
+            var ed = new ClassChange();
+            var tempGuid1 = Guid.TryParse(packet.Responses[0], out var parsed1) || parsed1 == null;
+            var tempGuid2 = Guid.TryParse(packet.Responses[1], out var parsed2) || parsed2 == null;
+            var tempGuid3 = Guid.TryParse(packet.Responses[2], out var parsed3) || parsed3 == null;
+            var tempGuid4 = Guid.TryParse(packet.Responses[3], out var parsed4) || parsed4 == null;
+            ed.Class1 = parsed1;
+            ed.Class2 = parsed2;
+            ed.Class3 = parsed3;
+            ed.Class4 = parsed4;
+
+            ed.EventId = packet.EventId;
+            Globals.ClassChange.Add(ed);
+        }
+
         //InputVariablePacket
         private static void HandlePacket(InputVariablePacket packet)
         {

@@ -325,12 +325,14 @@
     <Compile Include="Network\Packets\Client\AddHDVPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseTradeSkillInfoPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseGuildCreatePacket.cs" />
+    <Compile Include="Network\Packets\Client\ClassChangeResponsePacket.cs" />
     <Compile Include="Network\Packets\Client\OpenCashShopPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseHDVPacket.cs" />
     <Compile Include="Network\Packets\Client\SendCreateGuildPacket.cs" />
     <Compile Include="Network\Packets\Client\SendSteamAuthPacket.cs" />
     <Compile Include="Network\Packets\Client\SendSteamMTxnAuthorizedPacket.cs" />
     <Compile Include="Network\Packets\Client\LoginCheckPacket.cs" />
+    <Compile Include="Network\Packets\Server\ClassChangePacket.cs" />
     <Compile Include="Network\Packets\Server\TradeSkillInfoPacket.cs" />
     <Compile Include="Network\Packets\Server\CritPacket.cs" />
     <Compile Include="Network\Packets\Server\HasAccountPacket.cs" />

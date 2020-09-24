@@ -1888,6 +1888,8 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString showoptions = @"Show Options: {00}";
 
+            public static LocalizedString showclassoptions = @"Show Class Change Window:";
+
             public static LocalizedString variableinput = @"Input Variable: {00}";
 
             public static LocalizedString showpicture = @"Show Picture";
@@ -1940,6 +1942,8 @@ Tick timer saved in server config.json.";
             public static LocalizedString warp = @"Warp Player [Map: {00} X: {01} Y: {02} Dir: {03}]";
 
             public static LocalizedString whenoption = @"When [{00}]";
+
+            public static LocalizedString classchangewindow = @"then [{00}]";
 
             public static LocalizedString sendmail = @"Send Mail";
 
@@ -2032,6 +2036,7 @@ Tick timer saved in server config.json.";
                 {"tradeskills","Tradeskills"},
                 {"changetradeskill","Change Tradeskill"},
                 {"givetradeskillexperience","Give Tradeskill Experience"},
+                {"changeclasswindow","Change Class Window"},
             };
 
         }

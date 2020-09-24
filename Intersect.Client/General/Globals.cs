@@ -70,6 +70,9 @@ namespace Intersect.Client.General
         //Control Objects
         public static List<Dialog> EventDialogs = new List<Dialog>();
 
+        //Class Change
+        public static List<ClassChange> ClassChange = new List<ClassChange>();
+
         public static Dictionary<Guid, Guid> EventHolds = new Dictionary<Guid, Guid>();
 
         //Game Lock

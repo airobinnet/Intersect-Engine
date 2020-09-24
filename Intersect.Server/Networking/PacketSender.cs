@@ -1000,6 +1000,19 @@ namespace Intersect.Server.Networking
         {
             player.SendPacket(new InputVariablePacket(eventId, title, prompt, type));
         }
+        
+        //ClassChangePacket
+        public static void SendClassChangeDialog(
+            Player player,
+            string opt1,
+            string opt2,
+            string opt3,
+            string opt4,
+            Guid eventId
+        )
+        {
+            player.SendPacket(new ClassChangePacket(eventId, 8, new string[4] { opt1, opt2, opt3, opt4 }));
+        }
 
         //MapListPacket
         public static void SendMapList(Client client)

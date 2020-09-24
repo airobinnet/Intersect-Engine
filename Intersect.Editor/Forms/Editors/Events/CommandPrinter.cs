@@ -477,6 +477,70 @@ namespace Intersect.Editor.Forms.Editors.Events
                             mCommandProperties.Add(clp);
 
                             break;
+                        case EventCommandType.ClassChangeWindow:
+                            var ccw = (ClassChangeWindowCommand)commandList[i];
+                            lstEventCommands.Items.Add(
+                                indent +
+                                Strings.EventCommandList.linestart +
+                                GetCommandText((dynamic)commandList[i], map)
+                            );
+
+                            clp = new CommandListProperties
+                            {
+                                Editable = true,
+                                MyIndex = i,
+                                MyList = commandList,
+                                Cmd = commandList[i],
+                                Type = commandList[i].Type
+                            };
+
+                            mCommandProperties.Add(clp);
+                            for (var x = 0; x < 4; x++)
+                            {
+                                if (ccw.Options[x] == null)
+                                {
+                                    continue;
+                                }
+                                if (ccw.Options[x].Trim().Length <= 0)
+                                {
+                                    continue;
+                                }
+
+                                lstEventCommands.Items.Add(
+                                    indent +
+                                    "      : " +
+                                    Strings.EventCommandList.whenoption.ToString(Truncate(ClassBase.GetName(Guid.Parse(ccw.Options[x])), 20))
+                                );
+
+                                clp = new CommandListProperties
+                                {
+                                    Editable = false,
+                                    MyIndex = i,
+                                    MyList = commandList,
+                                    Type = commandList[i].Type,
+                                    Cmd = commandList[i]
+                                };
+
+                                mCommandProperties.Add(clp);
+                                PrintCommandList(
+                                    page, page.CommandLists[ccw.BranchIds[x]], indent + "          ", lstEventCommands,
+                                    mCommandProperties, map
+                                );
+                            }
+
+                            lstEventCommands.Items.Add(indent + "      : " + Strings.EventCommandList.endoptions);
+                            clp = new CommandListProperties
+                            {
+                                Editable = false,
+                                MyIndex = i,
+                                MyList = commandList,
+                                Type = commandList[i].Type,
+                                Cmd = commandList[i]
+                            };
+
+                            mCommandProperties.Add(clp);
+
+                            break;
                         default:
                             lstEventCommands.Items.Add(
                                 indent +
@@ -533,6 +597,11 @@ namespace Intersect.Editor.Forms.Editors.Events
         private static string GetCommandText(InputVariableCommand command, MapInstance map)
         {
             return Strings.EventCommandList.variableinput.ToString(Truncate(command.Text, 30));
+        }
+
+        private static string GetCommandText(ClassChangeWindowCommand command, MapInstance map)
+        {
+            return Strings.EventCommandList.showclassoptions;
         }
 
         private static string GetCommandText(AddChatboxTextCommand command, MapInstance map)

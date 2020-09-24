@@ -912,6 +912,16 @@ namespace Intersect.Client.Localization
                 {5, @"Movement Speed: {00}"}
             };
 
+            public static Dictionary<int, LocalizedString> rawstats = new Dictionary<int, LocalizedString>
+            {
+                {0, @"Attack"},
+                {1, @"Ability Power"},
+                {2, @"Defense"},
+                {3, @"Magic Resist"},
+                {4, @"Speed"},
+                {5, @"Movement Speed"}
+            };
+
             public static LocalizedString twohand = @"2H";
 
             public static Dictionary<int, LocalizedString> rarity = new Dictionary<int, LocalizedString>

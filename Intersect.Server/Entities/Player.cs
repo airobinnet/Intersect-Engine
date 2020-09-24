@@ -6257,6 +6257,39 @@ namespace Intersect.Server.Entities
             }
         }
 
+        public void ClassChange(Guid eventId, int responseId)
+        {
+            lock (mEventLock)
+            {
+                foreach (var evt in EventLookup)
+                {
+                    if (evt.Value.PageInstance != null && evt.Value.PageInstance.Id == eventId)
+                    {
+                        if (evt.Value.CallStack.Count <= 0)
+                        {
+                            return;
+                        }
+
+                        var stackInfo = evt.Value.CallStack.Peek();
+                        if (stackInfo.WaitingForResponse != CommandInstance.EventResponse.ClassChange)
+                        {
+                            return;
+                        }
+
+                        stackInfo.WaitingForResponse = CommandInstance.EventResponse.None;
+                        if (stackInfo.WaitingOnCommand != null &&
+                            stackInfo.WaitingOnCommand.Type == EventCommandType.ClassChangeWindow)
+                        {
+                            var tmpStack = new CommandInstance(stackInfo.Page, stackInfo.BranchIds[responseId - 1]);
+                            evt.Value.CallStack.Push(tmpStack);
+                        }
+
+                        return;
+                    }
+                }
+            }
+        }
+
         public void RespondToEvent(Guid eventId, int responseId)
         {
             lock (mEventLock)

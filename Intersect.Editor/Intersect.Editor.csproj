@@ -122,6 +122,12 @@
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_HDV.Designer.cs">
       <DependentUpon>EventCommand_HDV.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SetClass.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SetClass.Designer.cs">
+      <DependentUpon>EventCommand_SetClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SpawnPet.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -413,11 +419,11 @@
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SetAccess.Designer.cs">
       <DependentUpon>EventCommand_SetAccess.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SetClass.cs">
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeClass.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SetClass.Designer.cs">
-      <DependentUpon>EventCommand_SetClass.cs</DependentUpon>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeClass.Designer.cs">
+      <DependentUpon>EventCommand_ChangeClass.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ShowPicture.cs">
       <SubType>UserControl</SubType>
@@ -765,6 +771,9 @@
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_HDV.resx">
       <DependentUpon>EventCommand_HDV.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_SetClass.resx">
+      <DependentUpon>EventCommand_SetClass.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_SpawnPet.resx">
       <DependentUpon>EventCommand_SpawnPet.cs</DependentUpon>
     </EmbeddedResource>
@@ -864,8 +873,8 @@
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_SetAccess.resx">
       <DependentUpon>EventCommand_SetAccess.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_SetClass.resx">
-      <DependentUpon>EventCommand_SetClass.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeClass.resx">
+      <DependentUpon>EventCommand_ChangeClass.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ShowPicture.resx">
       <DependentUpon>EventCommand_ShowPicture.cs</DependentUpon>

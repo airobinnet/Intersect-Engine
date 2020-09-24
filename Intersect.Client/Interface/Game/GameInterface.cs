@@ -48,6 +48,8 @@ namespace Intersect.Client.Interface.Game
 
         private EventWindow mEventWindow;
 
+        private ClassChangeWindow mClassChangeWindow;
+
         private PictureWindow mPictureWindow;
 
         private QuestOfferWindow mQuestOfferWindow;
@@ -135,6 +137,7 @@ namespace Intersect.Client.Interface.Game
                 mPictureWindow = new PictureWindow(GameCanvas);
             }
 
+            mClassChangeWindow = new ClassChangeWindow(GameCanvas);
             mEventWindow = new EventWindow(GameCanvas);
             mQuestOfferWindow = new QuestOfferWindow(GameCanvas);
             mTradeSkillInfoWindow = new TradeSkillInfoWindow(GameCanvas,Guid.Empty,0,0);
@@ -547,6 +550,7 @@ namespace Intersect.Client.Interface.Game
             }
 
             mEventWindow?.Update();
+            mClassChangeWindow?.Update();
 
             //Admin window update
             if (mShouldOpenAdminWindow)

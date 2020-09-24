@@ -259,6 +259,8 @@
         ChangeTradeSkill = 801,
         GiveTradeSkillExperience = 802,
 
+        ClassChangeWindow = 901,
+
     }
 
 }

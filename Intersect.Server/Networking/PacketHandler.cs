@@ -1715,6 +1715,18 @@ namespace Intersect.Server.Networking
             player.RespondToEvent(packet.EventId, packet.Response);
         }
 
+
+        //ClassChangeResponsePacket
+        public void HandlePacket(Client client, Player player, ClassChangeResponsePacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            player.ClassChange(packet.EventId, packet.Response);
+        }
+
         //EventInputVariablePacket
         public void HandlePacket(Client client, Player player, EventInputVariablePacket packet)
         {

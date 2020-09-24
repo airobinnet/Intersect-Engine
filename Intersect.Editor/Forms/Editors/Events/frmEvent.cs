@@ -775,6 +775,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new GiveTradeSkillExperienceCommand();
 
                     break;
+                case EventCommandType.ClassChangeWindow:
+                    tmpCommand = new ClassChangeWindowCommand(CurrentPage.CommandLists);
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1394,6 +1398,11 @@ namespace Intersect.Editor.Forms.Editors.Events
                     cmdWindow = new EventCommandGiveTradeSkillExperience((GiveTradeSkillExperienceCommand)command, this);
 
                     break;
+
+                case EventCommandType.ClassChangeWindow:
+                    cmdWindow = new EventCommandChangeClass((ClassChangeWindowCommand)command, CurrentPage, this);
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1520,6 +1529,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.StartQuest:
                     branchesToRemove.AddRange(((StartQuestCommand) cmd).BranchIds);
+
+                    break;
+                case EventCommandType.ClassChangeWindow:
+                    branchesToRemove.AddRange(((ClassChangeWindowCommand)cmd).BranchIds);
 
                     break;
             }

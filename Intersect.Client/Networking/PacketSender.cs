@@ -109,6 +109,12 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new EventResponsePacket(ed.EventId, response));
         }
 
+        public static void SendClassChangeResponse(byte response, ClassChange cc)
+        {
+            Globals.ClassChange.Remove(cc);
+            Network.SendPacket(new ClassChangeResponsePacket(cc.EventId, response));
+        }
+
         public static void SendEventInputVariable(object sender, EventArgs e)
         {
             Network.SendPacket(

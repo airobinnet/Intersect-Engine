@@ -27,7 +27,9 @@ namespace Intersect.Server.Entities.Events
 
             Timer,
 
-            GuildBank
+            GuildBank,
+
+            ClassChange
 
         }
 
