@@ -104,6 +104,7 @@
     <Compile Include="Interface\Game\CashShop\CashShopWindow.cs" />
     <Compile Include="Interface\Game\ClassChangeWindow.cs" />
     <Compile Include="Interface\Game\DemoSpellItem.cs" />
+    <Compile Include="Interface\Game\Minimap.cs" />
     <Compile Include="Interface\Game\TradeSkills\TradeSkillUnlock.cs" />
     <Compile Include="Interface\Game\TradeSkills\TradeskillInfoWindow.cs" />
     <Compile Include="Interface\Game\TradeSkills\TradeSkillItem.cs" />

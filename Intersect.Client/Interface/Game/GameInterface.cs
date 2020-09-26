@@ -126,10 +126,13 @@ namespace Intersect.Client.Interface.Game
 
         public Menu GameMenu { get; private set; }
 
+        public Minimap MiniMap { get; private set; }
+
         public void InitGameGui()
         {
             mChatBox = new Chatbox(GameCanvas, this);
             GameMenu = new Menu(GameCanvas);
+            MiniMap = new Minimap(GameCanvas);
             Hotbar = new HotBarWindow(GameCanvas);
             PlayerBox = new EntityBox(GameCanvas, EntityTypes.Player, Globals.Me, true);
             if (mPictureWindow == null)
