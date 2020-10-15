@@ -1299,6 +1299,26 @@ namespace Intersect.Server.Entities
                                     );
                                 }
                             }
+
+                            if (questTask.Objective == QuestObjective.KillNpcsWithTag && npc.Base.Tags.Contains(questTask.Tag))
+                            {
+                                questProgress.TaskProgress++;
+                                if (questProgress.TaskProgress >= questTask.Quantity)
+                                {
+                                    CompleteQuestTask(questId, questProgress.TaskId);
+                                }
+                                else
+                                {
+                                    PacketSender.SendQuestProgress(this, quest.Id);
+                                    PacketSender.SendChatMsg(
+                                        this,
+                                        Strings.Quests.npctask.ToString(
+                                            quest.Name, questProgress.TaskProgress, questTask.Quantity,
+                                            questTask.Tag
+                                        )
+                                    );
+                                }
+                            }
                         }
                     }
                 }
@@ -5821,6 +5841,11 @@ namespace Intersect.Server.Entities
                     UpdateGatherItemQuests(quest.Tasks[0].TargetId);
                 }
 
+                if (quest.Tasks[0].Objective == QuestObjective.PressKey) //Press Key
+                {
+                    //start listening for a keypress
+                }
+
                 StartCommonEvent(EventBase.Get(quest.StartEventId));
                 PacketSender.SendChatMsg(
                     this, Strings.Quests.started.ToString(quest.Name), CustomColors.Quests.Started
@@ -6683,6 +6708,37 @@ namespace Intersect.Server.Entities
                         if (x == X && y == Y && z == Z)
                         {
                             HandleEventCollision(evt.Value, -1);
+                        }
+                    }
+                }
+            }
+            CheckQuestArea(X,Y);
+        }
+
+
+        public void CheckQuestArea(int x, int y)
+        {
+            //If any quests demand that this tile needs to be visited
+            foreach (var questProgress in Quests)
+            {
+                var questId = questProgress.QuestId;
+                var quest = QuestBase.Get(questId);
+                if (quest != null)
+                {
+                    if (questProgress.TaskId != Guid.Empty)
+                    {
+                        //Assume this quest is in progress. See if we can find the task in the quest
+                        var questTask = quest.FindTask(questProgress.TaskId);
+                        if (questTask != null)
+                        {
+                            if (questTask.MapId == MapId)
+                            {
+                                if (X >= questTask.X && X <= questTask.X+questTask.AreaWidth-1 && Y >= questTask.Y && Y <= questTask.Y+questTask.AreaHeight-1)
+                                //if (questTask.X == X && questTask.Y == Y)
+                                {
+                                    CompleteQuestTask(questId, questProgress.TaskId);
+                                }
+                            }
                         }
                     }
                 }

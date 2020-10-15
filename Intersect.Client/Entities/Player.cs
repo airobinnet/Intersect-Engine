@@ -108,6 +108,10 @@ namespace Intersect.Client.Entities
 
         public bool StartShake = false;
 
+        public bool trackKeys = false;
+
+        public int trackedKey;
+
         protected string[] mMyCustomSpriteLayers { get; set; } = new string[(int)Enums.CustomSpriteLayers.CustomCount];
 
         public GameTexture[] CustomSpriteLayersTexture { get; set; } = new GameTexture[(int)Enums.CustomSpriteLayers.CustomCount];
@@ -234,6 +238,23 @@ namespace Intersect.Client.Entities
             return false;
         }
 
+        public void pressKeyQuestCheck()
+        {
+            var i = 0;
+            foreach (Control control in Enum.GetValues(typeof(Control)))
+            {
+                if (i == trackedKey && Controls.KeyDown(control))
+                {
+                    var name = Enum.GetName(typeof(Control), control)?.ToLower();
+                    PacketSender.SendChatMsg(name + "pressed", 0);
+                    PacketSender.SendQuestTaskKeyPressed(i);
+                    trackKeys = false;
+                    break;
+                }
+                i++;
+            }
+        }
+
         public override bool Update()
         {
             if (StartShake)
@@ -261,6 +282,11 @@ namespace Intersect.Client.Entities
             if (Globals.Me == this && !IsFeared())
             {
                 HandleInput();
+
+                if (trackKeys)
+                {
+                    pressKeyQuestCheck();
+                }
             }
 
             /*if (GuildId == Guid.Empty && GuildName != "")

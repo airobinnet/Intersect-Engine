@@ -7,8 +7,10 @@ using Intersect.GameObjects.Conditions;
 using Intersect.GameObjects.Events;
 using Intersect.Localization;
 using Intersect.Models;
+using Intersect.GameObjects.Maps;
 
 using Newtonsoft.Json;
+using Intersect.GameObjects.Maps.MapList;
 
 namespace Intersect.GameObjects
 {
@@ -230,11 +232,54 @@ namespace Intersect.GameObjects
                             .ToString(NpcBase.GetName(TargetId), Quantity, Description);
 
                         break;
+                    case QuestObjective.VisitTile: //Go to Tile
+
+                        var tempMapName = "Hmmm";
+                        for (var i = 0; i < MapList.OrderedMaps.Count; i++)
+                        {
+                            if (MapList.OrderedMaps[i].MapId == MapId)
+                            {
+                                tempMapName = MapList.OrderedMaps[i].Name;
+                                i = MapList.OrderedMaps.Count;
+                            }
+                        }
+                        taskString = descriptions[(int) Objective]
+                            .ToString(tempMapName, X, Y, Description, X+AreaWidth-1, Y+AreaHeight-1);
+
+                        break;
+                    case QuestObjective.KillNpcsWithTag: //KillNpcsWithTag
+                        taskString = descriptions[(int)Objective]
+                            .ToString(Tag, Quantity, Description);
+
+                        break;
+                    case QuestObjective.PressKey: //presskey
+                        taskString = descriptions[(int)Objective]
+                            .ToString(KeyPressed, Description);
+
+                        break;
                 }
 
                 return taskString;
             }
 
+            //Visit Tile Data
+            public Guid MapId { get; set; }
+
+            public byte X { get; set; }
+
+            public byte Y { get; set; }
+
+            public WarpDirection Direction { get; set; } = WarpDirection.Retain;
+
+            public int AreaWidth { get; set; }
+
+            public int AreaHeight { get; set; }
+
+            //NpcWithTag Data
+            public string Tag { get; set; }
+
+            //KeyPress
+            public int KeyPressed { get; set; }
         }
 
     }

@@ -2794,6 +2794,39 @@ namespace Intersect.Server.Networking
             }
         }
 
+        //QuestTaskKeyPressed
+        public void HandlePacket(Client client, Player player, QuestTaskKeyPressed packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            foreach (var questProgress in player.Quests)
+            {
+                var questId = questProgress.QuestId;
+                var quest = QuestBase.Get(questId);
+                if (quest != null)
+                {
+                    if (questProgress.TaskId != Guid.Empty)
+                    {
+                        //Assume this quest is in progress. See if we can find the task in the quest
+                        var questTask = quest.FindTask(questProgress.TaskId);
+                        if (questTask != null)
+                        {
+                            if (questTask.Objective == QuestObjective.PressKey)
+                            {
+                                if (questTask.KeyPressed  == packet.Key)
+                                {
+                                    player.CompleteQuestTask(questId, questProgress.TaskId);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         //AbandonQuestPacket
         public void HandlePacket(Client client, Player player, AbandonQuestPacket packet)
         {

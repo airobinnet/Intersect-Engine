@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Intersect.Client.Core;
+using Intersect.Client.Core.Controls;
 using Intersect.Client.Framework.File_Management;
 using Intersect.Client.Framework.Gwen;
 using Intersect.Client.Framework.Gwen.Control;
@@ -11,6 +12,7 @@ using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.Enums;
 using Intersect.GameObjects;
+using Intersect.GameObjects.Maps;
 
 namespace Intersect.Client.Interface.Game
 {
@@ -295,6 +297,45 @@ namespace Intersect.Client.Interface.Game
                                             Globals.Me.QuestProgress[mSelectedQuest.Id].TaskProgress,
                                             mSelectedQuest.Tasks[i].Quantity,
                                             NpcBase.GetName(mSelectedQuest.Tasks[i].TargetId)
+                                        ), Color.White, Alignments.Left, mQuestDescTemplateLabel.Font
+                                    );
+                                }
+                                else if (mSelectedQuest.Tasks[i].Objective == QuestObjective.VisitTile) //Kill Npcs
+                                {
+                                    mQuestDescLabel.AddText(
+                                        Strings.QuestLog.taskvisittile.ToString(
+                                            MapBase.GetName(mSelectedQuest.Tasks[i].MapId),
+                                            mSelectedQuest.Tasks[i].X, mSelectedQuest.Tasks[i].Y, mSelectedQuest.Tasks[i].X + mSelectedQuest.Tasks[i].AreaWidth-1, mSelectedQuest.Tasks[i].Y + mSelectedQuest.Tasks[i].AreaHeight-1
+                                        ), Color.White, Alignments.Left, mQuestDescTemplateLabel.Font
+                                    );
+                                }
+                                else if (mSelectedQuest.Tasks[i].Objective == QuestObjective.KillNpcsWithTag) //KillNpcsWithTag
+                                {
+                                    mQuestDescLabel.AddText(
+                                        Strings.QuestLog.tasknpctag.ToString(
+                                            Globals.Me.QuestProgress[mSelectedQuest.Id].TaskProgress,
+                                            mSelectedQuest.Tasks[i].Quantity,
+                                            mSelectedQuest.Tasks[i].Tag
+                                        ), Color.White, Alignments.Left, mQuestDescTemplateLabel.Font
+                                    );
+                                }
+                                else if (mSelectedQuest.Tasks[i].Objective == QuestObjective.PressKey) //PressKey
+                                {
+                                    var j = 0;
+                                    var name = "Key not found";
+                                    foreach (Control control in Enum.GetValues(typeof(Control)))
+                                    {
+                                        if (j == mSelectedQuest.Tasks[i].KeyPressed)
+                                        {
+                                            name = Enum.GetName(typeof(Control), control)?.ToLower();
+                                            j = 0;
+                                            break;
+                                        }
+                                        j++;
+                                    }
+                                    mQuestDescLabel.AddText(
+                                        Strings.QuestLog.keypressed.ToString(
+                                            Strings.Controls.controldict[name]
                                         ), Color.White, Alignments.Left, mQuestDescTemplateLabel.Font
                                     );
                                 }

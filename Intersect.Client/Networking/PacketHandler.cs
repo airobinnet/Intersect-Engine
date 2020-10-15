@@ -1764,6 +1764,33 @@ namespace Intersect.Client.Networking
                             Globals.Me.QuestProgress.Add(quest.Key, new QuestProgress(quest.Value));
                         }
                     }
+                    //Check if we got a quest with presskey task
+                    //not sure if this is the most optimal way to check this
+                    if (Globals.Me.QuestProgress[quest.Key].TaskId != Guid.Empty)
+                    {
+                        var quests = QuestBase.Lookup.Values;
+                        foreach (QuestBase currentquest in quests)
+                        {
+                            if (currentquest != null)
+                            {
+                                if (Globals.Me.QuestProgress.ContainsKey(currentquest.Id))
+                                {
+                                    if (Globals.Me.QuestProgress[currentquest.Id].TaskId != Guid.Empty)
+                                    {
+                                        var questTask = currentquest.FindTask(Globals.Me.QuestProgress[currentquest.Id].TaskId);
+                                        if (questTask != null)
+                                        {
+                                            if (questTask.Objective == QuestObjective.PressKey)
+                                            {
+                                                Globals.Me.trackKeys = true;
+                                                Globals.Me.trackedKey = questTask.KeyPressed;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 if (Interface.Interface.GameUi != null)

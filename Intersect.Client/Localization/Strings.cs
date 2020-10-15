@@ -1340,6 +1340,12 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString tasknpc = @"{00}/{01} {02}(s) slain.";
 
+            public static LocalizedString taskvisittile = @"Map: {00}: X: {01}-{03} Y: {02}-{04}";
+
+            public static LocalizedString tasknpctag = @"{00}/{01} {02}(s) slain.";
+
+            public static LocalizedString keypressed = @"Key pressed: {00}.";
+
             public static LocalizedString title = @"Quest Log";
 
         }

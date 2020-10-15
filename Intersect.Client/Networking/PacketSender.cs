@@ -332,6 +332,11 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new QuestResponsePacket(questId, true));
         }
 
+        public static void SendQuestTaskKeyPressed(int key)
+        {
+            Network.SendPacket(new QuestTaskKeyPressed(key));
+        }
+
         public static void SendDeclineQuest(Guid questId)
         {
             Network.SendPacket(new QuestResponsePacket(questId, false));

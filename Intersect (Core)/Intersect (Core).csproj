@@ -328,6 +328,7 @@
     <Compile Include="Network\Packets\Client\ClassChangeResponsePacket.cs" />
     <Compile Include="Network\Packets\Client\OpenCashShopPacket.cs" />
     <Compile Include="Network\Packets\Client\CloseHDVPacket.cs" />
+    <Compile Include="Network\Packets\Client\QuestTaskKeyPressed.cs" />
     <Compile Include="Network\Packets\Client\SendCreateGuildPacket.cs" />
     <Compile Include="Network\Packets\Client\SendSteamAuthPacket.cs" />
     <Compile Include="Network\Packets\Client\SendSteamMTxnAuthorizedPacket.cs" />

@@ -7,6 +7,8 @@ using Intersect.Editor.Localization;
 using Intersect.Enums;
 using Intersect.GameObjects;
 using Intersect.Logging;
+using Intersect.GameObjects.Maps.MapList;
+using DarkUI.Controls;
 
 namespace Intersect.Editor.Forms.Editors.Quest
 {
@@ -21,6 +23,8 @@ namespace Intersect.Editor.Forms.Editors.Quest
         private QuestBase mMyQuest;
 
         private QuestBase.QuestTask mMyTask;
+
+        private QuestBase.QuestTask mMyCommand;
 
         public QuestTaskEditor(QuestBase refQuest, QuestBase.QuestTask refTask)
         {
@@ -37,6 +41,7 @@ namespace Intersect.Editor.Forms.Editors.Quest
             InitializeComponent();
             mMyTask = refTask;
             mMyQuest = refQuest;
+            mMyCommand = refTask;
 
             if (mMyTask?.EditingEvent == null)
             {
@@ -47,6 +52,7 @@ namespace Intersect.Editor.Forms.Editors.Quest
             InitLocalization();
             cmbTaskType.SelectedIndex = mMyTask == null ? -1 : (int) mMyTask.Objective;
             txtStartDesc.Text = mMyTask?.Description;
+
             UpdateFormElements();
             switch (cmbTaskType.SelectedIndex)
             {
@@ -62,6 +68,41 @@ namespace Intersect.Editor.Forms.Editors.Quest
                     nudNpcQuantity.Value = mMyTask?.Quantity ?? 0;
 
                     break;
+                case 3://Go to Tile
+                    scrlX.Maximum = Options.MapWidth - 1;
+                    scrlY.Maximum = Options.MapHeight - 1;
+                    scrlX.Value = mMyCommand.X;
+                    scrlY.Value = mMyCommand.Y;
+                    lblX.Text = Strings.Warping.x.ToString(scrlX.Value);
+                    lblY.Text = Strings.Warping.y.ToString(scrlY.Value);
+                    cmbDirection.SelectedIndex = (int)mMyCommand.Direction;
+                    nudWidth.Value = mMyCommand.AreaWidth;
+                    nudHeight.Value = mMyCommand.AreaHeight;
+                    nudWidth.Maximum = Options.MapWidth - 1 - scrlX.Value;
+                    nudHeight.Maximum = Options.MapHeight - 1 - scrlY.Value;
+                    break;
+                case 4://Kill npcs with Tag
+                    for (int i = 0; i < cmbNpcTags.Items.Count; i++)
+                    {
+                        if (cmbNpcTags.Items[i].ToString() == mMyCommand.Tag)
+                        {
+                            cmbNpcTags.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                    nudNpcWithTagQuantity.Value = mMyTask?.Quantity ?? 0;
+                    break;
+                case 5://Press Key
+                    for (int i = 0; i < cmbKey.Items.Count; i++)
+                    {
+                        if (i == mMyCommand.KeyPressed)
+                        {
+                            cmbKey.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                    break;
+
             }
         }
 
@@ -91,12 +132,16 @@ namespace Intersect.Editor.Forms.Editors.Quest
             btnEditTaskEvent.Text = Strings.TaskEditor.editcompletionevent;
             btnSave.Text = Strings.TaskEditor.ok;
             btnCancel.Text = Strings.TaskEditor.cancel;
+
         }
 
         private void UpdateFormElements()
         {
             grpGatherItems.Hide();
             grpKillNpcs.Hide();
+            grpVisitTile.Hide();
+            grpKillNpcWithTag.Hide();
+            grpPressKey.Hide();
             switch (cmbTaskType.SelectedIndex)
             {
                 case 0: //Event Driven
@@ -125,6 +170,77 @@ namespace Intersect.Editor.Forms.Editors.Quest
                     nudNpcQuantity.Value = 1;
 
                     break;
+                case 3: //Go to tile
+                    grpVisitTile.Show();
+                    cmbMap.Items.Clear();
+                    for (var i = 0; i < MapList.OrderedMaps.Count; i++)
+                    {
+                        cmbMap.Items.Add(MapList.OrderedMaps[i].Name);
+                        if (MapList.OrderedMaps[i].MapId == mMyCommand.MapId)
+                        {
+                            cmbMap.SelectedIndex = i;
+                        }
+                    }
+
+                    if (cmbMap.SelectedIndex == -1)
+                    {
+                        cmbMap.SelectedIndex = 0;
+                    }
+
+                    lblMap.Text = Strings.Warping.map.ToString("");
+                    lblX.Text = Strings.Warping.x.ToString(scrlX.Value);
+                    lblY.Text = Strings.Warping.y.ToString(scrlY.Value);
+                    lblDir.Text = Strings.Warping.direction.ToString("");
+                    btnVisual.Text = Strings.Warping.visual;
+                    cmbDirection.Items.Clear();
+                    for (var i = -1; i < 4; i++)
+                    {
+                        cmbDirection.Items.Add(Strings.Directions.dir[i]);
+                    }
+                    break;
+                case 4:
+                    grpKillNpcWithTag.Show();
+                    cmbNpcTags.Items.Clear();
+                    var tagList = NpcBase.AllTags;
+                    cmbNpcTags.Items.AddRange(tagList);
+                    break;
+                case 5:
+                    grpPressKey.Show();
+                    cmbKey.Items.Clear();
+                    cmbKey.Items.Add("MoveUp");
+                    cmbKey.Items.Add("MoveLeft");
+                    cmbKey.Items.Add("MoveDown");
+                    cmbKey.Items.Add("MoveRight");
+                    cmbKey.Items.Add("AttackInteract");
+                    cmbKey.Items.Add("Block");
+                    cmbKey.Items.Add("AutoTarget");
+                    cmbKey.Items.Add("PickUp");
+                    cmbKey.Items.Add("Enter");
+                    cmbKey.Items.Add("Hotkey1");
+                    cmbKey.Items.Add("Hotkey2");
+                    cmbKey.Items.Add("Hotkey3");
+                    cmbKey.Items.Add("Hotkey4");
+                    cmbKey.Items.Add("Hotkey5");
+                    cmbKey.Items.Add("Hotkey6");
+                    cmbKey.Items.Add("Hotkey7");
+                    cmbKey.Items.Add("Hotkey8");
+                    cmbKey.Items.Add("Hotkey9");
+                    cmbKey.Items.Add("Hotkey0");
+                    cmbKey.Items.Add("Screenshot");
+                    cmbKey.Items.Add("OpenMenu");
+                    cmbKey.Items.Add("OpenInventory");
+                    cmbKey.Items.Add("OpenQuests");
+                    cmbKey.Items.Add("OpenCharacterInfo");
+                    cmbKey.Items.Add("OpenParties");
+                    cmbKey.Items.Add("OpenGuild");
+                    cmbKey.Items.Add("OpenSpells");
+                    cmbKey.Items.Add("OpenFriends");
+                    cmbKey.Items.Add("OpenSettings");
+                    cmbKey.Items.Add("OpenDebugger");
+                    cmbKey.Items.Add("OpenAdminPanel");
+                    cmbKey.Items.Add("ToggleGui");
+                    cmbKey.Items.Add("OpenTradeSkills");        
+                    break;
             }
         }
 
@@ -148,6 +264,23 @@ namespace Intersect.Editor.Forms.Editors.Quest
                     mMyTask.TargetId = NpcBase.IdFromList(cmbNpc.SelectedIndex);
                     mMyTask.Quantity = (int) nudNpcQuantity.Value;
 
+                    break;
+                case QuestObjective.VisitTile: //Go to Tile
+                    mMyTask.MapId = MapList.OrderedMaps[cmbMap.SelectedIndex].MapId;
+                    mMyTask.X = (byte)scrlX.Value;
+                    mMyTask.Y = (byte)scrlY.Value;
+                    mMyTask.Direction = (WarpDirection)cmbDirection.SelectedIndex;
+                    mMyTask.AreaWidth = (int)nudWidth.Value;
+                    mMyTask.AreaHeight = (int)nudHeight.Value;
+
+                    break;
+                case QuestObjective.KillNpcsWithTag:
+                    mMyTask.Tag = cmbNpcTags.SelectedIndex == -1 ? null : cmbNpcTags.Items[cmbNpcTags.SelectedIndex].ToString();
+                    mMyTask.Quantity = (int)nudNpcWithTagQuantity.Value;
+                    break;
+                case QuestObjective.PressKey:
+                    //mMyTask.KeyPressed = cmbKey.SelectedIndex == -1 ? null : cmbKey.Items[cmbKey.SelectedIndex].ToString();
+                    mMyTask.KeyPressed = cmbKey.SelectedIndex;
                     break;
             }
 
@@ -180,6 +313,48 @@ namespace Intersect.Editor.Forms.Editors.Quest
             BringToFront();
         }
 
+
+        private void btnVisual_Click(object sender, EventArgs e)
+        {
+            var frmWarpSelection = new FrmWarpSelection();
+            frmWarpSelection.SelectTile(MapList.OrderedMaps[cmbMap.SelectedIndex].MapId, scrlX.Value, scrlY.Value);
+            frmWarpSelection.ShowDialog();
+            if (frmWarpSelection.GetResult())
+            {
+                for (var i = 0; i < MapList.OrderedMaps.Count; i++)
+                {
+                    if (MapList.OrderedMaps[i].MapId == frmWarpSelection.GetMap())
+                    {
+                        cmbMap.SelectedIndex = i;
+
+                        break;
+                    }
+                }
+
+                scrlX.Value = frmWarpSelection.GetX();
+                scrlY.Value = frmWarpSelection.GetY();
+                lblX.Text = Strings.Warping.x.ToString(scrlX.Value);
+                lblY.Text = Strings.Warping.y.ToString(scrlY.Value);
+            }
+        }
+
+        private void scrlX_Scroll(object sender, ScrollValueEventArgs e)
+        {
+            lblX.Text = Strings.Warping.x.ToString(scrlX.Value);
+        }
+
+        private void scrlY_Scroll(object sender, ScrollValueEventArgs e)
+        {
+            lblY.Text = Strings.Warping.y.ToString(scrlY.Value);
+        }
+
+        private void cmbDirection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void cmbMap_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
     }
 
 }

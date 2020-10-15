@@ -8,7 +8,13 @@
 
         GatherItems,
 
-        KillNpcs
+        KillNpcs,
+
+        VisitTile,
+
+        KillNpcsWithTag,
+
+        PressKey
 
     }
 
