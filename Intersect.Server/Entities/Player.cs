@@ -144,6 +144,9 @@ namespace Intersect.Server.Entities
         [NotMapped]
         public Guid CreateGuildItem;
 
+        [NotMapped]
+        public int multiplenpckillcounter = 0;
+
         public Guid emptyguid;
 
         public static Player FindOnline(Guid id)
@@ -1297,6 +1300,46 @@ namespace Intersect.Server.Entities
                                             NpcBase.GetName(questTask.TargetId)
                                         )
                                     );
+                                }
+                            }
+
+                            if (questTask.Objective == QuestObjective.KillMultipleNpcs && questTask.mTargets.Contains(npc.Base.Id))
+                            {
+                                while (questProgress.mTaskProgress.Count < questTask.mTargets.Count)
+                                {
+                                    questProgress.mTaskProgress.Add(0);
+                                }
+                                for (var i = 0;i < questTask.mTargets.Count; i++)
+                                {
+                                    if (npc.Base.Id == questTask.mTargets[i])
+                                    {
+                                        if (questProgress.mTaskProgress[i] >= questTask.mTargetsQuantity[i])
+                                        {
+                                            //CompleteQuestTask(questId, questProgress.TaskId);
+                                        }
+                                        else
+                                        {
+                                            questProgress.mTaskProgress[i]++;
+                                            PacketSender.SendQuestProgress(this, quest.Id);
+                                            PacketSender.SendChatMsg(
+                                                this,
+                                                Strings.Quests.npctask.ToString(
+                                                    quest.Name, questProgress.mTaskProgress[i], questTask.mTargetsQuantity[i],
+                                                    NpcBase.GetName(questTask.mTargets[i])
+                                                )
+                                            );
+                                        }
+                                    }
+                                }
+                                var a = questProgress.mTaskProgress.SequenceEqual(questTask.mTargetsQuantity);
+
+                                if (a == true)
+                                //if (multiplenpckillcounter >= questTask.mTargets.Count)
+                                {
+                                    CompleteQuestTask(questId, questProgress.TaskId);
+                                    multiplenpckillcounter = 0;
+                                    questProgress.mTaskProgress.Clear();
+
                                 }
                             }
 
@@ -5722,6 +5765,56 @@ namespace Intersect.Server.Entities
                 {
                     return false;
                 }
+
+                if (questProgress.Completed && quest.Repeatable && (quest.RepeatTime + questProgress.TimeCompleted) >= Globals.Timing.RealTimeMs)
+                {
+                    //get this msg to a place when the player presses interact, displays on npc checks too now == spam
+                    int millisecs = ((int)quest.RepeatTime + (int)questProgress.TimeCompleted) - (int)Globals.Timing.RealTimeMs;
+                    int hours = millisecs / 3600000;
+                    int mins = (millisecs % 3600000) / 60000;
+                    // Make sure you use the appropriate decimal separator
+                    var str = string.Format("{0:D2} hour(s) {1:D2} minute(s) {2:D2} second(s)", hours, mins, millisecs % 60000 / 1000);
+
+                    PacketSender.SendChatMsg(this, "You can accept this quest again in " + str, new Color(255, 64, 225, 209));
+                    return false;
+                }
+            }
+
+            //So the quest isn't started or we can repeat it.. let's make sure that we meet requirements.
+            if (!Conditions.MeetsConditionLists(quest.Requirements, this, null, true, quest))
+            {
+                return false;
+            }
+
+            if (quest.Tasks.Count == 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        //Quests
+        public bool CanStartQuestCondition(QuestBase quest)
+        {
+            //Check and see if the quest is already in progress, or if it has already been completed and cannot be repeated.
+            var questProgress = FindQuest(quest.Id);
+            if (questProgress != null)
+            {
+                if (questProgress.TaskId != Guid.Empty && quest.GetTaskIndex(questProgress.TaskId) != -1)
+                {
+                    return false;
+                }
+
+                if (questProgress.Completed && !quest.Repeatable)
+                {
+                    return false;
+                }
+
+                if (questProgress.Completed && quest.Repeatable && (quest.RepeatTime + questProgress.TimeCompleted) >= Globals.Timing.RealTimeMs)
+                {
+                    return false;
+                }
             }
 
             //So the quest isn't started or we can repeat it.. let's make sure that we meet requirements.
@@ -5839,6 +5932,14 @@ namespace Intersect.Server.Entities
                 if (quest.Tasks[0].Objective == QuestObjective.GatherItems) //Gather Items
                 {
                     UpdateGatherItemQuests(quest.Tasks[0].TargetId);
+                }
+
+                if (quest.Tasks[0].Objective == QuestObjective.GatherMultipleItems) //Gather Items
+                {
+                    foreach (var target in quest.Tasks[0].mTargets)
+                    {
+                        UpdateGatherItemQuests(target);
+                    }
                 }
 
                 if (quest.Tasks[0].Objective == QuestObjective.PressKey) //Press Key
@@ -5970,6 +6071,7 @@ namespace Intersect.Server.Entities
                                 {
                                     //Complete Quest
                                     questProgress.Completed = true;
+                                    questProgress.TimeCompleted = Globals.Timing.RealTimeMs;
                                     questProgress.TaskId = Guid.Empty;
                                     questProgress.TaskProgress = -1;
                                     if (quest.Tasks[i].CompletionEvent != null)
@@ -6021,6 +6123,7 @@ namespace Intersect.Server.Entities
                 {
                     //Complete Quest
                     questProgress.Completed = true;
+                    questProgress.TimeCompleted = Globals.Timing.RealTimeMs;
                     questProgress.TaskId = Guid.Empty;
                     questProgress.TaskProgress = -1;
                     if (!skipCompletionEvent)
@@ -6070,6 +6173,57 @@ namespace Intersect.Server.Entities
                                         );
                                         PacketSender.SendActionMsgPrivate(this,"Questitem: " + item.Name + ": " + Math.Min(questProgress.TaskProgress, questTask.Quantity) + "/" + questTask.Quantity, Color.ForestGreen);
                                     }
+                                }
+                            }
+                            if (questTask.Objective == QuestObjective.GatherMultipleItems && questTask.mTargets.Contains(item.Id))
+                            {
+                                while (questProgress.mTaskProgress.Count < questTask.mTargets.Count)
+                                {
+                                    questProgress.mTaskProgress.Add(0);
+                                }
+                                for (var i = 0; i < questTask.mTargets.Count; i++)
+                                {
+                                    if (item.Id == questTask.mTargets[i])
+                                    {
+                                        if (CountItems(item.Id) >= questTask.mTargetsQuantity[i])
+                                        {
+                                            questProgress.mTaskProgress[i] = Math.Min(CountItems(item.Id), questTask.mTargetsQuantity[i]);
+                                            PacketSender.SendActionMsgPrivate(this, "Questitem: " + item.Name + ": " + questProgress.mTaskProgress[i] + "/" + questTask.mTargetsQuantity[i], Color.ForestGreen);
+                                            if (CountItems(item.Id) <= questTask.mTargetsQuantity[i])
+                                            {
+                                                PacketSender.SendChatMsg(
+                                                this,
+                                                Strings.Quests.itemtask.ToString(
+                                                    quest.Name, CountItems(item.Id), questTask.mTargetsQuantity[i],
+                                                    ItemBase.GetName(questTask.mTargets[i])
+                                                )
+                                            );
+                                            }
+                                            PacketSender.SendQuestProgress(this, quest.Id);
+                                        }
+                                        else
+                                        {
+                                            //questProgress.mTaskProgress[i]++;
+                                            questProgress.mTaskProgress[i] = Math.Min(CountItems(item.Id), questTask.mTargetsQuantity[i]); ;
+                                            //geen ++, doe countitems + item.quantity
+                                            PacketSender.SendQuestProgress(this, quest.Id);
+                                            PacketSender.SendChatMsg(
+                                                this,
+                                                Strings.Quests.itemtask.ToString(
+                                                    quest.Name, CountItems(item.Id), questTask.mTargetsQuantity[i],
+                                                    ItemBase.GetName(questTask.mTargets[i])
+                                                )
+                                            );
+                                            PacketSender.SendActionMsgPrivate(this, "Questitem: " + item.Name + ": " + questProgress.mTaskProgress[i] + "/" + questTask.mTargetsQuantity[i], Color.ForestGreen);
+                                        }
+                                    }
+                                }
+                                var a = questProgress.mTaskProgress.SequenceEqual(questTask.mTargetsQuantity);
+                                if (a == true)
+                                {
+                                    CompleteQuestTask(questId, questProgress.TaskId);
+                                    questProgress.mTaskProgress.Clear();
+
                                 }
                             }
                         }

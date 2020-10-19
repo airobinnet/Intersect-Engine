@@ -4870,6 +4870,8 @@ Tick timer saved in server config.json.";
                 {3, @"Go to Tile"},
                 {4, @"Kill NPC(s) with tag"},
                 {5, @"Key pressed"},
+                {6, @"Kill Multiple NPC(s)"},
+                {7, @"Gather Multiple Item(s)"},
             };
 
             public static Dictionary<int, LocalizedString> descriptions = new Dictionary<int, LocalizedString>
@@ -4880,6 +4882,8 @@ Tick timer saved in server config.json.";
                 {3, @"Go to [{00} X:{01}-{04}, Y:{02}-{05}] - {03}"},
                 {4, @"Kill Npc(s) with tag [{00} x{01}] - {02}"},
                 {5, @"Press Key: [{00}] - {01}"},
+                {6, @"[{00} x{01}]"},
+                {7, @"[{00} x{01}]"},
             };
 
         }

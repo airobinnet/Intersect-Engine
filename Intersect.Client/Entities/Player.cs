@@ -245,8 +245,6 @@ namespace Intersect.Client.Entities
             {
                 if (i == trackedKey && Controls.KeyDown(control))
                 {
-                    var name = Enum.GetName(typeof(Control), control)?.ToLower();
-                    PacketSender.SendChatMsg(name + "pressed", 0);
                     PacketSender.SendQuestTaskKeyPressed(i);
                     trackKeys = false;
                     break;

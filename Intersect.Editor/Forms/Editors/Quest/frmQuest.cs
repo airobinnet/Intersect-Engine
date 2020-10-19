@@ -203,6 +203,43 @@ namespace Intersect.Editor.Forms.Editors.Quest
 
                 txtName.Text = mEditorItem.Name;
                 cmbFolder.Text = mEditorItem.Folder;
+
+                if (mEditorItem.RepeatTime == 0)
+                {
+                    cmbRepeatableTime.SelectedIndex = 0;
+                }
+                else if (mEditorItem.RepeatTime == 3600000)
+                {
+                    cmbRepeatableTime.SelectedIndex = 1;
+                }
+                else if (mEditorItem.RepeatTime == 21600000)
+                {
+                    cmbRepeatableTime.SelectedIndex = 2;
+                }
+                else if (mEditorItem.RepeatTime == 43200000)
+                {
+                    cmbRepeatableTime.SelectedIndex = 3;
+                }
+                else if (mEditorItem.RepeatTime == 86400000)
+                {
+                    cmbRepeatableTime.SelectedIndex = 4;
+                }
+                else if (mEditorItem.RepeatTime == 172800000)
+                {
+                    cmbRepeatableTime.SelectedIndex = 5;
+                }
+                else if (mEditorItem.RepeatTime == 604800000)
+                {
+                    cmbRepeatableTime.SelectedIndex = 6;
+                }
+                else if (mEditorItem.RepeatTime == 60000)
+                {
+                    cmbRepeatableTime.SelectedIndex = 7;
+                }
+                else
+                {
+                    cmbRepeatableTime.SelectedIndex = 0;
+                }
                 txtBeforeDesc.Text = mEditorItem.BeforeDescription;
                 txtStartDesc.Text = mEditorItem.StartDescription;
                 txtInProgressDesc.Text = mEditorItem.InProgressDescription;
@@ -609,6 +646,16 @@ namespace Intersect.Editor.Forms.Editors.Quest
             cmbFolder.Items.Add("");
             cmbFolder.Items.AddRange(mKnownFolders.ToArray());
 
+            cmbRepeatableTime.Items.Clear();
+            cmbRepeatableTime.Items.Add("Always");
+            cmbRepeatableTime.Items.Add("1 hour");
+            cmbRepeatableTime.Items.Add("6 hours");
+            cmbRepeatableTime.Items.Add("12 hours");
+            cmbRepeatableTime.Items.Add("1 day");
+            cmbRepeatableTime.Items.Add("2 days");
+            cmbRepeatableTime.Items.Add("1 week");
+            cmbRepeatableTime.Items.Add("1 minute");
+
             lstQuests.Sorted = !btnChronological.Checked;
 
             if (!btnChronological.Checked && !CustomSearch())
@@ -761,6 +808,42 @@ namespace Intersect.Editor.Forms.Editors.Quest
         {
             mEditorItem.Folder = cmbFolder.Text;
             InitEditor();
+        }
+
+        private void cmbRepeatableTime_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbRepeatableTime.SelectedIndex == 0)
+            {
+                mEditorItem.RepeatTime = 0;
+            }
+            else if (cmbRepeatableTime.SelectedIndex == 1)
+            {
+                mEditorItem.RepeatTime = 3600000;
+            }
+            else if (cmbRepeatableTime.SelectedIndex == 2)
+            {
+                mEditorItem.RepeatTime = 21600000;
+            }
+            else if (cmbRepeatableTime.SelectedIndex == 3)
+            {
+                mEditorItem.RepeatTime = 43200000;
+            }
+            else if (cmbRepeatableTime.SelectedIndex == 4)
+            {
+                mEditorItem.RepeatTime = 86400000;
+            }
+            else if (cmbRepeatableTime.SelectedIndex == 5)
+            {
+                mEditorItem.RepeatTime = 172800000;
+            }
+            else if (cmbRepeatableTime.SelectedIndex == 6)
+            {
+                mEditorItem.RepeatTime = 604800000;
+            }
+            else if (cmbRepeatableTime.SelectedIndex == 7)
+            {
+                mEditorItem.RepeatTime = 60000;
+            }
         }
 
         private void btnChronological_Click(object sender, EventArgs e)

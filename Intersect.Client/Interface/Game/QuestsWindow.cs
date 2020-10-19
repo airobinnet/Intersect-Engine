@@ -322,12 +322,14 @@ namespace Intersect.Client.Interface.Game
                                 else if (mSelectedQuest.Tasks[i].Objective == QuestObjective.PressKey) //PressKey
                                 {
                                     var j = 0;
-                                    var name = "Key not found";
+                                    var name = "Control not found";
+                                    var keyb = "None";
                                     foreach (Control control in Enum.GetValues(typeof(Control)))
                                     {
                                         if (j == mSelectedQuest.Tasks[i].KeyPressed)
                                         {
                                             name = Enum.GetName(typeof(Control), control)?.ToLower();
+                                            keyb = Controls.ActiveControls.ControlMapping[control].Key1.ToString();
                                             j = 0;
                                             break;
                                         }
@@ -335,9 +337,53 @@ namespace Intersect.Client.Interface.Game
                                     }
                                     mQuestDescLabel.AddText(
                                         Strings.QuestLog.keypressed.ToString(
-                                            Strings.Controls.controldict[name]
+                                            Strings.Controls.controldict[name], keyb
                                         ), Color.White, Alignments.Left, mQuestDescTemplateLabel.Font
                                     );
+                                }
+                                else if (mSelectedQuest.Tasks[i].Objective == QuestObjective.KillMultipleNpcs) //Kill Npcs
+                                {
+                                    mQuestDescLabel.AddText(Strings.QuestLog.taskkillmultiplenpc, Color.White, Alignments.Left, mQuestDescTemplateLabel.Font);
+                                    mQuestDescLabel.AddLineBreak();
+                                    for (var j = 0; j < mSelectedQuest.Tasks[i].mTargets.Count; j++)
+                                    {
+                                        var tempnr = 0;
+                                        if (Globals.Me.QuestProgress[mSelectedQuest.Id].mTaskProgress.Count-1 >= j)
+                                        {
+                                            tempnr = Globals.Me.QuestProgress[mSelectedQuest.Id].mTaskProgress[j];
+                                        }
+                                        mQuestDescLabel.AddText(
+                                        Strings.QuestLog.taskmultiplenpc.ToString(
+                                            tempnr,
+                                            mSelectedQuest.Tasks[i].mTargetsQuantity[j],
+                                            NpcBase.GetName(mSelectedQuest.Tasks[i].mTargets[j])
+                                        ), Color.White, Alignments.Left, mQuestDescTemplateLabel.Font
+                                        );
+                                        mQuestDescLabel.AddLineBreak();
+                                    }
+                                    mQuestDescLabel.AddLineBreak();
+                                }
+                                else if (mSelectedQuest.Tasks[i].Objective == QuestObjective.GatherMultipleItems) //Kill Npcs
+                                {
+                                    mQuestDescLabel.AddText(Strings.QuestLog.taskmultipleitemstitle, Color.White, Alignments.Left, mQuestDescTemplateLabel.Font);
+                                    mQuestDescLabel.AddLineBreak();
+                                    for (var j = 0; j < mSelectedQuest.Tasks[i].mTargets.Count; j++)
+                                    {
+                                        var tempnr = 0;
+                                        if (Globals.Me.QuestProgress[mSelectedQuest.Id].mTaskProgress.Count - 1 >= j)
+                                        {
+                                            tempnr = Globals.Me.QuestProgress[mSelectedQuest.Id].mTaskProgress[j];
+                                        }
+                                        mQuestDescLabel.AddText(
+                                        Strings.QuestLog.taskmultipleitems.ToString(
+                                            tempnr,
+                                            mSelectedQuest.Tasks[i].mTargetsQuantity[j],
+                                            ItemBase.GetName(mSelectedQuest.Tasks[i].mTargets[j])
+                                        ), Color.White, Alignments.Left, mQuestDescTemplateLabel.Font
+                                        );
+                                        mQuestDescLabel.AddLineBreak();
+                                    }
+                                    mQuestDescLabel.AddLineBreak();
                                 }
                             }
                         }

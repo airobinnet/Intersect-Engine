@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 using Intersect.Server.Entities;
@@ -34,7 +35,13 @@ namespace Intersect.Server.Database.PlayerData.Players
 
         public int TaskProgress { get; set; }
 
+        public List<Guid> mTaskId { get; } = new List<Guid>();
+
+        public List<int> mTaskProgress { get; } = new List<int>();
+
         public bool Completed { get; set; }
+
+        public long TimeCompleted { get; set; } = 0;
 
         [JsonIgnore]
         public Guid PlayerId { get; private set; }

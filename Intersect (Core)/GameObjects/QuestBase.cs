@@ -37,6 +37,12 @@ namespace Intersect.GameObjects
 
         public int TaskProgress;
 
+        public long TimeCompleted;
+        
+        //multiple items or targets
+
+        public List<int> mTaskProgress { get; set; } = new List<int>();
+
         public QuestProgress(string data)
         {
             JsonConvert.PopulateObject(data, this);
@@ -83,6 +89,8 @@ namespace Intersect.GameObjects
         public bool Quitable { get; set; }
 
         public bool Repeatable { get; set; }
+
+        public long RepeatTime { get; set; } = 0;
 
         //Requirements - Store with json
         [Column("Requirements")]
@@ -257,6 +265,26 @@ namespace Intersect.GameObjects
                             .ToString(KeyPressed, Description);
 
                         break;
+                    case QuestObjective.KillMultipleNpcs: //kill multiple npcs
+                        taskString = "Kill: ";
+                        for (var i = 0; i < mTargets.Count; i++)
+                        {
+                            taskString += descriptions[(int)Objective]
+                            .ToString(NpcBase.GetName(mTargets[i]), mTargetsQuantity[i]) + " - ";
+                        }
+                        taskString += Description;
+
+                        break;
+                    case QuestObjective.GatherMultipleItems: //gather multiple items
+                        taskString = "Gather: ";
+                        for (var i = 0; i < mTargets.Count; i++)
+                        {
+                            taskString += descriptions[(int)Objective]
+                            .ToString(ItemBase.GetName(mTargets[i]), mTargetsQuantity[i]) + " - ";
+                        }
+                        taskString += Description;
+
+                        break;
                 }
 
                 return taskString;
@@ -280,6 +308,10 @@ namespace Intersect.GameObjects
 
             //KeyPress
             public int KeyPressed { get; set; }
+
+            public List<Guid> mTargets { get; set; } = new List<Guid>();
+
+            public List<int> mTargetsQuantity { get; set; } = new List<int>();
         }
 
     }

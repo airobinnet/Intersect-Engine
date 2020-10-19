@@ -373,7 +373,7 @@ namespace Intersect.Server.Entities.Events
 
             if (startQuest != null)
             {
-                return player.CanStartQuest(startQuest);
+                return player.CanStartQuestCondition(startQuest);
             }
 
             return false;

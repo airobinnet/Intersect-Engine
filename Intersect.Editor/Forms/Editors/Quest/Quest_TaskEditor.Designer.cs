@@ -32,6 +32,30 @@ namespace Intersect.Editor.Forms.Editors.Quest
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(QuestTaskEditor));
             this.grpEditor = new DarkUI.Controls.DarkGroupBox();
+            this.grpMultipleItems = new DarkUI.Controls.DarkGroupBox();
+            this.btnAddItem = new DarkUI.Controls.DarkButton();
+            this.btnDelItem = new DarkUI.Controls.DarkButton();
+            this.lstItems = new System.Windows.Forms.ListBox();
+            this.nudMultipleItemQuantity = new DarkUI.Controls.DarkNumericUpDown();
+            this.cmbMultipleItems = new DarkUI.Controls.DarkComboBox();
+            this.lblMultipleItems = new System.Windows.Forms.Label();
+            this.lblMultipleItemQuantity = new System.Windows.Forms.Label();
+            this.grpKillMultipleNpcs = new DarkUI.Controls.DarkGroupBox();
+            this.btnAddNpc = new DarkUI.Controls.DarkButton();
+            this.btnDelNpc = new DarkUI.Controls.DarkButton();
+            this.lstNpcs = new System.Windows.Forms.ListBox();
+            this.nudMultipleNpcAmount = new DarkUI.Controls.DarkNumericUpDown();
+            this.cmbMultipleNpc = new DarkUI.Controls.DarkComboBox();
+            this.lblMultipleNpcs = new System.Windows.Forms.Label();
+            this.lblMultipleNpcsAmount = new System.Windows.Forms.Label();
+            this.grpKillNpcs = new DarkUI.Controls.DarkGroupBox();
+            this.nudNpcQuantity = new DarkUI.Controls.DarkNumericUpDown();
+            this.cmbNpc = new DarkUI.Controls.DarkComboBox();
+            this.lblNpc = new System.Windows.Forms.Label();
+            this.lblNpcQuantity = new System.Windows.Forms.Label();
+            this.grpPressKey = new DarkUI.Controls.DarkGroupBox();
+            this.cmbKey = new DarkUI.Controls.DarkComboBox();
+            this.lblKey = new System.Windows.Forms.Label();
             this.grpVisitTile = new DarkUI.Controls.DarkGroupBox();
             this.lblHeight = new System.Windows.Forms.Label();
             this.lblWidth = new System.Windows.Forms.Label();
@@ -46,11 +70,6 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.lblY = new System.Windows.Forms.Label();
             this.lblMap = new System.Windows.Forms.Label();
             this.lblX = new System.Windows.Forms.Label();
-            this.grpKillNpcs = new DarkUI.Controls.DarkGroupBox();
-            this.nudNpcQuantity = new DarkUI.Controls.DarkNumericUpDown();
-            this.cmbNpc = new DarkUI.Controls.DarkComboBox();
-            this.lblNpc = new System.Windows.Forms.Label();
-            this.lblNpcQuantity = new System.Windows.Forms.Label();
             this.grpKillNpcWithTag = new DarkUI.Controls.DarkGroupBox();
             this.nudNpcWithTagQuantity = new DarkUI.Controls.DarkNumericUpDown();
             this.cmbNpcTags = new DarkUI.Controls.DarkComboBox();
@@ -69,28 +88,31 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.lblItem = new System.Windows.Forms.Label();
             this.lblItemQuantity = new System.Windows.Forms.Label();
             this.lblEventDriven = new System.Windows.Forms.Label();
-            this.grpPressKey = new DarkUI.Controls.DarkGroupBox();
-            this.cmbKey = new DarkUI.Controls.DarkComboBox();
-            this.lblKey = new System.Windows.Forms.Label();
             this.grpEditor.SuspendLayout();
+            this.grpMultipleItems.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMultipleItemQuantity)).BeginInit();
+            this.grpKillMultipleNpcs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMultipleNpcAmount)).BeginInit();
+            this.grpKillNpcs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNpcQuantity)).BeginInit();
+            this.grpPressKey.SuspendLayout();
             this.grpVisitTile.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).BeginInit();
-            this.grpKillNpcs.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudNpcQuantity)).BeginInit();
             this.grpKillNpcWithTag.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudNpcWithTagQuantity)).BeginInit();
             this.grpGatherItems.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudItemAmount)).BeginInit();
-            this.grpPressKey.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpEditor
             // 
             this.grpEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpEditor.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.grpEditor.Controls.Add(this.grpPressKey);
+            this.grpEditor.Controls.Add(this.grpMultipleItems);
+            this.grpEditor.Controls.Add(this.grpKillMultipleNpcs);
             this.grpEditor.Controls.Add(this.grpKillNpcs);
+            this.grpEditor.Controls.Add(this.grpPressKey);
             this.grpEditor.Controls.Add(this.grpVisitTile);
             this.grpEditor.Controls.Add(this.grpKillNpcWithTag);
             this.grpEditor.Controls.Add(this.btnEditTaskEvent);
@@ -111,6 +133,389 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.grpEditor.TabIndex = 18;
             this.grpEditor.TabStop = false;
             this.grpEditor.Text = "Task Editor";
+            // 
+            // grpMultipleItems
+            // 
+            this.grpMultipleItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpMultipleItems.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpMultipleItems.Controls.Add(this.btnAddItem);
+            this.grpMultipleItems.Controls.Add(this.btnDelItem);
+            this.grpMultipleItems.Controls.Add(this.lstItems);
+            this.grpMultipleItems.Controls.Add(this.nudMultipleItemQuantity);
+            this.grpMultipleItems.Controls.Add(this.cmbMultipleItems);
+            this.grpMultipleItems.Controls.Add(this.lblMultipleItems);
+            this.grpMultipleItems.Controls.Add(this.lblMultipleItemQuantity);
+            this.grpMultipleItems.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpMultipleItems.Location = new System.Drawing.Point(15, 169);
+            this.grpMultipleItems.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpMultipleItems.Name = "grpMultipleItems";
+            this.grpMultipleItems.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpMultipleItems.Size = new System.Drawing.Size(817, 400);
+            this.grpMultipleItems.TabIndex = 68;
+            this.grpMultipleItems.TabStop = false;
+            this.grpMultipleItems.Text = "Gather Multiple Items";
+            this.grpMultipleItems.Visible = false;
+            // 
+            // btnAddItem
+            // 
+            this.btnAddItem.Location = new System.Drawing.Point(13, 138);
+            this.btnAddItem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnAddItem.Name = "btnAddItem";
+            this.btnAddItem.Padding = new System.Windows.Forms.Padding(8);
+            this.btnAddItem.Size = new System.Drawing.Size(176, 35);
+            this.btnAddItem.TabIndex = 67;
+            this.btnAddItem.Text = "Add";
+            this.btnAddItem.Click += new System.EventHandler(this.btnAddItem_Click);
+            // 
+            // btnDelItem
+            // 
+            this.btnDelItem.Location = new System.Drawing.Point(352, 325);
+            this.btnDelItem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnDelItem.Name = "btnDelItem";
+            this.btnDelItem.Padding = new System.Windows.Forms.Padding(8);
+            this.btnDelItem.Size = new System.Drawing.Size(176, 35);
+            this.btnDelItem.TabIndex = 66;
+            this.btnDelItem.Text = "Remove Selected";
+            this.btnDelItem.Click += new System.EventHandler(this.btnDelItem_Click);
+            // 
+            // lstItems
+            // 
+            this.lstItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.lstItems.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lstItems.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lstItems.FormattingEnabled = true;
+            this.lstItems.ItemHeight = 20;
+            this.lstItems.Location = new System.Drawing.Point(352, 33);
+            this.lstItems.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.lstItems.Name = "lstItems";
+            this.lstItems.Size = new System.Drawing.Size(257, 282);
+            this.lstItems.TabIndex = 65;
+            // 
+            // nudMultipleItemQuantity
+            // 
+            this.nudMultipleItemQuantity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudMultipleItemQuantity.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudMultipleItemQuantity.Location = new System.Drawing.Point(154, 83);
+            this.nudMultipleItemQuantity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudMultipleItemQuantity.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudMultipleItemQuantity.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudMultipleItemQuantity.Name = "nudMultipleItemQuantity";
+            this.nudMultipleItemQuantity.Size = new System.Drawing.Size(174, 26);
+            this.nudMultipleItemQuantity.TabIndex = 64;
+            this.nudMultipleItemQuantity.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // cmbMultipleItems
+            // 
+            this.cmbMultipleItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbMultipleItems.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbMultipleItems.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbMultipleItems.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbMultipleItems.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbMultipleItems.ButtonIcon")));
+            this.cmbMultipleItems.DrawDropdownHoverOutline = false;
+            this.cmbMultipleItems.DrawFocusRectangle = false;
+            this.cmbMultipleItems.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbMultipleItems.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbMultipleItems.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbMultipleItems.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbMultipleItems.FormattingEnabled = true;
+            this.cmbMultipleItems.Location = new System.Drawing.Point(156, 32);
+            this.cmbMultipleItems.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbMultipleItems.Name = "cmbMultipleItems";
+            this.cmbMultipleItems.Size = new System.Drawing.Size(172, 27);
+            this.cmbMultipleItems.TabIndex = 3;
+            this.cmbMultipleItems.Text = null;
+            this.cmbMultipleItems.TextPadding = new System.Windows.Forms.Padding(2);
+            // 
+            // lblMultipleItems
+            // 
+            this.lblMultipleItems.AutoSize = true;
+            this.lblMultipleItems.Location = new System.Drawing.Point(10, 37);
+            this.lblMultipleItems.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblMultipleItems.Name = "lblMultipleItems";
+            this.lblMultipleItems.Size = new System.Drawing.Size(41, 20);
+            this.lblMultipleItems.TabIndex = 2;
+            this.lblMultipleItems.Text = "Item";
+            // 
+            // lblMultipleItemQuantity
+            // 
+            this.lblMultipleItemQuantity.AutoSize = true;
+            this.lblMultipleItemQuantity.Location = new System.Drawing.Point(10, 86);
+            this.lblMultipleItemQuantity.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblMultipleItemQuantity.Name = "lblMultipleItemQuantity";
+            this.lblMultipleItemQuantity.Size = new System.Drawing.Size(69, 20);
+            this.lblMultipleItemQuantity.TabIndex = 0;
+            this.lblMultipleItemQuantity.Text = "Amount:";
+            // 
+            // grpKillMultipleNpcs
+            // 
+            this.grpKillMultipleNpcs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpKillMultipleNpcs.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpKillMultipleNpcs.Controls.Add(this.btnAddNpc);
+            this.grpKillMultipleNpcs.Controls.Add(this.btnDelNpc);
+            this.grpKillMultipleNpcs.Controls.Add(this.lstNpcs);
+            this.grpKillMultipleNpcs.Controls.Add(this.nudMultipleNpcAmount);
+            this.grpKillMultipleNpcs.Controls.Add(this.cmbMultipleNpc);
+            this.grpKillMultipleNpcs.Controls.Add(this.lblMultipleNpcs);
+            this.grpKillMultipleNpcs.Controls.Add(this.lblMultipleNpcsAmount);
+            this.grpKillMultipleNpcs.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpKillMultipleNpcs.Location = new System.Drawing.Point(15, 169);
+            this.grpKillMultipleNpcs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpKillMultipleNpcs.Name = "grpKillMultipleNpcs";
+            this.grpKillMultipleNpcs.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpKillMultipleNpcs.Size = new System.Drawing.Size(817, 400);
+            this.grpKillMultipleNpcs.TabIndex = 65;
+            this.grpKillMultipleNpcs.TabStop = false;
+            this.grpKillMultipleNpcs.Text = "Kill Multiple NPC(s)";
+            this.grpKillMultipleNpcs.Visible = false;
+            // 
+            // btnAddNpc
+            // 
+            this.btnAddNpc.Location = new System.Drawing.Point(13, 138);
+            this.btnAddNpc.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnAddNpc.Name = "btnAddNpc";
+            this.btnAddNpc.Padding = new System.Windows.Forms.Padding(8);
+            this.btnAddNpc.Size = new System.Drawing.Size(176, 35);
+            this.btnAddNpc.TabIndex = 67;
+            this.btnAddNpc.Text = "Add";
+            this.btnAddNpc.Click += new System.EventHandler(this.btnAddNpc_Click);
+            // 
+            // btnDelNpc
+            // 
+            this.btnDelNpc.Location = new System.Drawing.Point(352, 325);
+            this.btnDelNpc.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnDelNpc.Name = "btnDelNpc";
+            this.btnDelNpc.Padding = new System.Windows.Forms.Padding(8);
+            this.btnDelNpc.Size = new System.Drawing.Size(176, 35);
+            this.btnDelNpc.TabIndex = 66;
+            this.btnDelNpc.Text = "Remove Selected";
+            this.btnDelNpc.Click += new System.EventHandler(this.btnDelNpc_Click);
+            // 
+            // lstNpcs
+            // 
+            this.lstNpcs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.lstNpcs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lstNpcs.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lstNpcs.FormattingEnabled = true;
+            this.lstNpcs.ItemHeight = 20;
+            this.lstNpcs.Location = new System.Drawing.Point(352, 33);
+            this.lstNpcs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.lstNpcs.Name = "lstNpcs";
+            this.lstNpcs.Size = new System.Drawing.Size(257, 282);
+            this.lstNpcs.TabIndex = 65;
+            // 
+            // nudMultipleNpcAmount
+            // 
+            this.nudMultipleNpcAmount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudMultipleNpcAmount.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudMultipleNpcAmount.Location = new System.Drawing.Point(154, 83);
+            this.nudMultipleNpcAmount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudMultipleNpcAmount.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudMultipleNpcAmount.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudMultipleNpcAmount.Name = "nudMultipleNpcAmount";
+            this.nudMultipleNpcAmount.Size = new System.Drawing.Size(174, 26);
+            this.nudMultipleNpcAmount.TabIndex = 64;
+            this.nudMultipleNpcAmount.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // cmbMultipleNpc
+            // 
+            this.cmbMultipleNpc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbMultipleNpc.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbMultipleNpc.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbMultipleNpc.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbMultipleNpc.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbMultipleNpc.ButtonIcon")));
+            this.cmbMultipleNpc.DrawDropdownHoverOutline = false;
+            this.cmbMultipleNpc.DrawFocusRectangle = false;
+            this.cmbMultipleNpc.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbMultipleNpc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbMultipleNpc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbMultipleNpc.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbMultipleNpc.FormattingEnabled = true;
+            this.cmbMultipleNpc.Location = new System.Drawing.Point(156, 32);
+            this.cmbMultipleNpc.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbMultipleNpc.Name = "cmbMultipleNpc";
+            this.cmbMultipleNpc.Size = new System.Drawing.Size(172, 27);
+            this.cmbMultipleNpc.TabIndex = 3;
+            this.cmbMultipleNpc.Text = null;
+            this.cmbMultipleNpc.TextPadding = new System.Windows.Forms.Padding(2);
+            // 
+            // lblMultipleNpcs
+            // 
+            this.lblMultipleNpcs.AutoSize = true;
+            this.lblMultipleNpcs.Location = new System.Drawing.Point(10, 37);
+            this.lblMultipleNpcs.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblMultipleNpcs.Name = "lblMultipleNpcs";
+            this.lblMultipleNpcs.Size = new System.Drawing.Size(41, 20);
+            this.lblMultipleNpcs.TabIndex = 2;
+            this.lblMultipleNpcs.Text = "NPC";
+            // 
+            // lblMultipleNpcsAmount
+            // 
+            this.lblMultipleNpcsAmount.AutoSize = true;
+            this.lblMultipleNpcsAmount.Location = new System.Drawing.Point(10, 86);
+            this.lblMultipleNpcsAmount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblMultipleNpcsAmount.Name = "lblMultipleNpcsAmount";
+            this.lblMultipleNpcsAmount.Size = new System.Drawing.Size(69, 20);
+            this.lblMultipleNpcsAmount.TabIndex = 0;
+            this.lblMultipleNpcsAmount.Text = "Amount:";
+            // 
+            // grpKillNpcs
+            // 
+            this.grpKillNpcs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpKillNpcs.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpKillNpcs.Controls.Add(this.nudNpcQuantity);
+            this.grpKillNpcs.Controls.Add(this.cmbNpc);
+            this.grpKillNpcs.Controls.Add(this.lblNpc);
+            this.grpKillNpcs.Controls.Add(this.lblNpcQuantity);
+            this.grpKillNpcs.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpKillNpcs.Location = new System.Drawing.Point(15, 169);
+            this.grpKillNpcs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpKillNpcs.Name = "grpKillNpcs";
+            this.grpKillNpcs.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpKillNpcs.Size = new System.Drawing.Size(354, 128);
+            this.grpKillNpcs.TabIndex = 28;
+            this.grpKillNpcs.TabStop = false;
+            this.grpKillNpcs.Text = "Kill NPC(s)";
+            this.grpKillNpcs.Visible = false;
+            // 
+            // nudNpcQuantity
+            // 
+            this.nudNpcQuantity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudNpcQuantity.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudNpcQuantity.Location = new System.Drawing.Point(154, 83);
+            this.nudNpcQuantity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudNpcQuantity.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudNpcQuantity.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudNpcQuantity.Name = "nudNpcQuantity";
+            this.nudNpcQuantity.Size = new System.Drawing.Size(174, 26);
+            this.nudNpcQuantity.TabIndex = 64;
+            this.nudNpcQuantity.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // cmbNpc
+            // 
+            this.cmbNpc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbNpc.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbNpc.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbNpc.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbNpc.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbNpc.ButtonIcon")));
+            this.cmbNpc.DrawDropdownHoverOutline = false;
+            this.cmbNpc.DrawFocusRectangle = false;
+            this.cmbNpc.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbNpc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbNpc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbNpc.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbNpc.FormattingEnabled = true;
+            this.cmbNpc.Location = new System.Drawing.Point(156, 32);
+            this.cmbNpc.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbNpc.Name = "cmbNpc";
+            this.cmbNpc.Size = new System.Drawing.Size(172, 27);
+            this.cmbNpc.TabIndex = 3;
+            this.cmbNpc.Text = null;
+            this.cmbNpc.TextPadding = new System.Windows.Forms.Padding(2);
+            // 
+            // lblNpc
+            // 
+            this.lblNpc.AutoSize = true;
+            this.lblNpc.Location = new System.Drawing.Point(10, 37);
+            this.lblNpc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblNpc.Name = "lblNpc";
+            this.lblNpc.Size = new System.Drawing.Size(41, 20);
+            this.lblNpc.TabIndex = 2;
+            this.lblNpc.Text = "NPC";
+            // 
+            // lblNpcQuantity
+            // 
+            this.lblNpcQuantity.AutoSize = true;
+            this.lblNpcQuantity.Location = new System.Drawing.Point(10, 86);
+            this.lblNpcQuantity.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblNpcQuantity.Name = "lblNpcQuantity";
+            this.lblNpcQuantity.Size = new System.Drawing.Size(69, 20);
+            this.lblNpcQuantity.TabIndex = 0;
+            this.lblNpcQuantity.Text = "Amount:";
+            // 
+            // grpPressKey
+            // 
+            this.grpPressKey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpPressKey.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpPressKey.Controls.Add(this.cmbKey);
+            this.grpPressKey.Controls.Add(this.lblKey);
+            this.grpPressKey.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpPressKey.Location = new System.Drawing.Point(15, 169);
+            this.grpPressKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpPressKey.Name = "grpPressKey";
+            this.grpPressKey.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpPressKey.Size = new System.Drawing.Size(354, 128);
+            this.grpPressKey.TabIndex = 65;
+            this.grpPressKey.TabStop = false;
+            this.grpPressKey.Text = "Press Key";
+            this.grpPressKey.Visible = false;
+            // 
+            // cmbKey
+            // 
+            this.cmbKey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbKey.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbKey.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbKey.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbKey.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbKey.ButtonIcon")));
+            this.cmbKey.DrawDropdownHoverOutline = false;
+            this.cmbKey.DrawFocusRectangle = false;
+            this.cmbKey.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbKey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbKey.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbKey.FormattingEnabled = true;
+            this.cmbKey.Location = new System.Drawing.Point(156, 32);
+            this.cmbKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbKey.Name = "cmbKey";
+            this.cmbKey.Size = new System.Drawing.Size(172, 27);
+            this.cmbKey.TabIndex = 3;
+            this.cmbKey.Text = null;
+            this.cmbKey.TextPadding = new System.Windows.Forms.Padding(2);
+            // 
+            // lblKey
+            // 
+            this.lblKey.AutoSize = true;
+            this.lblKey.Location = new System.Drawing.Point(10, 37);
+            this.lblKey.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblKey.Name = "lblKey";
+            this.lblKey.Size = new System.Drawing.Size(35, 20);
+            this.lblKey.TabIndex = 2;
+            this.lblKey.Text = "Key";
             // 
             // grpVisitTile
             // 
@@ -326,92 +731,6 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.lblX.Size = new System.Drawing.Size(37, 20);
             this.lblX.TabIndex = 23;
             this.lblX.Text = "X: 0";
-            // 
-            // grpKillNpcs
-            // 
-            this.grpKillNpcs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.grpKillNpcs.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.grpKillNpcs.Controls.Add(this.nudNpcQuantity);
-            this.grpKillNpcs.Controls.Add(this.cmbNpc);
-            this.grpKillNpcs.Controls.Add(this.lblNpc);
-            this.grpKillNpcs.Controls.Add(this.lblNpcQuantity);
-            this.grpKillNpcs.ForeColor = System.Drawing.Color.Gainsboro;
-            this.grpKillNpcs.Location = new System.Drawing.Point(15, 169);
-            this.grpKillNpcs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpKillNpcs.Name = "grpKillNpcs";
-            this.grpKillNpcs.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpKillNpcs.Size = new System.Drawing.Size(354, 128);
-            this.grpKillNpcs.TabIndex = 28;
-            this.grpKillNpcs.TabStop = false;
-            this.grpKillNpcs.Text = "Kill NPC(s)";
-            this.grpKillNpcs.Visible = false;
-            // 
-            // nudNpcQuantity
-            // 
-            this.nudNpcQuantity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.nudNpcQuantity.ForeColor = System.Drawing.Color.Gainsboro;
-            this.nudNpcQuantity.Location = new System.Drawing.Point(154, 83);
-            this.nudNpcQuantity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.nudNpcQuantity.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.nudNpcQuantity.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudNpcQuantity.Name = "nudNpcQuantity";
-            this.nudNpcQuantity.Size = new System.Drawing.Size(174, 26);
-            this.nudNpcQuantity.TabIndex = 64;
-            this.nudNpcQuantity.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // cmbNpc
-            // 
-            this.cmbNpc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.cmbNpc.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.cmbNpc.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
-            this.cmbNpc.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.cmbNpc.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbNpc.ButtonIcon")));
-            this.cmbNpc.DrawDropdownHoverOutline = false;
-            this.cmbNpc.DrawFocusRectangle = false;
-            this.cmbNpc.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbNpc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbNpc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbNpc.ForeColor = System.Drawing.Color.Gainsboro;
-            this.cmbNpc.FormattingEnabled = true;
-            this.cmbNpc.Location = new System.Drawing.Point(156, 32);
-            this.cmbNpc.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbNpc.Name = "cmbNpc";
-            this.cmbNpc.Size = new System.Drawing.Size(172, 27);
-            this.cmbNpc.TabIndex = 3;
-            this.cmbNpc.Text = null;
-            this.cmbNpc.TextPadding = new System.Windows.Forms.Padding(2);
-            // 
-            // lblNpc
-            // 
-            this.lblNpc.AutoSize = true;
-            this.lblNpc.Location = new System.Drawing.Point(10, 37);
-            this.lblNpc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblNpc.Name = "lblNpc";
-            this.lblNpc.Size = new System.Drawing.Size(41, 20);
-            this.lblNpc.TabIndex = 2;
-            this.lblNpc.Text = "NPC";
-            // 
-            // lblNpcQuantity
-            // 
-            this.lblNpcQuantity.AutoSize = true;
-            this.lblNpcQuantity.Location = new System.Drawing.Point(10, 86);
-            this.lblNpcQuantity.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblNpcQuantity.Name = "lblNpcQuantity";
-            this.lblNpcQuantity.Size = new System.Drawing.Size(69, 20);
-            this.lblNpcQuantity.TabIndex = 0;
-            this.lblNpcQuantity.Text = "Amount:";
             // 
             // grpKillNpcWithTag
             // 
@@ -689,55 +1008,6 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.lblEventDriven.Text = "Event Driven: The description should lead the player to an event. The event will " +
     "then complete the task using the complete quest task command.";
             // 
-            // grpPressKey
-            // 
-            this.grpPressKey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.grpPressKey.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.grpPressKey.Controls.Add(this.cmbKey);
-            this.grpPressKey.Controls.Add(this.lblKey);
-            this.grpPressKey.ForeColor = System.Drawing.Color.Gainsboro;
-            this.grpPressKey.Location = new System.Drawing.Point(15, 169);
-            this.grpPressKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpPressKey.Name = "grpPressKey";
-            this.grpPressKey.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpPressKey.Size = new System.Drawing.Size(354, 128);
-            this.grpPressKey.TabIndex = 65;
-            this.grpPressKey.TabStop = false;
-            this.grpPressKey.Text = "Press Key";
-            this.grpPressKey.Visible = false;
-            // 
-            // cmbKey
-            // 
-            this.cmbKey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.cmbKey.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.cmbKey.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
-            this.cmbKey.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.cmbKey.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbKey.ButtonIcon")));
-            this.cmbKey.DrawDropdownHoverOutline = false;
-            this.cmbKey.DrawFocusRectangle = false;
-            this.cmbKey.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbKey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbKey.ForeColor = System.Drawing.Color.Gainsboro;
-            this.cmbKey.FormattingEnabled = true;
-            this.cmbKey.Location = new System.Drawing.Point(156, 32);
-            this.cmbKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbKey.Name = "cmbKey";
-            this.cmbKey.Size = new System.Drawing.Size(172, 27);
-            this.cmbKey.TabIndex = 3;
-            this.cmbKey.Text = null;
-            this.cmbKey.TextPadding = new System.Windows.Forms.Padding(2);
-            // 
-            // lblKey
-            // 
-            this.lblKey.AutoSize = true;
-            this.lblKey.Location = new System.Drawing.Point(10, 37);
-            this.lblKey.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblKey.Name = "lblKey";
-            this.lblKey.Size = new System.Drawing.Size(35, 20);
-            this.lblKey.TabIndex = 2;
-            this.lblKey.Text = "Key";
-            // 
             // QuestTaskEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -749,21 +1019,27 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.Size = new System.Drawing.Size(856, 678);
             this.grpEditor.ResumeLayout(false);
             this.grpEditor.PerformLayout();
+            this.grpMultipleItems.ResumeLayout(false);
+            this.grpMultipleItems.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMultipleItemQuantity)).EndInit();
+            this.grpKillMultipleNpcs.ResumeLayout(false);
+            this.grpKillMultipleNpcs.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMultipleNpcAmount)).EndInit();
+            this.grpKillNpcs.ResumeLayout(false);
+            this.grpKillNpcs.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNpcQuantity)).EndInit();
+            this.grpPressKey.ResumeLayout(false);
+            this.grpPressKey.PerformLayout();
             this.grpVisitTile.ResumeLayout(false);
             this.grpVisitTile.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWidth)).EndInit();
-            this.grpKillNpcs.ResumeLayout(false);
-            this.grpKillNpcs.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudNpcQuantity)).EndInit();
             this.grpKillNpcWithTag.ResumeLayout(false);
             this.grpKillNpcWithTag.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudNpcWithTagQuantity)).EndInit();
             this.grpGatherItems.ResumeLayout(false);
             this.grpGatherItems.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudItemAmount)).EndInit();
-            this.grpPressKey.ResumeLayout(false);
-            this.grpPressKey.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -811,5 +1087,21 @@ namespace Intersect.Editor.Forms.Editors.Quest
         private DarkGroupBox grpPressKey;
         private DarkComboBox cmbKey;
         private System.Windows.Forms.Label lblKey;
+        private DarkGroupBox grpKillMultipleNpcs;
+        private DarkNumericUpDown nudMultipleNpcAmount;
+        private DarkComboBox cmbMultipleNpc;
+        private System.Windows.Forms.Label lblMultipleNpcs;
+        private System.Windows.Forms.Label lblMultipleNpcsAmount;
+        private DarkButton btnAddNpc;
+        private DarkButton btnDelNpc;
+        private System.Windows.Forms.ListBox lstNpcs;
+        private DarkGroupBox grpMultipleItems;
+        private DarkButton btnAddItem;
+        private DarkButton btnDelItem;
+        private System.Windows.Forms.ListBox lstItems;
+        private DarkNumericUpDown nudMultipleItemQuantity;
+        private DarkComboBox cmbMultipleItems;
+        private System.Windows.Forms.Label lblMultipleItems;
+        private System.Windows.Forms.Label lblMultipleItemQuantity;
     }
 }

@@ -504,6 +504,10 @@
     <Compile Include="Migrations\20200915184629_TradeSkills.designer.cs">
       <DependentUpon>20200915184629_TradeSkills.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20201019015715_EnhancedQuests.cs" />
+    <Compile Include="Migrations\20201019015715_EnhancedQuests.designer.cs">
+      <DependentUpon>20201019015715_EnhancedQuests.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Game\20200423004850_AddingTagSystem.cs" />
     <Compile Include="Migrations\Game\20200423004850_AddingTagSystem.designer.cs">
       <DependentUpon>20200423004850_AddingTagSystem.cs</DependentUpon>
@@ -579,6 +583,10 @@
     <Compile Include="Migrations\Game\20200920161022_tradeskills2.cs" />
     <Compile Include="Migrations\Game\20200920161022_tradeskills2.designer.cs">
       <DependentUpon>20200920161022_tradeskills2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20201019015233_EnhancedQuests.cs" />
+    <Compile Include="Migrations\Game\20201019015233_EnhancedQuests.designer.cs">
+      <DependentUpon>20201019015233_EnhancedQuests.cs</DependentUpon>
     </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />

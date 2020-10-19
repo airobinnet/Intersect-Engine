@@ -9,6 +9,8 @@ using Intersect.GameObjects;
 using Intersect.Logging;
 using Intersect.GameObjects.Maps.MapList;
 using DarkUI.Controls;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Intersect.Editor.Forms.Editors.Quest
 {
@@ -25,6 +27,10 @@ namespace Intersect.Editor.Forms.Editors.Quest
         private QuestBase.QuestTask mMyTask;
 
         private QuestBase.QuestTask mMyCommand;
+
+        private List<Guid> mChanged = new List<Guid>();
+
+        private List<int> mChangedQ = new List<int>();
 
         public QuestTaskEditor(QuestBase refQuest, QuestBase.QuestTask refTask)
         {
@@ -102,6 +108,21 @@ namespace Intersect.Editor.Forms.Editors.Quest
                         }
                     }
                     break;
+                case 6://Kill Multiple Npcs
+                    //var templist = mMyCommand.mTargets.Zip(mMyCommand.mTargetsQuantity, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);
+                    lstNpcs.Items.Clear();
+                    for (var i = 0; i < mMyCommand.mTargets.Count; i++)
+                    {
+                        lstNpcs.Items.Add(NpcBase.GetName(mMyCommand.mTargets[i]) + " x" + mMyCommand.mTargetsQuantity[i]);
+                    }
+                    break;
+                case 7://Gather Multiple Items
+                    lstItems.Items.Clear();
+                    for (var i = 0; i < mMyCommand.mTargets.Count; i++)
+                    {
+                        lstItems.Items.Add(ItemBase.GetName(mMyCommand.mTargets[i]) + " x" + mMyCommand.mTargetsQuantity[i]);
+                    }
+                    break;
 
             }
         }
@@ -142,6 +163,8 @@ namespace Intersect.Editor.Forms.Editors.Quest
             grpVisitTile.Hide();
             grpKillNpcWithTag.Hide();
             grpPressKey.Hide();
+            grpKillMultipleNpcs.Hide();
+            grpMultipleItems.Hide();
             switch (cmbTaskType.SelectedIndex)
             {
                 case 0: //Event Driven
@@ -241,6 +264,28 @@ namespace Intersect.Editor.Forms.Editors.Quest
                     cmbKey.Items.Add("ToggleGui");
                     cmbKey.Items.Add("OpenTradeSkills");        
                     break;
+                case 6://Kill multiple npcs
+                    grpKillMultipleNpcs.Show();
+                    lstNpcs.Items.Clear();
+                    cmbMultipleNpc.Items.Clear();
+                    cmbMultipleNpc.Items.AddRange(NpcBase.Names);
+                    if (cmbMultipleNpc.Items.Count > 0)
+                    {
+                        cmbMultipleNpc.SelectedIndex = 0;
+                    }
+                    nudMultipleNpcAmount.Value = 1;
+                    break;
+                case 7://gather multiple items
+                    grpMultipleItems.Show();
+                    lstItems.Items.Clear();
+                    cmbMultipleItems.Items.Clear();
+                    cmbMultipleItems.Items.AddRange(ItemBase.Names);
+                    if (cmbMultipleItems.Items.Count > 0)
+                    {
+                        cmbMultipleItems.SelectedIndex = 0;
+                    }
+                    nudMultipleItemQuantity.Value = 1;
+                    break;
             }
         }
 
@@ -282,9 +327,98 @@ namespace Intersect.Editor.Forms.Editors.Quest
                     //mMyTask.KeyPressed = cmbKey.SelectedIndex == -1 ? null : cmbKey.Items[cmbKey.SelectedIndex].ToString();
                     mMyTask.KeyPressed = cmbKey.SelectedIndex;
                     break;
+                case QuestObjective.KillMultipleNpcs:
+                    /*for(var i = 0; i < mChanged.Count; i++)
+                    {
+                        mMyTask.mTargets.Add(mChanged[i]);
+                        mMyTask.mTargetsQuantity.Add(mChangedQ[i]);
+                    }*/
+                    break;
+                case QuestObjective.GatherMultipleItems:
+                    break;
             }
 
             ParentForm.Close();
+        }
+
+        private void btnAddItem_Click(object sender, EventArgs e)
+        {
+            Guid itemId = ItemBase.IdFromList(cmbMultipleItems.SelectedIndex);
+            if (itemId != null && itemId != Guid.Empty)
+            {
+                mMyTask.mTargets.Add(itemId);
+                mMyTask.mTargetsQuantity.Add((int)nudMultipleItemQuantity.Value);
+            }
+            UpdateList();
+        }
+
+        private void btnAddNpc_Click(object sender, EventArgs e)
+        {
+            Guid npcId = NpcBase.IdFromList(cmbMultipleNpc.SelectedIndex);
+            if (npcId != null && npcId != Guid.Empty)
+            {
+                mMyTask.mTargets.Add(npcId);
+                mMyTask.mTargetsQuantity.Add((int)nudMultipleNpcAmount.Value);
+            }
+            UpdateListNpc();
+        }
+
+        private void btnDelItem_Click(object sender, EventArgs e)
+        {
+            if (lstItems.SelectedIndex > -1)
+            {
+                mMyTask.mTargets.RemoveAt(lstItems.SelectedIndex);
+                mMyTask.mTargetsQuantity.RemoveAt(lstItems.SelectedIndex);
+            }
+            UpdateList();
+        }
+
+        private void btnDelNpc_Click(object sender, EventArgs e)
+        {
+            if (lstNpcs.SelectedIndex > -1)
+            {
+                mMyTask.mTargets.RemoveAt(lstNpcs.SelectedIndex);
+                mMyTask.mTargetsQuantity.RemoveAt(lstNpcs.SelectedIndex);
+            }
+            UpdateListNpc();
+        }
+
+        private void UpdateListNpc()
+        {
+            if (mMyTask == null)
+            {
+                return;
+            }
+            lstNpcs.Items.Clear();
+            if (mMyTask.mTargets == null)
+            {
+                mMyTask.mTargets = new List<Guid>();
+            }
+            var a = 0;
+            foreach (Guid target in mMyTask.mTargets)
+            {
+                lstNpcs.Items.Add($"{NpcBase.GetName(mMyTask.mTargets[a])} x{mMyTask.mTargetsQuantity[a]}");
+                a++;
+            }
+        }
+
+        private void UpdateList()
+        {
+            if (mMyTask == null)
+            {
+                return;
+            }
+            lstItems.Items.Clear();
+            if (mMyTask.mTargets == null)
+            {
+                mMyTask.mTargets = new List<Guid>();
+            }
+            var a = 0;
+            foreach (Guid target in mMyTask.mTargets)
+            {
+                lstItems.Items.Add($"{ItemBase.GetName(mMyTask.mTargets[a])} x{mMyTask.mTargetsQuantity[a]}");
+                a++;
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

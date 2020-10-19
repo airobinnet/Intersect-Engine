@@ -1481,7 +1481,7 @@ namespace Intersect.Client.Entities
                     new FloatRect(x - textSize.X / 2f - 4, y, textSize.X + 8, textSize.Y), backgroundColor
                 );
             }
-
+            
             Graphics.Renderer.DrawString(
                 Name, Graphics.EntityNameFont, (int) (x - (int) Math.Ceiling(textSize.X / 2f)), (int) y, 1,
                 Color.FromArgb(textColor.ToArgb()), true, null, Color.FromArgb(borderColor.ToArgb())

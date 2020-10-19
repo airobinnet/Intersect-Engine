@@ -14,7 +14,11 @@
 
         KillNpcsWithTag,
 
-        PressKey
+        PressKey,
+
+        KillMultipleNpcs,
+
+        GatherMultipleItems
 
     }
 
