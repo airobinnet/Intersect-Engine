@@ -22,7 +22,11 @@ namespace Intersect.Client.Interface.Game
 
         private Button mBackButton;
 
+        private Button mAcceptButton;
+
         private ScrollControl mQuestDescArea;
+
+        private ScrollControl mQuestRewardArea;
 
         private RichLabel mQuestDescLabel;
 
@@ -41,6 +45,16 @@ namespace Intersect.Client.Interface.Game
 
         private QuestBase mSelectedQuest;
 
+        //Item List
+        public List<QuestRewardItem> Items = new List<QuestRewardItem>();
+
+        //Location
+        public int X => mQuestsWindow.X;
+
+        public int Y => mQuestsWindow.Y;
+
+        public int Choice = -1;
+
         //Init
         public QuestsWindow(Canvas gameCanvas)
         {
@@ -57,6 +71,7 @@ namespace Intersect.Client.Interface.Game
             mQuestStatus.SetText("");
 
             mQuestDescArea = new ScrollControl(mQuestsWindow, "QuestDescription");
+            mQuestRewardArea = new ScrollControl(mQuestDescArea, "QuestRewards");
 
             mQuestDescTemplateLabel = new Label(mQuestsWindow, "QuestDescriptionTemplate");
 
@@ -69,6 +84,10 @@ namespace Intersect.Client.Interface.Game
             mQuitButton = new Button(mQuestsWindow, "AbandonQuestButton");
             mQuitButton.SetText(Strings.QuestLog.abandon);
             mQuitButton.Clicked += _quitButton_Clicked;
+
+            mAcceptButton = new Button(mQuestsWindow, "AcceptButton");
+            mAcceptButton.SetText(Strings.QuestLog.accept);
+            mAcceptButton.Clicked += AcceptButton_Clicked;
 
             mQuestsWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
         }
@@ -85,6 +104,32 @@ namespace Intersect.Client.Interface.Game
             }
         }
 
+        private void AcceptButton_Clicked(Base sender, ClickedEventArgs arguments)
+        {
+            if (mSelectedQuest != null)
+            {
+                for (var i = 0; i < mSelectedQuest.Tasks.Count; i++)
+                {
+                    if (mSelectedQuest.Tasks[i].Id == Globals.Me.QuestProgress[mSelectedQuest.Id].TaskId)
+                    {
+                        if (mSelectedQuest.Tasks[i].HasChoice)
+                        {
+                            if (Choice < 0)
+                            {
+                                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", "Pick a reward!"));
+                                return;
+                            }
+                            PacketSender.SendAcceptQuestReward(mSelectedQuest.Id, Globals.Me.QuestProgress[mSelectedQuest.Id].TaskId, Choice);
+                        }
+                        else
+                        {
+                            PacketSender.SendAcceptQuestReward(mSelectedQuest.Id, Globals.Me.QuestProgress[mSelectedQuest.Id].TaskId);
+                        }
+                    }
+                }
+            }
+        }
+
         void AbandonQuest(object sender, EventArgs e)
         {
             PacketSender.SendAbandonQuest((Guid) ((InputBox) sender).UserData);
@@ -92,8 +137,10 @@ namespace Intersect.Client.Interface.Game
 
         private void _backButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
+            Choice = -1;
             mSelectedQuest = null;
-            UpdateSelectedQuest();
+            Update(true);
+            //UpdateSelectedQuest();
         }
 
         //Methods
@@ -234,6 +281,9 @@ namespace Intersect.Client.Interface.Game
                 mQuestStatus.Hide();
                 mBackButton.Hide();
                 mQuitButton.Hide();
+                mQuestRewardArea.Hide();
+                mQuestRewardArea.Height = 1;
+                mAcceptButton.Hide();
             }
             else
             {
@@ -385,6 +435,56 @@ namespace Intersect.Client.Interface.Game
                                     }
                                     mQuestDescLabel.AddLineBreak();
                                 }
+                                else if (mSelectedQuest.Tasks[i].Objective == QuestObjective.ChooseItem) //Reward Screen
+                                {
+                                    if (mSelectedQuest.Tasks[i].HasChoice)
+                                    {
+                                        mQuestDescLabel.AddText(Strings.QuestLog.questrewardchoice, Color.White, Alignments.Left, mQuestDescTemplateLabel.Font);
+                                    } 
+                                    else
+                                    {
+                                        mQuestDescLabel.AddText(Strings.QuestLog.questreward, Color.White, Alignments.Left, mQuestDescTemplateLabel.Font);
+                                    }
+                                    mQuestDescLabel.AddLineBreak();
+                                    Items.Clear();
+                                    mQuestRewardArea.Children.Clear();
+                                    for (var j = 0; j < mSelectedQuest.Tasks[i].mTargets.Count; j++)
+                                    {
+                                        Items.Add(new QuestRewardItem(this, j, mSelectedQuest, mSelectedQuest.Tasks[i].HasChoice));
+                                        Items[j].Container = new ImagePanel(mQuestRewardArea, "ItemChoiceItem");
+                                        Items[j].Setup();
+
+                                        Items[j].Container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
+                                        Items[j].Update();
+
+                                        var xPadding = Items[j].Container.Margin.Left + Items[j].Container.Margin.Right;
+                                        var yPadding = Items[j].Container.Margin.Top + Items[j].Container.Margin.Bottom;
+                                        Items[j]
+                                            .Container.SetPosition(
+                                                j %
+                                                (mQuestDescArea.Width / (Items[j].Container.Width + xPadding)) *
+                                                (Items[j].Container.Width + xPadding) +
+                                                xPadding,
+                                                j /
+                                                (mQuestDescArea.Width / (Items[j].Container.Width + xPadding)) *
+                                                (Items[j].Container.Height + yPadding) +
+                                                yPadding
+                                            );
+                                        Items[j].Container.RenderColor = new Color(255, 255, 255, 255);
+                                        if (mSelectedQuest.Tasks[i].HasChoice)
+                                        {
+                                            if (Choice == j)
+                                            {
+                                                Items[j].Container.RenderColor = new Color(255, 0, 255, 0);
+                                            }
+                                        }
+                                    }
+                                    mQuestDescLabel.AddLineBreak();
+                                    mQuestRewardArea.Width = 245;
+                                    mQuestRewardArea.Height = 100;
+                                    mAcceptButton.Show();
+                                    mQuestRewardArea.Show();
+                                }
                             }
                         }
 
@@ -441,6 +541,8 @@ namespace Intersect.Client.Interface.Game
                 mQuestDescArea.IsHidden = false;
                 mQuestDescLabel.Width = mQuestDescArea.Width - mQuestDescArea.GetVerticalScrollBar().Width;
                 mQuestDescLabel.SizeToChildren(false, true);
+                mQuestRewardArea.Y = mQuestDescLabel.Y + mQuestDescLabel.Height;
+                //mAcceptButton.Y = mQuestRewardArea.Height- mAcceptButton.Height;
                 mQuestStatus.Show();
                 mBackButton.Show();
                 mQuitButton.Show();

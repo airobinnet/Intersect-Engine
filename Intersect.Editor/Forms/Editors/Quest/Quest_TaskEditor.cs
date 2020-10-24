@@ -123,6 +123,14 @@ namespace Intersect.Editor.Forms.Editors.Quest
                         lstItems.Items.Add(ItemBase.GetName(mMyCommand.mTargets[i]) + " x" + mMyCommand.mTargetsQuantity[i]);
                     }
                     break;
+                case 8://Quest Reward Screen
+                    lstQuestRewardItems.Items.Clear();
+                    for (var i = 0; i < mMyCommand.mTargets.Count; i++)
+                    {
+                        lstQuestRewardItems.Items.Add(ItemBase.GetName(mMyCommand.mTargets[i]) + " x" + mMyCommand.mTargetsQuantity[i]);
+                    }
+                    chkCanChoose.Checked = mMyCommand.HasChoice;
+                    break;
 
             }
         }
@@ -165,6 +173,7 @@ namespace Intersect.Editor.Forms.Editors.Quest
             grpPressKey.Hide();
             grpKillMultipleNpcs.Hide();
             grpMultipleItems.Hide();
+            grpQuestReward.Hide();
             switch (cmbTaskType.SelectedIndex)
             {
                 case 0: //Event Driven
@@ -286,6 +295,17 @@ namespace Intersect.Editor.Forms.Editors.Quest
                     }
                     nudMultipleItemQuantity.Value = 1;
                     break;
+                case 8://Quest Reward Screen
+                    grpQuestReward.Show();
+                    lstQuestRewardItems.Items.Clear();
+                    cmbQuestRewardItem.Items.Clear();
+                    cmbQuestRewardItem.Items.AddRange(ItemBase.Names);
+                    if (cmbQuestRewardItem.Items.Count > 0)
+                    {
+                        cmbQuestRewardItem.SelectedIndex = 0;
+                    }
+                    nudQuestRewardItemAmount.Value = 1;
+                    break;
             }
         }
 
@@ -336,6 +356,9 @@ namespace Intersect.Editor.Forms.Editors.Quest
                     break;
                 case QuestObjective.GatherMultipleItems:
                     break;
+                case QuestObjective.ChooseItem:
+                    mMyTask.HasChoice = chkCanChoose.Checked;
+                    break;
             }
 
             ParentForm.Close();
@@ -350,6 +373,17 @@ namespace Intersect.Editor.Forms.Editors.Quest
                 mMyTask.mTargetsQuantity.Add((int)nudMultipleItemQuantity.Value);
             }
             UpdateList();
+        }
+
+        private void btnAddQuestRewardItem_Click(object sender, EventArgs e)
+        {
+            Guid itemId = ItemBase.IdFromList(cmbQuestRewardItem.SelectedIndex);
+            if (itemId != null && itemId != Guid.Empty)
+            {
+                mMyTask.mTargets.Add(itemId);
+                mMyTask.mTargetsQuantity.Add((int)nudQuestRewardItemAmount.Value);
+            }
+            UpdateListQR();
         }
 
         private void btnAddNpc_Click(object sender, EventArgs e)
@@ -371,6 +405,16 @@ namespace Intersect.Editor.Forms.Editors.Quest
                 mMyTask.mTargetsQuantity.RemoveAt(lstItems.SelectedIndex);
             }
             UpdateList();
+        }
+
+        private void btnRemoveQuestRewardItem_Click(object sender, EventArgs e)
+        {
+            if (lstQuestRewardItems.SelectedIndex > -1)
+            {
+                mMyTask.mTargets.RemoveAt(lstQuestRewardItems.SelectedIndex);
+                mMyTask.mTargetsQuantity.RemoveAt(lstQuestRewardItems.SelectedIndex);
+            }
+            UpdateListQR();
         }
 
         private void btnDelNpc_Click(object sender, EventArgs e)
@@ -417,6 +461,25 @@ namespace Intersect.Editor.Forms.Editors.Quest
             foreach (Guid target in mMyTask.mTargets)
             {
                 lstItems.Items.Add($"{ItemBase.GetName(mMyTask.mTargets[a])} x{mMyTask.mTargetsQuantity[a]}");
+                a++;
+            }
+        }
+
+        private void UpdateListQR()
+        {
+            if (mMyTask == null)
+            {
+                return;
+            }
+            lstQuestRewardItems.Items.Clear();
+            if (mMyTask.mTargets == null)
+            {
+                mMyTask.mTargets = new List<Guid>();
+            }
+            var a = 0;
+            foreach (Guid target in mMyTask.mTargets)
+            {
+                lstQuestRewardItems.Items.Add($"{ItemBase.GetName(mMyTask.mTargets[a])} x{mMyTask.mTargetsQuantity[a]}");
                 a++;
             }
         }

@@ -1890,6 +1890,8 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString showclassoptions = @"Show Class Change Window:";
 
+            public static LocalizedString showitemchoice = @"Show Item Choice Window:";
+
             public static LocalizedString variableinput = @"Input Variable: {00}";
 
             public static LocalizedString showpicture = @"Show Picture";
@@ -2037,6 +2039,7 @@ Tick timer saved in server config.json.";
                 {"changetradeskill","Change Tradeskill"},
                 {"givetradeskillexperience","Give Tradeskill Experience"},
                 {"changeclasswindow","Change Class Window"},
+                {"itemchoice","Item Choice Window"},
             };
 
         }
@@ -4872,6 +4875,7 @@ Tick timer saved in server config.json.";
                 {5, @"Key pressed"},
                 {6, @"Kill Multiple NPC(s)"},
                 {7, @"Gather Multiple Item(s)"},
+                {8, @"Quest Reward Screen"},
             };
 
             public static Dictionary<int, LocalizedString> descriptions = new Dictionary<int, LocalizedString>
@@ -4884,6 +4888,7 @@ Tick timer saved in server config.json.";
                 {5, @"Press Key: [{00}] - {01}"},
                 {6, @"[{00} x{01}]"},
                 {7, @"[{00} x{01}]"},
+                {8, @"[{00} x{01}]"},
             };
 
         }

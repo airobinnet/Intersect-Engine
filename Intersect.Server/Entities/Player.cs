@@ -5768,11 +5768,9 @@ namespace Intersect.Server.Entities
 
                 if (questProgress.Completed && quest.Repeatable && (quest.RepeatTime + questProgress.TimeCompleted) >= Globals.Timing.RealTimeMs)
                 {
-                    //get this msg to a place when the player presses interact, displays on npc checks too now == spam
                     int millisecs = ((int)quest.RepeatTime + (int)questProgress.TimeCompleted) - (int)Globals.Timing.RealTimeMs;
                     int hours = millisecs / 3600000;
                     int mins = (millisecs % 3600000) / 60000;
-                    // Make sure you use the appropriate decimal separator
                     var str = string.Format("{0:D2} hour(s) {1:D2} minute(s) {2:D2} second(s)", hours, mins, millisecs % 60000 / 1000);
 
                     PacketSender.SendChatMsg(this, "You can accept this quest again in " + str, new Color(255, 64, 225, 209));
@@ -6461,6 +6459,46 @@ namespace Intersect.Server.Entities
                         {
                             var tmpStack = new CommandInstance(stackInfo.Page, stackInfo.BranchIds[responseId - 1]);
                             evt.Value.CallStack.Push(tmpStack);
+                        }
+
+                        return;
+                    }
+                }
+            }
+        }
+
+        public void ItemChoice(Guid eventId, int responseId)
+        {
+            //give item
+            lock (mEventLock)
+            {
+                foreach (var evt in EventLookup)
+                {
+                    if (evt.Value.PageInstance != null && evt.Value.PageInstance.Id == eventId)
+                    {
+                        if (evt.Value.CallStack.Count <= 0)
+                        {
+                            return;
+                        }
+
+                        var stackInfo = evt.Value.CallStack.Peek();
+                        if (stackInfo.WaitingForResponse != CommandInstance.EventResponse.ItemChoice)
+                        {
+                            return;
+                        }
+
+                        stackInfo.WaitingForResponse = CommandInstance.EventResponse.None;
+                        if (stackInfo.WaitingOnCommand != null &&
+                            stackInfo.WaitingOnCommand.Type == EventCommandType.ItemChoiceWindow)
+                        {
+                            var icw = (ItemChoiceWindowCommand)stackInfo.CommandList[0];
+                            var tempitem = ItemBase.Get(Guid.Parse(icw.Options[responseId - 1]));
+
+                            if (TryGiveItem(tempitem.Id,1))
+                            {
+                                var tmpStack = new CommandInstance(stackInfo.Page, stackInfo.BranchIds[responseId - 1]);
+                                evt.Value.CallStack.Push(tmpStack);
+                            }
                         }
 
                         return;

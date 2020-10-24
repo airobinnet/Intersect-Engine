@@ -73,6 +73,9 @@ namespace Intersect.Client.General
         //Class Change
         public static List<ClassChange> ClassChange = new List<ClassChange>();
 
+        //Item Choice
+        public static List<ItemChoice> ItemChoice = new List<ItemChoice>();
+
         public static Dictionary<Guid, Guid> EventHolds = new Dictionary<Guid, Guid>();
 
         //Game Lock

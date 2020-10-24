@@ -68,17 +68,18 @@ namespace Intersect.Editor.Forms.Editors.Events
             System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Change Spells");
             System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Friendly Spells");
             System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Change Items");
-            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Change Sprite");
-            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("Change Face");
-            System.Windows.Forms.TreeNode treeNode25 = new System.Windows.Forms.TreeNode("Change Hair");
-            System.Windows.Forms.TreeNode treeNode26 = new System.Windows.Forms.TreeNode("Change Gender");
-            System.Windows.Forms.TreeNode treeNode27 = new System.Windows.Forms.TreeNode("Set Access");
-            System.Windows.Forms.TreeNode treeNode28 = new System.Windows.Forms.TreeNode("Change Class");
-            System.Windows.Forms.TreeNode treeNode29 = new System.Windows.Forms.TreeNode("Equip Item");
-            System.Windows.Forms.TreeNode treeNode30 = new System.Windows.Forms.TreeNode("Unequip Item");
-            System.Windows.Forms.TreeNode treeNode31 = new System.Windows.Forms.TreeNode("Change Name Color");
-            System.Windows.Forms.TreeNode treeNode32 = new System.Windows.Forms.TreeNode("Change Player Label");
-            System.Windows.Forms.TreeNode treeNode33 = new System.Windows.Forms.TreeNode("Player Control", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Item Choice");
+            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("Change Sprite");
+            System.Windows.Forms.TreeNode treeNode25 = new System.Windows.Forms.TreeNode("Change Face");
+            System.Windows.Forms.TreeNode treeNode26 = new System.Windows.Forms.TreeNode("Change Hair");
+            System.Windows.Forms.TreeNode treeNode27 = new System.Windows.Forms.TreeNode("Change Gender");
+            System.Windows.Forms.TreeNode treeNode28 = new System.Windows.Forms.TreeNode("Set Access");
+            System.Windows.Forms.TreeNode treeNode29 = new System.Windows.Forms.TreeNode("Change Class");
+            System.Windows.Forms.TreeNode treeNode30 = new System.Windows.Forms.TreeNode("Equip Item");
+            System.Windows.Forms.TreeNode treeNode31 = new System.Windows.Forms.TreeNode("Unequip Item");
+            System.Windows.Forms.TreeNode treeNode32 = new System.Windows.Forms.TreeNode("Change Name Color");
+            System.Windows.Forms.TreeNode treeNode33 = new System.Windows.Forms.TreeNode("Change Player Label");
+            System.Windows.Forms.TreeNode treeNode34 = new System.Windows.Forms.TreeNode("Player Control", new System.Windows.Forms.TreeNode[] {
             treeNode15,
             treeNode16,
             treeNode17,
@@ -96,18 +97,18 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode29,
             treeNode30,
             treeNode31,
-            treeNode32});
-            System.Windows.Forms.TreeNode treeNode34 = new System.Windows.Forms.TreeNode("Warp Player");
-            System.Windows.Forms.TreeNode treeNode35 = new System.Windows.Forms.TreeNode("Set Move Route");
-            System.Windows.Forms.TreeNode treeNode36 = new System.Windows.Forms.TreeNode("Wait for Route Completion");
-            System.Windows.Forms.TreeNode treeNode37 = new System.Windows.Forms.TreeNode("Hold Player");
-            System.Windows.Forms.TreeNode treeNode38 = new System.Windows.Forms.TreeNode("Release Player");
-            System.Windows.Forms.TreeNode treeNode39 = new System.Windows.Forms.TreeNode("Spawn NPC");
-            System.Windows.Forms.TreeNode treeNode40 = new System.Windows.Forms.TreeNode("Despawn NPC");
-            System.Windows.Forms.TreeNode treeNode41 = new System.Windows.Forms.TreeNode("Hide Player");
-            System.Windows.Forms.TreeNode treeNode42 = new System.Windows.Forms.TreeNode("Show Player");
-            System.Windows.Forms.TreeNode treeNode43 = new System.Windows.Forms.TreeNode("Movement", new System.Windows.Forms.TreeNode[] {
-            treeNode34,
+            treeNode32,
+            treeNode33});
+            System.Windows.Forms.TreeNode treeNode35 = new System.Windows.Forms.TreeNode("Warp Player");
+            System.Windows.Forms.TreeNode treeNode36 = new System.Windows.Forms.TreeNode("Set Move Route");
+            System.Windows.Forms.TreeNode treeNode37 = new System.Windows.Forms.TreeNode("Wait for Route Completion");
+            System.Windows.Forms.TreeNode treeNode38 = new System.Windows.Forms.TreeNode("Hold Player");
+            System.Windows.Forms.TreeNode treeNode39 = new System.Windows.Forms.TreeNode("Release Player");
+            System.Windows.Forms.TreeNode treeNode40 = new System.Windows.Forms.TreeNode("Spawn NPC");
+            System.Windows.Forms.TreeNode treeNode41 = new System.Windows.Forms.TreeNode("Despawn NPC");
+            System.Windows.Forms.TreeNode treeNode42 = new System.Windows.Forms.TreeNode("Hide Player");
+            System.Windows.Forms.TreeNode treeNode43 = new System.Windows.Forms.TreeNode("Show Player");
+            System.Windows.Forms.TreeNode treeNode44 = new System.Windows.Forms.TreeNode("Movement", new System.Windows.Forms.TreeNode[] {
             treeNode35,
             treeNode36,
             treeNode37,
@@ -115,58 +116,59 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode39,
             treeNode40,
             treeNode41,
-            treeNode42});
-            System.Windows.Forms.TreeNode treeNode44 = new System.Windows.Forms.TreeNode("Play Animation");
-            System.Windows.Forms.TreeNode treeNode45 = new System.Windows.Forms.TreeNode("Play BGM");
-            System.Windows.Forms.TreeNode treeNode46 = new System.Windows.Forms.TreeNode("Fadeout BGM");
-            System.Windows.Forms.TreeNode treeNode47 = new System.Windows.Forms.TreeNode("Play Sound");
-            System.Windows.Forms.TreeNode treeNode48 = new System.Windows.Forms.TreeNode("Stop Sounds");
-            System.Windows.Forms.TreeNode treeNode49 = new System.Windows.Forms.TreeNode("Show Picture");
-            System.Windows.Forms.TreeNode treeNode50 = new System.Windows.Forms.TreeNode("Hide Picture");
-            System.Windows.Forms.TreeNode treeNode51 = new System.Windows.Forms.TreeNode("Special Effects", new System.Windows.Forms.TreeNode[] {
-            treeNode44,
+            treeNode42,
+            treeNode43});
+            System.Windows.Forms.TreeNode treeNode45 = new System.Windows.Forms.TreeNode("Play Animation");
+            System.Windows.Forms.TreeNode treeNode46 = new System.Windows.Forms.TreeNode("Play BGM");
+            System.Windows.Forms.TreeNode treeNode47 = new System.Windows.Forms.TreeNode("Fadeout BGM");
+            System.Windows.Forms.TreeNode treeNode48 = new System.Windows.Forms.TreeNode("Play Sound");
+            System.Windows.Forms.TreeNode treeNode49 = new System.Windows.Forms.TreeNode("Stop Sounds");
+            System.Windows.Forms.TreeNode treeNode50 = new System.Windows.Forms.TreeNode("Show Picture");
+            System.Windows.Forms.TreeNode treeNode51 = new System.Windows.Forms.TreeNode("Hide Picture");
+            System.Windows.Forms.TreeNode treeNode52 = new System.Windows.Forms.TreeNode("Special Effects", new System.Windows.Forms.TreeNode[] {
             treeNode45,
             treeNode46,
             treeNode47,
             treeNode48,
             treeNode49,
-            treeNode50});
-            System.Windows.Forms.TreeNode treeNode52 = new System.Windows.Forms.TreeNode("Start Quest");
-            System.Windows.Forms.TreeNode treeNode53 = new System.Windows.Forms.TreeNode("Complete Quest Task");
-            System.Windows.Forms.TreeNode treeNode54 = new System.Windows.Forms.TreeNode("End Quest");
-            System.Windows.Forms.TreeNode treeNode55 = new System.Windows.Forms.TreeNode("Quest Control", new System.Windows.Forms.TreeNode[] {
-            treeNode52,
+            treeNode50,
+            treeNode51});
+            System.Windows.Forms.TreeNode treeNode53 = new System.Windows.Forms.TreeNode("Start Quest");
+            System.Windows.Forms.TreeNode treeNode54 = new System.Windows.Forms.TreeNode("Complete Quest Task");
+            System.Windows.Forms.TreeNode treeNode55 = new System.Windows.Forms.TreeNode("End Quest");
+            System.Windows.Forms.TreeNode treeNode56 = new System.Windows.Forms.TreeNode("Quest Control", new System.Windows.Forms.TreeNode[] {
             treeNode53,
-            treeNode54});
-            System.Windows.Forms.TreeNode treeNode56 = new System.Windows.Forms.TreeNode("Wait...");
-            System.Windows.Forms.TreeNode treeNode57 = new System.Windows.Forms.TreeNode("Etc", new System.Windows.Forms.TreeNode[] {
-            treeNode56});
-            System.Windows.Forms.TreeNode treeNode58 = new System.Windows.Forms.TreeNode("Open Bank");
-            System.Windows.Forms.TreeNode treeNode59 = new System.Windows.Forms.TreeNode("Open Shop");
-            System.Windows.Forms.TreeNode treeNode60 = new System.Windows.Forms.TreeNode("Open Crafting Station");
-            System.Windows.Forms.TreeNode treeNode61 = new System.Windows.Forms.TreeNode("Shop and Bank", new System.Windows.Forms.TreeNode[] {
-            treeNode58,
+            treeNode54,
+            treeNode55});
+            System.Windows.Forms.TreeNode treeNode57 = new System.Windows.Forms.TreeNode("Wait...");
+            System.Windows.Forms.TreeNode treeNode58 = new System.Windows.Forms.TreeNode("Etc", new System.Windows.Forms.TreeNode[] {
+            treeNode57});
+            System.Windows.Forms.TreeNode treeNode59 = new System.Windows.Forms.TreeNode("Open Bank");
+            System.Windows.Forms.TreeNode treeNode60 = new System.Windows.Forms.TreeNode("Open Shop");
+            System.Windows.Forms.TreeNode treeNode61 = new System.Windows.Forms.TreeNode("Open Crafting Station");
+            System.Windows.Forms.TreeNode treeNode62 = new System.Windows.Forms.TreeNode("Shop and Bank", new System.Windows.Forms.TreeNode[] {
             treeNode59,
-            treeNode60});
-            System.Windows.Forms.TreeNode treeNode62 = new System.Windows.Forms.TreeNode("Create Guild");
-            System.Windows.Forms.TreeNode treeNode63 = new System.Windows.Forms.TreeNode("Open Guild Bank");
-            System.Windows.Forms.TreeNode treeNode64 = new System.Windows.Forms.TreeNode("Give Guild Experience");
-            System.Windows.Forms.TreeNode treeNode65 = new System.Windows.Forms.TreeNode("Guild", new System.Windows.Forms.TreeNode[] {
-            treeNode62,
+            treeNode60,
+            treeNode61});
+            System.Windows.Forms.TreeNode treeNode63 = new System.Windows.Forms.TreeNode("Create Guild");
+            System.Windows.Forms.TreeNode treeNode64 = new System.Windows.Forms.TreeNode("Open Guild Bank");
+            System.Windows.Forms.TreeNode treeNode65 = new System.Windows.Forms.TreeNode("Give Guild Experience");
+            System.Windows.Forms.TreeNode treeNode66 = new System.Windows.Forms.TreeNode("Guild", new System.Windows.Forms.TreeNode[] {
             treeNode63,
-            treeNode64});
-            System.Windows.Forms.TreeNode treeNode66 = new System.Windows.Forms.TreeNode("Send Mail");
-            System.Windows.Forms.TreeNode treeNode67 = new System.Windows.Forms.TreeNode("Open Mailbox");
-            System.Windows.Forms.TreeNode treeNode68 = new System.Windows.Forms.TreeNode("Auction House");
-            System.Windows.Forms.TreeNode treeNode69 = new System.Windows.Forms.TreeNode("Spawn Pet");
-            System.Windows.Forms.TreeNode treeNode70 = new System.Windows.Forms.TreeNode("Despawn Pet");
-            System.Windows.Forms.TreeNode treeNode71 = new System.Windows.Forms.TreeNode("Item Drop Chance");
-            System.Windows.Forms.TreeNode treeNode72 = new System.Windows.Forms.TreeNode("Change Tradeskill");
-            System.Windows.Forms.TreeNode treeNode73 = new System.Windows.Forms.TreeNode("Give Tradeskill Experience");
-            System.Windows.Forms.TreeNode treeNode74 = new System.Windows.Forms.TreeNode("Tradeskills", new System.Windows.Forms.TreeNode[] {
-            treeNode72,
-            treeNode73});
-            System.Windows.Forms.TreeNode treeNode75 = new System.Windows.Forms.TreeNode("Change Class Window");
+            treeNode64,
+            treeNode65});
+            System.Windows.Forms.TreeNode treeNode67 = new System.Windows.Forms.TreeNode("Send Mail");
+            System.Windows.Forms.TreeNode treeNode68 = new System.Windows.Forms.TreeNode("Open Mailbox");
+            System.Windows.Forms.TreeNode treeNode69 = new System.Windows.Forms.TreeNode("Auction House");
+            System.Windows.Forms.TreeNode treeNode70 = new System.Windows.Forms.TreeNode("Spawn Pet");
+            System.Windows.Forms.TreeNode treeNode71 = new System.Windows.Forms.TreeNode("Despawn Pet");
+            System.Windows.Forms.TreeNode treeNode72 = new System.Windows.Forms.TreeNode("Item Drop Chance");
+            System.Windows.Forms.TreeNode treeNode73 = new System.Windows.Forms.TreeNode("Change Tradeskill");
+            System.Windows.Forms.TreeNode treeNode74 = new System.Windows.Forms.TreeNode("Give Tradeskill Experience");
+            System.Windows.Forms.TreeNode treeNode75 = new System.Windows.Forms.TreeNode("Tradeskills", new System.Windows.Forms.TreeNode[] {
+            treeNode73,
+            treeNode74});
+            System.Windows.Forms.TreeNode treeNode76 = new System.Windows.Forms.TreeNode("Change Class Window");
             this.lblName = new System.Windows.Forms.Label();
             this.txtEventname = new DarkUI.Controls.DarkTextBox();
             this.grpEntityOptions = new DarkUI.Controls.DarkGroupBox();
@@ -938,175 +940,178 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode22.Name = "changeitems";
             treeNode22.Tag = "18";
             treeNode22.Text = "Change Items";
-            treeNode23.Name = "changesprite";
-            treeNode23.Tag = "19";
-            treeNode23.Text = "Change Sprite";
-            treeNode24.Name = "changeface";
-            treeNode24.Tag = "20";
-            treeNode24.Text = "Change Face";
-            treeNode25.Name = "changehair";
-            treeNode25.Tag = "54";
-            treeNode25.Text = "Change Hair";
-            treeNode26.Name = "changegender";
-            treeNode26.Tag = "21";
-            treeNode26.Text = "Change Gender";
-            treeNode27.Name = "setaccess";
-            treeNode27.Tag = "22";
-            treeNode27.Text = "Set Access";
-            treeNode28.Name = "changeclass";
-            treeNode28.Tag = "38";
-            treeNode28.Text = "Change Class";
-            treeNode29.Name = "equipitem";
-            treeNode29.Tag = "47";
-            treeNode29.Text = "Equip Item";
-            treeNode30.Name = "unequipitem";
-            treeNode30.Tag = "52";
-            treeNode30.Text = "Unequip Item";
-            treeNode31.Name = "changenamecolor";
-            treeNode31.Tag = "48";
-            treeNode31.Text = "Change Name Color";
-            treeNode32.Name = "changeplayerlabel";
-            treeNode32.Tag = "50";
-            treeNode32.Text = "Change Player Label";
-            treeNode33.Name = "playercontrol";
-            treeNode33.Text = "Player Control";
-            treeNode34.Name = "warpplayer";
-            treeNode34.Tag = "23";
-            treeNode34.Text = "Warp Player";
-            treeNode35.Name = "setmoveroute";
-            treeNode35.Tag = "24";
-            treeNode35.Text = "Set Move Route";
-            treeNode36.Name = "waitmoveroute";
-            treeNode36.Tag = "25";
-            treeNode36.Text = "Wait for Route Completion";
-            treeNode37.Name = "holdplayer";
-            treeNode37.Tag = "26";
-            treeNode37.Text = "Hold Player";
-            treeNode38.Name = "releaseplayer";
-            treeNode38.Tag = "27";
-            treeNode38.Text = "Release Player";
-            treeNode39.Name = "spawnnpc";
-            treeNode39.Tag = "28";
-            treeNode39.Text = "Spawn NPC";
-            treeNode40.Name = "despawnnpcs";
-            treeNode40.Tag = "39";
-            treeNode40.Text = "Despawn NPC";
-            treeNode41.Name = "hideplayer";
-            treeNode41.Tag = "45";
-            treeNode41.Text = "Hide Player";
-            treeNode42.Name = "showplayer";
-            treeNode42.Tag = "46";
-            treeNode42.Text = "Show Player";
-            treeNode43.Name = "movement";
-            treeNode43.Text = "Movement";
-            treeNode44.Name = "playanimation";
-            treeNode44.Tag = "29";
-            treeNode44.Text = "Play Animation";
-            treeNode45.Name = "playbgm";
-            treeNode45.Tag = "30";
-            treeNode45.Text = "Play BGM";
-            treeNode46.Name = "fadeoutbgm";
-            treeNode46.Tag = "31";
-            treeNode46.Text = "Fadeout BGM";
-            treeNode47.Name = "playsound";
-            treeNode47.Tag = "32";
-            treeNode47.Text = "Play Sound";
-            treeNode48.Name = "stopsounds";
-            treeNode48.Tag = "33";
-            treeNode48.Text = "Stop Sounds";
-            treeNode49.Name = "showpicture";
-            treeNode49.Tag = "43";
-            treeNode49.Text = "Show Picture";
-            treeNode50.Name = "hidepicture";
-            treeNode50.Tag = "44";
-            treeNode50.Text = "Hide Picture";
-            treeNode51.Name = "specialeffects";
-            treeNode51.Text = "Special Effects";
-            treeNode52.Name = "startquest";
-            treeNode52.Tag = "40";
-            treeNode52.Text = "Start Quest";
-            treeNode53.Name = "completequesttask";
-            treeNode53.Tag = "41";
-            treeNode53.Text = "Complete Quest Task";
-            treeNode54.Name = "endquest";
-            treeNode54.Tag = "42";
-            treeNode54.Text = "End Quest";
-            treeNode55.Name = "questcontrol";
-            treeNode55.Text = "Quest Control";
-            treeNode56.Name = "wait";
-            treeNode56.Tag = "34";
-            treeNode56.Text = "Wait...";
-            treeNode57.Name = "etc";
-            treeNode57.Text = "Etc";
-            treeNode58.Name = "openbank";
-            treeNode58.Tag = "35";
-            treeNode58.Text = "Open Bank";
-            treeNode59.Name = "openshop";
-            treeNode59.Tag = "36";
-            treeNode59.Text = "Open Shop";
-            treeNode60.Name = "opencraftingstation";
-            treeNode60.Tag = "37";
-            treeNode60.Text = "Open Crafting Station";
-            treeNode61.Name = "shopandbank";
-            treeNode61.Text = "Shop and Bank";
-            treeNode62.Name = "createguild";
-            treeNode62.Tag = "701";
-            treeNode62.Text = "Create Guild";
-            treeNode63.Name = "openguildbank";
-            treeNode63.Tag = "700";
-            treeNode63.Text = "Open Guild Bank";
-            treeNode64.Name = "giveguildexperience";
-            treeNode64.Tag = "702";
-            treeNode64.Text = "Give Guild Experience";
-            treeNode65.Name = "guild";
-            treeNode65.Text = "Guild";
-            treeNode66.Name = "sendmail";
-            treeNode66.Tag = "440";
-            treeNode66.Text = "Send Mail";
-            treeNode67.Name = "openmailbox";
-            treeNode67.Tag = "441";
-            treeNode67.Text = "Open Mailbox";
-            treeNode68.Name = "openhdv";
-            treeNode68.Tag = "447";
-            treeNode68.Text = "Auction House";
-            treeNode69.Name = "spawnpet";
-            treeNode69.Tag = "600";
-            treeNode69.Text = "Spawn Pet";
-            treeNode70.Name = "despawnpet";
-            treeNode70.Tag = "601";
-            treeNode70.Text = "Despawn Pet";
-            treeNode71.Name = "dropchance";
-            treeNode71.Tag = "602";
-            treeNode71.Text = "Item Drop Chance";
-            treeNode72.Name = "changetradeskill";
-            treeNode72.Tag = "801";
-            treeNode72.Text = "Change Tradeskill";
-            treeNode73.Name = "givetradeskillexperience";
-            treeNode73.Tag = "802";
-            treeNode73.Text = "Give Tradeskill Experience";
-            treeNode74.Name = "tradeskills";
-            treeNode74.Text = "Tradeskills";
-            treeNode75.Name = "changeclasswindow";
-            treeNode75.Tag = "901";
-            treeNode75.Text = "Change Class Window";
+            treeNode23.Name = "itemchoice";
+            treeNode23.Tag = "902";
+            treeNode23.Text = "Item Choice";
+            treeNode24.Name = "changesprite";
+            treeNode24.Tag = "19";
+            treeNode24.Text = "Change Sprite";
+            treeNode25.Name = "changeface";
+            treeNode25.Tag = "20";
+            treeNode25.Text = "Change Face";
+            treeNode26.Name = "changehair";
+            treeNode26.Tag = "54";
+            treeNode26.Text = "Change Hair";
+            treeNode27.Name = "changegender";
+            treeNode27.Tag = "21";
+            treeNode27.Text = "Change Gender";
+            treeNode28.Name = "setaccess";
+            treeNode28.Tag = "22";
+            treeNode28.Text = "Set Access";
+            treeNode29.Name = "changeclass";
+            treeNode29.Tag = "38";
+            treeNode29.Text = "Change Class";
+            treeNode30.Name = "equipitem";
+            treeNode30.Tag = "47";
+            treeNode30.Text = "Equip Item";
+            treeNode31.Name = "unequipitem";
+            treeNode31.Tag = "52";
+            treeNode31.Text = "Unequip Item";
+            treeNode32.Name = "changenamecolor";
+            treeNode32.Tag = "48";
+            treeNode32.Text = "Change Name Color";
+            treeNode33.Name = "changeplayerlabel";
+            treeNode33.Tag = "50";
+            treeNode33.Text = "Change Player Label";
+            treeNode34.Name = "playercontrol";
+            treeNode34.Text = "Player Control";
+            treeNode35.Name = "warpplayer";
+            treeNode35.Tag = "23";
+            treeNode35.Text = "Warp Player";
+            treeNode36.Name = "setmoveroute";
+            treeNode36.Tag = "24";
+            treeNode36.Text = "Set Move Route";
+            treeNode37.Name = "waitmoveroute";
+            treeNode37.Tag = "25";
+            treeNode37.Text = "Wait for Route Completion";
+            treeNode38.Name = "holdplayer";
+            treeNode38.Tag = "26";
+            treeNode38.Text = "Hold Player";
+            treeNode39.Name = "releaseplayer";
+            treeNode39.Tag = "27";
+            treeNode39.Text = "Release Player";
+            treeNode40.Name = "spawnnpc";
+            treeNode40.Tag = "28";
+            treeNode40.Text = "Spawn NPC";
+            treeNode41.Name = "despawnnpcs";
+            treeNode41.Tag = "39";
+            treeNode41.Text = "Despawn NPC";
+            treeNode42.Name = "hideplayer";
+            treeNode42.Tag = "45";
+            treeNode42.Text = "Hide Player";
+            treeNode43.Name = "showplayer";
+            treeNode43.Tag = "46";
+            treeNode43.Text = "Show Player";
+            treeNode44.Name = "movement";
+            treeNode44.Text = "Movement";
+            treeNode45.Name = "playanimation";
+            treeNode45.Tag = "29";
+            treeNode45.Text = "Play Animation";
+            treeNode46.Name = "playbgm";
+            treeNode46.Tag = "30";
+            treeNode46.Text = "Play BGM";
+            treeNode47.Name = "fadeoutbgm";
+            treeNode47.Tag = "31";
+            treeNode47.Text = "Fadeout BGM";
+            treeNode48.Name = "playsound";
+            treeNode48.Tag = "32";
+            treeNode48.Text = "Play Sound";
+            treeNode49.Name = "stopsounds";
+            treeNode49.Tag = "33";
+            treeNode49.Text = "Stop Sounds";
+            treeNode50.Name = "showpicture";
+            treeNode50.Tag = "43";
+            treeNode50.Text = "Show Picture";
+            treeNode51.Name = "hidepicture";
+            treeNode51.Tag = "44";
+            treeNode51.Text = "Hide Picture";
+            treeNode52.Name = "specialeffects";
+            treeNode52.Text = "Special Effects";
+            treeNode53.Name = "startquest";
+            treeNode53.Tag = "40";
+            treeNode53.Text = "Start Quest";
+            treeNode54.Name = "completequesttask";
+            treeNode54.Tag = "41";
+            treeNode54.Text = "Complete Quest Task";
+            treeNode55.Name = "endquest";
+            treeNode55.Tag = "42";
+            treeNode55.Text = "End Quest";
+            treeNode56.Name = "questcontrol";
+            treeNode56.Text = "Quest Control";
+            treeNode57.Name = "wait";
+            treeNode57.Tag = "34";
+            treeNode57.Text = "Wait...";
+            treeNode58.Name = "etc";
+            treeNode58.Text = "Etc";
+            treeNode59.Name = "openbank";
+            treeNode59.Tag = "35";
+            treeNode59.Text = "Open Bank";
+            treeNode60.Name = "openshop";
+            treeNode60.Tag = "36";
+            treeNode60.Text = "Open Shop";
+            treeNode61.Name = "opencraftingstation";
+            treeNode61.Tag = "37";
+            treeNode61.Text = "Open Crafting Station";
+            treeNode62.Name = "shopandbank";
+            treeNode62.Text = "Shop and Bank";
+            treeNode63.Name = "createguild";
+            treeNode63.Tag = "701";
+            treeNode63.Text = "Create Guild";
+            treeNode64.Name = "openguildbank";
+            treeNode64.Tag = "700";
+            treeNode64.Text = "Open Guild Bank";
+            treeNode65.Name = "giveguildexperience";
+            treeNode65.Tag = "702";
+            treeNode65.Text = "Give Guild Experience";
+            treeNode66.Name = "guild";
+            treeNode66.Text = "Guild";
+            treeNode67.Name = "sendmail";
+            treeNode67.Tag = "440";
+            treeNode67.Text = "Send Mail";
+            treeNode68.Name = "openmailbox";
+            treeNode68.Tag = "441";
+            treeNode68.Text = "Open Mailbox";
+            treeNode69.Name = "openhdv";
+            treeNode69.Tag = "447";
+            treeNode69.Text = "Auction House";
+            treeNode70.Name = "spawnpet";
+            treeNode70.Tag = "600";
+            treeNode70.Text = "Spawn Pet";
+            treeNode71.Name = "despawnpet";
+            treeNode71.Tag = "601";
+            treeNode71.Text = "Despawn Pet";
+            treeNode72.Name = "dropchance";
+            treeNode72.Tag = "602";
+            treeNode72.Text = "Item Drop Chance";
+            treeNode73.Name = "changetradeskill";
+            treeNode73.Tag = "801";
+            treeNode73.Text = "Change Tradeskill";
+            treeNode74.Name = "givetradeskillexperience";
+            treeNode74.Tag = "802";
+            treeNode74.Text = "Give Tradeskill Experience";
+            treeNode75.Name = "tradeskills";
+            treeNode75.Text = "Tradeskills";
+            treeNode76.Name = "changeclasswindow";
+            treeNode76.Tag = "901";
+            treeNode76.Text = "Change Class Window";
             this.lstCommands.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode6,
             treeNode14,
-            treeNode33,
-            treeNode43,
-            treeNode51,
-            treeNode55,
-            treeNode57,
-            treeNode61,
-            treeNode65,
+            treeNode34,
+            treeNode44,
+            treeNode52,
+            treeNode56,
+            treeNode58,
+            treeNode62,
             treeNode66,
             treeNode67,
             treeNode68,
             treeNode69,
             treeNode70,
             treeNode71,
-            treeNode74,
-            treeNode75});
+            treeNode72,
+            treeNode75,
+            treeNode76});
             this.lstCommands.Size = new System.Drawing.Size(666, 676);
             this.lstCommands.TabIndex = 2;
             this.lstCommands.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.lstCommands_AfterSelect);

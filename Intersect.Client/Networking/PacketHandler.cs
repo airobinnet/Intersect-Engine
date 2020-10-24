@@ -885,6 +885,24 @@ namespace Intersect.Client.Networking
             Globals.ClassChange.Add(ed);
         }
 
+        //ItemChoicePacket
+        private static void HandlePacket(ItemChoicePacket packet)
+        {
+            var ed = new ItemChoice();
+            //todo: change below to a list
+            var tempGuid1 = Guid.TryParse(packet.Responses[0], out var parsed1) || parsed1 == Guid.Empty;
+            var tempGuid2 = Guid.TryParse(packet.Responses[1], out var parsed2) || parsed2 == Guid.Empty;
+            var tempGuid3 = Guid.TryParse(packet.Responses[2], out var parsed3) || parsed3 == Guid.Empty;
+            var tempGuid4 = Guid.TryParse(packet.Responses[3], out var parsed4) || parsed4 == Guid.Empty;
+            ed.Items.Add(parsed1);
+            ed.Items.Add(parsed2);
+            ed.Items.Add(parsed3);
+            ed.Items.Add(parsed4);
+
+            ed.EventId = packet.EventId;
+            Globals.ItemChoice.Add(ed);
+        }
+
         //InputVariablePacket
         private static void HandlePacket(InputVariablePacket packet)
         {

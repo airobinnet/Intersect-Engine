@@ -1322,6 +1322,8 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString abandon = @"Abandon";
 
+            public static LocalizedString accept = @"Accept";
+
             public static LocalizedString abandonprompt = @"Are you sure that you want to quit the quest ""{00}""?";
 
             public static LocalizedString abandontitle = @"Abandon Quest: {00}";
@@ -1354,6 +1356,10 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString taskmultipleitemstitle = @"Gather:";
 
+            public static LocalizedString questreward = @"Reward:";
+
+            public static LocalizedString questrewardchoice = @"Choose a reward:";
+
             public static LocalizedString taskmultipleitems = @"{00}/{01} {02}(s) gathered.";
 
         }
@@ -1366,6 +1372,10 @@ namespace Intersect.Client.Localization
             public static LocalizedString decline = @"Decline";
 
             public static LocalizedString title = @"Quest Offer";
+
+            public static LocalizedString questreward = @"Reward:";
+
+            public static LocalizedString questrewardchoice = @"Reward: (Choose 1)";
 
         }
 

@@ -261,6 +261,8 @@
 
         ClassChangeWindow = 901,
 
+        ItemChoiceWindow = 902,
+
     }
 
 }

@@ -285,6 +285,16 @@ namespace Intersect.GameObjects
                         taskString += Description;
 
                         break;
+                    case QuestObjective.ChooseItem: //choose item(s)
+                        taskString = "Choose Reward: ";
+                        for (var i = 0; i < mTargets.Count; i++)
+                        {
+                            taskString += descriptions[(int)Objective]
+                            .ToString(ItemBase.GetName(mTargets[i]), mTargetsQuantity[i]) + " - ";
+                        }
+                        taskString += Description;
+
+                        break;
                 }
 
                 return taskString;
@@ -309,9 +319,13 @@ namespace Intersect.GameObjects
             //KeyPress
             public int KeyPressed { get; set; }
 
+            //Multiple Tasks
             public List<Guid> mTargets { get; set; } = new List<Guid>();
 
             public List<int> mTargetsQuantity { get; set; } = new List<int>();
+
+            //Choose Items
+            public bool HasChoice { get; set; }
         }
 
     }

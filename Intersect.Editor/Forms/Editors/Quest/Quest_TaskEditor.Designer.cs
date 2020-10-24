@@ -32,6 +32,15 @@ namespace Intersect.Editor.Forms.Editors.Quest
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(QuestTaskEditor));
             this.grpEditor = new DarkUI.Controls.DarkGroupBox();
+            this.grpQuestReward = new DarkUI.Controls.DarkGroupBox();
+            this.chkCanChoose = new System.Windows.Forms.CheckBox();
+            this.btnAddQuestRewardItem = new DarkUI.Controls.DarkButton();
+            this.btnRemoveQuestRewardItem = new DarkUI.Controls.DarkButton();
+            this.lstQuestRewardItems = new System.Windows.Forms.ListBox();
+            this.nudQuestRewardItemAmount = new DarkUI.Controls.DarkNumericUpDown();
+            this.cmbQuestRewardItem = new DarkUI.Controls.DarkComboBox();
+            this.lblQuestRewardItem = new System.Windows.Forms.Label();
+            this.lblQuestRewardItemAmount = new System.Windows.Forms.Label();
             this.grpMultipleItems = new DarkUI.Controls.DarkGroupBox();
             this.btnAddItem = new DarkUI.Controls.DarkButton();
             this.btnDelItem = new DarkUI.Controls.DarkButton();
@@ -89,6 +98,8 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.lblItemQuantity = new System.Windows.Forms.Label();
             this.lblEventDriven = new System.Windows.Forms.Label();
             this.grpEditor.SuspendLayout();
+            this.grpQuestReward.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudQuestRewardItemAmount)).BeginInit();
             this.grpMultipleItems.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMultipleItemQuantity)).BeginInit();
             this.grpKillMultipleNpcs.SuspendLayout();
@@ -109,6 +120,7 @@ namespace Intersect.Editor.Forms.Editors.Quest
             // 
             this.grpEditor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpEditor.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpEditor.Controls.Add(this.grpQuestReward);
             this.grpEditor.Controls.Add(this.grpMultipleItems);
             this.grpEditor.Controls.Add(this.grpKillMultipleNpcs);
             this.grpEditor.Controls.Add(this.grpKillNpcs);
@@ -133,6 +145,141 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.grpEditor.TabIndex = 18;
             this.grpEditor.TabStop = false;
             this.grpEditor.Text = "Task Editor";
+            // 
+            // grpQuestReward
+            // 
+            this.grpQuestReward.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpQuestReward.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpQuestReward.Controls.Add(this.chkCanChoose);
+            this.grpQuestReward.Controls.Add(this.btnAddQuestRewardItem);
+            this.grpQuestReward.Controls.Add(this.btnRemoveQuestRewardItem);
+            this.grpQuestReward.Controls.Add(this.lstQuestRewardItems);
+            this.grpQuestReward.Controls.Add(this.nudQuestRewardItemAmount);
+            this.grpQuestReward.Controls.Add(this.cmbQuestRewardItem);
+            this.grpQuestReward.Controls.Add(this.lblQuestRewardItem);
+            this.grpQuestReward.Controls.Add(this.lblQuestRewardItemAmount);
+            this.grpQuestReward.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpQuestReward.Location = new System.Drawing.Point(19, 135);
+            this.grpQuestReward.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpQuestReward.Name = "grpQuestReward";
+            this.grpQuestReward.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpQuestReward.Size = new System.Drawing.Size(817, 400);
+            this.grpQuestReward.TabIndex = 69;
+            this.grpQuestReward.TabStop = false;
+            this.grpQuestReward.Text = "Quest Reward Screen";
+            this.grpQuestReward.Visible = false;
+            // 
+            // chkCanChoose
+            // 
+            this.chkCanChoose.AutoSize = true;
+            this.chkCanChoose.Location = new System.Drawing.Point(162, 27);
+            this.chkCanChoose.Name = "chkCanChoose";
+            this.chkCanChoose.Size = new System.Drawing.Size(217, 24);
+            this.chkCanChoose.TabIndex = 68;
+            this.chkCanChoose.Text = "Player Can Choose 1 item";
+            this.chkCanChoose.UseVisualStyleBackColor = true;
+            // 
+            // btnAddQuestRewardItem
+            // 
+            this.btnAddQuestRewardItem.Location = new System.Drawing.Point(13, 353);
+            this.btnAddQuestRewardItem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnAddQuestRewardItem.Name = "btnAddQuestRewardItem";
+            this.btnAddQuestRewardItem.Padding = new System.Windows.Forms.Padding(8);
+            this.btnAddQuestRewardItem.Size = new System.Drawing.Size(176, 35);
+            this.btnAddQuestRewardItem.TabIndex = 67;
+            this.btnAddQuestRewardItem.Text = "Add";
+            this.btnAddQuestRewardItem.Click += new System.EventHandler(this.btnAddQuestRewardItem_Click);
+            // 
+            // btnRemoveQuestRewardItem
+            // 
+            this.btnRemoveQuestRewardItem.Location = new System.Drawing.Point(203, 353);
+            this.btnRemoveQuestRewardItem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnRemoveQuestRewardItem.Name = "btnRemoveQuestRewardItem";
+            this.btnRemoveQuestRewardItem.Padding = new System.Windows.Forms.Padding(8);
+            this.btnRemoveQuestRewardItem.Size = new System.Drawing.Size(176, 35);
+            this.btnRemoveQuestRewardItem.TabIndex = 66;
+            this.btnRemoveQuestRewardItem.Text = "Remove Selected";
+            this.btnRemoveQuestRewardItem.Click += new System.EventHandler(this.btnRemoveQuestRewardItem_Click);
+            // 
+            // lstQuestRewardItems
+            // 
+            this.lstQuestRewardItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.lstQuestRewardItems.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lstQuestRewardItems.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lstQuestRewardItems.FormattingEnabled = true;
+            this.lstQuestRewardItems.ItemHeight = 20;
+            this.lstQuestRewardItems.Location = new System.Drawing.Point(122, 71);
+            this.lstQuestRewardItems.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.lstQuestRewardItems.Name = "lstQuestRewardItems";
+            this.lstQuestRewardItems.Size = new System.Drawing.Size(257, 162);
+            this.lstQuestRewardItems.TabIndex = 65;
+            // 
+            // nudQuestRewardItemAmount
+            // 
+            this.nudQuestRewardItemAmount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudQuestRewardItemAmount.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudQuestRewardItemAmount.Location = new System.Drawing.Point(205, 306);
+            this.nudQuestRewardItemAmount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudQuestRewardItemAmount.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudQuestRewardItemAmount.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudQuestRewardItemAmount.Name = "nudQuestRewardItemAmount";
+            this.nudQuestRewardItemAmount.Size = new System.Drawing.Size(174, 26);
+            this.nudQuestRewardItemAmount.TabIndex = 64;
+            this.nudQuestRewardItemAmount.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // cmbQuestRewardItem
+            // 
+            this.cmbQuestRewardItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbQuestRewardItem.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbQuestRewardItem.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbQuestRewardItem.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbQuestRewardItem.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbQuestRewardItem.ButtonIcon")));
+            this.cmbQuestRewardItem.DrawDropdownHoverOutline = false;
+            this.cmbQuestRewardItem.DrawFocusRectangle = false;
+            this.cmbQuestRewardItem.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbQuestRewardItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbQuestRewardItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbQuestRewardItem.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbQuestRewardItem.FormattingEnabled = true;
+            this.cmbQuestRewardItem.Location = new System.Drawing.Point(207, 255);
+            this.cmbQuestRewardItem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbQuestRewardItem.Name = "cmbQuestRewardItem";
+            this.cmbQuestRewardItem.Size = new System.Drawing.Size(172, 27);
+            this.cmbQuestRewardItem.TabIndex = 3;
+            this.cmbQuestRewardItem.Text = null;
+            this.cmbQuestRewardItem.TextPadding = new System.Windows.Forms.Padding(2);
+            // 
+            // lblQuestRewardItem
+            // 
+            this.lblQuestRewardItem.AutoSize = true;
+            this.lblQuestRewardItem.Location = new System.Drawing.Point(144, 258);
+            this.lblQuestRewardItem.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblQuestRewardItem.Name = "lblQuestRewardItem";
+            this.lblQuestRewardItem.Size = new System.Drawing.Size(45, 20);
+            this.lblQuestRewardItem.TabIndex = 2;
+            this.lblQuestRewardItem.Text = "Item:";
+            // 
+            // lblQuestRewardItemAmount
+            // 
+            this.lblQuestRewardItemAmount.AutoSize = true;
+            this.lblQuestRewardItemAmount.Location = new System.Drawing.Point(120, 308);
+            this.lblQuestRewardItemAmount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblQuestRewardItemAmount.Name = "lblQuestRewardItemAmount";
+            this.lblQuestRewardItemAmount.Size = new System.Drawing.Size(69, 20);
+            this.lblQuestRewardItemAmount.TabIndex = 0;
+            this.lblQuestRewardItemAmount.Text = "Amount:";
             // 
             // grpMultipleItems
             // 
@@ -1019,6 +1166,9 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.Size = new System.Drawing.Size(856, 678);
             this.grpEditor.ResumeLayout(false);
             this.grpEditor.PerformLayout();
+            this.grpQuestReward.ResumeLayout(false);
+            this.grpQuestReward.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudQuestRewardItemAmount)).EndInit();
             this.grpMultipleItems.ResumeLayout(false);
             this.grpMultipleItems.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMultipleItemQuantity)).EndInit();
@@ -1103,5 +1253,14 @@ namespace Intersect.Editor.Forms.Editors.Quest
         private DarkComboBox cmbMultipleItems;
         private System.Windows.Forms.Label lblMultipleItems;
         private System.Windows.Forms.Label lblMultipleItemQuantity;
+        private DarkGroupBox grpQuestReward;
+        private System.Windows.Forms.CheckBox chkCanChoose;
+        private DarkButton btnAddQuestRewardItem;
+        private DarkButton btnRemoveQuestRewardItem;
+        private System.Windows.Forms.ListBox lstQuestRewardItems;
+        private DarkNumericUpDown nudQuestRewardItemAmount;
+        private DarkComboBox cmbQuestRewardItem;
+        private System.Windows.Forms.Label lblQuestRewardItem;
+        private System.Windows.Forms.Label lblQuestRewardItemAmount;
     }
 }

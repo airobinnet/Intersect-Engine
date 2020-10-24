@@ -91,6 +91,25 @@ namespace Intersect.Server.Entities.Events
             stackInfo.BranchIds = command.BranchIds;
         }
 
+        //ItemChoiceWindowCommand
+        private static void ProcessCommand(
+            ItemChoiceWindowCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            var opt1 = ParseEventText(command.Options[0], player, instance);
+            var opt2 = ParseEventText(command.Options[1], player, instance);
+            var opt3 = ParseEventText(command.Options[2], player, instance);
+            var opt4 = ParseEventText(command.Options[3], player, instance);
+            PacketSender.SendItemChoiceWindow(player, opt1, opt2, opt3, opt4, instance.PageInstance.Id);
+            stackInfo.WaitingForResponse = CommandInstance.EventResponse.ItemChoice;
+            stackInfo.WaitingOnCommand = command;
+            stackInfo.BranchIds = command.BranchIds;
+        }
+
         //Input Variable Command
         private static void ProcessCommand(
             InputVariableCommand command,
@@ -1755,6 +1774,10 @@ namespace Intersect.Server.Entities.Events
                             break;
                         case EventCommandType.ClassChangeWindow:
                             branchIds.AddRange(((ClassChangeWindowCommand)command).BranchIds);
+
+                            break;
+                        case EventCommandType.ItemChoiceWindow:
+                            branchIds.AddRange(((ItemChoiceWindowCommand)command).BranchIds);
 
                             break;
                         case EventCommandType.Label:

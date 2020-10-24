@@ -82,6 +82,7 @@
     <Compile Include="Entities\ChatBubble.cs" />
     <Compile Include="Entities\Dash.cs" />
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Events\ItemChoice.cs" />
     <Compile Include="Entities\Events\ClassChange.cs" />
     <Compile Include="Entities\Events\Event.cs" />
     <Compile Include="Entities\Events\Dialog.cs" />
@@ -102,6 +103,10 @@
     <Compile Include="General\Globals.cs" />
     <Compile Include="HDV.cs" />
     <Compile Include="Interface\Game\CashShop\CashShopWindow.cs" />
+    <Compile Include="Interface\Game\QuestOfferRewardItem.cs" />
+    <Compile Include="Interface\Game\QuestRewardItem.cs" />
+    <Compile Include="Interface\Game\itemChoiceItem.cs" />
+    <Compile Include="Interface\Game\ItemChoiceWindow.cs" />
     <Compile Include="Interface\Game\ClassChangeWindow.cs" />
     <Compile Include="Interface\Game\DemoSpellItem.cs" />
     <Compile Include="Interface\Game\Minimap.cs" />

@@ -1715,6 +1715,15 @@ namespace Intersect.Server.Networking
             player.RespondToEvent(packet.EventId, packet.Response);
         }
 
+        //ItemChoiceResponsePacket
+        public void HandlePacket(Client client, Player player, ItemChoiceResponsePacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+            player.ItemChoice(packet.EventId, packet.Response);
+        }
 
         //ClassChangeResponsePacket
         public void HandlePacket(Client client, Player player, ClassChangeResponsePacket packet)
@@ -2836,6 +2845,47 @@ namespace Intersect.Server.Networking
             }
 
             player.CancelQuest(packet.QuestId);
+        }
+
+        //AcceptQuestRewardPacket
+        public void HandlePacket(Client client, Player player, AcceptQuestRewardPacket packet)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+
+            var quest = QuestBase.Get(packet.QuestId);
+            var questTask = quest.FindTask(packet.TaskId);
+
+            foreach (var questProgress in player.Quests)
+            {
+                if (questProgress.QuestId == packet.QuestId)
+                {
+                    if (questTask.HasChoice)
+                    {
+                        if (packet.Choice <= questTask.mTargets.Count)
+                        {
+                            if (player.TryGiveItem(questTask.mTargets[packet.Choice], questTask.mTargetsQuantity[packet.Choice]))
+                            {
+                                player.CompleteQuestTask(packet.QuestId, packet.TaskId);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (var i = 0; i < questTask.mTargets.Count; i++)
+                        {
+                            player.TryGiveItem(questTask.mTargets[i], questTask.mTargetsQuantity[i], ItemHandling.Overflow);
+                            if (i == questTask.mTargets.Count - 1)
+                            {
+                                player.CompleteQuestTask(packet.QuestId, packet.TaskId);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         //TradeRequestPacket

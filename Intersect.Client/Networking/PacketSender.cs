@@ -115,6 +115,12 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new ClassChangeResponsePacket(cc.EventId, response));
         }
 
+        public static void SendItemChoiceResponse(int response, ItemChoice ic)
+        {
+            Globals.ItemChoice.Remove(ic);
+            Network.SendPacket(new ItemChoiceResponsePacket(ic.EventId, response));
+        }
+
         public static void SendEventInputVariable(object sender, EventArgs e)
         {
             Network.SendPacket(
@@ -345,6 +351,16 @@ namespace Intersect.Client.Networking
         public static void SendAbandonQuest(Guid questId)
         {
             Network.SendPacket(new AbandonQuestPacket(questId));
+        }
+
+        public static void SendAcceptQuestReward(Guid questId, Guid taskId, int choice)
+        {
+            Network.SendPacket(new AcceptQuestRewardPacket(questId, taskId, choice));
+        }
+
+        public static void SendAcceptQuestReward(Guid questId, Guid taskId)
+        {
+            Network.SendPacket(new AcceptQuestRewardPacket(questId, taskId, -1));
         }
 
         public static void SendTradeRequest(Guid targetId)

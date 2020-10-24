@@ -29,7 +29,9 @@ namespace Intersect.Server.Entities.Events
 
             GuildBank,
 
-            ClassChange
+            ClassChange,
+
+            ItemChoice
 
         }
 

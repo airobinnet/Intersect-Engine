@@ -18,7 +18,9 @@
 
         KillMultipleNpcs,
 
-        GatherMultipleItems
+        GatherMultipleItems,
+
+        ChooseItem
 
     }
 

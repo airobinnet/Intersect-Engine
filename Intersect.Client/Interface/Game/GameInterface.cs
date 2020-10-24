@@ -50,6 +50,8 @@ namespace Intersect.Client.Interface.Game
 
         private ClassChangeWindow mClassChangeWindow;
 
+        private ItemChoiceWindow mItemChoiceWindow;
+
         private PictureWindow mPictureWindow;
 
         private QuestOfferWindow mQuestOfferWindow;
@@ -141,6 +143,7 @@ namespace Intersect.Client.Interface.Game
             }
 
             mClassChangeWindow = new ClassChangeWindow(GameCanvas);
+            mItemChoiceWindow = new ItemChoiceWindow(GameCanvas);
             mEventWindow = new EventWindow(GameCanvas);
             mQuestOfferWindow = new QuestOfferWindow(GameCanvas);
             mTradeSkillInfoWindow = new TradeSkillInfoWindow(GameCanvas,Guid.Empty,0,0);
@@ -535,6 +538,15 @@ namespace Intersect.Client.Interface.Game
                 mQuestOfferWindow.Hide();
             }
 
+            if (Globals.ItemChoice.Count > 0)
+            {
+                mItemChoiceWindow.Update();
+            }
+            else
+            {
+                mItemChoiceWindow.Hide();
+            }
+
             if (Globals.Picture != null)
             {
                 if (mPictureWindow.Picture != Globals.Picture ||
@@ -554,6 +566,7 @@ namespace Intersect.Client.Interface.Game
 
             mEventWindow?.Update();
             mClassChangeWindow?.Update();
+            mItemChoiceWindow?.Update();
 
             //Admin window update
             if (mShouldOpenAdminWindow)
