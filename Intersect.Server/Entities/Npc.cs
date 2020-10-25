@@ -71,6 +71,26 @@ namespace Intersect.Server.Entities
         public long FindTargetWaitTime;
         public int FindTargetDelay = 500;
 
+        /// <summary>
+        /// The map on which this NPC was "aggro'd" and started chasing a target.
+        /// </summary>
+        public MapInstance AggroCenterMap;
+
+        /// <summary>
+        /// The X value on which this NPC was "aggro'd" and started chasing a target.
+        /// </summary>
+        public int AggroCenterX;
+
+        /// <summary>
+        /// The Y value on which this NPC was "aggro'd" and started chasing a target.
+        /// </summary>
+        public int AggroCenterY;
+
+        /// <summary>
+        /// The Z value on which this NPC was "aggro'd" and started chasing a target.
+        /// </summary>
+        public int AggroCenterZ;
+
         public Npc([NotNull] NpcBase myBase, bool despawnable = false) : base()
         {
             Name = myBase.Name;
@@ -147,6 +167,10 @@ namespace Intersect.Server.Entities
             }
 
             base.Die(dropitems, killer);
+            AggroCenterMap = null;
+            AggroCenterX = 0;
+            AggroCenterY = 0;
+            AggroCenterZ = 0;
             MapInstance.Get(MapId).RemoveEntity(this);
             PacketSender.SendEntityDie(this);
             PacketSender.SendEntityLeave(this);
@@ -268,13 +292,17 @@ namespace Intersect.Server.Entities
         //Targeting
         public void AssignTarget(Entity en)
         {
-            //Can't assign a new target if taunted
-            var statuses = Statuses.Values.ToArray();
-            foreach (var status in statuses)
+            //Can't assign a new target if taunted, unless we're resetting their target somehow.
+            var pathTarget = mPathFinder.GetTarget();
+            if (en != null || (pathTarget != null && (pathTarget.TargetMapId != AggroCenterMap.Id || pathTarget.TargetX != AggroCenterX || pathTarget.TargetY != AggroCenterY)))
             {
-                if (status.Type == StatusTypes.Taunt)
+                var statuses = Statuses.Values.ToArray();
+                foreach (var status in statuses)
                 {
-                    return;
+                    if (status.Type == StatusTypes.Taunt)
+                    {
+                        return;
+                    }
                 }
             }
 
@@ -314,7 +342,18 @@ namespace Intersect.Server.Entities
                     }
                 }
             }
-
+            // Are we configured to handle resetting NPCs after they chase a target for a specified amount of tiles?
+            if (Options.Npc.AllowResetRadius)
+            {
+                // Are we configured to allow new reset locations before they move to their original location, or do we simply not have an original location yet?
+                if (Options.Npc.AllowNewResetLocationBeforeFinish || AggroCenterMap == null)
+                {
+                    AggroCenterMap = Map;
+                    AggroCenterX = X;
+                    AggroCenterY = Y;
+                    AggroCenterZ = Z;
+                }
+            }
             PacketSender.SendNpcAggressionToProximity(this);
         }
 
@@ -882,113 +921,127 @@ namespace Intersect.Server.Entities
                         mPathFinder.SetTarget(new PathfinderTarget(targetMap, targetX, targetY, targetZ));
                     }
 
-                    if (mPathFinder.GetTarget() != null)
+                }
+
+                if (mPathFinder.GetTarget() != null)
+                {
+                    if (Target != null)
                     {
                         TryCastSpells();
-                        // Check if can attack
-                        if (!IsOneBlockAway(
-                            mPathFinder.GetTarget().TargetMapId, mPathFinder.GetTarget().TargetX,
-                            mPathFinder.GetTarget().TargetY, mPathFinder.GetTarget().TargetZ
-                        ))
+                    }
+                    if (!IsOneBlockAway(
+                        mPathFinder.GetTarget().TargetMapId, mPathFinder.GetTarget().TargetX,
+                        mPathFinder.GetTarget().TargetY, mPathFinder.GetTarget().TargetZ
+                    ))
+                    {
+                        switch (mPathFinder.Update(timeMs))
                         {
-                            switch (mPathFinder.Update(timeMs))
-                            {
-                                case PathfinderResult.Success:
-                                    var dir = mPathFinder.GetMove();
-                                    if (dir > -1)
+                            case PathfinderResult.Success:
+                                var dir = mPathFinder.GetMove();
+                                if (dir > -1)
+                                {
+                                    if (fleeing)
                                     {
-                                        if (fleeing)
+                                        switch (dir)
                                         {
-                                            switch (dir)
-                                            {
-                                                case 0:
-                                                    dir = 1;
+                                            case 0:
+                                                dir = 1;
+                                                break;
+                                            case 1:
+                                                dir = 0;
 
-                                                    break;
-                                                case 1:
-                                                    dir = 0;
+                                                break;
+                                            case 2:
+                                                dir = 3;
 
-                                                    break;
-                                                case 2:
-                                                    dir = 3;
+                                                break;
+                                            case 3:
+                                                dir = 2;
 
-                                                    break;
-                                                case 3:
-                                                    dir = 2;
+                                                break;
+                                            case 4:
+                                                dir = 5;
 
-                                                    break;
-                                                case 4:
-                                                    dir = 5;
+                                                break;
+                                            case 5:
+                                                dir = 4;
 
-                                                    break;
-                                                case 5:
-                                                    dir = 4;
+                                                break;
+                                            case 6:
+                                                dir = 7;
 
-                                                    break;
-                                                case 6:
-                                                    dir = 7;
+                                                break;
+                                            case 7:
+                                                dir = 6;
 
-                                                    break;
-                                                case 7:
-                                                    dir = 6;
-
-                                                    break;
-                                            }
+                                                break;
                                         }
-
-                                        if (CanMove(dir) == -1 || CanMove(dir) == -4)
-                                        {
-                                            //check if NPC is snared or stunned
-                                            statuses = Statuses.Values.ToArray();
-                                            foreach (var status in statuses)
-                                            {
-                                                if (status.Type == StatusTypes.Stun ||
-                                                    status.Type == StatusTypes.Snare ||
-                                                    status.Type == StatusTypes.Sleep || 
-                                                    status.Type == StatusTypes.Fear)
-                                                {
-                                                    return;
-                                                }
-                                            }
-
-                                            Move((byte) dir, null);
-                                        }
-                                        else
-                                        {
-                                            mPathFinder.PathFailed(timeMs);
-                                        }
-                                        
                                     }
-                                    // Npc move when here
 
-                                    break;
-                                case PathfinderResult.OutOfRange:
-                                    RemoveTarget();
-                                    targetMap = Guid.Empty;
+                                    if (CanMove(dir) == -1 || CanMove(dir) == -4)
+                                    {
+                                        //check if NPC is snared or stunned
+                                        statuses = Statuses.Values.ToArray();
+                                        foreach (var status in statuses)
+                                        {
+                                            if (status.Type == StatusTypes.Stun ||
+                                                status.Type == StatusTypes.Snare ||
+                                                status.Type == StatusTypes.Sleep)
+                                            {
+                                                return;
+                                            }
+                                        }
 
-                                    break;
-                                case PathfinderResult.NoPathToTarget:
-                                    TryFindNewTarget(timeMs, Target?.Id ?? Guid.Empty);
-                                    targetMap = Guid.Empty;
+                                        Move((byte)dir, null);
+                                    }
+                                    else
+                                    {
+                                        mPathFinder.PathFailed(timeMs);
+                                    }
 
-                                    break;
-                                case PathfinderResult.Failure:
-                                    targetMap = Guid.Empty;
-                                    RemoveTarget();
 
-                                    break;
-                                case PathfinderResult.Wait:
-                                    targetMap = Guid.Empty;
+                                    // Have we reached our destination? If so, clear it.
+                                    var tloc = mPathFinder.GetTarget();
+                                    if (tloc.TargetMapId == MapId && tloc.TargetX == X && tloc.TargetY == Y)
+                                    {
+                                        targetMap = Guid.Empty;
 
-                                    break;
-                                default:
-                                    throw new ArgumentOutOfRangeException();
-                            }
+                                        // Reset our aggro center so we can get "pulled" again.
+                                        AggroCenterMap = null;
+                                        AggroCenterX = 0;
+                                        AggroCenterY = 0;
+                                        AggroCenterZ = 0;
+                                    }
+                                }
+
+                                break;
+                            case PathfinderResult.OutOfRange:
+                                RemoveTarget();
+                                targetMap = Guid.Empty;
+
+                                break;
+                            case PathfinderResult.NoPathToTarget:
+                                TryFindNewTarget(timeMs, Target?.Id ?? Guid.Empty);
+                                targetMap = Guid.Empty;
+
+                                break;
+                            case PathfinderResult.Failure:
+                                targetMap = Guid.Empty;
+                                RemoveTarget();
+
+                                break;
+                            case PathfinderResult.Wait:
+                                targetMap = Guid.Empty;
+
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
                         }
-                        else
+                    }
+                    else
                         {
                             var fleed = false;
-                            if (fleeing)
+                            if (Target != null && fleeing)
                             {
                                 var dir = DirToEnemy(Target);
                                 switch (dir)
@@ -1047,7 +1100,9 @@ namespace Intersect.Server.Entities
                                 }
                             }
 
-                            if (!fleed)
+                        if (!fleed)
+                        {
+                            if (Target != null)
                             {
                                 if (Dir != DirToEnemy(Target) && DirToEnemy(Target) != -1)
                                 {
@@ -1061,7 +1116,6 @@ namespace Intersect.Server.Entities
                                     }
                                     else
                                     {
-                                        // Code come here when player is near.
                                         if (CanAttack(Target, null))
                                         {
                                             TryAttack(Target);
@@ -1142,6 +1196,27 @@ namespace Intersect.Server.Entities
                 {
                     MapInstance.Get(MapId).AddEntity(this);
                 }
+            }
+            // Check if we've moved out of our range we're allowed to move from after being "aggro'd" by something.
+            // If so, remove target and move back to the origin point.
+            if (Options.Npc.AllowResetRadius && AggroCenterMap != null && GetDistanceTo(AggroCenterMap, AggroCenterX, AggroCenterY) > Options.Npc.ResetRadius)
+            {
+                // Remove our target.
+                RemoveTarget();
+
+                // Reset our vitals and statusses when configured.
+                if (Options.Npc.ResetVitalsAndStatusses)
+                {
+                    Statuses.Clear();
+                    DoT.Clear();
+                    for (var v = 0; v < (int)Vitals.VitalCount; v++)
+                    {
+                        RestoreVital((Vitals)v);
+                    }
+                }
+
+                // Try and move back to where we came from before we started chasing something.
+                mPathFinder.SetTarget(new PathfinderTarget(AggroCenterMap.Id, AggroCenterX, AggroCenterY, AggroCenterZ));
             }
             // End of the Npc Movement
         }
