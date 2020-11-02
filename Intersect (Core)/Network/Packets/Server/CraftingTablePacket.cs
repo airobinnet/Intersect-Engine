@@ -1,10 +1,13 @@
-﻿namespace Intersect.Network.Packets.Server
+﻿using System;
+using System.Collections.Generic;
+
+namespace Intersect.Network.Packets.Server
 {
 
     public class CraftingTablePacket : CerasPacket
     {
 
-        public CraftingTablePacket(string tableData, bool close, string reqcheck)
+        public CraftingTablePacket(string tableData, bool close, List<Guid> reqcheck)
         {
             TableData = tableData;
             Close = close;
@@ -15,7 +18,7 @@
 
         public bool Close { get; set; }
 
-        public string ReqCheck { get; set; }
+        public List<Guid> ReqCheck { get; set; }
 
     }
 

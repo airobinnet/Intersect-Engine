@@ -10,7 +10,9 @@ using Intersect.Client.Framework.Input;
 using Intersect.Client.General;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
+using Intersect.Enums;
 using Intersect.GameObjects;
+using Intersect.GameObjects.Events;
 
 namespace Intersect.Client.Interface.Game.Shop
 {
@@ -46,10 +48,19 @@ namespace Intersect.Client.Interface.Game.Shop
 
         public ImagePanel Pnl;
 
+        private bool CanBuy = true;
+
         public ShopItem(ShopWindow shopWindow, int index)
         {
             mShopWindow = shopWindow;
             mMySlot = index;
+        }
+
+        public ShopItem(ShopWindow shopWindow, int index, bool canbuy)
+        {
+            mShopWindow = shopWindow;
+            mMySlot = index;
+            CanBuy = canbuy;
         }
 
         public void Setup()
@@ -67,12 +78,19 @@ namespace Intersect.Client.Interface.Game.Shop
             var item = ItemBase.Get(Globals.GameShop.SellingItems[mMySlot].ItemId);
             if (item != null)
             {
-                if (item.IsStackable)
+                if (CanBuy)
                 {
-                    var iBox = new InputBox(
-                        Strings.Shop.buyitem, Strings.Shop.buyitemprompt.ToString(item.Name), true,
-                        InputBox.InputType.NumericInput, BuyItemInputBoxOkay, null, mMySlot
-                    );
+                    if (item.IsStackable)
+                    {
+                        var iBox = new InputBox(
+                            Strings.Shop.buyitem, Strings.Shop.buyitemprompt.ToString(item.Name), true,
+                            InputBox.InputType.NumericInput, BuyItemInputBoxOkay, null, mMySlot
+                        );
+                    }
+                    else
+                    {
+                        PacketSender.SendBuyItem(mMySlot, 1);
+                    }
                 }
                 else
                 {
@@ -144,12 +162,13 @@ namespace Intersect.Client.Interface.Game.Shop
                 mCompWindow = null;
             }
 
-            var item = ItemBase.Get(Globals.GameShop.SellingItems[mMySlot].CostItemId);
-            if (item != null && Globals.GameShop.SellingItems[mMySlot].Item != null)
+            var Costitem = ItemBase.Get(Globals.GameShop.SellingItems[mMySlot].CostItemId);
+
+            if (Costitem != null && Globals.GameShop.SellingItems[mMySlot].Item != null)
             {
                 mDescWindow = new ItemDescWindow(
-                    Globals.GameShop.SellingItems[mMySlot].Item, 1, mShopWindow.X, mShopWindow.Y, item.StatsGiven, "",
-                    Strings.Shop.costs.ToString(Globals.GameShop.SellingItems[mMySlot].CostItemQuantity, item.Name)
+                    Globals.GameShop.SellingItems[mMySlot].Item, 1, mShopWindow.X, mShopWindow.Y, Costitem.StatsGiven, "",
+                    Strings.Shop.costs.ToString(Globals.GameShop.SellingItems[mMySlot].CostItemQuantity, Costitem.Name)
                 );
                     if (ItemBase.Get(Globals.GameShop.SellingItems[mMySlot].ItemId).ItemType == Enums.ItemTypes.Equipment)
                     {

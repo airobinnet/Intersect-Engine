@@ -86,7 +86,7 @@ namespace Intersect.Client.Interface.Game.TradeSkills
             ThisLevel = thislevel;
         }
 
-        public TradeSkillUnlock(TradeSkillInfoWindow tradeSkillWindow, Guid index, int damageincrease, int currentlevel, int nothing)
+        public TradeSkillUnlock(TradeSkillInfoWindow tradeSkillWindow, Guid index, int damageincrease, int currentlevel, bool isskill)
         {
             mTradeSkillWindow = tradeSkillWindow;
             mIndex = index;
@@ -107,7 +107,66 @@ namespace Intersect.Client.Interface.Game.TradeSkills
             mLastUpdateTime = Globals.System.GetTimeMs();
         }
 
-        public void LoadItem()
+        public void LoadItem(bool isRep)
+        {
+            var UnlockData = ItemBase.Get(mIndex);
+            var name = "";
+
+            mLevelText.Text = "";
+
+            if (UnlockData != null)
+            {
+                name = UnlockData.Name;
+                if (isRep)
+                {
+                    mLevelText.Text = "" + (Standing)LevelRequired;
+                }
+                else
+                {
+                    mLevelText.Text = "Level: " + LevelRequired;
+                }
+                var itemTex = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Item, ItemBase.Get(UnlockData.Id).Icon);
+                if (itemTex != null)
+                {
+                    Pnl.Texture = itemTex;
+                    if (LevelRequired > CurrentLevel)
+                    {
+                        Pnl.RenderColor = new Color(100, 255, 255, 255);
+                    }
+                    else
+                    {
+                        Pnl.RenderColor = new Color(255, 255, 255, 255);
+                    }
+                }
+                else
+                {
+                    if (Pnl.Texture != null)
+                    {
+                        Pnl.Texture = null;
+                    }
+                }
+            }
+
+            mNameText.Text = name.ToString();
+
+
+            if (LevelRequired <= CurrentLevel)
+            {
+                mNameText.TextColor = Color.Green;
+                mLevelText.TextColor = Color.Green;
+            }
+            else
+            {
+                mNameText.TextColor = Color.Red;
+                mLevelText.TextColor = Color.Red;
+            }
+            Container.HoverEnter += pnl_HoverItemEnter;
+            Container.HoverLeave += pnl_HoverLeave;
+            Pnl.HoverEnter += pnl_HoverItemEnter;
+            Pnl.HoverLeave += pnl_HoverLeave;
+        }
+
+        public void LoadCraft()
         {
             var UnlockData = CraftBase.Get(mIndex);
             var name = "";
@@ -153,9 +212,9 @@ namespace Intersect.Client.Interface.Game.TradeSkills
                 mNameText.TextColor = Color.Red;
                 mLevelText.TextColor = Color.Red;
             }
-            Container.HoverEnter += pnl_HoverEnter;
+            Container.HoverEnter += pnl_HoverCraftEnter;
             Container.HoverLeave += pnl_HoverLeave;
-            Pnl.HoverEnter += pnl_HoverEnter;
+            Pnl.HoverEnter += pnl_HoverCraftEnter;
             Pnl.HoverLeave += pnl_HoverLeave;
         }
 
@@ -236,7 +295,57 @@ namespace Intersect.Client.Interface.Game.TradeSkills
             }
         }
 
-        void pnl_HoverEnter(Base sender, EventArgs arguments)
+        void pnl_HoverItemEnter(Base sender, EventArgs arguments)
+        {
+            if (InputHandler.MouseFocus != null)
+            {
+                return;
+            }
+
+            mMouseOver = true;
+
+            if (Globals.InputManager.MouseButtonDown(GameInput.MouseButtons.Left))
+            {
+
+                return;
+            }
+
+            if (DescWindow != null)
+            {
+                DescWindow.Dispose();
+                DescWindow = null;
+            }
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+            }
+
+            if (mIndex != null && ItemBase.Get(mIndex) != null)
+            {
+                DescWindow = new ItemDescWindow(
+                    ItemBase.Get(mIndex), 1, mTradeSkillWindow.X, mTradeSkillWindow.Y,
+                    new int[(int)Stats.StatCount]
+                );
+                if (ItemBase.Get(mIndex).ItemType == Enums.ItemTypes.Equipment)
+                {
+                    var i = 0;
+                    foreach (var equip in Globals.Me.Equipment)
+                    {
+                        if (ItemBase.Get(equip)?.EquipmentSlot == ItemBase.Get(mIndex).EquipmentSlot)
+                        {
+                            mCompWindow = new ItemCompareWindow(
+                                           ItemBase.Get(equip), ItemBase.Get(mIndex), 1, mTradeSkillWindow.X,
+                                           mTradeSkillWindow.Y, Globals.Me.Inventory[Globals.Me.MyEquipment[ItemBase.Get(equip).EquipmentSlot]].StatBuffs, ItemBase.Get(mIndex).StatsGiven, "", Strings.ItemDesc.equippeditem
+                                        );
+                            i++;
+                        }
+                    }
+                }
+            }
+        }
+
+        void pnl_HoverCraftEnter(Base sender, EventArgs arguments)
         {
             if (InputHandler.MouseFocus != null)
             {

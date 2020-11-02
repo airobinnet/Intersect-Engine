@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using Intersect.Enums;
+using Intersect.GameObjects;
+using Intersect.GameObjects.Events;
 using Intersect.Localization;
-
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -75,6 +77,395 @@ namespace Intersect.Client.Localization
                            postfix;
                 }
             }
+        }
+
+        public static string GetEventConditionalDesc(VariableIsCondition condition)
+        {
+            var pVar = GetVariableComparisonString((dynamic)condition.Comparison);
+
+            if (condition.VariableType == VariableTypes.PlayerVariable)
+            {
+                return Strings.EventConditionDesc.playervariable.ToString(
+                    PlayerVariableBase.GetName(condition.VariableId), pVar
+                );
+            }
+            else if (condition.VariableType == VariableTypes.ServerVariable)
+            {
+                return Strings.EventConditionDesc.globalvariable.ToString(
+                    ServerVariableBase.GetName(condition.VariableId), pVar
+                );
+            }
+
+            return "";
+        }
+
+        public static string GetEventConditionalDesc(HasItemCondition condition)
+        {
+            return Strings.EventConditionDesc.hasitem.ToString(condition.Quantity, ItemBase.GetName(condition.ItemId));
+        }
+
+        public static string GetEventConditionalDesc(IsItemEquippedCondition condition)
+        {
+            return Strings.EventConditionDesc.hasitemequipped.ToString(ItemBase.GetName(condition.ItemId));
+        }
+
+        public static string GetEventConditionalDesc(EquippedItemTagIsCondition condition)
+        {
+            return Strings.EventConditionDesc.itemequippedtagis.ToString(condition.Tag ?? ItemBase.Deleted);
+        }
+
+        public static string GetEventConditionalDesc(HasItemWTagCondition condition)
+        {
+            if (condition.Quantity > 1)
+            {
+                return Strings.EventConditionDesc.hasmultipleitemwithtag.ToString(condition.Tag ?? ItemBase.Deleted,condition.Quantity);
+            }
+            else
+            {
+                return Strings.EventConditionDesc.hasitemwithtag.ToString(condition.Tag ?? ItemBase.Deleted);
+            }
+        }
+
+        public static string GetEventConditionalDesc(ClassIsCondition condition)
+        {
+            return Strings.EventConditionDesc.Class.ToString(ClassBase.GetName(condition.ClassId));
+        }
+        
+        public static string GetEventConditionalDesc(HasTradeSkillCondition condition)
+        {
+            if (TradeSkillBase.Get(condition.TradeSkill).TradeskillType == TradeSkillTypes.Reputation)
+            {
+                return Strings.EventConditionDesc.Tradeskillrep.ToString(TradeSkillBase.GetName(condition.TradeSkill));
+            }
+            else
+            {
+                return Strings.EventConditionDesc.Tradeskill.ToString(TradeSkillBase.GetName(condition.TradeSkill));
+            }
+        }
+
+        public static string GetEventConditionalDesc(TradeSkillHasLevelCondition condition)
+        {
+            if (TradeSkillBase.Get(condition.TradeSkill).TradeskillType == TradeSkillTypes.Reputation)
+            {
+                return Strings.EventConditionDesc.Tradeskillreplevel.ToString(TradeSkillBase.GetName(condition.TradeSkill), (Standing)condition.TradeSkillLevel);
+            }
+            else
+            {
+                return Strings.EventConditionDesc.Tradeskilllevel.ToString(TradeSkillBase.GetName(condition.TradeSkill), condition.TradeSkillLevel);
+            }
+        }
+
+        public static string GetEventConditionalDesc(KnowsSpellCondition condition)
+        {
+            return Strings.EventConditionDesc.knowsspell.ToString(SpellBase.GetName(condition.SpellId));
+        }
+
+        public static string GetEventConditionalDesc(LevelOrStatCondition condition)
+        {
+            var pLvl = "";
+            switch (condition.Comparator)
+            {
+                case VariableComparators.Equal:
+                    pLvl = Strings.EventConditionDesc.equal.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.GreaterOrEqual:
+                    pLvl = Strings.EventConditionDesc.greaterequal.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.LesserOrEqual:
+                    pLvl = Strings.EventConditionDesc.lessthanequal.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.Greater:
+                    pLvl = Strings.EventConditionDesc.greater.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.Less:
+                    pLvl = Strings.EventConditionDesc.lessthan.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.NotEqual:
+                    pLvl = Strings.EventConditionDesc.notequal.ToString(condition.Value);
+
+                    break;
+            }
+
+            var lvlorstat = "";
+            if (condition.ComparingLevel)
+            {
+                lvlorstat = Strings.EventConditionDesc.level;
+            }
+            else
+            {
+                lvlorstat = Strings.Combat.stats[(int)condition.Stat];
+            }
+
+            return Strings.EventConditionDesc.levelorstat.ToString(lvlorstat, pLvl);
+        }
+
+        public static string GetEventConditionalDesc(SelfSwitchCondition condition)
+        {
+            var sValue = Strings.EventConditionDesc.False;
+            if (condition.Value)
+            {
+                sValue = Strings.EventConditionDesc.True;
+            }
+
+            return Strings.EventConditionDesc.selfswitch.ToString(
+                Strings.EventConditionDesc.selfswitches[condition.SwitchIndex], sValue
+            );
+        }
+
+        public static string GetEventConditionalDesc(AccessIsCondition condition)
+        {
+            if (condition.Access == Access.None)
+            {
+                return Strings.EventConditionDesc.power.ToString(Strings.EventConditionDesc.modadmin);
+            }
+            else
+            {
+                return Strings.EventConditionDesc.power.ToString(Strings.EventConditionDesc.admin);
+            }
+        }
+
+        public static string GetEventConditionalDesc(TimeBetweenCondition condition)
+        {
+            var timeRanges = new List<string>();
+            var time = new DateTime(2000, 1, 1, 0, 0, 0);
+            for (var i = 0; i < 1440; i += TimeBase.GetTimeBase().RangeInterval)
+            {
+                var addRange = time.ToString("h:mm:ss tt") + " to ";
+                time = time.AddMinutes(TimeBase.GetTimeBase().RangeInterval);
+                addRange += time.ToString("h:mm:ss tt");
+                timeRanges.Add(addRange);
+            }
+
+            var time1 = "";
+            var time2 = "";
+            if (condition.Ranges[0] > -1 && condition.Ranges[0] < timeRanges.Count)
+            {
+                time1 = timeRanges[condition.Ranges[0]];
+            }
+            else
+            {
+                time1 = Strings.EventConditionDesc.timeinvalid;
+            }
+
+            if (condition.Ranges[1] > -1 && condition.Ranges[1] < timeRanges.Count)
+            {
+                time2 = timeRanges[condition.Ranges[1]];
+            }
+            else
+            {
+                time2 = Strings.EventConditionDesc.timeinvalid;
+            }
+
+            return Strings.EventConditionDesc.time.ToString(time1, time2);
+        }
+
+        public static string GetEventConditionalDesc(CanStartQuestCondition condition)
+        {
+            return Strings.EventConditionDesc.startquest.ToString(QuestBase.GetName(condition.QuestId));
+        }
+
+        public static string GetEventConditionalDesc(QuestInProgressCondition condition)
+        {
+            var quest = QuestBase.Get(condition.QuestId);
+            if (quest != null)
+            {
+                QuestBase.QuestTask task = null;
+                foreach (var tsk in quest.Tasks)
+                {
+                    if (tsk.Id == condition.TaskId)
+                    {
+                        task = tsk;
+                    }
+                }
+
+                var taskName = task != null
+                    ? task.GetTaskString(Strings.EventConditionDesc.descriptions)
+                    : Strings.EventConditionDesc.tasknotfound.ToString();
+
+                switch (condition.Progress)
+                {
+                    case QuestProgressState.BeforeTask:
+                        return Strings.EventConditionDesc.questinprogress.ToString(
+                            QuestBase.GetName(condition.QuestId),
+                            Strings.EventConditionDesc.beforetask.ToString(taskName)
+                        );
+                    case QuestProgressState.AfterTask:
+                        return Strings.EventConditionDesc.questinprogress.ToString(
+                            QuestBase.GetName(condition.QuestId),
+                            Strings.EventConditionDesc.aftertask.ToString(taskName)
+                        );
+                    case QuestProgressState.OnTask:
+                        return Strings.EventConditionDesc.questinprogress.ToString(
+                            QuestBase.GetName(condition.QuestId), Strings.EventConditionDesc.ontask.ToString(taskName)
+                        );
+                    default: //On Any task
+                        return Strings.EventConditionDesc.questinprogress.ToString(
+                            QuestBase.GetName(condition.QuestId), Strings.EventConditionDesc.onanytask
+                        );
+                }
+            }
+
+            return Strings.EventConditionDesc.questinprogress.ToString(QuestBase.GetName(condition.QuestId));
+        }
+
+
+        public static string GetEventConditionalDesc(QuestCompletedCondition condition)
+        {
+            return Strings.EventConditionDesc.questcompleted.ToString(QuestBase.GetName(condition.QuestId));
+        }
+
+        public static string GetEventConditionalDesc(NoNpcsOnMapCondition condition)
+        {
+            return Strings.EventConditionDesc.nonpcsonmap;
+        }
+
+        public static string GetEventConditionalDesc(MapHasNPCWTag condition)
+        {
+            return Strings.EventConditionDesc.maphasnpcwithtag.ToString(condition.Tag ?? ItemBase.Deleted);
+        }
+
+        public static string GetEventConditionalDesc(MapHasTag condition)
+        {
+            return Strings.EventConditionDesc.maphastag.ToString(condition.Tag ?? ItemBase.Deleted);
+        }
+
+        public static string GetEventConditionalDesc(GenderIsCondition condition)
+        {
+            return Strings.EventConditionDesc.gender.ToString(
+                condition.Gender == 0 ? Strings.EventConditionDesc.male : Strings.EventConditionDesc.female
+            );
+        }
+
+        public static string GetEventConditionalDesc(MapIsCondition condition)
+        {
+            var map = Intersect.GameObjects.Maps.MapList.MapList.List.FindMap(condition.MapId);
+            if (map != null)
+            {
+                return Strings.EventConditionDesc.map.ToString(map.Name);
+            }
+
+            return Strings.EventConditionDesc.map.ToString(EventConditionDesc.mapnotfound);
+        }
+
+        public static string GetEventConditionalDesc(HasFreeInventorySlots condition)
+        {
+            return Strings.EventConditionDesc.HasFreeInventorySlots.ToString(condition.Quantity);
+        }
+
+        public static string GetVariableComparisonString(VariableCompaison comparison)
+        {
+            return "";
+        }
+
+        public static string GetVariableComparisonString(BooleanVariableComparison comparison)
+        {
+            var value = "";
+            var pVar = "";
+
+            if (comparison.CompareVariableId == Guid.Empty)
+            {
+                value = comparison.Value.ToString();
+            }
+            else
+            {
+                if (comparison.CompareVariableType == VariableTypes.PlayerVariable)
+                {
+                    value = Strings.EventConditionDesc.playervariablevalue.ToString(
+                        PlayerVariableBase.GetName(comparison.CompareVariableId)
+                    );
+                }
+                else if (comparison.CompareVariableType == VariableTypes.ServerVariable)
+                {
+                    value = Strings.EventConditionDesc.globalvariablevalue.ToString(
+                        ServerVariableBase.GetName(comparison.CompareVariableId)
+                    );
+                }
+            }
+
+            if (comparison.ComparingEqual)
+            {
+                pVar = Strings.EventConditionDesc.equal.ToString(value);
+            }
+            else
+            {
+                pVar = Strings.EventConditionDesc.notequal.ToString(value);
+            }
+
+            return pVar;
+        }
+
+        public static string GetVariableComparisonString(IntegerVariableComparison comparison)
+        {
+            var value = "";
+            var pVar = "";
+
+            if (comparison.CompareVariableId == Guid.Empty)
+            {
+                value = comparison.Value.ToString();
+            }
+            else
+            {
+                if (comparison.CompareVariableType == VariableTypes.PlayerVariable)
+                {
+                    value = Strings.EventConditionDesc.playervariablevalue.ToString(
+                        PlayerVariableBase.GetName(comparison.CompareVariableId)
+                    );
+                }
+                else if (comparison.CompareVariableType == VariableTypes.ServerVariable)
+                {
+                    value = Strings.EventConditionDesc.globalvariablevalue.ToString(
+                        ServerVariableBase.GetName(comparison.CompareVariableId)
+                    );
+                }
+            }
+
+            switch (comparison.Comparator)
+            {
+                case VariableComparators.Equal:
+                    pVar = Strings.EventConditionDesc.equal.ToString(value);
+
+                    break;
+                case VariableComparators.GreaterOrEqual:
+                    pVar = Strings.EventConditionDesc.greaterequal.ToString(value);
+
+                    break;
+                case VariableComparators.LesserOrEqual:
+                    pVar = Strings.EventConditionDesc.lessthanequal.ToString(value);
+
+                    break;
+                case VariableComparators.Greater:
+                    pVar = Strings.EventConditionDesc.greater.ToString(value);
+
+                    break;
+                case VariableComparators.Less:
+                    pVar = Strings.EventConditionDesc.lessthan.ToString(value);
+
+                    break;
+                case VariableComparators.NotEqual:
+                    pVar = Strings.EventConditionDesc.notequal.ToString(value);
+
+                    break;
+            }
+
+            return pVar;
+        }
+
+        public static string GetVariableComparisonString(StringVariableComparison comparison)
+        {
+            switch (comparison.Comparator)
+            {
+                case StringVariableComparators.Equal:
+                    return Strings.EventConditionDesc.equal.ToString(comparison.Value);
+                case StringVariableComparators.Contains:
+                    return Strings.EventConditionDesc.contains.ToString(comparison.Value);
+            }
+
+            return "";
         }
 
         public static void Load()
@@ -505,6 +896,15 @@ namespace Intersect.Client.Localization
 
         public struct Combat
         {
+            public static Dictionary<int, LocalizedString> stats = new Dictionary<int, LocalizedString>
+            {
+                {0, @"Attack"},
+                {1, @"Ability Power"},
+                {2, @"Defense"},
+                {3, @"Magic Resist"},
+                {4, @"Speed"},
+                {5, @"Movement Speed"},
+            };
 
             public static LocalizedString exp = @"Experience";
 
@@ -878,6 +1278,16 @@ namespace Intersect.Client.Localization
             public static LocalizedString effect = @"Bonus Effect: {00}% {01}";
 
             public static LocalizedString equippeditem = @"Equipped Item";
+
+            public static LocalizedString conditiontradeskillreputation = @"Your reputation with {00} needs to be {01} or higher.";
+
+            public static LocalizedString conditiontradeskill = @"{00} needs to be level {01} or higher.";
+
+            public static LocalizedString conditionclassis = @"Your class needs to be {00}.";
+
+            public static LocalizedString conditionitemequipped = @"You need to have {00} equipped.";
+
+            public static LocalizedString conditionvariable = @"{00} needs to be {02} then {01}.";
 
             public static Dictionary<int, LocalizedString> effects = new Dictionary<int, LocalizedString>
             {
@@ -1687,6 +2097,135 @@ namespace Intersect.Client.Localization
             public static LocalizedString Size = @"{00} Left";
 
             public static LocalizedString Percent = @"{00}%";
+
+        }
+
+        public struct EventConditionDesc
+        {
+
+            public static LocalizedString admin = @"Admin";
+
+            public static LocalizedString aftertask = @", After Task: {00}";
+
+            public static LocalizedString beforetask = @", Before Task: {00}";
+
+            public static LocalizedString Class = @"Player's class is {00}";
+
+            public static LocalizedString Tradeskillrep = @"Player has {00}";
+
+            public static LocalizedString Tradeskillreplevel = @"Player has at least {01} with {00} ";
+
+            public static LocalizedString Tradeskill = @"Player has {00}";
+
+            public static LocalizedString Tradeskilllevel = @"Player's {00} is greater than or equal to {01}";
+
+            public static LocalizedString contains = @"contains {00}";
+
+            public static LocalizedString equal = @"is equal to {00}";
+
+            public static LocalizedString False = @"False";
+
+            public static LocalizedString female = @"Female";
+
+            public static LocalizedString gender = @"Player's Gender is {00}";
+
+            public static LocalizedString globalvariable = @"Global Variable: {00} {01}";
+
+            public static LocalizedString globalvariablevalue = @"Global Variable: {00}'s Value";
+
+            public static LocalizedString greater = @"is greater than {00}";
+
+            public static LocalizedString greaterequal = @"is greater than or equal to {00}";
+
+            public static LocalizedString hasitem = @"Player has at least {00} of Item {01}";
+
+            public static LocalizedString hasitemequipped = @"Player has Item {00} equipped";
+
+            public static LocalizedString itemequippedtagis = @"Player equipped Item tag is {00} ";
+
+            public static LocalizedString hasitemwithtag = @"Player has Item with tag {00}";
+
+            public static LocalizedString hasmultipleitemwithtag = @"Player has {01}x Item with tag {00}";
+
+            public static LocalizedString knowsspell = @"Player knows Spell {00}";
+
+            public static LocalizedString lessthan = @"is less than {00}";
+
+            public static LocalizedString lessthanequal = @"is less than or equal to {00}";
+
+            public static LocalizedString level = @"Level";
+
+            public static LocalizedString levelorstat = @"{00} {01}";
+
+            public static LocalizedString male = @"Male";
+
+            public static LocalizedString map = @"Player's Map is {00}";
+
+            public static LocalizedString mapnotfound = @"NOT FOUND";
+
+            public static LocalizedString modadmin = @"Mod or Admin";
+
+            public static LocalizedString negated = @"NOT [{00}]";
+
+            public static LocalizedString nonpcsonmap = @"No NPCs on the map";
+
+            public static LocalizedString maphasnpcwithtag = @"Map has NPCs with tag {00}";
+
+            public static LocalizedString maphastag = @"Map has tag {00}";
+
+            public static LocalizedString notequal = @"does not equal {00}";
+
+            public static LocalizedString onanytask = @", On Any Task";
+
+            public static LocalizedString ontask = @", On Task: {00}";
+
+            public static LocalizedString playerdeath = @"Player Death";
+
+            public static LocalizedString playervariable = @"Player Variable: {00} {01}";
+
+            public static LocalizedString playervariablevalue = @"Player Variable: {00}'s Value";
+
+            public static LocalizedString power = @"Player's Power is {00}";
+
+            public static LocalizedString questcompleted = @"Quest is Completed: {00}";
+
+            public static LocalizedString questinprogress = @"Quest In Progress: {00} {01}";
+
+            public static LocalizedString selfswitch = @"Self Switch {00} is {01}";
+
+            [NotNull, JsonProperty]
+            public static LocalizedString HasFreeInventorySlots = @"Player has {00} free inventory slot(s)";
+
+            public static Dictionary<int, LocalizedString> selfswitches = new Dictionary<int, LocalizedString>
+            {
+                {0, @"A"},
+                {1, @"B"},
+                {2, @"C"},
+                {3, @"D"},
+            };
+
+            public static LocalizedString startquest = @"Can Start Quest: {00}";
+
+            public static LocalizedString tasknotfound = @"Not Found";
+
+            public static LocalizedString time = @"Time is between {00} and {01}";
+
+            public static LocalizedString timeinvalid = @"invalid";
+
+            public static LocalizedString True = @"True";
+
+            public static Dictionary<int, LocalizedString> descriptions = new Dictionary<int, LocalizedString>
+            {
+                {0, @"Event Driven - {00}"},
+                {1, @"Gather Items [{00} x{01}] - {02}"},
+                {2, @"Kill Npc(s) [{00} x{01}] - {02}"},
+                {3, @"Go to [{00} X:{01}-{04}, Y:{02}-{05}] - {03}"},
+                {4, @"Kill Npc(s) with tag [{00} x{01}] - {02}"},
+                {5, @"Press Key: [{00}] - {01}"},
+                {6, @"[{00} x{01}]"},
+                {7, @"[{00} x{01}]"},
+                {8, @"[{00} x{01}]"},
+            };
 
         }
 

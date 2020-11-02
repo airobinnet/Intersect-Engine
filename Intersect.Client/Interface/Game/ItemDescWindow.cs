@@ -6,8 +6,10 @@ using Intersect.Client.General;
 using Intersect.Client.Localization;
 using Intersect.Enums;
 using Intersect.GameObjects;
-
+using Intersect.GameObjects.Events;
+using Intersect.GameObjects.Switches_and_Variables;
 using JetBrains.Annotations;
+using System;
 
 namespace Intersect.Client.Interface.Game
 {
@@ -106,7 +108,286 @@ namespace Intersect.Client.Interface.Game
                     );
 
                     itemDesc.AddLineBreak();
+                    itemDesc.AddText(
+                         " ", itemDesc.RenderColor,
+                         itemDescText.CurAlignments.Count > 0 ? itemDescText.CurAlignments[0] : Alignments.Left,
+                         itemDescText.Font
+                     );
                     itemDesc.AddLineBreak();
+                }
+                var itemBase = item;
+                for (var i = 0; i < itemBase.UsageRequirements.Lists.Count; i++)
+                {
+                    for (var j = 0; j < itemBase.UsageRequirements.Lists[i].Conditions.Count; j++)
+                    {
+                        var tempCondition = Strings.GetEventConditionalDesc((dynamic)itemBase.UsageRequirements.Lists[i].Conditions[j]) + "\n\r";
+                        var tempColor = Color.Green;
+
+                        var condition = (dynamic)itemBase.UsageRequirements.Lists[i].Conditions[j];
+                        if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.TradeSkillHasLevel)
+                        {
+                            var hasSkill = false;
+                            foreach (var tradeskill in Globals.Me.TradeSkills)
+                            {
+                                if (tradeskill.TradeSkillId == condition.TradeSkill)
+                                {
+                                    hasSkill = true;
+                                    if (tradeskill.CurrentLevel < condition.TradeSkillLevel)
+                                    {
+                                        tempColor = Color.Red;
+                                    }
+                                }
+                            }
+                            if (!hasSkill)
+                            {
+                                tempColor = Color.Red;
+                            }
+
+                        }
+
+                        else if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.ClassIs)
+                        {
+                            if (Globals.Me.Class != condition.ClassId)
+                            {
+                                tempColor = Color.Red;
+                            }
+                        }
+
+                        else if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.IsItemEquipped)
+                        {
+                            var HasItem = false;
+                            for (var f = 0; f < Options.EquipmentSlots.Count; f++)
+                            {
+                                if (Globals.Me.Equipment[f] != Guid.Empty)
+                                {
+                                    if (Globals.Me.Equipment[f] == condition.ItemId)
+                                    {
+                                        HasItem = true;
+                                    }
+                                }
+                            }
+                            if (!HasItem)
+                            {
+                                tempColor = Color.Red;
+                            }
+                        }
+
+                        else if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.VariableIs)
+                        {
+                            tempColor = Color.Gray;
+                            tempCondition = "";
+                        }
+
+                        else if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.HasItem)
+                        {
+                            var HasItem = false;
+                            for (var f = 0; f < Options.MaxInvItems; f++)
+                            {
+                                if (Globals.Me.Inventory[f] != null)
+                                {
+                                    if (Globals.Me.Inventory[f].ItemId == condition.ItemId)
+                                    {
+                                        HasItem = true;
+                                    }
+                                }
+                            }
+                            if (!HasItem)
+                            {
+                                tempColor = Color.Red;
+                            }
+                        }
+
+                        else if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.HasItemWTag)
+                        {
+                            var tempcounter = 0;
+                            var HasItem = false;
+                            for (var g = 0; g < Options.MaxInvItems; g++)
+                            {
+                                if (Globals.Me.Inventory[g].ItemId != Guid.Empty)
+                                {
+                                    if (ItemBase.Get(Globals.Me.Inventory[g].ItemId).Tags?.Contains(condition.Tag))
+                                    {
+                                        if (Globals.Me.Inventory[g].Quantity >= condition.Quantity)
+                                        {
+                                            HasItem = true;
+                                        }
+                                        tempcounter++;
+                                    }
+                                }
+                            }
+                            if (tempcounter >= condition.Quantity)
+                            {
+                                HasItem = true;
+                            }
+                            if (!HasItem)
+                            {
+                                tempColor = Color.Red;
+                            }
+                        }
+
+                        else if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.EquippedItemTagIs)
+                        {
+                            var HasItem = false;
+                            for (var f = 0; f < Options.EquipmentSlots.Count; f++)
+                            {
+                                if (Globals.Me.Equipment[f] != Guid.Empty)
+                                {
+                                    if (ItemBase.Get(Globals.Me.Equipment[f]).Tags?.Contains(condition.Tag))
+                                    {
+                                        HasItem = true;
+                                    }
+                                }
+                            }
+                            if (!HasItem)
+                            {
+                                tempColor = Color.Red;
+                            }
+                        }
+
+                        else if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.KnowsSpell)
+                        {
+                            var HasSpell = false;
+                            for (var f = 0; f < Options.MaxPlayerSkills; f++)
+                            {
+                                if (Globals.Me.Spells[f].SpellId != Guid.Empty)
+                                {
+                                    if (SpellBase.Get(Globals.Me.Spells[f].SpellId).Id == condition.SpellId)
+                                    {
+                                        HasSpell = true;
+                                    }
+                                }
+                            }
+                            if (!HasSpell)
+                            {
+                                tempColor = Color.Red;
+                            }
+                        }
+
+                        else if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.LevelOrStat)
+                        {
+                            var lvlStat = 0;
+                            if (condition.ComparingLevel)
+                            {
+                                lvlStat = Globals.Me.Level;
+                            }
+                            else
+                            {
+                                lvlStat = Globals.Me.Stat[(int)condition.Stat];
+                                if (condition.IgnoreBuffs)
+                                {
+                                    lvlStat = Globals.Me.Stat[(int)condition.Stat];
+                                }
+                            }
+
+                            switch (condition.Comparator) //Comparator
+                            {
+                                case VariableComparators.Equal:
+                                    if (lvlStat == condition.Value)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        tempColor = Color.Red;
+                                    }
+
+                                    break;
+                                case VariableComparators.GreaterOrEqual:
+                                    if (lvlStat >= condition.Value)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        tempColor = Color.Red;
+                                    }
+
+                                    break;
+                                case VariableComparators.LesserOrEqual:
+                                    if (lvlStat <= condition.Value)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        tempColor = Color.Red;
+                                    }
+
+                                    break;
+                                case VariableComparators.Greater:
+                                    if (lvlStat > condition.Value)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        tempColor = Color.Red;
+                                    }
+
+                                    break;
+                                case VariableComparators.Less:
+                                    if (lvlStat < condition.Value)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        tempColor = Color.Red;
+                                    }
+
+                                    break;
+                                case VariableComparators.NotEqual:
+                                    if (lvlStat != condition.Value)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        tempColor = Color.Red;
+                                    }
+
+                                    break;
+                                default:
+                                    tempColor = Color.Orange;
+                                    break;
+                            }
+                        }
+
+                        else if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.SelfSwitch)
+                        {
+                            tempColor = Color.Gray;
+                            tempCondition = "";
+                        }
+
+                        else if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.AccessIs)
+                        {
+                            tempColor = Color.Gray;
+                            tempCondition = "";
+                        }
+
+                        else if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.TimeBetween)
+                        {
+                            tempColor = Color.Gray;
+                            tempCondition = "";
+                        }
+
+                        else if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.CanStartQuest)
+                        {
+                            tempColor = Color.Gray;
+                            tempCondition = "";
+                        }
+
+                        else
+                        {
+                            tempColor = Color.Pink;
+                            tempCondition = "";
+                        }
+
+
+                        itemDesc.AddText(
+                               tempCondition, tempColor,
+                               itemDescText.CurAlignments.Count > 0 ? itemDescText.CurAlignments[0] : Alignments.Left,
+                         itemDescText.Font
+                           );
+                        if (tempCondition != "")
+                        {
+                            itemDesc.AddLineBreak();
+                        }
+                    }
                 }
 
                 var stats = "";
@@ -218,6 +499,7 @@ namespace Intersect.Client.Interface.Game
                 itemStats.SizeToChildren(false, true);
                 itemDescText.IsHidden = true;
                 itemStatsText.IsHidden = true;
+                mDescWindow.SizeToChildren(true, true);
                 if (centerHorizontally)
                 {
                     mDescWindow.MoveTo(x - mDescWindow.Width / 2, y + mDescWindow.Padding.Top);

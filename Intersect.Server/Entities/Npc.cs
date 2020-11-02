@@ -672,6 +672,15 @@ namespace Intersect.Server.Entities
                 }
             }
 
+            if (spellBase.SpellType == SpellTypes.CombatSpell &&
+                targetType == SpellTargetTypes.Single)
+            {
+                if (!InRangeOf(Target, spellBase.Combat.CastRange))
+                {
+                    return;
+                }
+            }
+
             if (spellBase.VitalCost == null)
             {
                 return;

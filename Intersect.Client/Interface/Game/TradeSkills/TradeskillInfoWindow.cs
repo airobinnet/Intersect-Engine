@@ -131,18 +131,27 @@ namespace Intersect.Client.Interface.Game.TradeSkills
                 if (mTradeSkillId != Guid.Empty)
                 {
                     var TradeSkillData = Globals.Me.TradeSkills.Where(ts => ts.TradeSkillId == mTradeSkillId).FirstOrDefault();
+                    var TempTs = TradeSkillBase.Get(mTradeSkillId);
 
-                    mLblTradeSkillName.Text = TradeSkillBase.Get(mTradeSkillId).Folder + " Skill: " + TradeSkillBase.Get(mTradeSkillId).Name;
+                    mLblTradeSkillName.Text = TempTs.Folder + ": " + TempTs.Name;
 
-                    mLblTradeSkillInfo.Text = "Level: " + TradeSkillData.CurrentLevel + " - Max level: " + TradeSkillBase.Get(mTradeSkillId).MaxLevel;
+                    if (TempTs.TradeskillType == TradeSkillTypes.Reputation)
+                    {
+                        mLblTradeSkillInfo.Text = "Standing: " + (Standing)TradeSkillData.CurrentLevel + " - Max Standing: " + (Standing)Math.Min(TempTs.MaxLevel, Enum.GetNames(typeof(Standing)).Length-1);
+                    }
+                    else
+                    {
+                        mLblTradeSkillInfo.Text = "Level: " + TradeSkillData.CurrentLevel + " - Max level: " + TempTs.MaxLevel;
+                    }
+
 
                     var i = 0;
 
-                    if (TradeSkillBase.Get(mTradeSkillId).TradeskillType == TradeSkillTypes.Craft)
+                    if (TempTs.TradeskillType == TradeSkillTypes.Craft)
                     {
 
                         mLblUnlocks.Text = "Craft Unlocks";
-                        foreach (var tradeskill in TradeSkillBase.Get(mTradeSkillId).CraftUnlocks)
+                        foreach (var tradeskill in TempTs.CraftUnlocks)
                         {
                             mItems.Add(new TradeSkillUnlock(this, tradeskill.CraftId, tradeskill.LevelRequired, TradeSkillData.CurrentLevel));
                             mItems[i].Container = new ImagePanel(mTradeSkillUnlockContainer, "TradeSkillUnlocks");
@@ -150,7 +159,7 @@ namespace Intersect.Client.Interface.Game.TradeSkills
 
                             mItems[i].Container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 
-                            mItems[i].LoadItem();
+                            mItems[i].LoadCraft();
                             mItems[i].Update();
                             mItems[i].Container.SetPosition(
                             5,
@@ -159,7 +168,7 @@ namespace Intersect.Client.Interface.Game.TradeSkills
                             i++;
                         }
                     }
-                    else if (TradeSkillBase.Get(mTradeSkillId).TradeskillType == TradeSkillTypes.Weapon)
+                    else if (TempTs.TradeskillType == TradeSkillTypes.Weapon)
                     {
 
                         mLblUnlocks.Text = "Weapon Progress";
@@ -179,18 +188,39 @@ namespace Intersect.Client.Interface.Game.TradeSkills
                             );
                         }
                     }
-                    else if (TradeSkillBase.Get(mTradeSkillId).TradeskillType == TradeSkillTypes.Spell)
+                    else if (TempTs.TradeskillType == TradeSkillTypes.Spell)
                     {
                         mLblUnlocks.Text = "Skill Progress";
-                        foreach (var tradeskill in TradeSkillBase.Get(mTradeSkillId).SkillUnlocks)
+                        foreach (var tradeskill in TempTs.SkillUnlocks)
                         {
-                            mItems.Add(new TradeSkillUnlock(this, tradeskill.Skill, tradeskill.DamageIncrease, TradeSkillData.CurrentLevel, 0));
+                            mItems.Add(new TradeSkillUnlock(this, tradeskill.Skill, tradeskill.DamageIncrease, TradeSkillData.CurrentLevel, true));
                             mItems[i].Container = new ImagePanel(mTradeSkillUnlockContainer, "TradeSkillUnlocks");
                             mItems[i].Setup();
 
                             mItems[i].Container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 
                             mItems[i].LoadSkill();
+                            mItems[i].Update();
+                            mItems[i].Container.SetPosition(
+                            5,
+                            i * 40
+                            );
+                            i++;
+                        }
+                    }
+                    else if (TempTs.TradeskillType == TradeSkillTypes.Reputation)
+                    {
+
+                        mLblUnlocks.Text = "Reputation Unlocks";
+                        foreach (var tradeskill in TempTs.ReputationUnlocks)
+                        {
+                            mItems.Add(new TradeSkillUnlock(this, tradeskill.ItemId, tradeskill.LevelRequired, TradeSkillData.CurrentLevel));
+                            mItems[i].Container = new ImagePanel(mTradeSkillUnlockContainer, "TradeSkillUnlocks");
+                            mItems[i].Setup();
+
+                            mItems[i].Container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
+
+                            mItems[i].LoadItem(true);
                             mItems[i].Update();
                             mItems[i].Container.SetPosition(
                             5,

@@ -1120,6 +1120,7 @@ Tick timer saved in server config.json.";
                 {1, @"Weapon"},
                 {2, @"Craft"},
                 {3, @"Spell"},
+                {4, @"Reputation"},
             };
 
 
@@ -2347,7 +2348,7 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString HasTradeSkill = @"Player has {00}";
 
-            public static LocalizedString HasTradeSkillLevel = @"Player has {00} with level {01}";
+            public static LocalizedString HasTradeSkillLevel = @"Player has {00} level >= {01}";
 
             public static Dictionary<int, LocalizedString> selfswitches = new Dictionary<int, LocalizedString>
             {

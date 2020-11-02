@@ -10,7 +10,9 @@ namespace Intersect.Enums
 
         Craft,
 
-        Spell
+        Spell,
+
+        Reputation
 
 
     }

@@ -1119,9 +1119,16 @@ namespace Intersect.Server.Entities
                     SetTradeSkillLevel(tradeskill, tradeskill.CurrentLevel + 1, resetExperience);
                 }
             }
-
-            PacketSender.SendChatMsg(this, "You leveled up " + tradeskill.Descriptor.Name + " to level " + tradeskill.CurrentLevel, CustomColors.Combat.LevelUp, Name);
-            PacketSender.SendActionMsg(this, "You leveled up " + tradeskill.Descriptor.Name + " to level " + tradeskill.CurrentLevel, CustomColors.Combat.LevelUp);
+            if (tradeskill.Descriptor.TradeskillType == TradeSkillTypes.Reputation)
+            {
+                PacketSender.SendChatMsg(this, "Your standing with " + tradeskill.Descriptor.Name + " increased to " + (Standing)tradeskill.CurrentLevel, CustomColors.Combat.LevelUp, Name);
+                PacketSender.SendActionMsg(this, "Your standing with " + tradeskill.Descriptor.Name + " increased to " + (Standing)tradeskill.CurrentLevel, CustomColors.Combat.LevelUp);
+            }
+            else
+            {
+                PacketSender.SendChatMsg(this, "You leveled up " + tradeskill.Descriptor.Name + " to level " + tradeskill.CurrentLevel, CustomColors.Combat.LevelUp, Name);
+                PacketSender.SendActionMsg(this, "You leveled up " + tradeskill.Descriptor.Name + " to level " + tradeskill.CurrentLevel, CustomColors.Combat.LevelUp);
+            }
 
             foreach (var message in messages)
             {
@@ -1152,8 +1159,16 @@ namespace Intersect.Server.Entities
                     {
                         if (amount > 0)
                         {
-                            PacketSender.SendChatMsg(this, "You gained " + (int)(amount * GetExpMultiplier() / 100) + " " + tradeskill.Descriptor.Name + " experience.", Color.Pink);
-                            PacketSender.SendActionMsgPrivate(this, " " + tradeskill.Descriptor.Name + " Exp +" + (int)(amount * GetExpMultiplier() / 100), Color.Pink);
+                            if (tradeskill.Descriptor.TradeskillType == TradeSkillTypes.Reputation)
+                            {
+                                PacketSender.SendChatMsg(this, "You gained " + (int)(amount * GetExpMultiplier() / 100) + " " + tradeskill.Descriptor.Name + " reputation.", Color.Pink);
+                                PacketSender.SendActionMsgPrivate(this, "" + tradeskill.Descriptor.Name + " reputation +" + (int)(amount * GetExpMultiplier() / 100), Color.Pink);
+                            }
+                            else
+                            {
+                                PacketSender.SendChatMsg(this, "You gained " + (int)(amount * GetExpMultiplier() / 100) + " " + tradeskill.Descriptor.Name + " experience.", Color.Pink);
+                                PacketSender.SendActionMsgPrivate(this, " " + tradeskill.Descriptor.Name + " Exp +" + (int)(amount * GetExpMultiplier() / 100), Color.Pink);
+                            }
                         }
                         PacketSender.SendTradeSkills(this);
                     }
@@ -3206,6 +3221,80 @@ namespace Intersect.Server.Entities
                     var itemBase = ItemBase.Get(shop.SellingItems[slot].ItemId);
                     if (itemBase != null)
                     {
+                        if (!Conditions.MeetsConditionLists(itemBase.UsageRequirements, this, null))
+                        {
+                            PacketSender.SendChatMsg(this, "You don't meet the requirements to buy this item", CustomColors.Alerts.Error, Name);
+                            /*for (var i = 0; i < itemBase.UsageRequirements.Lists.Count; i++)
+                            {
+                                for (var j = 0; j < itemBase.UsageRequirements.Lists[i].Conditions.Count; j++)
+                                {
+                                    if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.TradeSkillHasLevel)
+                                    {
+                                        var condition = (TradeSkillHasLevelCondition)itemBase.UsageRequirements.Lists[i].Conditions[j];
+                                        var hasSkill = false;
+                                        foreach (var tradeskill in TradeSkills)
+                                        {
+                                            if (tradeskill.TradeSkillId == condition.TradeSkill)
+                                            {
+                                                hasSkill = true;
+                                                if (tradeskill.CurrentLevel < condition.TradeSkillLevel)
+                                                {
+                                                    if (TradeSkillBase.Get(condition.TradeSkill).TradeskillType == TradeSkillTypes.Reputation)
+                                                    {
+                                                        PacketSender.SendChatMsg(this, "Your reputation with " + TradeSkillBase.GetName(condition.TradeSkill) + " needs to be " + (Standing)condition.TradeSkillLevel + " or higher.", CustomColors.Alerts.Error, Name);
+                                                    }
+                                                    else
+                                                    {
+                                                        PacketSender.SendChatMsg(this, "Your " + TradeSkillBase.GetName(condition.TradeSkill) + " needs to be level " + condition.TradeSkillLevel + " or higher.", CustomColors.Alerts.Error, Name);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (!hasSkill)
+                                        {
+                                            if (TradeSkillBase.Get(condition.TradeSkill).TradeskillType == TradeSkillTypes.Reputation)
+                                            {
+                                                PacketSender.SendChatMsg(this, "Your reputation with " + TradeSkillBase.GetName(condition.TradeSkill) + " needs to be " + (Standing)condition.TradeSkillLevel + " or higher.", CustomColors.Alerts.Error, Name);
+                                            }
+                                            else
+                                            {
+                                                PacketSender.SendChatMsg(this, "Your " + TradeSkillBase.GetName(condition.TradeSkill) + " needs to be level " + condition.TradeSkillLevel + " or higher.", CustomColors.Alerts.Error, Name);
+                                            }
+                                        }
+                                        
+                                    }
+                                    if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.ClassIs)
+                                    {
+                                        var condition = (ClassIsCondition)itemBase.UsageRequirements.Lists[i].Conditions[j];
+                                        if (ClassId != condition.ClassId)
+                                        {
+                                            PacketSender.SendChatMsg(this, "Your class needs to be " + ClassBase.GetName(condition.ClassId), CustomColors.Alerts.Error, Name);
+                                        }
+                                    }
+                                    if (itemBase.UsageRequirements.Lists[i].Conditions[j].Type == ConditionTypes.IsItemEquipped)
+                                    {
+                                        var HasItem = false;
+                                        var condition = (IsItemEquippedCondition)itemBase.UsageRequirements.Lists[i].Conditions[j];
+                                        for (var f = 0; f < Options.EquipmentSlots.Count; f++)
+                                        {
+                                            if (Equipment[f] >= 0)
+                                            {
+                                                if (Items[Equipment[f]].ItemId == condition.ItemId)
+                                                {
+                                                    HasItem = true;
+                                                }
+                                            }
+                                        }
+                                        if (!HasItem)
+                                        {
+                                            PacketSender.SendChatMsg(this, "You need to have " + ItemBase.GetName(condition.ItemId) + " equipped", CustomColors.Alerts.Error, Name);
+                                        }
+                                    }
+                                }
+                            }*/
+                            return;
+                        }
+
                         buyItemNum = shop.SellingItems[slot].ItemId;
                         if (itemBase.IsStackable)
                         {

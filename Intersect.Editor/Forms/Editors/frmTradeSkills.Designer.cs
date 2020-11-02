@@ -40,6 +40,24 @@ namespace Intersect.Editor.Forms.Editors
             this.lstTradeSkills = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.pnlContainer = new System.Windows.Forms.Panel();
+            this.grpReputation = new DarkUI.Controls.DarkGroupBox();
+            this.nudReputationLevelUnlock = new DarkUI.Controls.DarkNumericUpDown();
+            this.cmbReputationItem = new DarkUI.Controls.DarkComboBox();
+            this.btnRepItemDup = new DarkUI.Controls.DarkButton();
+            this.btnRepItemRemove = new DarkUI.Controls.DarkButton();
+            this.btnRepItemAdd = new DarkUI.Controls.DarkButton();
+            this.lblRepItem = new System.Windows.Forms.Label();
+            this.lstReputation = new System.Windows.Forms.ListBox();
+            this.lblRepUnlock = new System.Windows.Forms.Label();
+            this.grpCraftSkill = new DarkUI.Controls.DarkGroupBox();
+            this.nudCraftUnlockLevel = new DarkUI.Controls.DarkNumericUpDown();
+            this.cmbCraft = new DarkUI.Controls.DarkComboBox();
+            this.btnDupCraft = new DarkUI.Controls.DarkButton();
+            this.btnRemoveCraft = new DarkUI.Controls.DarkButton();
+            this.btnAddCraft = new DarkUI.Controls.DarkButton();
+            this.lblCraft = new System.Windows.Forms.Label();
+            this.lstCraftSkills = new System.Windows.Forms.ListBox();
+            this.lblCraftUnlock = new System.Windows.Forms.Label();
             this.grpSpellSkill = new DarkUI.Controls.DarkGroupBox();
             this.cmbSpell = new DarkUI.Controls.DarkComboBox();
             this.btnDuplicateSpell = new DarkUI.Controls.DarkButton();
@@ -77,15 +95,6 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbWeaponTag = new DarkUI.Controls.DarkComboBox();
             this.lblWeaponTag = new System.Windows.Forms.Label();
             this.lblWeaponDamageIncrease = new System.Windows.Forms.Label();
-            this.grpCraftSkill = new DarkUI.Controls.DarkGroupBox();
-            this.nudCraftUnlockLevel = new DarkUI.Controls.DarkNumericUpDown();
-            this.cmbCraft = new DarkUI.Controls.DarkComboBox();
-            this.btnDupCraft = new DarkUI.Controls.DarkButton();
-            this.btnRemoveCraft = new DarkUI.Controls.DarkButton();
-            this.btnAddCraft = new DarkUI.Controls.DarkButton();
-            this.lblCraft = new System.Windows.Forms.Label();
-            this.lstCraftSkills = new System.Windows.Forms.ListBox();
-            this.lblCraftUnlock = new System.Windows.Forms.Label();
             this.toolStrip = new DarkUI.Controls.DarkToolStrip();
             this.toolStripItemNew = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -99,6 +108,10 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemUndo = new System.Windows.Forms.ToolStripButton();
             this.grpTradeSkills.SuspendLayout();
             this.pnlContainer.SuspendLayout();
+            this.grpReputation.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudReputationLevelUnlock)).BeginInit();
+            this.grpCraftSkill.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCraftUnlockLevel)).BeginInit();
             this.grpSpellSkill.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpellXpGain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpellDmgIncrease)).BeginInit();
@@ -110,8 +123,6 @@ namespace Intersect.Editor.Forms.Editors
             this.grpWeaponSkill.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeaponXpGain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeaponDamageIncrease)).BeginInit();
-            this.grpCraftSkill.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCraftUnlockLevel)).BeginInit();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -210,16 +221,293 @@ namespace Intersect.Editor.Forms.Editors
             // 
             // pnlContainer
             // 
+            this.pnlContainer.Controls.Add(this.grpReputation);
+            this.pnlContainer.Controls.Add(this.grpCraftSkill);
             this.pnlContainer.Controls.Add(this.grpSpellSkill);
             this.pnlContainer.Controls.Add(this.grpGeneral);
             this.pnlContainer.Controls.Add(this.grpWeaponSkill);
-            this.pnlContainer.Controls.Add(this.grpCraftSkill);
             this.pnlContainer.Location = new System.Drawing.Point(332, 55);
             this.pnlContainer.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pnlContainer.Name = "pnlContainer";
             this.pnlContainer.Size = new System.Drawing.Size(696, 650);
             this.pnlContainer.TabIndex = 31;
             this.pnlContainer.Visible = false;
+            // 
+            // grpReputation
+            // 
+            this.grpReputation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpReputation.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpReputation.Controls.Add(this.nudReputationLevelUnlock);
+            this.grpReputation.Controls.Add(this.cmbReputationItem);
+            this.grpReputation.Controls.Add(this.btnRepItemDup);
+            this.grpReputation.Controls.Add(this.btnRepItemRemove);
+            this.grpReputation.Controls.Add(this.btnRepItemAdd);
+            this.grpReputation.Controls.Add(this.lblRepItem);
+            this.grpReputation.Controls.Add(this.lstReputation);
+            this.grpReputation.Controls.Add(this.lblRepUnlock);
+            this.grpReputation.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpReputation.Location = new System.Drawing.Point(4, 286);
+            this.grpReputation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpReputation.Name = "grpReputation";
+            this.grpReputation.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpReputation.Size = new System.Drawing.Size(684, 359);
+            this.grpReputation.TabIndex = 42;
+            this.grpReputation.TabStop = false;
+            this.grpReputation.Text = "Reputation";
+            // 
+            // nudReputationLevelUnlock
+            // 
+            this.nudReputationLevelUnlock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudReputationLevelUnlock.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudReputationLevelUnlock.Location = new System.Drawing.Point(18, 262);
+            this.nudReputationLevelUnlock.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudReputationLevelUnlock.Maximum = new decimal(new int[] {
+            -559939585,
+            902409669,
+            54,
+            0});
+            this.nudReputationLevelUnlock.Name = "nudReputationLevelUnlock";
+            this.nudReputationLevelUnlock.Size = new System.Drawing.Size(376, 26);
+            this.nudReputationLevelUnlock.TabIndex = 41;
+            this.nudReputationLevelUnlock.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudReputationLevelUnlock.ValueChanged += new System.EventHandler(this.nudRepLevelRequired_ValueChanged);
+            // 
+            // cmbReputationItem
+            // 
+            this.cmbReputationItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbReputationItem.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbReputationItem.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbReputationItem.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbReputationItem.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbReputationItem.ButtonIcon")));
+            this.cmbReputationItem.DrawDropdownHoverOutline = false;
+            this.cmbReputationItem.DrawFocusRectangle = false;
+            this.cmbReputationItem.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbReputationItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbReputationItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbReputationItem.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbReputationItem.FormattingEnabled = true;
+            this.cmbReputationItem.Location = new System.Drawing.Point(18, 198);
+            this.cmbReputationItem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbReputationItem.Name = "cmbReputationItem";
+            this.cmbReputationItem.Size = new System.Drawing.Size(373, 27);
+            this.cmbReputationItem.TabIndex = 40;
+            this.cmbReputationItem.Text = null;
+            this.cmbReputationItem.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbReputationItem.SelectedIndexChanged += new System.EventHandler(this.cmbRep_SelectedIndexChanged);
+            // 
+            // btnRepItemDup
+            // 
+            this.btnRepItemDup.Location = new System.Drawing.Point(282, 299);
+            this.btnRepItemDup.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnRepItemDup.Name = "btnRepItemDup";
+            this.btnRepItemDup.Padding = new System.Windows.Forms.Padding(8);
+            this.btnRepItemDup.Size = new System.Drawing.Size(112, 35);
+            this.btnRepItemDup.TabIndex = 39;
+            this.btnRepItemDup.Text = "Duplicate";
+            this.btnRepItemDup.Click += new System.EventHandler(this.btnDupRep_Click);
+            // 
+            // btnRepItemRemove
+            // 
+            this.btnRepItemRemove.Location = new System.Drawing.Point(146, 299);
+            this.btnRepItemRemove.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnRepItemRemove.Name = "btnRepItemRemove";
+            this.btnRepItemRemove.Padding = new System.Windows.Forms.Padding(8);
+            this.btnRepItemRemove.Size = new System.Drawing.Size(118, 35);
+            this.btnRepItemRemove.TabIndex = 38;
+            this.btnRepItemRemove.Text = "Remove";
+            this.btnRepItemRemove.Click += new System.EventHandler(this.btnRemoveRep_Click);
+            // 
+            // btnRepItemAdd
+            // 
+            this.btnRepItemAdd.Location = new System.Drawing.Point(18, 299);
+            this.btnRepItemAdd.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnRepItemAdd.Name = "btnRepItemAdd";
+            this.btnRepItemAdd.Padding = new System.Windows.Forms.Padding(8);
+            this.btnRepItemAdd.Size = new System.Drawing.Size(112, 35);
+            this.btnRepItemAdd.TabIndex = 37;
+            this.btnRepItemAdd.Text = "Add";
+            this.btnRepItemAdd.Click += new System.EventHandler(this.btnAddRep_Click);
+            // 
+            // lblRepItem
+            // 
+            this.lblRepItem.AutoSize = true;
+            this.lblRepItem.Location = new System.Drawing.Point(14, 173);
+            this.lblRepItem.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblRepItem.Name = "lblRepItem";
+            this.lblRepItem.Size = new System.Drawing.Size(45, 20);
+            this.lblRepItem.TabIndex = 31;
+            this.lblRepItem.Text = "Item:";
+            // 
+            // lstReputation
+            // 
+            this.lstReputation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.lstReputation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lstReputation.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lstReputation.FormattingEnabled = true;
+            this.lstReputation.ItemHeight = 20;
+            this.lstReputation.Items.AddRange(new object[] {
+            "Unlocks: None x1"});
+            this.lstReputation.Location = new System.Drawing.Point(18, 29);
+            this.lstReputation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.lstReputation.Name = "lstReputation";
+            this.lstReputation.Size = new System.Drawing.Size(382, 142);
+            this.lstReputation.TabIndex = 29;
+            this.lstReputation.SelectedIndexChanged += new System.EventHandler(this.lstReputation_SelectedIndexChanged);
+            // 
+            // lblRepUnlock
+            // 
+            this.lblRepUnlock.AutoSize = true;
+            this.lblRepUnlock.Location = new System.Drawing.Point(14, 237);
+            this.lblRepUnlock.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblRepUnlock.Name = "lblRepUnlock";
+            this.lblRepUnlock.Size = new System.Drawing.Size(115, 20);
+            this.lblRepUnlock.TabIndex = 28;
+            this.lblRepUnlock.Text = "Unlock at level:";
+            // 
+            // grpCraftSkill
+            // 
+            this.grpCraftSkill.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpCraftSkill.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpCraftSkill.Controls.Add(this.nudCraftUnlockLevel);
+            this.grpCraftSkill.Controls.Add(this.cmbCraft);
+            this.grpCraftSkill.Controls.Add(this.btnDupCraft);
+            this.grpCraftSkill.Controls.Add(this.btnRemoveCraft);
+            this.grpCraftSkill.Controls.Add(this.btnAddCraft);
+            this.grpCraftSkill.Controls.Add(this.lblCraft);
+            this.grpCraftSkill.Controls.Add(this.lstCraftSkills);
+            this.grpCraftSkill.Controls.Add(this.lblCraftUnlock);
+            this.grpCraftSkill.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpCraftSkill.Location = new System.Drawing.Point(8, 286);
+            this.grpCraftSkill.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpCraftSkill.Name = "grpCraftSkill";
+            this.grpCraftSkill.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpCraftSkill.Size = new System.Drawing.Size(684, 359);
+            this.grpCraftSkill.TabIndex = 30;
+            this.grpCraftSkill.TabStop = false;
+            this.grpCraftSkill.Text = "Craft Skill";
+            this.grpCraftSkill.Enter += new System.EventHandler(this.grpIngredients_Enter);
+            // 
+            // nudCraftUnlockLevel
+            // 
+            this.nudCraftUnlockLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudCraftUnlockLevel.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudCraftUnlockLevel.Location = new System.Drawing.Point(18, 262);
+            this.nudCraftUnlockLevel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudCraftUnlockLevel.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.nudCraftUnlockLevel.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudCraftUnlockLevel.Name = "nudCraftUnlockLevel";
+            this.nudCraftUnlockLevel.Size = new System.Drawing.Size(376, 26);
+            this.nudCraftUnlockLevel.TabIndex = 41;
+            this.nudCraftUnlockLevel.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudCraftUnlockLevel.ValueChanged += new System.EventHandler(this.nudCraftLevelRequired_ValueChanged);
+            // 
+            // cmbCraft
+            // 
+            this.cmbCraft.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbCraft.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbCraft.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbCraft.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbCraft.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbCraft.ButtonIcon")));
+            this.cmbCraft.DrawDropdownHoverOutline = false;
+            this.cmbCraft.DrawFocusRectangle = false;
+            this.cmbCraft.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbCraft.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCraft.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbCraft.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbCraft.FormattingEnabled = true;
+            this.cmbCraft.Location = new System.Drawing.Point(18, 198);
+            this.cmbCraft.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbCraft.Name = "cmbCraft";
+            this.cmbCraft.Size = new System.Drawing.Size(373, 27);
+            this.cmbCraft.TabIndex = 40;
+            this.cmbCraft.Text = null;
+            this.cmbCraft.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbCraft.SelectedIndexChanged += new System.EventHandler(this.cmbCraft_SelectedIndexChanged);
+            // 
+            // btnDupCraft
+            // 
+            this.btnDupCraft.Location = new System.Drawing.Point(282, 299);
+            this.btnDupCraft.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnDupCraft.Name = "btnDupCraft";
+            this.btnDupCraft.Padding = new System.Windows.Forms.Padding(8);
+            this.btnDupCraft.Size = new System.Drawing.Size(112, 35);
+            this.btnDupCraft.TabIndex = 39;
+            this.btnDupCraft.Text = "Duplicate";
+            this.btnDupCraft.Click += new System.EventHandler(this.btnDupCraft_Click);
+            // 
+            // btnRemoveCraft
+            // 
+            this.btnRemoveCraft.Location = new System.Drawing.Point(146, 299);
+            this.btnRemoveCraft.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnRemoveCraft.Name = "btnRemoveCraft";
+            this.btnRemoveCraft.Padding = new System.Windows.Forms.Padding(8);
+            this.btnRemoveCraft.Size = new System.Drawing.Size(118, 35);
+            this.btnRemoveCraft.TabIndex = 38;
+            this.btnRemoveCraft.Text = "Remove";
+            this.btnRemoveCraft.Click += new System.EventHandler(this.btnRemoveCraft_Click);
+            // 
+            // btnAddCraft
+            // 
+            this.btnAddCraft.Location = new System.Drawing.Point(18, 299);
+            this.btnAddCraft.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnAddCraft.Name = "btnAddCraft";
+            this.btnAddCraft.Padding = new System.Windows.Forms.Padding(8);
+            this.btnAddCraft.Size = new System.Drawing.Size(112, 35);
+            this.btnAddCraft.TabIndex = 37;
+            this.btnAddCraft.Text = "Add";
+            this.btnAddCraft.Click += new System.EventHandler(this.btnAddCraft_Click);
+            // 
+            // lblCraft
+            // 
+            this.lblCraft.AutoSize = true;
+            this.lblCraft.Location = new System.Drawing.Point(14, 173);
+            this.lblCraft.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCraft.Name = "lblCraft";
+            this.lblCraft.Size = new System.Drawing.Size(48, 20);
+            this.lblCraft.TabIndex = 31;
+            this.lblCraft.Text = "Craft:";
+            // 
+            // lstCraftSkills
+            // 
+            this.lstCraftSkills.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.lstCraftSkills.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lstCraftSkills.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lstCraftSkills.FormattingEnabled = true;
+            this.lstCraftSkills.ItemHeight = 20;
+            this.lstCraftSkills.Items.AddRange(new object[] {
+            "Unlocks: None x1"});
+            this.lstCraftSkills.Location = new System.Drawing.Point(18, 29);
+            this.lstCraftSkills.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.lstCraftSkills.Name = "lstCraftSkills";
+            this.lstCraftSkills.Size = new System.Drawing.Size(382, 142);
+            this.lstCraftSkills.TabIndex = 29;
+            this.lstCraftSkills.SelectedIndexChanged += new System.EventHandler(this.lstCraftSkills_SelectedIndexChanged);
+            // 
+            // lblCraftUnlock
+            // 
+            this.lblCraftUnlock.AutoSize = true;
+            this.lblCraftUnlock.Location = new System.Drawing.Point(14, 237);
+            this.lblCraftUnlock.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCraftUnlock.Name = "lblCraftUnlock";
+            this.lblCraftUnlock.Size = new System.Drawing.Size(115, 20);
+            this.lblCraftUnlock.TabIndex = 28;
+            this.lblCraftUnlock.Text = "Unlock at level:";
             // 
             // grpSpellSkill
             // 
@@ -277,7 +565,7 @@ namespace Intersect.Editor.Forms.Editors
             this.btnDuplicateSpell.Size = new System.Drawing.Size(112, 35);
             this.btnDuplicateSpell.TabIndex = 48;
             this.btnDuplicateSpell.Text = "Duplicate";
-            this.btnDuplicateSpell.Click += new System.EventHandler(btnDupSpell_Click);
+            this.btnDuplicateSpell.Click += new System.EventHandler(this.btnDupSpell_Click);
             // 
             // btnRemoveSpell
             // 
@@ -288,7 +576,7 @@ namespace Intersect.Editor.Forms.Editors
             this.btnRemoveSpell.Size = new System.Drawing.Size(112, 35);
             this.btnRemoveSpell.TabIndex = 47;
             this.btnRemoveSpell.Text = "Remove";
-            this.btnRemoveSpell.Click += new System.EventHandler(btnRemoveSpell_Click);
+            this.btnRemoveSpell.Click += new System.EventHandler(this.btnRemoveSpell_Click);
             // 
             // btnAddSpell
             // 
@@ -299,7 +587,7 @@ namespace Intersect.Editor.Forms.Editors
             this.btnAddSpell.Size = new System.Drawing.Size(112, 35);
             this.btnAddSpell.TabIndex = 46;
             this.btnAddSpell.Text = "Add";
-            this.btnAddSpell.Click += new System.EventHandler(btnAddSpell_Click);
+            this.btnAddSpell.Click += new System.EventHandler(this.btnAddSpell_Click);
             // 
             // lblSpell
             // 
@@ -325,7 +613,7 @@ namespace Intersect.Editor.Forms.Editors
             this.listSpellsAffected.Name = "listSpellsAffected";
             this.listSpellsAffected.Size = new System.Drawing.Size(515, 142);
             this.listSpellsAffected.TabIndex = 44;
-            this.listSpellsAffected.SelectedIndexChanged += new System.EventHandler(listSpellsAffected_SelectedIndexChanged);
+            this.listSpellsAffected.SelectedIndexChanged += new System.EventHandler(this.listSpellsAffected_SelectedIndexChanged);
             // 
             // nudSpellXpGain
             // 
@@ -351,7 +639,7 @@ namespace Intersect.Editor.Forms.Editors
             0,
             0,
             0});
-            this.nudSpellXpGain.ValueChanged += new System.EventHandler(nudSpellXpGain_ValueChanged);
+            this.nudSpellXpGain.ValueChanged += new System.EventHandler(this.nudSpellXpGain_ValueChanged);
             // 
             // lblSpellXpGain
             // 
@@ -387,7 +675,7 @@ namespace Intersect.Editor.Forms.Editors
             0,
             0,
             0});
-            this.nudSpellDmgIncrease.ValueChanged += new System.EventHandler(nudSpellDamageIncrease_ValueChanged);
+            this.nudSpellDmgIncrease.ValueChanged += new System.EventHandler(this.nudSpellDamageIncrease_ValueChanged);
             // 
             // lblSpellDmgIncrease
             // 
@@ -842,147 +1130,6 @@ namespace Intersect.Editor.Forms.Editors
             this.lblWeaponDamageIncrease.TabIndex = 28;
             this.lblWeaponDamageIncrease.Text = "Damage Increase per level:";
             // 
-            // grpCraftSkill
-            // 
-            this.grpCraftSkill.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.grpCraftSkill.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.grpCraftSkill.Controls.Add(this.nudCraftUnlockLevel);
-            this.grpCraftSkill.Controls.Add(this.cmbCraft);
-            this.grpCraftSkill.Controls.Add(this.btnDupCraft);
-            this.grpCraftSkill.Controls.Add(this.btnRemoveCraft);
-            this.grpCraftSkill.Controls.Add(this.btnAddCraft);
-            this.grpCraftSkill.Controls.Add(this.lblCraft);
-            this.grpCraftSkill.Controls.Add(this.lstCraftSkills);
-            this.grpCraftSkill.Controls.Add(this.lblCraftUnlock);
-            this.grpCraftSkill.ForeColor = System.Drawing.Color.Gainsboro;
-            this.grpCraftSkill.Location = new System.Drawing.Point(8, 286);
-            this.grpCraftSkill.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpCraftSkill.Name = "grpCraftSkill";
-            this.grpCraftSkill.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpCraftSkill.Size = new System.Drawing.Size(684, 359);
-            this.grpCraftSkill.TabIndex = 30;
-            this.grpCraftSkill.TabStop = false;
-            this.grpCraftSkill.Text = "Craft Skill";
-            this.grpCraftSkill.Enter += new System.EventHandler(this.grpIngredients_Enter);
-            // 
-            // nudCraftUnlockLevel
-            // 
-            this.nudCraftUnlockLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.nudCraftUnlockLevel.ForeColor = System.Drawing.Color.Gainsboro;
-            this.nudCraftUnlockLevel.Location = new System.Drawing.Point(18, 262);
-            this.nudCraftUnlockLevel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.nudCraftUnlockLevel.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.nudCraftUnlockLevel.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudCraftUnlockLevel.Name = "nudCraftUnlockLevel";
-            this.nudCraftUnlockLevel.Size = new System.Drawing.Size(376, 26);
-            this.nudCraftUnlockLevel.TabIndex = 41;
-            this.nudCraftUnlockLevel.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudCraftUnlockLevel.ValueChanged += new System.EventHandler(this.nudCraftLevelRequired_ValueChanged);
-            // 
-            // cmbCraft
-            // 
-            this.cmbCraft.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.cmbCraft.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.cmbCraft.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
-            this.cmbCraft.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.cmbCraft.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbCraft.ButtonIcon")));
-            this.cmbCraft.DrawDropdownHoverOutline = false;
-            this.cmbCraft.DrawFocusRectangle = false;
-            this.cmbCraft.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbCraft.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCraft.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbCraft.ForeColor = System.Drawing.Color.Gainsboro;
-            this.cmbCraft.FormattingEnabled = true;
-            this.cmbCraft.Location = new System.Drawing.Point(18, 198);
-            this.cmbCraft.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbCraft.Name = "cmbCraft";
-            this.cmbCraft.Size = new System.Drawing.Size(373, 27);
-            this.cmbCraft.TabIndex = 40;
-            this.cmbCraft.Text = null;
-            this.cmbCraft.TextPadding = new System.Windows.Forms.Padding(2);
-            this.cmbCraft.SelectedIndexChanged += new System.EventHandler(this.cmbCraft_SelectedIndexChanged);
-            // 
-            // btnDupCraft
-            // 
-            this.btnDupCraft.Location = new System.Drawing.Point(282, 299);
-            this.btnDupCraft.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnDupCraft.Name = "btnDupCraft";
-            this.btnDupCraft.Padding = new System.Windows.Forms.Padding(8);
-            this.btnDupCraft.Size = new System.Drawing.Size(112, 35);
-            this.btnDupCraft.TabIndex = 39;
-            this.btnDupCraft.Text = "Duplicate";
-            this.btnDupCraft.Click += new System.EventHandler(this.btnDupCraft_Click);
-            // 
-            // btnRemoveCraft
-            // 
-            this.btnRemoveCraft.Location = new System.Drawing.Point(146, 299);
-            this.btnRemoveCraft.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnRemoveCraft.Name = "btnRemoveCraft";
-            this.btnRemoveCraft.Padding = new System.Windows.Forms.Padding(8);
-            this.btnRemoveCraft.Size = new System.Drawing.Size(118, 35);
-            this.btnRemoveCraft.TabIndex = 38;
-            this.btnRemoveCraft.Text = "Remove";
-            this.btnRemoveCraft.Click += new System.EventHandler(this.btnRemoveCraft_Click);
-            // 
-            // btnAddCraft
-            // 
-            this.btnAddCraft.Location = new System.Drawing.Point(18, 299);
-            this.btnAddCraft.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnAddCraft.Name = "btnAddCraft";
-            this.btnAddCraft.Padding = new System.Windows.Forms.Padding(8);
-            this.btnAddCraft.Size = new System.Drawing.Size(112, 35);
-            this.btnAddCraft.TabIndex = 37;
-            this.btnAddCraft.Text = "Add";
-            this.btnAddCraft.Click += new System.EventHandler(this.btnAddCraft_Click);
-            // 
-            // lblCraft
-            // 
-            this.lblCraft.AutoSize = true;
-            this.lblCraft.Location = new System.Drawing.Point(14, 173);
-            this.lblCraft.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblCraft.Name = "lblCraft";
-            this.lblCraft.Size = new System.Drawing.Size(48, 20);
-            this.lblCraft.TabIndex = 31;
-            this.lblCraft.Text = "Craft:";
-            // 
-            // lstCraftSkills
-            // 
-            this.lstCraftSkills.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
-            this.lstCraftSkills.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lstCraftSkills.ForeColor = System.Drawing.Color.Gainsboro;
-            this.lstCraftSkills.FormattingEnabled = true;
-            this.lstCraftSkills.ItemHeight = 20;
-            this.lstCraftSkills.Items.AddRange(new object[] {
-            "Unlocks: None x1"});
-            this.lstCraftSkills.Location = new System.Drawing.Point(18, 29);
-            this.lstCraftSkills.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.lstCraftSkills.Name = "lstCraftSkills";
-            this.lstCraftSkills.Size = new System.Drawing.Size(382, 142);
-            this.lstCraftSkills.TabIndex = 29;
-            this.lstCraftSkills.SelectedIndexChanged += new System.EventHandler(this.lstCraftSkills_SelectedIndexChanged);
-            // 
-            // lblCraftUnlock
-            // 
-            this.lblCraftUnlock.AutoSize = true;
-            this.lblCraftUnlock.Location = new System.Drawing.Point(14, 237);
-            this.lblCraftUnlock.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblCraftUnlock.Name = "lblCraftUnlock";
-            this.lblCraftUnlock.Size = new System.Drawing.Size(115, 20);
-            this.lblCraftUnlock.TabIndex = 28;
-            this.lblCraftUnlock.Text = "Unlock at level:";
-            // 
             // toolStrip
             // 
             this.toolStrip.AutoSize = false;
@@ -1132,6 +1279,12 @@ namespace Intersect.Editor.Forms.Editors
             this.grpTradeSkills.ResumeLayout(false);
             this.grpTradeSkills.PerformLayout();
             this.pnlContainer.ResumeLayout(false);
+            this.grpReputation.ResumeLayout(false);
+            this.grpReputation.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudReputationLevelUnlock)).EndInit();
+            this.grpCraftSkill.ResumeLayout(false);
+            this.grpCraftSkill.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCraftUnlockLevel)).EndInit();
             this.grpSpellSkill.ResumeLayout(false);
             this.grpSpellSkill.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudSpellXpGain)).EndInit();
@@ -1146,9 +1299,6 @@ namespace Intersect.Editor.Forms.Editors
             this.grpWeaponSkill.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeaponXpGain)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWeaponDamageIncrease)).EndInit();
-            this.grpCraftSkill.ResumeLayout(false);
-            this.grpCraftSkill.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudCraftUnlockLevel)).EndInit();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -1222,5 +1372,14 @@ namespace Intersect.Editor.Forms.Editors
         private System.Windows.Forms.Label lblSpellDmgIncrease;
         private DarkComboBox cmbLevelUpAnimation;
         private System.Windows.Forms.Label lblLevelUpAnimation;
+        private DarkGroupBox grpReputation;
+        private DarkNumericUpDown nudReputationLevelUnlock;
+        private DarkComboBox cmbReputationItem;
+        private DarkButton btnRepItemDup;
+        private DarkButton btnRepItemRemove;
+        private DarkButton btnRepItemAdd;
+        private System.Windows.Forms.Label lblRepItem;
+        private System.Windows.Forms.ListBox lstReputation;
+        private System.Windows.Forms.Label lblRepUnlock;
     }
 }

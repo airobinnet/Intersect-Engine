@@ -327,7 +327,7 @@ namespace Intersect.Client.Interface.Game.Crafting
                     {
                         continue;
                     }
-                    if (!Globals.ActiveCraftingTableReqs.Contains(i + "-"))
+                    if (!Globals.ActiveCraftingTableReqs.Contains(Globals.ActiveCraftingTable.Crafts[i]))
                     {
                         j++;
                         var tmpRow = mRecipes?.AddRow(j + ") " + ItemBase.GetName(activeCraft.ItemId) + " (" + Math.Min(activeCraft.SuccessRate+(luck/10),100) + "%) ");

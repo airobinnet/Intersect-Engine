@@ -588,6 +588,10 @@
     <Compile Include="Migrations\Game\20201019015233_EnhancedQuests.designer.cs">
       <DependentUpon>20201019015233_EnhancedQuests.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Game\20201026161329_reputation.cs" />
+    <Compile Include="Migrations\Game\20201026161329_reputation.designer.cs">
+      <DependentUpon>20201026161329_reputation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />
     <Compile Include="Networking\Helpers\NetDebug.cs" />

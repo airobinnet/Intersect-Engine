@@ -38,7 +38,7 @@ namespace Intersect.Server.Networking
         public static GameDataPacket CachedGameDataPacket = null;
 
         //reqcheck
-        public static string reqcheck;
+        public static List<Guid> reqcheck = new List<Guid>();
 
         //PingPacket
         public static void SendPing(Client client, bool request = true)
@@ -1563,16 +1563,17 @@ namespace Intersect.Server.Networking
         //ShopPacket
         public static void SendOpenShop(Player player, ShopBase shop)
         {
+
             if (shop != null)
             {
-                reqcheck = "";
+                reqcheck.Clear();
                 for (var i = 0; i < shop?.SellingItems?.Count; ++i)
                 {
                     if (shop.SellingItems[i].ItemId != null)
                     {
                         if (!Conditions.MeetsConditionLists(shop.SellingItems[i].Item.UsageRequirements, player, null))
                         {
-                            reqcheck += "-" + i + "-";
+                            reqcheck.Add(shop.SellingItems[i].ItemId);
                         }
                     }
                 }
@@ -1637,11 +1638,11 @@ namespace Intersect.Server.Networking
         {
             if (table != null)
             {
-                reqcheck = "";
+                reqcheck.Clear();
                 for (var i = 0; i < table?.Crafts?.Count; ++i) {                    
                     if (!Conditions.MeetsConditionLists(CraftBase.Get(table.Crafts[i]).CraftRequirements, player, null))
                     {
-                        reqcheck += i + "-";
+                        reqcheck.Add(table.Crafts[i]);
                     }
                 }
                 player.SendPacket(new CraftingTablePacket(table.JsonData, false, reqcheck));

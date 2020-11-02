@@ -12,6 +12,7 @@ using Intersect.Client.Interface;
 using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.GameObjects;
+using Intersect.Enums;
 
 using System.Collections.Generic;
 using System.Dynamic;
@@ -103,7 +104,15 @@ namespace Intersect.Client.Interface.Game.TradeSkills
             {
                 var Category = TradeSkillData.Base.Folder;
                 name = TradeSkillData.Base.Name;
-                mLevelText.Text = "Level: " + TradeSkillData.CurrentLevel.ToString();
+                if (TradeSkillData.Base.TradeskillType == TradeSkillTypes.Reputation)
+                {
+                    mLevelText.Text = "Standing: " + (Standing)TradeSkillData.CurrentLevel;
+                }
+                else
+                {
+                    mLevelText.Text = "Level: " + TradeSkillData.CurrentLevel.ToString();
+                }
+
                 //var xptolevel = TradeSkillBase.Get(mIndex).XPBase + (TradeSkillBase.Get(mIndex).XPIncrease * TradeSkillData.CurrentLevel);
                 var xptolevel = Math.Round(TradeSkillBase.Get(mIndex).XPBase * (decimal)Math.Pow(1 + ((double)TradeSkillBase.Get(mIndex).XPIncrease / 100), ((double)TradeSkillData.CurrentLevel - 1) / 3));
 

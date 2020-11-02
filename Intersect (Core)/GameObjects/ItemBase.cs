@@ -274,6 +274,7 @@ namespace Intersect.GameObjects
             Name = "New Item";
             Speed = 10; // Set to 10 by default.
             StatsGiven = new int[(int) Stats.StatCount];
+            StatGrowths = new int[(int)Stats.StatCount];
             PercentageStatsGiven = new int[(int) Stats.StatCount];
             VitalsGiven = new int[(int) Vitals.VitalCount];
             VitalsRegen = new int[(int) Vitals.VitalCount];

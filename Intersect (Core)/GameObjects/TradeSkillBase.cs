@@ -37,6 +37,8 @@ namespace Intersect.GameObjects
 
         [NotMapped] public List<SkillUnlock> SkillUnlocks = new List<SkillUnlock>();
 
+        [NotMapped] public List<ReputationUnlock> ReputationUnlocks = new List<ReputationUnlock>();
+
         public TradeSkillTypes TradeskillType { get; set; }
 
         //General
@@ -59,7 +61,7 @@ namespace Intersect.GameObjects
             set => LevelUpAnimationId = value?.Id ?? Guid.Empty;
         }
 
-        //CraftSkill
+        //CraftUnlocks
         [Column("CraftUnlocks")]
         [JsonIgnore]
         public string JsonCraftUnlocks
@@ -68,7 +70,7 @@ namespace Intersect.GameObjects
             set => CraftUnlocks = JsonConvert.DeserializeObject<List<CraftUnlock>>(value ?? "[]");
         }
 
-        //CraftSkill
+        //WeaponUnlocks
         [Column("WeaponUnlocks")]
         [JsonIgnore]
         public string JsonWeaponUnlocks
@@ -80,7 +82,7 @@ namespace Intersect.GameObjects
         //NormalSkill
 
 
-        //CraftSkill
+        //SkillUnlocks
         [Column("SkillUnlocks")]
         [JsonIgnore]
         public string JsonSkillUnlocks
@@ -88,7 +90,15 @@ namespace Intersect.GameObjects
             get => JsonConvert.SerializeObject(SkillUnlocks);
             set => SkillUnlocks = JsonConvert.DeserializeObject<List<SkillUnlock>>(value ?? "[]");
         }
-        
+
+        //ReputationUnlocks
+        [Column("ReputationUnlocks")]
+        [JsonIgnore]
+        public string JsonReputationUnlocks
+        {
+            get => JsonConvert.SerializeObject(ReputationUnlocks);
+            set => ReputationUnlocks = JsonConvert.DeserializeObject<List<ReputationUnlock>>(value ?? "[]");
+        }
         /// <inheritdoc />
         public string Folder { get; set; } = "";
 
@@ -104,6 +114,21 @@ namespace Intersect.GameObjects
         public CraftUnlock(Guid craftid, int levelreq)
         {
             CraftId = craftid;
+            LevelRequired = levelreq;
+        }
+
+    }
+
+    public class ReputationUnlock
+    {
+
+        public Guid ItemId;
+
+        public int LevelRequired;
+
+        public ReputationUnlock(Guid itemid, int levelreq)
+        {
+            ItemId = itemid;
             LevelRequired = levelreq;
         }
 

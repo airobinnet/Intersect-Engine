@@ -34,6 +34,8 @@ namespace Intersect.Editor.Forms.Editors
 
         private bool updatingCrafts = false;
 
+        private bool updatingRep = false;
+
         private bool updatingSpells = false;
 
         public FrmTradeSkills()
@@ -63,6 +65,10 @@ namespace Intersect.Editor.Forms.Editors
             cmbSpell.Items.Clear();
             cmbSpell.Items.Add(Strings.General.none);
             cmbSpell.Items.AddRange(SpellBase.Names);
+
+            cmbReputationItem.Items.Clear();
+            cmbReputationItem.Items.Add(Strings.General.none);
+            cmbReputationItem.Items.AddRange(ItemBase.Names);
 
             cmbLevelUpAnimation.Items.Clear();
             cmbLevelUpAnimation.Items.Add(Strings.General.none);
@@ -104,13 +110,16 @@ namespace Intersect.Editor.Forms.Editors
                 }
 
                 lstCraftSkills.Items.Clear();
+                lstReputation.Items.Clear();
                 listSpellsAffected.Items.Clear();
 
                 grpCraftSkill.Hide();
                 grpWeaponSkill.Hide();
                 grpSpellSkill.Hide();
+                grpReputation.Hide();
                 cmbCraft.Hide();
                 nudCraftUnlockLevel.Hide();
+                nudReputationLevelUnlock.Hide();
                 lblCraftUnlock.Hide();
                 lblCraft.Hide();
                 cmbSpell.Hide();
@@ -155,6 +164,36 @@ namespace Intersect.Editor.Forms.Editors
                     nudCraftUnlockLevel.Value = mEditorItem.CraftUnlocks[lstCraftSkills.SelectedIndex].LevelRequired;
                 }
 
+
+                //Reputation
+                for (var i = 0; i < mEditorItem.ReputationUnlocks.Count; i++)
+                {
+                    if (mEditorItem.ReputationUnlocks[i].ItemId != Guid.Empty)
+                    {
+                        lstReputation.Items.Add(
+                            Strings.TradeSkillEditor.craftlistitem.ToString(
+                                ItemBase.GetName(mEditorItem.ReputationUnlocks[i].ItemId), mEditorItem.ReputationUnlocks[i].LevelRequired
+                            )
+                        );
+                    }
+                    else
+                    {
+                        lstReputation.Items.Add(
+                            Strings.TradeSkillEditor.craftlistitem.ToString(
+                                Strings.TradeSkillEditor.craftnone, mEditorItem.ReputationUnlocks[i].LevelRequired
+                            )
+                        );
+                    }
+                }
+
+                if (lstReputation.Items.Count > 0)
+                {
+                    lstReputation.SelectedIndex = 0;
+                    cmbReputationItem.SelectedIndex =
+                        ItemBase.ListIndex(mEditorItem.ReputationUnlocks[lstReputation.SelectedIndex].ItemId) + 1;
+
+                    nudReputationLevelUnlock.Value = mEditorItem.ReputationUnlocks[lstReputation.SelectedIndex].LevelRequired;
+                }
 
                 //Spell Skill
                 for (var i = 0; i < mEditorItem.SkillUnlocks.Count; i++)
@@ -222,6 +261,7 @@ namespace Intersect.Editor.Forms.Editors
             {
                 mEditorItem.WeaponUnlocks.Clear();
                 mEditorItem.CraftUnlocks.Clear();
+                mEditorItem.ReputationUnlocks.Clear();
             }
 
             if (cmbTradeSkillType.SelectedIndex == (int)TradeSkillTypes.Normal)
@@ -229,6 +269,7 @@ namespace Intersect.Editor.Forms.Editors
                 grpCraftSkill.Visible = false;
                 grpWeaponSkill.Visible = false;
                 grpSpellSkill.Visible = false;
+                grpReputation.Visible = false;
             }
             else if (cmbTradeSkillType.SelectedIndex == (int)TradeSkillTypes.Craft)
             {
@@ -236,11 +277,13 @@ namespace Intersect.Editor.Forms.Editors
                 grpCraftSkill.Show();
                 grpWeaponSkill.Visible = false;
                 grpSpellSkill.Visible = false;
+                grpReputation.Visible = false;
             }
             else if (cmbTradeSkillType.SelectedIndex == (int)TradeSkillTypes.Weapon)
             {
                 grpCraftSkill.Visible = false;
                 grpSpellSkill.Visible = false;
+                grpReputation.Visible = false;
                 grpWeaponSkill.Show();
                 grpWeaponSkill.Visible = true;
 
@@ -249,8 +292,18 @@ namespace Intersect.Editor.Forms.Editors
             {
                 grpCraftSkill.Visible = false;
                 grpWeaponSkill.Visible = false;
+                grpReputation.Visible = false;
                 grpSpellSkill.Show();
                 grpSpellSkill.Visible = true;
+            }
+            else if (cmbTradeSkillType.SelectedIndex == (int)TradeSkillTypes.Reputation)
+            {
+                grpReputation.Show();
+                grpReputation.Visible = true;
+                grpCraftSkill.Visible = false;
+                grpWeaponSkill.Visible = false;
+                grpSpellSkill.Visible = false;
+                nudReputationLevelUnlock.Show();
             }
 
             mEditorItem.TradeskillType = (TradeSkillTypes)cmbTradeSkillType.SelectedIndex;
@@ -297,6 +350,35 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
+        private void nudRepLevelRequired_ValueChanged(object sender, EventArgs e)
+        {
+            
+            // This should never be below 1. We shouldn't accept level 0 unlocks!
+            nudReputationLevelUnlock.Value = Math.Max(1, nudReputationLevelUnlock.Value);
+            
+            if (lstReputation.SelectedIndex > -1)
+            {
+                mEditorItem.ReputationUnlocks[lstReputation.SelectedIndex].LevelRequired = (int)nudReputationLevelUnlock.Value;
+                updatingRep = true;
+                if (cmbReputationItem.SelectedIndex > 0)
+                {
+                    lstReputation.Items[lstReputation.SelectedIndex] =
+                        Strings.TradeSkillEditor.craftlistitem.ToString(
+                            ItemBase.GetName(mEditorItem.ReputationUnlocks[lstReputation.SelectedIndex].ItemId),
+                            nudReputationLevelUnlock.Value
+                        );
+                }
+                else
+                {
+                    lstReputation.Items[lstReputation.SelectedIndex] =
+                        Strings.CraftsEditor.ingredientlistitem.ToString(
+                            Strings.CraftsEditor.ingredientnone, nudReputationLevelUnlock.Value
+                        );
+                }
+
+                updatingRep = false;
+            }
+        }
 
         private void nudSpellXpGain_ValueChanged(object sender, EventArgs e)
         {
@@ -430,6 +512,30 @@ namespace Intersect.Editor.Forms.Editors
             if (lstCraftSkills.Items.Count > 0)
             {
                 mEditorItem.CraftUnlocks.RemoveAt(lstCraftSkills.SelectedIndex);
+                UpdateEditor();
+            }
+        }
+
+        private void btnAddRep_Click(object sender, EventArgs e)
+        {
+            if (cmbReputationItem.SelectedIndex <= 0)
+            {
+                mEditorItem.ReputationUnlocks.Add(new ReputationUnlock(Guid.Empty, 1));
+            }
+            else
+            {
+                mEditorItem.ReputationUnlocks.Add(new ReputationUnlock(ItemBase.IdFromList(cmbReputationItem.SelectedIndex - 1), (int)nudReputationLevelUnlock.Value));
+            }
+            lstReputation.Items.Add(Strings.General.none);
+            lstReputation.SelectedIndex = lstReputation.Items.Count - 1;
+            cmbRep_SelectedIndexChanged(null, null);
+        }
+
+        private void btnRemoveRep_Click(object sender, EventArgs e)
+        {
+            if (lstReputation.Items.Count > 0)
+            {
+                mEditorItem.ReputationUnlocks.RemoveAt(lstReputation.SelectedIndex);
                 UpdateEditor();
             }
         }
@@ -609,7 +715,34 @@ namespace Intersect.Editor.Forms.Editors
                 lblCraft.Hide();
             }
         }
-        
+
+        private void lstReputation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (updatingRep)
+            {
+                return;
+            }
+
+            if (lstReputation.SelectedIndex > -1)
+            {
+                cmbReputationItem.Show();
+                nudReputationLevelUnlock.Show();
+                lblRepItem.Show();
+                lblRepUnlock.Show();
+                cmbReputationItem.SelectedIndex =
+                    ItemBase.ListIndex(mEditorItem.ReputationUnlocks[lstReputation.SelectedIndex].ItemId) + 1;
+
+                nudReputationLevelUnlock.Value = mEditorItem.ReputationUnlocks[lstReputation.SelectedIndex].LevelRequired;
+            }
+            else
+            {
+                cmbReputationItem.Hide();
+                nudReputationLevelUnlock.Hide();
+                lblRepItem.Hide();
+                lblRepUnlock.Hide();
+            }
+        }
+
         private void listSpellsAffected_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (updatingSpells)
@@ -651,6 +784,22 @@ namespace Intersect.Editor.Forms.Editors
                     new CraftUnlock(
                         mEditorItem.CraftUnlocks[lstCraftSkills.SelectedIndex].CraftId,
                         mEditorItem.CraftUnlocks[lstCraftSkills.SelectedIndex].LevelRequired
+                    )
+                );
+
+                UpdateEditor();
+            }
+        }
+
+        private void btnDupRep_Click(object sender, EventArgs e)
+        {
+            if (lstReputation.SelectedIndex > -1)
+            {
+                mEditorItem.ReputationUnlocks.Insert(
+                    lstReputation.SelectedIndex,
+                    new ReputationUnlock(
+                        mEditorItem.ReputationUnlocks[lstReputation.SelectedIndex].ItemId,
+                        mEditorItem.ReputationUnlocks[lstReputation.SelectedIndex].LevelRequired
                     )
                 );
 
@@ -706,6 +855,34 @@ namespace Intersect.Editor.Forms.Editors
                 }
 
                 updatingCrafts = false;
+            }
+        }
+
+        private void cmbRep_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lstReputation.SelectedIndex > -1)
+            {
+                mEditorItem.ReputationUnlocks[lstReputation.SelectedIndex].ItemId =
+                    ItemBase.IdFromList(cmbReputationItem.SelectedIndex - 1);
+
+                updatingRep = true;
+                if (cmbReputationItem.SelectedIndex > 0)
+                {
+                    lstReputation.Items[lstReputation.SelectedIndex] =
+                        Strings.TradeSkillEditor.craftlistitem.ToString(
+                            ItemBase.GetName(mEditorItem.ReputationUnlocks[lstReputation.SelectedIndex].ItemId),
+                            nudReputationLevelUnlock.Value
+                        );
+                }
+                else
+                {
+                    lstReputation.Items[lstReputation.SelectedIndex] =
+                        Strings.TradeSkillEditor.craftlistitem.ToString(
+                            Strings.TradeSkillEditor.craftnone, nudReputationLevelUnlock.Value
+                        );
+                }
+
+                updatingRep = false;
             }
         }
 

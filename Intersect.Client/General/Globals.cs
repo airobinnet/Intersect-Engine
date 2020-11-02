@@ -24,10 +24,10 @@ namespace Intersect.Client.General
         public static CraftingTableBase ActiveCraftingTable;
 
         //ReqCheck
-        public static string ActiveCraftingTableReqs;
+        public static List<Guid> ActiveCraftingTableReqs;
 
         //Shop req check
-        public static string ShopReqs;
+        public static List<Guid> ShopReqs;
 
         //Craftcheck
         public static bool canCraftrq = false;
