@@ -75,12 +75,31 @@ namespace Intersect.Client.Interface.Game
 
         private Label mValue;
 
+        private int Experience;
+
+        private Guid TradeSkill;
+
+        private int TradeSkillExperience;
+
         public QuestRewardItem(QuestsWindow inventoryWindow, int index, QuestBase selectedQuest, bool haschoice)
         {
             mInventoryWindow = inventoryWindow;
             mMySlot = index;
             mSelectedQuest = selectedQuest;
             HasChoice = haschoice;
+        }
+
+        public QuestRewardItem(QuestsWindow inventoryWindow, int experience)
+        {
+            mInventoryWindow = inventoryWindow;
+            Experience = experience;
+        }
+
+        public QuestRewardItem(QuestsWindow inventoryWindow, Guid tradeskill, int tradeskillexperience)
+        {
+            mInventoryWindow = inventoryWindow;
+            TradeSkill = tradeskill;
+            TradeSkillExperience = tradeskillexperience;
         }
 
         public void Setup()
@@ -101,6 +120,29 @@ namespace Intersect.Client.Interface.Game
                         mValue.Text = mSelectedQuest.Tasks[i].mTargetsQuantity[mMySlot].ToString();
                     }
                 }
+            }
+        }
+
+
+        public void SetupFixed()
+        {
+            Pnl = new ImagePanel(Container, "ItemChoiceItemIcon");
+            Pnl.HoverEnter += pnl_HoverEnterFixed;
+            Pnl.HoverLeave += pnl_HoverLeaveFixed;
+            //Pnl.RightClicked += pnl_RightClicked;
+            //Pnl.Clicked += pnl_Clicked;
+
+            mValue = new Label(Container, "ItemChoiceItemAmount");
+            
+            if (TradeSkillExperience > 0)
+            {
+                mValue.Text = TradeSkillExperience.ToString();
+                Pnl.SetToolTipText(TradeSkillBase.GetName(TradeSkill) + " +" + TradeSkillExperience.ToString());
+            }
+            if (Experience > 0)
+            {
+                mValue.Text = Experience.ToString();
+                Pnl.SetToolTipText("+" + Experience.ToString() + " Experience");
             }
         }
 
@@ -132,6 +174,16 @@ namespace Intersect.Client.Interface.Game
                 mCompWindow.Dispose();
                 mCompWindow = null;
             }
+        }
+
+        void pnl_HoverLeaveFixed(Base sender, EventArgs arguments)
+        {
+
+        }
+
+        void pnl_HoverEnterFixed(Base sender, EventArgs arguments)
+        {
+            
         }
 
         void pnl_HoverEnter(Base sender, EventArgs arguments)
@@ -255,6 +307,55 @@ namespace Intersect.Client.Interface.Game
                     }
                 }
             }
+            if (mDescWindow != null)
+            {
+                mDescWindow.Dispose();
+                mDescWindow = null;
+                pnl_HoverEnter(null, null);
+            }
+
+            if (mCompWindow != null)
+            {
+                mCompWindow.Dispose();
+                mCompWindow = null;
+                pnl_HoverEnter(null, null);
+            }
+        }
+
+        public void UpdateFixed()
+        {
+            var tempIcon = "default.png";
+
+            if (TradeSkillExperience > 0)
+            {
+                if (TradeSkillBase.Get(TradeSkill).TradeskillType == Enums.TradeSkillTypes.Reputation)
+                {
+                    tempIcon = "experiencereputation.png";
+                }
+                else
+                {
+                    tempIcon = "experienceskill.png";
+                }
+            }
+            if (Experience > 0)
+            {
+                tempIcon = "experience.png";
+            }
+            var itemTex = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Item, tempIcon);
+            if (itemTex != null)
+            {
+                Pnl.Texture = itemTex;
+            }
+            else
+            {
+                if (Pnl.Texture != null)
+                {
+                    Pnl.Texture = null;
+                }
+            }
+
+            mTexLoaded = tempIcon;
+
             if (mDescWindow != null)
             {
                 mDescWindow.Dispose();

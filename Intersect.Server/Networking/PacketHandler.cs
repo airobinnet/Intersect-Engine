@@ -2869,6 +2869,14 @@ namespace Intersect.Server.Networking
                         {
                             if (player.TryGiveItem(questTask.mTargets[packet.Choice], questTask.mTargetsQuantity[packet.Choice]))
                             {
+                                if (questTask.Experience > 0)
+                                {
+                                    player.GiveExperience(questTask.Experience);
+                                }
+                                if (questTask.TradeskillAmount > 0)
+                                {
+                                    player.GiveTradeSkillExperience(questTask.Tradeskill, questTask.TradeskillAmount);
+                                }
                                 player.CompleteQuestTask(packet.QuestId, packet.TaskId);
                             }
                         }
@@ -2880,6 +2888,14 @@ namespace Intersect.Server.Networking
                             player.TryGiveItem(questTask.mTargets[i], questTask.mTargetsQuantity[i], ItemHandling.Overflow);
                             if (i == questTask.mTargets.Count - 1)
                             {
+                                if (questTask.Experience > 0)
+                                {
+                                    player.GiveExperience(questTask.Experience);
+                                }
+                                if (questTask.TradeskillAmount > 0)
+                                {
+                                    player.GiveTradeSkillExperience(questTask.Tradeskill, questTask.TradeskillAmount);
+                                }
                                 player.CompleteQuestTask(packet.QuestId, packet.TaskId);
                             }
                         }

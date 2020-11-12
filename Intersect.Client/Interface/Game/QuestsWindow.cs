@@ -48,6 +48,9 @@ namespace Intersect.Client.Interface.Game
         //Item List
         public List<QuestRewardItem> Items = new List<QuestRewardItem>();
 
+        //Item List
+        public List<QuestRewardItem> FixedItems = new List<QuestRewardItem>();
+
         //Location
         public int X => mQuestsWindow.X;
 
@@ -447,6 +450,7 @@ namespace Intersect.Client.Interface.Game
                                     }
                                     mQuestDescLabel.AddLineBreak();
                                     Items.Clear();
+                                    FixedItems.Clear();
                                     mQuestRewardArea.Children.Clear();
                                     for (var j = 0; j < mSelectedQuest.Tasks[i].mTargets.Count; j++)
                                     {
@@ -479,9 +483,43 @@ namespace Intersect.Client.Interface.Game
                                             }
                                         }
                                     }
+
+                                    if (mSelectedQuest.Tasks[i].Experience > 0)
+                                    {
+                                        FixedItems.Add(new QuestRewardItem(this, mSelectedQuest.Tasks[i].Experience));
+                                    }
+                                    if (mSelectedQuest.Tasks[i].TradeskillAmount > 0)
+                                    {
+                                        FixedItems.Add(new QuestRewardItem(this, mSelectedQuest.Tasks[i].Tradeskill, mSelectedQuest.Tasks[i].TradeskillAmount));
+                                    }
+
+                                    for (var k = 0; k < FixedItems.Count; k++)
+                                    {
+                                        FixedItems[k].Container = new ImagePanel(mQuestRewardArea, "FixedRewards");
+                                        FixedItems[k].SetupFixed();
+
+                                        FixedItems[k].Container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
+                                        FixedItems[k].UpdateFixed();
+
+                                        var xPadding = FixedItems[k].Container.Margin.Left + FixedItems[k].Container.Margin.Right;
+                                        var yPadding = FixedItems[k].Container.Margin.Top + FixedItems[k].Container.Margin.Bottom;
+                                        FixedItems[k]
+                                            .Container.SetPosition(
+                                                k %
+                                                (mQuestDescArea.Width / (FixedItems[k].Container.Width + xPadding)) *
+                                                (FixedItems[k].Container.Width + xPadding) +
+                                                xPadding,
+                                                k /
+                                                (mQuestDescArea.Width / (FixedItems[k].Container.Width + xPadding)) *
+                                                (FixedItems[k].Container.Height + yPadding) +
+                                                yPadding + 52
+                                            );
+                                        FixedItems[k].Container.RenderColor = new Color(255, 255, 255, 255);
+                                    }
+
                                     mQuestDescLabel.AddLineBreak();
                                     mQuestRewardArea.Width = 245;
-                                    mQuestRewardArea.Height = 100;
+                                    mQuestRewardArea.Height = 110;
                                     mAcceptButton.Show();
                                     mQuestRewardArea.Show();
                                 }

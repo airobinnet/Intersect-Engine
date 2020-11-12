@@ -130,6 +130,9 @@ namespace Intersect.Editor.Forms.Editors.Quest
                         lstQuestRewardItems.Items.Add(ItemBase.GetName(mMyCommand.mTargets[i]) + " x" + mMyCommand.mTargetsQuantity[i]);
                     }
                     chkCanChoose.Checked = mMyCommand.HasChoice;
+                    cmbTradeSkill.SelectedIndex = TradeSkillBase.ListIndex(mMyCommand.Tradeskill);
+                    nudTradeSkill.Value = mMyCommand.TradeskillAmount;
+                    nudExperience.Value = mMyCommand.Experience;
                     break;
 
             }
@@ -305,6 +308,12 @@ namespace Intersect.Editor.Forms.Editors.Quest
                         cmbQuestRewardItem.SelectedIndex = 0;
                     }
                     nudQuestRewardItemAmount.Value = 1;
+                    cmbTradeSkill.Items.Clear();
+                    cmbTradeSkill.Items.AddRange(TradeSkillBase.Names);
+                    if (cmbTradeSkill.Items.Count > 0)
+                    {
+                        cmbTradeSkill.SelectedIndex = 0;
+                    }
                     break;
             }
         }
@@ -358,6 +367,9 @@ namespace Intersect.Editor.Forms.Editors.Quest
                     break;
                 case QuestObjective.ChooseItem:
                     mMyTask.HasChoice = chkCanChoose.Checked;
+                    mMyTask.Experience = (int)nudExperience.Value;
+                    mMyTask.Tradeskill = TradeSkillBase.IdFromList(cmbTradeSkill.SelectedIndex);
+                    mMyTask.TradeskillAmount = (int)nudTradeSkill.Value;
                     break;
             }
 

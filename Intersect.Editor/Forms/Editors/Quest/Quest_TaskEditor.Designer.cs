@@ -33,6 +33,8 @@ namespace Intersect.Editor.Forms.Editors.Quest
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(QuestTaskEditor));
             this.grpEditor = new DarkUI.Controls.DarkGroupBox();
             this.grpQuestReward = new DarkUI.Controls.DarkGroupBox();
+            this.nudExperience = new DarkUI.Controls.DarkNumericUpDown();
+            this.lblExperience = new System.Windows.Forms.Label();
             this.chkCanChoose = new System.Windows.Forms.CheckBox();
             this.btnAddQuestRewardItem = new DarkUI.Controls.DarkButton();
             this.btnRemoveQuestRewardItem = new DarkUI.Controls.DarkButton();
@@ -97,8 +99,13 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.lblItem = new System.Windows.Forms.Label();
             this.lblItemQuantity = new System.Windows.Forms.Label();
             this.lblEventDriven = new System.Windows.Forms.Label();
+            this.nudTradeSkill = new DarkUI.Controls.DarkNumericUpDown();
+            this.cmbTradeSkill = new DarkUI.Controls.DarkComboBox();
+            this.lblTradeSkill = new System.Windows.Forms.Label();
+            this.lblTradeskillAmount = new System.Windows.Forms.Label();
             this.grpEditor.SuspendLayout();
             this.grpQuestReward.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudExperience)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuestRewardItemAmount)).BeginInit();
             this.grpMultipleItems.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMultipleItemQuantity)).BeginInit();
@@ -114,6 +121,7 @@ namespace Intersect.Editor.Forms.Editors.Quest
             ((System.ComponentModel.ISupportInitialize)(this.nudNpcWithTagQuantity)).BeginInit();
             this.grpGatherItems.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudItemAmount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTradeSkill)).BeginInit();
             this.SuspendLayout();
             // 
             // grpEditor
@@ -150,6 +158,12 @@ namespace Intersect.Editor.Forms.Editors.Quest
             // 
             this.grpQuestReward.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpQuestReward.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpQuestReward.Controls.Add(this.nudTradeSkill);
+            this.grpQuestReward.Controls.Add(this.cmbTradeSkill);
+            this.grpQuestReward.Controls.Add(this.lblTradeSkill);
+            this.grpQuestReward.Controls.Add(this.lblTradeskillAmount);
+            this.grpQuestReward.Controls.Add(this.nudExperience);
+            this.grpQuestReward.Controls.Add(this.lblExperience);
             this.grpQuestReward.Controls.Add(this.chkCanChoose);
             this.grpQuestReward.Controls.Add(this.btnAddQuestRewardItem);
             this.grpQuestReward.Controls.Add(this.btnRemoveQuestRewardItem);
@@ -168,6 +182,36 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.grpQuestReward.TabStop = false;
             this.grpQuestReward.Text = "Quest Reward Screen";
             this.grpQuestReward.Visible = false;
+            // 
+            // nudExperience
+            // 
+            this.nudExperience.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudExperience.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudExperience.Location = new System.Drawing.Point(560, 72);
+            this.nudExperience.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudExperience.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.nudExperience.Name = "nudExperience";
+            this.nudExperience.Size = new System.Drawing.Size(174, 26);
+            this.nudExperience.TabIndex = 72;
+            this.nudExperience.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // lblExperience
+            // 
+            this.lblExperience.AutoSize = true;
+            this.lblExperience.Location = new System.Drawing.Point(460, 74);
+            this.lblExperience.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblExperience.Name = "lblExperience";
+            this.lblExperience.Size = new System.Drawing.Size(92, 20);
+            this.lblExperience.TabIndex = 70;
+            this.lblExperience.Text = "Experience:";
             // 
             // chkCanChoose
             // 
@@ -1155,6 +1199,68 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.lblEventDriven.Text = "Event Driven: The description should lead the player to an event. The event will " +
     "then complete the task using the complete quest task command.";
             // 
+            // nudTradeSkill
+            // 
+            this.nudTradeSkill.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudTradeSkill.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudTradeSkill.Location = new System.Drawing.Point(560, 200);
+            this.nudTradeSkill.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudTradeSkill.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.nudTradeSkill.Name = "nudTradeSkill";
+            this.nudTradeSkill.Size = new System.Drawing.Size(174, 26);
+            this.nudTradeSkill.TabIndex = 76;
+            this.nudTradeSkill.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cmbTradeSkill
+            // 
+            this.cmbTradeSkill.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbTradeSkill.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbTradeSkill.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbTradeSkill.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbTradeSkill.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbTradeSkill.ButtonIcon")));
+            this.cmbTradeSkill.DrawDropdownHoverOutline = false;
+            this.cmbTradeSkill.DrawFocusRectangle = false;
+            this.cmbTradeSkill.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbTradeSkill.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTradeSkill.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbTradeSkill.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbTradeSkill.FormattingEnabled = true;
+            this.cmbTradeSkill.Location = new System.Drawing.Point(562, 149);
+            this.cmbTradeSkill.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbTradeSkill.Name = "cmbTradeSkill";
+            this.cmbTradeSkill.Size = new System.Drawing.Size(172, 27);
+            this.cmbTradeSkill.TabIndex = 75;
+            this.cmbTradeSkill.Text = null;
+            this.cmbTradeSkill.TextPadding = new System.Windows.Forms.Padding(2);
+            // 
+            // lblTradeSkill
+            // 
+            this.lblTradeSkill.AutoSize = true;
+            this.lblTradeSkill.Location = new System.Drawing.Point(465, 152);
+            this.lblTradeSkill.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTradeSkill.Name = "lblTradeSkill";
+            this.lblTradeSkill.Size = new System.Drawing.Size(79, 20);
+            this.lblTradeSkill.TabIndex = 74;
+            this.lblTradeSkill.Text = "Tradeskill:";
+            // 
+            // lblTradeskillAmount
+            // 
+            this.lblTradeskillAmount.AutoSize = true;
+            this.lblTradeskillAmount.Location = new System.Drawing.Point(475, 202);
+            this.lblTradeskillAmount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTradeskillAmount.Name = "lblTradeskillAmount";
+            this.lblTradeskillAmount.Size = new System.Drawing.Size(69, 20);
+            this.lblTradeskillAmount.TabIndex = 73;
+            this.lblTradeskillAmount.Text = "Amount:";
+            // 
             // QuestTaskEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1168,6 +1274,7 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.grpEditor.PerformLayout();
             this.grpQuestReward.ResumeLayout(false);
             this.grpQuestReward.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudExperience)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuestRewardItemAmount)).EndInit();
             this.grpMultipleItems.ResumeLayout(false);
             this.grpMultipleItems.PerformLayout();
@@ -1190,6 +1297,7 @@ namespace Intersect.Editor.Forms.Editors.Quest
             this.grpGatherItems.ResumeLayout(false);
             this.grpGatherItems.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudItemAmount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTradeSkill)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1262,5 +1370,11 @@ namespace Intersect.Editor.Forms.Editors.Quest
         private DarkComboBox cmbQuestRewardItem;
         private System.Windows.Forms.Label lblQuestRewardItem;
         private System.Windows.Forms.Label lblQuestRewardItemAmount;
+        private DarkNumericUpDown nudExperience;
+        private System.Windows.Forms.Label lblExperience;
+        private DarkNumericUpDown nudTradeSkill;
+        private DarkComboBox cmbTradeSkill;
+        private System.Windows.Forms.Label lblTradeSkill;
+        private System.Windows.Forms.Label lblTradeskillAmount;
     }
 }

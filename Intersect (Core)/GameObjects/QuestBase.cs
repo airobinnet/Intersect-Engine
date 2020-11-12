@@ -286,11 +286,26 @@ namespace Intersect.GameObjects
 
                         break;
                     case QuestObjective.ChooseItem: //choose item(s)
-                        taskString = "Choose Reward: ";
+                        if (HasChoice)
+                        {
+                            taskString = "Choose Reward: ";
+                        }
+                        else
+                        {
+                            taskString = "Reward: ";
+                        }
                         for (var i = 0; i < mTargets.Count; i++)
                         {
                             taskString += descriptions[(int)Objective]
                             .ToString(ItemBase.GetName(mTargets[i]), mTargetsQuantity[i]) + " - ";
+                        }
+                        if (Experience > 0)
+                        {
+                            taskString += "[Exp + " + Experience + "] ";
+                        }
+                        if (Tradeskill != Guid.Empty && TradeskillAmount > 0)
+                        {
+                            taskString += "[Skill " + TradeSkillBase.GetName(Tradeskill) + " + " + TradeskillAmount + "] ";
                         }
                         taskString += Description;
 
@@ -326,6 +341,14 @@ namespace Intersect.GameObjects
 
             //Choose Items
             public bool HasChoice { get; set; }
+
+            //Reward Experience
+            public int Experience { get; set; }
+
+            //Reward Tradeskill
+            public Guid Tradeskill { get; set; }
+
+            public int TradeskillAmount { get; set; }
         }
 
     }

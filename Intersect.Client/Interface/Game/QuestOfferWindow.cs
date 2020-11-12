@@ -8,6 +8,7 @@ using Intersect.Client.Localization;
 using Intersect.Client.Networking;
 using Intersect.Enums;
 using Intersect.GameObjects;
+using System;
 using System.Collections.Generic;
 
 namespace Intersect.Client.Interface.Game
@@ -46,6 +47,8 @@ namespace Intersect.Client.Interface.Game
 
         //Item List
         public List<QuestOfferRewardItem> Items = new List<QuestOfferRewardItem>();
+
+        public List<QuestOfferRewardItem> FixedItems = new List<QuestOfferRewardItem>();
 
         public QuestOfferWindow(Canvas gameCanvas)
         {
@@ -137,6 +140,7 @@ namespace Intersect.Client.Interface.Game
                             mQuestRewardLabel.AddText(Strings.QuestOffer.questreward, Color.White, Alignments.Left, mQuestPromptTemplate.Font);
                         }
                         Items.Clear();
+                        FixedItems.Clear();
                         mQuestRewardArea.Children.Clear();
                         for (var j = 0; j < mSelectedQuest.Tasks[mSelectedQuest.Tasks.Count - 1].mTargets.Count; j++)
                         {
@@ -163,14 +167,49 @@ namespace Intersect.Client.Interface.Game
                             Items[j].Container.RenderColor = new Color(255, 255, 255, 255);
 
                         }
+
+
+                        if (mSelectedQuest.Tasks[mSelectedQuest.Tasks.Count - 1].Experience > 0)
+                        {
+                            FixedItems.Add(new QuestOfferRewardItem(this, mSelectedQuest.Tasks[mSelectedQuest.Tasks.Count - 1].Experience));
+                        }
+                        if (mSelectedQuest.Tasks[mSelectedQuest.Tasks.Count - 1].TradeskillAmount > 0)
+                        {
+                            FixedItems.Add(new QuestOfferRewardItem(this, mSelectedQuest.Tasks[mSelectedQuest.Tasks.Count - 1].Tradeskill, mSelectedQuest.Tasks[mSelectedQuest.Tasks.Count - 1].TradeskillAmount));
+                        }
+
+                        for (var k = 0; k < FixedItems.Count; k++)
+                        {
+                            FixedItems[k].Container = new ImagePanel(mQuestRewardArea, "FixedRewards");
+                            FixedItems[k].SetupFixed();
+
+                            FixedItems[k].Container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
+                            FixedItems[k].UpdateFixed();
+
+                            var xPadding = FixedItems[k].Container.Margin.Left + FixedItems[k].Container.Margin.Right;
+                            var yPadding = FixedItems[k].Container.Margin.Top + FixedItems[k].Container.Margin.Bottom;
+                            FixedItems[k]
+                                .Container.SetPosition(
+                                    k %
+                                    (mQuestPromptArea.Width / (FixedItems[k].Container.Width + xPadding)) *
+                                    (FixedItems[k].Container.Width + xPadding) +
+                                    xPadding,
+                                    k /
+                                    (mQuestPromptArea.Width / (FixedItems[k].Container.Width + xPadding)) *
+                                    (FixedItems[k].Container.Height + yPadding) +
+                                    yPadding + 52
+                                );
+                            FixedItems[k].Container.RenderColor = new Color(255, 255, 255, 255);
+                        }
+
                         mQuestRewardLabel.Show();
                         mQuestRewardArea.Width = 245;
-                        mQuestRewardArea.Height = 100;
+                        mQuestRewardArea.Height = 110;
                         mQuestPromptLabel.SizeToChildren(false, true);
-                        mQuestRewardLabel.Y = mQuestPromptLabel.Y + mQuestPromptLabel.Height + 100;
+                        mQuestRewardLabel.Y = mQuestPromptLabel.Y + mQuestPromptLabel.Height + 50;
                         mQuestRewardLabel.SizeToChildren(false, true);
                         mQuestRewardArea.Show();
-                        mQuestRewardArea.Y = mQuestPromptLabel.Y + mQuestPromptLabel.Height + 100 + mQuestRewardLabel.Height + 5;
+                        mQuestRewardArea.Y = mQuestPromptLabel.Y + mQuestPromptLabel.Height + 50 + mQuestRewardLabel.Height + 5;
                     }
                     else
                     {
