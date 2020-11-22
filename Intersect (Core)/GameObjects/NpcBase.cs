@@ -140,16 +140,6 @@ namespace Intersect.GameObjects
             get => JsonConvert.SerializeObject(DropPools);
             set => DropPools = JsonConvert.DeserializeObject<List<NpcDropPool>>(value ?? "[]");
         }
-        /*
-        public Guid DropPoolId { get; set; }
-
-        [NotMapped]
-        [JsonIgnore]
-        public DropPoolBase DropPool
-        {
-            get => DropPoolBase.Get(DropPoolId);
-            set => DropPoolId = value?.Id ?? Guid.Empty;
-        }*/
 
         [Column("OnDeathEvent")]
         public Guid OnDeathEventId { get; set; }
@@ -220,6 +210,8 @@ namespace Intersect.GameObjects
 
         [NotMapped]
         public DbList<SpellBase> Spells { get; set; } = new DbList<SpellBase>();
+
+        public Guid Behavior { get; set; }
 
         public string Sprite { get; set; } = "";
 

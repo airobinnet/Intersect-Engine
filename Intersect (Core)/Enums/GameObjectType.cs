@@ -71,7 +71,10 @@ namespace Intersect.Enums
         Tradeskill,
 
         [GameObjectInfo(typeof(TimeBase), "")]
-        Time
+        Time,
+
+        [GameObjectInfo(typeof(BehaviorBase), "behavior")]
+        Behavior
 
     }
 

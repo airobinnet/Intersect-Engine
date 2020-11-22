@@ -92,21 +92,28 @@ namespace Intersect.Client.Interface.Game.EntityPanel
         {
             if (mStatus != null)
             {
-                var remaining = mStatus.RemainingMs();
+                long remaining = 999;
                 var spell = SpellBase.Get(mStatus.SpellId);
-                var secondsRemaining = (float) remaining / 1000f;
-                if (secondsRemaining > 10f)
+                if (!mStatus.Passive)
                 {
-                    mDurationLabel.Text =
-                        Strings.EntityBox.cooldown.ToString(((float) remaining / 1000f).ToString("N0"));
+                    remaining = mStatus.RemainingMs();
+                    var secondsRemaining = (float)remaining / 1000f;
+                    if (secondsRemaining > 10f)
+                    {
+                        mDurationLabel.Text =
+                            Strings.EntityBox.cooldown.ToString(((float)remaining / 1000f).ToString("N0"));
+                    }
+                    else
+                    {
+                        mDurationLabel.Text = Strings.EntityBox.cooldown.ToString(
+                            ((float)remaining / 1000f).ToString("N1").Replace(".", Strings.Numbers.dec)
+                        );
+                    }
                 }
                 else
                 {
-                    mDurationLabel.Text = Strings.EntityBox.cooldown.ToString(
-                        ((float) remaining / 1000f).ToString("N1").Replace(".", Strings.Numbers.dec)
-                    );
+                    mDurationLabel.Text = "";
                 }
-
                 if ((mTexLoaded != "" && spell == null ||
                      spell != null && mTexLoaded != spell.Icon ||
                      mCurrentSpellId != mStatus.SpellId) &&

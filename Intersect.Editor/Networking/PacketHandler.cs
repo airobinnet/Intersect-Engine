@@ -569,6 +569,19 @@ namespace Intersect.Editor.Networking
                         TradeSkillBase.Lookup.Set(id, ts);
                     }
                     break;
+                case GameObjectType.Behavior:
+                    if (deleted)
+                    {
+                        var bh = BehaviorBase.Get(id);
+                        bh.Delete();
+                    }
+                    else
+                    {
+                        var bh = new BehaviorBase(id);
+                        bh.Load(json);
+                        BehaviorBase.Lookup.Set(id, bh);
+                    }
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

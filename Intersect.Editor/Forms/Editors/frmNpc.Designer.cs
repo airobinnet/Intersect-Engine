@@ -172,6 +172,9 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripItemUndo = new System.Windows.Forms.ToolStripButton();
             this.searchableDarkTreeView1 = new Intersect.Editor.Forms.Controls.SearchableDarkTreeView();
+            this.grpBossBehavior = new DarkUI.Controls.DarkGroupBox();
+            this.cmbBehavior = new DarkUI.Controls.DarkComboBox();
+            this.lblBossBehavior = new System.Windows.Forms.Label();
             this.grpNpcs.SuspendLayout();
             this.grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudLevel)).BeginInit();
@@ -212,6 +215,7 @@ namespace Intersect.Editor.Forms.Editors
             this.grpNpcVsNpc.SuspendLayout();
             this.grpSpells.SuspendLayout();
             this.toolStrip.SuspendLayout();
+            this.grpBossBehavior.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpNpcs
@@ -844,6 +848,7 @@ namespace Intersect.Editor.Forms.Editors
             // pnlContainer
             // 
             this.pnlContainer.AutoScroll = true;
+            this.pnlContainer.Controls.Add(this.grpBossBehavior);
             this.pnlContainer.Controls.Add(this.grpLootTables);
             this.pnlContainer.Controls.Add(this.cmbDeathAnimation);
             this.pnlContainer.Controls.Add(this.lblDeathAnimation);
@@ -2307,6 +2312,57 @@ namespace Intersect.Editor.Forms.Editors
             this.searchableDarkTreeView1.TabIndex = 46;
             this.searchableDarkTreeView1.Visible = false;
             // 
+            // grpBossBehavior
+            // 
+            this.grpBossBehavior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpBossBehavior.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpBossBehavior.Controls.Add(this.cmbBehavior);
+            this.grpBossBehavior.Controls.Add(this.lblBossBehavior);
+            this.grpBossBehavior.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpBossBehavior.Location = new System.Drawing.Point(675, 14);
+            this.grpBossBehavior.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpBossBehavior.Name = "grpBossBehavior";
+            this.grpBossBehavior.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpBossBehavior.Size = new System.Drawing.Size(310, 186);
+            this.grpBossBehavior.TabIndex = 70;
+            this.grpBossBehavior.TabStop = false;
+            this.grpBossBehavior.Text = "Custom Behavior";
+            // 
+            // cmbBehavior
+            // 
+            this.cmbBehavior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbBehavior.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbBehavior.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbBehavior.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbBehavior.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbBehavior.ButtonIcon")));
+            this.cmbBehavior.DrawDropdownHoverOutline = false;
+            this.cmbBehavior.DrawFocusRectangle = false;
+            this.cmbBehavior.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbBehavior.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBehavior.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbBehavior.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbBehavior.FormattingEnabled = true;
+            this.cmbBehavior.Items.AddRange(new object[] {
+            "None"});
+            this.cmbBehavior.Location = new System.Drawing.Point(23, 64);
+            this.cmbBehavior.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbBehavior.Name = "cmbBehavior";
+            this.cmbBehavior.Size = new System.Drawing.Size(250, 27);
+            this.cmbBehavior.TabIndex = 11;
+            this.cmbBehavior.Text = "None";
+            this.cmbBehavior.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbBehavior.SelectedIndexChanged += new System.EventHandler(this.cmbBehavior_SelectedIndexChanged);
+            // 
+            // lblBossBehavior
+            // 
+            this.lblBossBehavior.AutoSize = true;
+            this.lblBossBehavior.Location = new System.Drawing.Point(19, 39);
+            this.lblBossBehavior.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblBossBehavior.Name = "lblBossBehavior";
+            this.lblBossBehavior.Size = new System.Drawing.Size(75, 20);
+            this.lblBossBehavior.TabIndex = 6;
+            this.lblBossBehavior.Text = "Behavior:";
+            // 
             // FrmNpc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -2386,6 +2442,8 @@ namespace Intersect.Editor.Forms.Editors
             this.grpSpells.PerformLayout();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
+            this.grpBossBehavior.ResumeLayout(false);
+            this.grpBossBehavior.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2531,5 +2589,8 @@ namespace Intersect.Editor.Forms.Editors
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private DarkGroupBox grpBossBehavior;
+        private DarkComboBox cmbBehavior;
+        private System.Windows.Forms.Label lblBossBehavior;
     }
 }

@@ -113,6 +113,44 @@ namespace Intersect.Editor.Localization
             return Strings.EventConditionDesc.levelorstat.ToString(lvlorstat, pLvl);
         }
 
+        public static string GetEventConditionalDesc(HporManaCondition condition)
+        {
+            var pLvl = "";
+            switch (condition.Comparator)
+            {
+                case VariableComparators.Equal:
+                    pLvl = Strings.EventConditionDesc.equal.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.GreaterOrEqual:
+                    pLvl = Strings.EventConditionDesc.greaterequal.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.LesserOrEqual:
+                    pLvl = Strings.EventConditionDesc.lessthanequal.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.Greater:
+                    pLvl = Strings.EventConditionDesc.greater.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.Less:
+                    pLvl = Strings.EventConditionDesc.lessthan.ToString(condition.Value);
+
+                    break;
+                case VariableComparators.NotEqual:
+                    pLvl = Strings.EventConditionDesc.notequal.ToString(condition.Value);
+
+                    break;
+            }
+
+            var lvlorstat = "";
+            lvlorstat = Strings.Combat.vitals[(int)condition.Vital];
+
+
+            return Strings.EventConditionDesc.levelorstat.ToString(lvlorstat, pLvl);
+        }
+
         public static string GetEventConditionalDesc(SelfSwitchCondition condition)
         {
             var sValue = Strings.EventConditionDesc.False;
@@ -2127,6 +2165,7 @@ Tick timer saved in server config.json.";
                 {22, @"Map has Tag..." },
                 {23, @"Has Tradeskill..." },
                 {24, @"Has Tradeskill with level..." },
+                {25, @"Vital is.." },
             };
 
             public static LocalizedString endrange = @"End Range:";
@@ -3759,6 +3798,72 @@ Tick timer saved in server config.json.";
                 {2, @"Arena"},
             };
 
+        }
+
+        public struct BehaviorEditor
+        {
+
+            public static LocalizedString title = @"Behavior Editor";
+
+            public static Dictionary<int, LocalizedString> types = new Dictionary<int, LocalizedString>
+             {
+                 {0, @"Random"},
+                 {1, @"Pong"},
+                 {2, @"Chronological"},
+                 {3, @"Custom"},
+             };
+
+            public static Dictionary<int, LocalizedString> vitals = new Dictionary<int, LocalizedString>
+             {
+                 {0, @"Health"},
+                 {1, @"Mana"},
+                 {2, @"Stamina"},
+             };
+
+            public static Dictionary<int, LocalizedString> comparators = new Dictionary<int, LocalizedString>
+             {
+                 {0, @"Equal To"},
+                 {1, @"Greater Than or Equal To"},
+                 {2, @"Less Than or Equal To"},
+                 {3, @"Greater Than"},
+                 {4, @"Less Than"},
+                 {5, @"Does Not Equal"}
+             };
+
+            public static Dictionary<int, LocalizedString> units = new Dictionary<int, LocalizedString>
+             {
+                 {0, @"Percentage"},
+                 {1, @"Flat value"},
+             };
+
+            public static Dictionary<int, LocalizedString> movementtypes = new Dictionary<int, LocalizedString>
+             {
+                 {0, @"Quirky"},
+                 {1, @"Stoned"},
+                 {2, @"Normal"},
+             };
+
+            public static LocalizedString behaviors = @"Behaviors";
+
+            public static LocalizedString New = @"New Behavior";
+
+            public static LocalizedString delete = @"Delete Behavior";
+
+            public static LocalizedString copy = @"Copy Behavior";
+
+            public static LocalizedString paste = @"Paste Behavior";
+
+            public static LocalizedString undo = @"Undo Behavior";
+
+            public static LocalizedString general = @"General";
+
+            public static LocalizedString name = @"Name";
+
+            public static LocalizedString description = @"Description";
+
+            public static LocalizedString type = @"Type";
+
+            public static LocalizedString spellsequence = @"{00} when {01} {02} {03} {04} - Attack Range: {05} - Movement: {06}";
         }
 
         public struct NpcEditor

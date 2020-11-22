@@ -231,6 +231,17 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             grpFreeInventorySlots.Text = Strings.EventConditional.FreeInventorySlots;
             lblFreeInventorySlotAmount.Text = Strings.EventConditional.hasatleast;
 
+            cmbVitals.Items.Clear();
+            for (var i = 0; i < (int)Vitals.VitalCount; i++)
+            {
+                cmbVitals.Items.Add(Strings.Combat.vitals[i]);
+            }
+
+            cmbComperatorVitals.Items.Clear();
+            for (var i = 0; i < Strings.EventConditional.comparators.Count; i++)
+            {
+                cmbComperatorVitals.Items.Add(Strings.EventConditional.comparators[i]);
+            }
 
             btnSave.Text = Strings.EventConditional.okay;
             btnCancel.Text = Strings.EventConditional.cancel;
@@ -400,6 +411,15 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     nudTradeSkillLevel.Value = 0;
 
                     break;
+                case ConditionTypes.HporMana:
+                    Condition = new HporManaCondition();
+                    if (cmbVitals.Items.Count > 0)
+                    {
+                        cmbVitals.SelectedIndex = 0;
+                    }
+                    cmbComperatorVitals.SelectedIndex = 0;
+                    nudVitalsValue.Value = 0;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -425,6 +445,8 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             grpHasItemWTag.Hide();
             grpEquippedItemTag.Hide();
             grpTradeSkill.Hide();
+            grpVitals.Hide();
+
             switch (type)
             {
                 case ConditionTypes.VariableIs:
@@ -557,6 +579,9 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     lblTradeSkillLevel.Show();
                     cmbTradeSkill.Items.Clear();
                     cmbTradeSkill.Items.AddRange(TradeSkillBase.Names);
+                    break;
+                case ConditionTypes.HporMana:
+                    grpVitals.Show();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -1178,6 +1203,13 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             nudTradeSkillLevel.Value = condition.TradeSkillLevel;
         }
 
+        private void SetupFormValues(HporManaCondition condition)
+        {
+            cmbComperatorVitals.SelectedIndex = (int)condition.Comparator;
+            nudVitalsValue.Value = condition.Value;
+            cmbVitals.SelectedIndex = (int)condition.Vital;
+        }
+
         #endregion
 
         #region "SaveFormValues"
@@ -1347,6 +1379,13 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         {
             condition.TradeSkill = TradeSkillBase.IdFromList(cmbTradeSkill.SelectedIndex);
             condition.TradeSkillLevel = (int)nudTradeSkillLevel.Value;
+        }
+
+        private void SaveFormValues(HporManaCondition condition)
+        {
+            condition.Comparator = (VariableComparators)cmbComperatorVitals.SelectedIndex;
+            condition.Value = (int)nudVitalsValue.Value;
+            condition.Vital = (Vitals)(cmbVitals.SelectedIndex);
         }
         #endregion
     }

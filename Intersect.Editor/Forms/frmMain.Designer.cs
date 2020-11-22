@@ -117,6 +117,7 @@ namespace Intersect.Editor.Forms
             this.hDVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PetEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dropTableEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tradeSkillEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.postQuestionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportBugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -125,7 +126,7 @@ namespace Intersect.Editor.Forms
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.packClientTexturesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.packageUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tradeSkillEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.BehaviorEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -808,7 +809,8 @@ namespace Intersect.Editor.Forms
             this.hDVToolStripMenuItem,
             this.PetEditorToolStripMenuItem,
             this.dropTableEditorToolStripMenuItem,
-            this.tradeSkillEditorToolStripMenuItem});
+            this.tradeSkillEditorToolStripMenuItem,
+            this.BehaviorEditorToolStripMenuItem});
             this.contentEditorsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.contentEditorsToolStripMenuItem.Name = "contentEditorsToolStripMenuItem";
             this.contentEditorsToolStripMenuItem.Size = new System.Drawing.Size(147, 29);
@@ -950,6 +952,14 @@ namespace Intersect.Editor.Forms
             this.dropTableEditorToolStripMenuItem.Text = "Drop Table Editor";
             this.dropTableEditorToolStripMenuItem.Click += new System.EventHandler(this.dropTableEditorToolStripMenuItem_Click);
             // 
+            // tradeSkillEditorToolStripMenuItem
+            // 
+            this.tradeSkillEditorToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.tradeSkillEditorToolStripMenuItem.Name = "tradeSkillEditorToolStripMenuItem";
+            this.tradeSkillEditorToolStripMenuItem.Size = new System.Drawing.Size(271, 30);
+            this.tradeSkillEditorToolStripMenuItem.Text = "Tradeskill Editor";
+            this.tradeSkillEditorToolStripMenuItem.Click += new System.EventHandler(this.tradeSkillEditorToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1030,13 +1040,13 @@ namespace Intersect.Editor.Forms
             this.packageUpdateToolStripMenuItem.Text = "Package Update";
             this.packageUpdateToolStripMenuItem.Click += new System.EventHandler(this.packageUpdateToolStripMenuItem_Click);
             // 
-            // tradeSkillEditorToolStripMenuItem
+            // BehaviorEditorToolStripMenuItem
             // 
-            this.tradeSkillEditorToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.tradeSkillEditorToolStripMenuItem.Name = "tradeSkillEditorToolStripMenuItem";
-            this.tradeSkillEditorToolStripMenuItem.Size = new System.Drawing.Size(271, 30);
-            this.tradeSkillEditorToolStripMenuItem.Text = "Tradeskill Editor";
-            this.tradeSkillEditorToolStripMenuItem.Click += new System.EventHandler(this.tradeSkillEditorToolStripMenuItem_Click);
+            this.BehaviorEditorToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.BehaviorEditorToolStripMenuItem.Name = "BehaviorEditorToolStripMenuItem";
+            this.BehaviorEditorToolStripMenuItem.Size = new System.Drawing.Size(271, 30);
+            this.BehaviorEditorToolStripMenuItem.Text = "Behavior Editor";
+            this.BehaviorEditorToolStripMenuItem.Click += new System.EventHandler(this.BehaviorEditorToolStripMenuItem_Click);
             // 
             // FrmMain
             // 
@@ -1162,5 +1172,6 @@ namespace Intersect.Editor.Forms
         private ToolStripMenuItem PetEditorToolStripMenuItem;
         private ToolStripMenuItem dropTableEditorToolStripMenuItem;
         private ToolStripMenuItem tradeSkillEditorToolStripMenuItem;
+        private ToolStripMenuItem BehaviorEditorToolStripMenuItem;
     }
 }

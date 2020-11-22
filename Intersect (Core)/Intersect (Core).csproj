@@ -232,6 +232,7 @@
     <Compile Include="Console.cs" />
     <Compile Include="Config\SmtpSettings.cs" />
     <Compile Include="CustomColors.cs" />
+    <Compile Include="Enums\BehaviorTypes.cs" />
     <Compile Include="Enums\ItemHandling.cs" />
     <Compile Include="Enums\CustomSpriteLayers.cs" />
     <Compile Include="Enums\Standing.cs" />
@@ -247,6 +248,7 @@
     <Compile Include="GameObjects\Events\VariableMod.cs" />
     <Compile Include="GameObjects\HDVBase.cs" />
     <Compile Include="GameObjects\DropPoolBase.cs" />
+    <Compile Include="GameObjects\BehaviorBase.cs" />
     <Compile Include="GameObjects\Maps\MapPetSpawn.cs" />
     <Compile Include="GameObjects\TradeSkillBase.cs" />
     <Compile Include="GameObjects\PetBase.cs" />

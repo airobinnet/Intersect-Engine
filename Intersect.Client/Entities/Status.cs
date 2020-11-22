@@ -21,17 +21,20 @@ namespace Intersect.Client.Entities
 
         public long TotalDuration = 1;
 
+        public bool Passive;
+
         public int ExtraBuff = 0;
 
         public StatusTypes Type;
 
-        public Status(Guid spellId, StatusTypes type, string data, long timeRemaining, long totalDuration, int extraBuff)
+        public Status(Guid spellId, StatusTypes type, string data, long timeRemaining, long totalDuration, bool passive, int extraBuff)
         {
             SpellId = spellId;
             Type = type;
             Data = data;
             TimeRemaining = timeRemaining;
             TotalDuration = totalDuration;
+            Passive = passive;
             TimeRecevied = Globals.System.GetTimeMs();
             ExtraBuff = extraBuff;
         }

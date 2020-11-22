@@ -174,6 +174,7 @@ namespace Intersect.Editor.Forms.Editors
             this.txtSearch = new DarkUI.Controls.DarkTextBox();
             this.lstSpells = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.chkPassive = new DarkUI.Controls.DarkCheckBox();
             this.pnlContainer.SuspendLayout();
             this.grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picSpell)).BeginInit();
@@ -1542,7 +1543,7 @@ namespace Intersect.Editor.Forms.Editors
             this.grpEffect.Controls.Add(this.cmbTransform);
             this.grpEffect.Controls.Add(this.lblSprite);
             this.grpEffect.ForeColor = System.Drawing.Color.Gainsboro;
-            this.grpEffect.Location = new System.Drawing.Point(302, 357);
+            this.grpEffect.Location = new System.Drawing.Point(302, 397);
             this.grpEffect.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpEffect.Name = "grpEffect";
             this.grpEffect.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -1683,6 +1684,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpEffectDuration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpEffectDuration.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpEffectDuration.Controls.Add(this.chkPassive);
             this.grpEffectDuration.Controls.Add(this.nudBuffDuration);
             this.grpEffectDuration.Controls.Add(this.lblBuffDuration);
             this.grpEffectDuration.ForeColor = System.Drawing.Color.Gainsboro;
@@ -1690,7 +1692,7 @@ namespace Intersect.Editor.Forms.Editors
             this.grpEffectDuration.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grpEffectDuration.Name = "grpEffectDuration";
             this.grpEffectDuration.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpEffectDuration.Size = new System.Drawing.Size(350, 63);
+            this.grpEffectDuration.Size = new System.Drawing.Size(350, 98);
             this.grpEffectDuration.TabIndex = 51;
             this.grpEffectDuration.TabStop = false;
             this.grpEffectDuration.Text = "Stat Boost/Effect Duration";
@@ -2476,6 +2478,17 @@ namespace Intersect.Editor.Forms.Editors
             this.imageList.Images.SetKeyName(0, "folder_Open_16xLG.png");
             this.imageList.Images.SetKeyName(1, "LegacyPackage_16x.png");
             // 
+            // chkPassive
+            // 
+            this.chkPassive.Location = new System.Drawing.Point(12, 50);
+            this.chkPassive.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkPassive.Name = "chkPassive";
+            this.chkPassive.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkPassive.Size = new System.Drawing.Size(255, 37);
+            this.chkPassive.TabIndex = 40;
+            this.chkPassive.Text = "Passive effect? (No duration)";
+            this.chkPassive.CheckedChanged += new System.EventHandler(this.chkPassive_CheckedChanged);
+            // 
             // FrmSpell
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -2709,5 +2722,6 @@ namespace Intersect.Editor.Forms.Editors
         private System.Windows.Forms.Label lblMS;
         private System.Windows.Forms.Label lblPercentage7;
         private DarkNumericUpDown nudExtraBuff;
+        private DarkCheckBox chkPassive;
     }
 }

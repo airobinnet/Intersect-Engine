@@ -441,6 +441,7 @@
     <Compile Include="Database\PlayerData\HDV.cs" />
     <Compile Include="Database\PlayerData\Players\GuildBankSlot.cs" />
     <Compile Include="Database\PlayerData\Players\IGuildOwned.cs" />
+    <Compile Include="Entities\Events\NpcConditions.cs" />
     <Compile Include="Entities\Guilds\Guild.cs" />
     <Compile Include="Entities\Guilds\GuildRank.cs" />
     <Compile Include="Database\PlayerData\Players\Bag.cs" />
@@ -591,6 +592,14 @@
     <Compile Include="Migrations\Game\20201026161329_reputation.cs" />
     <Compile Include="Migrations\Game\20201026161329_reputation.designer.cs">
       <DependentUpon>20201026161329_reputation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20201120042350_NPCBehavior.cs" />
+    <Compile Include="Migrations\Game\20201120042350_NPCBehavior.designer.cs">
+      <DependentUpon>20201120042350_NPCBehavior.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20201122030025_PassiveSkills.cs" />
+    <Compile Include="Migrations\Game\20201122030025_PassiveSkills.designer.cs">
+      <DependentUpon>20201122030025_PassiveSkills.cs</DependentUpon>
     </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />

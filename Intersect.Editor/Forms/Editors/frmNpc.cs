@@ -116,6 +116,10 @@ namespace Intersect.Editor.Forms.Editors
                 cmbScalingStat.Items.Add(Globals.GetStatName(x));
             }
 
+            cmbBehavior.Items.Clear();
+            cmbBehavior.Items.Add(Strings.General.none);
+            cmbBehavior.Items.AddRange(BehaviorBase.Names);
+
             nudStr.Maximum = Options.MaxStatValue;
             nudMag.Maximum = Options.MaxStatValue;
             nudDef.Maximum = Options.MaxStatValue;
@@ -301,6 +305,8 @@ namespace Intersect.Editor.Forms.Editors
                 cmbDeathAnimation.SelectedIndex = AnimationBase.ListIndex(mEditorItem.DeathAnimationId) + 1;
                 cmbAttackSpeedModifier.SelectedIndex = mEditorItem.AttackSpeedModifier;
                 nudAttackSpeedValue.Value = mEditorItem.AttackSpeedValue;
+
+                cmbBehavior.SelectedIndex = BehaviorBase.ListIndex(mEditorItem.Behavior) + 1;
 
                 //Regen
                 nudHpRegen.Value = mEditorItem.VitalRegen[(int) Vitals.Health];
@@ -797,6 +803,11 @@ namespace Intersect.Editor.Forms.Editors
             }
 
             UpdateDropPoolValues(true);
+        }
+
+        private void cmbBehavior_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Behavior = BehaviorBase.IdFromList(cmbBehavior.SelectedIndex - 1);
         }
 
         private void nudDropAmount_ValueChanged(object sender, EventArgs e)

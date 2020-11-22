@@ -61,11 +61,6 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             this.cmbComparePlayerVar = new DarkUI.Controls.DarkComboBox();
             this.rdoVarComparePlayerVar = new DarkUI.Controls.DarkRadioButton();
             this.rdoVarCompareGlobalVar = new DarkUI.Controls.DarkRadioButton();
-            this.grpTradeSkill = new DarkUI.Controls.DarkGroupBox();
-            this.nudTradeSkillLevel = new DarkUI.Controls.DarkNumericUpDown();
-            this.lblTradeSkillLevel = new System.Windows.Forms.Label();
-            this.lblTradeSkill = new System.Windows.Forms.Label();
-            this.cmbTradeSkill = new DarkUI.Controls.DarkComboBox();
             this.grpHasItemWTag = new DarkUI.Controls.DarkGroupBox();
             this.nudHasItemWTag = new DarkUI.Controls.DarkNumericUpDown();
             this.lblHasAtleastTag = new System.Windows.Forms.Label();
@@ -136,6 +131,18 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             this.cmbItem = new DarkUI.Controls.DarkComboBox();
             this.lblItem = new System.Windows.Forms.Label();
             this.lblItemQuantity = new System.Windows.Forms.Label();
+            this.grpTradeSkill = new DarkUI.Controls.DarkGroupBox();
+            this.nudTradeSkillLevel = new DarkUI.Controls.DarkNumericUpDown();
+            this.lblTradeSkillLevel = new System.Windows.Forms.Label();
+            this.lblTradeSkill = new System.Windows.Forms.Label();
+            this.cmbTradeSkill = new DarkUI.Controls.DarkComboBox();
+            this.grpVitals = new DarkUI.Controls.DarkGroupBox();
+            this.nudVitalsValue = new DarkUI.Controls.DarkNumericUpDown();
+            this.cmbVitals = new DarkUI.Controls.DarkComboBox();
+            this.lblVital = new System.Windows.Forms.Label();
+            this.lblVitalValue = new System.Windows.Forms.Label();
+            this.cmbComperatorVitals = new DarkUI.Controls.DarkComboBox();
+            this.lblVitalComparator = new System.Windows.Forms.Label();
             this.grpConditional.SuspendLayout();
             this.grpVariable.SuspendLayout();
             this.grpSelectVariable.SuspendLayout();
@@ -143,8 +150,6 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             this.grpBooleanVariable.SuspendLayout();
             this.grpNumericVariable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudVariableValue)).BeginInit();
-            this.grpTradeSkill.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTradeSkillLevel)).BeginInit();
             this.grpHasItemWTag.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHasItemWTag)).BeginInit();
             this.grpEquippedItemTag.SuspendLayout();
@@ -165,12 +170,17 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             this.grpEquippedItem.SuspendLayout();
             this.grpHasItem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudItemAmount)).BeginInit();
+            this.grpTradeSkill.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTradeSkillLevel)).BeginInit();
+            this.grpVitals.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudVitalsValue)).BeginInit();
             this.SuspendLayout();
             // 
             // grpConditional
             // 
             this.grpConditional.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.grpConditional.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpConditional.Controls.Add(this.grpVitals);
             this.grpConditional.Controls.Add(this.grpVariable);
             this.grpConditional.Controls.Add(this.grpHasItemWTag);
             this.grpConditional.Controls.Add(this.grpEquippedItemTag);
@@ -188,12 +198,12 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             this.grpConditional.Controls.Add(this.grpSelfSwitch);
             this.grpConditional.Controls.Add(this.grpSpell);
             this.grpConditional.Controls.Add(this.grpClass);
-            this.grpConditional.Controls.Add(this.grpLevelStat);
             this.grpConditional.Controls.Add(this.grpMapIs);
             this.grpConditional.Controls.Add(this.grpGender);
             this.grpConditional.Controls.Add(this.grpEquippedItem);
             this.grpConditional.Controls.Add(this.grpHasItem);
             this.grpConditional.Controls.Add(this.grpTradeSkill);
+            this.grpConditional.Controls.Add(this.grpLevelStat);
             this.grpConditional.ForeColor = System.Drawing.Color.Gainsboro;
             this.grpConditional.Location = new System.Drawing.Point(4, 5);
             this.grpConditional.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -677,87 +687,6 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             this.rdoVarCompareGlobalVar.TabIndex = 46;
             this.rdoVarCompareGlobalVar.Text = "Global Variable Value:";
             this.rdoVarCompareGlobalVar.CheckedChanged += new System.EventHandler(this.rdoVarCompareGlobalVar_CheckedChanged);
-            // 
-            // grpTradeSkill
-            // 
-            this.grpTradeSkill.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
-            this.grpTradeSkill.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.grpTradeSkill.Controls.Add(this.nudTradeSkillLevel);
-            this.grpTradeSkill.Controls.Add(this.lblTradeSkillLevel);
-            this.grpTradeSkill.Controls.Add(this.lblTradeSkill);
-            this.grpTradeSkill.Controls.Add(this.cmbTradeSkill);
-            this.grpTradeSkill.ForeColor = System.Drawing.Color.Gainsboro;
-            this.grpTradeSkill.Location = new System.Drawing.Point(10, 66);
-            this.grpTradeSkill.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpTradeSkill.Name = "grpTradeSkill";
-            this.grpTradeSkill.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grpTradeSkill.Size = new System.Drawing.Size(393, 148);
-            this.grpTradeSkill.TabIndex = 57;
-            this.grpTradeSkill.TabStop = false;
-            this.grpTradeSkill.Text = "Has Tradeskill:";
-            this.grpTradeSkill.Visible = false;
-            // 
-            // nudTradeSkillLevel
-            // 
-            this.nudTradeSkillLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.nudTradeSkillLevel.ForeColor = System.Drawing.Color.Gainsboro;
-            this.nudTradeSkillLevel.Location = new System.Drawing.Point(139, 88);
-            this.nudTradeSkillLevel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.nudTradeSkillLevel.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.nudTradeSkillLevel.Name = "nudTradeSkillLevel";
-            this.nudTradeSkillLevel.Size = new System.Drawing.Size(243, 26);
-            this.nudTradeSkillLevel.TabIndex = 9;
-            this.nudTradeSkillLevel.Value = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            // 
-            // lblTradeSkillLevel
-            // 
-            this.lblTradeSkillLevel.AutoSize = true;
-            this.lblTradeSkillLevel.Location = new System.Drawing.Point(13, 91);
-            this.lblTradeSkillLevel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblTradeSkillLevel.Name = "lblTradeSkillLevel";
-            this.lblTradeSkillLevel.Size = new System.Drawing.Size(76, 20);
-            this.lblTradeSkillLevel.TabIndex = 6;
-            this.lblTradeSkillLevel.Text = "with level:";
-            // 
-            // lblTradeSkill
-            // 
-            this.lblTradeSkill.AutoSize = true;
-            this.lblTradeSkill.Location = new System.Drawing.Point(13, 56);
-            this.lblTradeSkill.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblTradeSkill.Name = "lblTradeSkill";
-            this.lblTradeSkill.Size = new System.Drawing.Size(82, 20);
-            this.lblTradeSkill.TabIndex = 5;
-            this.lblTradeSkill.Text = "TradeSkill:";
-            // 
-            // cmbTradeSkill
-            // 
-            this.cmbTradeSkill.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.cmbTradeSkill.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.cmbTradeSkill.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
-            this.cmbTradeSkill.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.cmbTradeSkill.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbTradeSkill.ButtonIcon")));
-            this.cmbTradeSkill.DrawDropdownHoverOutline = false;
-            this.cmbTradeSkill.DrawFocusRectangle = false;
-            this.cmbTradeSkill.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbTradeSkill.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTradeSkill.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbTradeSkill.ForeColor = System.Drawing.Color.Gainsboro;
-            this.cmbTradeSkill.FormattingEnabled = true;
-            this.cmbTradeSkill.Location = new System.Drawing.Point(139, 51);
-            this.cmbTradeSkill.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbTradeSkill.Name = "cmbTradeSkill";
-            this.cmbTradeSkill.Size = new System.Drawing.Size(241, 27);
-            this.cmbTradeSkill.TabIndex = 3;
-            this.cmbTradeSkill.Text = null;
-            this.cmbTradeSkill.TextPadding = new System.Windows.Forms.Padding(2);
             // 
             // grpHasItemWTag
             // 
@@ -1903,6 +1832,208 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             this.lblItemQuantity.TabIndex = 0;
             this.lblItemQuantity.Text = "Has at least:";
             // 
+            // grpTradeSkill
+            // 
+            this.grpTradeSkill.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.grpTradeSkill.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpTradeSkill.Controls.Add(this.nudTradeSkillLevel);
+            this.grpTradeSkill.Controls.Add(this.lblTradeSkillLevel);
+            this.grpTradeSkill.Controls.Add(this.lblTradeSkill);
+            this.grpTradeSkill.Controls.Add(this.cmbTradeSkill);
+            this.grpTradeSkill.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpTradeSkill.Location = new System.Drawing.Point(10, 66);
+            this.grpTradeSkill.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpTradeSkill.Name = "grpTradeSkill";
+            this.grpTradeSkill.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpTradeSkill.Size = new System.Drawing.Size(393, 148);
+            this.grpTradeSkill.TabIndex = 57;
+            this.grpTradeSkill.TabStop = false;
+            this.grpTradeSkill.Text = "Has Tradeskill:";
+            this.grpTradeSkill.Visible = false;
+            // 
+            // nudTradeSkillLevel
+            // 
+            this.nudTradeSkillLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudTradeSkillLevel.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudTradeSkillLevel.Location = new System.Drawing.Point(139, 88);
+            this.nudTradeSkillLevel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudTradeSkillLevel.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudTradeSkillLevel.Name = "nudTradeSkillLevel";
+            this.nudTradeSkillLevel.Size = new System.Drawing.Size(243, 26);
+            this.nudTradeSkillLevel.TabIndex = 9;
+            this.nudTradeSkillLevel.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // lblTradeSkillLevel
+            // 
+            this.lblTradeSkillLevel.AutoSize = true;
+            this.lblTradeSkillLevel.Location = new System.Drawing.Point(13, 91);
+            this.lblTradeSkillLevel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTradeSkillLevel.Name = "lblTradeSkillLevel";
+            this.lblTradeSkillLevel.Size = new System.Drawing.Size(76, 20);
+            this.lblTradeSkillLevel.TabIndex = 6;
+            this.lblTradeSkillLevel.Text = "with level:";
+            // 
+            // lblTradeSkill
+            // 
+            this.lblTradeSkill.AutoSize = true;
+            this.lblTradeSkill.Location = new System.Drawing.Point(13, 56);
+            this.lblTradeSkill.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTradeSkill.Name = "lblTradeSkill";
+            this.lblTradeSkill.Size = new System.Drawing.Size(82, 20);
+            this.lblTradeSkill.TabIndex = 5;
+            this.lblTradeSkill.Text = "TradeSkill:";
+            // 
+            // cmbTradeSkill
+            // 
+            this.cmbTradeSkill.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbTradeSkill.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbTradeSkill.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbTradeSkill.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbTradeSkill.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbTradeSkill.ButtonIcon")));
+            this.cmbTradeSkill.DrawDropdownHoverOutline = false;
+            this.cmbTradeSkill.DrawFocusRectangle = false;
+            this.cmbTradeSkill.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbTradeSkill.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTradeSkill.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbTradeSkill.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbTradeSkill.FormattingEnabled = true;
+            this.cmbTradeSkill.Location = new System.Drawing.Point(139, 51);
+            this.cmbTradeSkill.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbTradeSkill.Name = "cmbTradeSkill";
+            this.cmbTradeSkill.Size = new System.Drawing.Size(241, 27);
+            this.cmbTradeSkill.TabIndex = 3;
+            this.cmbTradeSkill.Text = null;
+            this.cmbTradeSkill.TextPadding = new System.Windows.Forms.Padding(2);
+            // 
+            // grpVitals
+            // 
+            this.grpVitals.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.grpVitals.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpVitals.Controls.Add(this.nudVitalsValue);
+            this.grpVitals.Controls.Add(this.cmbVitals);
+            this.grpVitals.Controls.Add(this.lblVital);
+            this.grpVitals.Controls.Add(this.lblVitalValue);
+            this.grpVitals.Controls.Add(this.cmbComperatorVitals);
+            this.grpVitals.Controls.Add(this.lblVitalComparator);
+            this.grpVitals.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpVitals.Location = new System.Drawing.Point(10, 66);
+            this.grpVitals.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpVitals.Name = "grpVitals";
+            this.grpVitals.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grpVitals.Size = new System.Drawing.Size(393, 215);
+            this.grpVitals.TabIndex = 33;
+            this.grpVitals.TabStop = false;
+            this.grpVitals.Text = "Vital is...";
+            // 
+            // nudVitalsValue
+            // 
+            this.nudVitalsValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.nudVitalsValue.ForeColor = System.Drawing.Color.Gainsboro;
+            this.nudVitalsValue.Location = new System.Drawing.Point(118, 134);
+            this.nudVitalsValue.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudVitalsValue.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudVitalsValue.Name = "nudVitalsValue";
+            this.nudVitalsValue.Size = new System.Drawing.Size(267, 26);
+            this.nudVitalsValue.TabIndex = 8;
+            this.nudVitalsValue.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            // 
+            // cmbVitals
+            // 
+            this.cmbVitals.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbVitals.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbVitals.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbVitals.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbVitals.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbVitals.ButtonIcon")));
+            this.cmbVitals.DrawDropdownHoverOutline = false;
+            this.cmbVitals.DrawFocusRectangle = false;
+            this.cmbVitals.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbVitals.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbVitals.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbVitals.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbVitals.FormattingEnabled = true;
+            this.cmbVitals.Items.AddRange(new object[] {
+            "Level",
+            "Attack",
+            "Defense",
+            "Speed",
+            "Ability Power",
+            "Magic Resist"});
+            this.cmbVitals.Location = new System.Drawing.Point(118, 35);
+            this.cmbVitals.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbVitals.Name = "cmbVitals";
+            this.cmbVitals.Size = new System.Drawing.Size(264, 27);
+            this.cmbVitals.TabIndex = 7;
+            this.cmbVitals.Text = "Level";
+            this.cmbVitals.TextPadding = new System.Windows.Forms.Padding(2);
+            // 
+            // lblVital
+            // 
+            this.lblVital.AutoSize = true;
+            this.lblVital.Location = new System.Drawing.Point(10, 38);
+            this.lblVital.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblVital.Name = "lblVital";
+            this.lblVital.Size = new System.Drawing.Size(44, 20);
+            this.lblVital.TabIndex = 6;
+            this.lblVital.Text = "Vital:";
+            // 
+            // lblVitalValue
+            // 
+            this.lblVitalValue.AutoSize = true;
+            this.lblVitalValue.Location = new System.Drawing.Point(15, 137);
+            this.lblVitalValue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblVitalValue.Name = "lblVitalValue";
+            this.lblVitalValue.Size = new System.Drawing.Size(54, 20);
+            this.lblVitalValue.TabIndex = 4;
+            this.lblVitalValue.Text = "Value:";
+            // 
+            // cmbComperatorVitals
+            // 
+            this.cmbComperatorVitals.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbComperatorVitals.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbComperatorVitals.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbComperatorVitals.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbComperatorVitals.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbComperatorVitals.ButtonIcon")));
+            this.cmbComperatorVitals.DrawDropdownHoverOutline = false;
+            this.cmbComperatorVitals.DrawFocusRectangle = false;
+            this.cmbComperatorVitals.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbComperatorVitals.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbComperatorVitals.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbComperatorVitals.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbComperatorVitals.FormattingEnabled = true;
+            this.cmbComperatorVitals.Location = new System.Drawing.Point(118, 82);
+            this.cmbComperatorVitals.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbComperatorVitals.Name = "cmbComperatorVitals";
+            this.cmbComperatorVitals.Size = new System.Drawing.Size(264, 27);
+            this.cmbComperatorVitals.TabIndex = 3;
+            this.cmbComperatorVitals.Text = null;
+            this.cmbComperatorVitals.TextPadding = new System.Windows.Forms.Padding(2);
+            // 
+            // lblVitalComparator
+            // 
+            this.lblVitalComparator.AutoSize = true;
+            this.lblVitalComparator.Location = new System.Drawing.Point(10, 85);
+            this.lblVitalComparator.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblVitalComparator.Name = "lblVitalComparator";
+            this.lblVitalComparator.Size = new System.Drawing.Size(97, 20);
+            this.lblVitalComparator.TabIndex = 2;
+            this.lblVitalComparator.Text = "Comparator:";
+            // 
             // EventCommandConditionalBranch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1925,9 +2056,6 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             this.grpNumericVariable.ResumeLayout(false);
             this.grpNumericVariable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudVariableValue)).EndInit();
-            this.grpTradeSkill.ResumeLayout(false);
-            this.grpTradeSkill.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTradeSkillLevel)).EndInit();
             this.grpHasItemWTag.ResumeLayout(false);
             this.grpHasItemWTag.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudHasItemWTag)).EndInit();
@@ -1963,6 +2091,12 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             this.grpHasItem.ResumeLayout(false);
             this.grpHasItem.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudItemAmount)).EndInit();
+            this.grpTradeSkill.ResumeLayout(false);
+            this.grpTradeSkill.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTradeSkillLevel)).EndInit();
+            this.grpVitals.ResumeLayout(false);
+            this.grpVitals.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudVitalsValue)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2074,5 +2208,12 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         private System.Windows.Forms.Label lblTradeSkillLevel;
         private System.Windows.Forms.Label lblTradeSkill;
         private DarkComboBox cmbTradeSkill;
+        private DarkGroupBox grpVitals;
+        private DarkNumericUpDown nudVitalsValue;
+        private DarkComboBox cmbVitals;
+        private System.Windows.Forms.Label lblVital;
+        private System.Windows.Forms.Label lblVitalValue;
+        private DarkComboBox cmbComperatorVitals;
+        private System.Windows.Forms.Label lblVitalComparator;
     }
 }

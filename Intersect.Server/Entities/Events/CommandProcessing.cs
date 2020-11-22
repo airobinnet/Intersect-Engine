@@ -571,7 +571,7 @@ namespace Intersect.Server.Entities.Events
                 return;
             }
 
-            player.CastSpell(command.spell);
+            player.CastSpell(command.spell,-1,-2);
         }
 
         //Change Items Command

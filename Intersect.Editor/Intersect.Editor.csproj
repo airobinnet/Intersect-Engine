@@ -140,6 +140,12 @@
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_SpawnPet.Designer.cs">
       <DependentUpon>EventCommand_SpawnPet.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Editors\frmBehavior.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\frmBehavior.Designer.cs">
+      <DependentUpon>frmBehavior.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Editors\frmTradeSkills.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -785,6 +791,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_SpawnPet.resx">
       <DependentUpon>EventCommand_SpawnPet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\frmBehavior.resx">
+      <DependentUpon>frmBehavior.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\frmTradeSkills.resx">
       <DependentUpon>frmTradeSkills.cs</DependentUpon>

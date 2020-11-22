@@ -27,12 +27,15 @@ namespace Intersect.Server.Entities.Combat
 
         public int ExtraBuff;
 
-        public Status(Entity en, SpellBase spell, StatusTypes type, int duration, string data, int extraBuff)
+        public bool Passive;
+
+        public Status(Entity en, SpellBase spell, StatusTypes type, int duration, bool passive, string data, int extraBuff)
         {
             mEntity = en;
             Spell = spell;
             Type = type;
             StartTime = Globals.Timing.TimeMs;
+            Passive = passive;
             Duration = Globals.Timing.TimeMs + duration;
             Data = data;
             ExtraBuff = extraBuff;
@@ -97,9 +100,12 @@ namespace Intersect.Server.Entities.Combat
 
         public void TryRemoveStatus()
         {
-            if (Duration <= Globals.Timing.TimeMs) //Check the timer
+            if (!Passive)
             {
-                RemoveStatus();
+                if (Duration <= Globals.Timing.TimeMs) //Check the timer
+                {
+                    RemoveStatus();
+                }
             }
 
             //If shield check for out of hp

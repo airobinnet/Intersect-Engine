@@ -3,14 +3,16 @@ using System;
 using Intersect.Server.Database.GameData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Intersect.Server.Migrations.Game
 {
     [DbContext(typeof(GameContext))]
-    partial class GameContextModelSnapshot : ModelSnapshot
+    [Migration("20201120042350_NPCBehavior")]
+    partial class NPCBehavior
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1135,8 +1137,6 @@ namespace Intersect.Server.Migrations.Game
 
                             b1.Property<int>("OnHitDuration")
                                 .HasColumnName("OnHit");
-
-                            b1.Property<bool>("Passive");
 
                             b1.Property<string>("PercentageStatDiffJson")
                                 .HasColumnName("PercentageStatDiff");

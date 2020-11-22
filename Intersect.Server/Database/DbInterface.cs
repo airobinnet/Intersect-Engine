@@ -779,6 +779,10 @@ namespace Intersect.Server.Database
                     TradeSkillBase.Lookup.Clear();
 
                     break;
+                case GameObjectType.Behavior:
+                    BehaviorBase.Lookup.Clear();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -933,6 +937,13 @@ namespace Intersect.Server.Database
                         }
 
                         break;
+                    case GameObjectType.Behavior:
+                        foreach (var psw in sGameDb.Behavior)
+                        {
+                            BehaviorBase.Lookup.Set(psw.Id, psw);
+                        }
+
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(gameObjectType), gameObjectType, null);
                 }
@@ -1019,6 +1030,9 @@ namespace Intersect.Server.Database
 
                     break;
                 case GameObjectType.Time:
+                    break;
+                case GameObjectType.Behavior:
+                    dbObj = new BehaviorBase(predefinedid);
                     break;
 
                 case GameObjectType.Quest:
@@ -1156,6 +1170,11 @@ namespace Intersect.Server.Database
                     case GameObjectType.Tileset:
                         sGameDb.Tilesets.Add((TilesetBase) dbObj);
                         TilesetBase.Lookup.Set(dbObj.Id, dbObj);
+
+                        break;
+                    case GameObjectType.Behavior:
+                        sGameDb.Behavior.Add((BehaviorBase)dbObj);
+                        BehaviorBase.Lookup.Set(dbObj.Id, dbObj);
 
                         break;
 
@@ -1299,6 +1318,10 @@ namespace Intersect.Server.Database
                         break;
                     case GameObjectType.Tradeskill:
                         sGameDb.TradeSkill.Remove((TradeSkillBase)gameObject);
+
+                        break;
+                    case GameObjectType.Behavior:
+                        sGameDb.Behavior.Remove((BehaviorBase)gameObject);
 
                         break;
                 }

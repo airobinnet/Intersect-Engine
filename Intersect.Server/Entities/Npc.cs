@@ -64,6 +64,29 @@ namespace Intersect.Server.Entities
         private Task mPathfindingTask;
 
         public byte Range;
+        
+        //BossBehavior
+        public int KeepDistance = 1;
+
+        public int SpellCounter;
+
+        public int keepDistance = 1;
+
+        public int MovementType = 0;
+
+        public int newSpellIndex = 0;
+
+        public int CustomTime = 0;
+
+        public int errorCounter = 0;
+
+        public long EnrageTimer;
+
+        public bool EnrageTimerStarted = false;
+
+        public bool EnrageReceived = false;
+
+        public Entity tempCastTarget;
 
         //Respawn/Despawn
         public long RespawnTime;
@@ -641,6 +664,11 @@ namespace Intersect.Server.Entities
                 return;
             }
 
+            if (!NpcConditions.MeetsConditionLists(spellBase.CastingRequirements, this, null))
+            {
+                return;
+            }
+
             if (spellBase.Combat == null)
             {
                 Log.Warn($"Combat data missing for {spellBase.Id}.");
@@ -794,6 +822,722 @@ namespace Intersect.Server.Entities
             PacketSender.SendEntityCastTime(this, spellId);
         }
 
+        private void BossBehavior()
+        {
+            // Check if NPC is stunned/sleeping
+            if (IsStunnedOrSleeping)
+            {
+                return;
+            }
+
+            // Check if NPC is casting a spell
+            if (CastTime > Globals.Timing.TimeMs)
+            {
+                return; //can't move while casting
+            }
+
+            if (CastFreq >= Globals.Timing.TimeMs)
+            {
+                return;
+            }
+
+            // Check if the NPC is able to cast spells
+            if (IsUnableToCastSpells)
+            {
+                return;
+            }
+
+            // Check if the NPC has a behavior linked to it
+            if (Base.Behavior == null || Base.Behavior == Guid.Empty || BehaviorBase.Get(Base.Behavior).SpellSequences.Count() <= 0)
+            {
+                return;
+            }
+
+            var behaviorBase = BehaviorBase.Get(Base.Behavior);
+            var spellIndex = newSpellIndex;
+
+            // Check if the behavior has Enrage enabled
+            if (behaviorBase.Enrage)
+            {
+                if (behaviorBase.EnrageSkill != Guid.Empty)
+                {
+                    if (!EnrageTimerStarted)
+                    {
+                        EnrageTimer = Globals.Timing.TimeMs + (long)behaviorBase.EnrageTimer;
+                        EnrageTimerStarted = true;
+                    }
+                    else
+                    {
+                        if (!EnrageReceived)
+                        {
+                            if (Globals.Timing.TimeMs >= EnrageTimer)
+                            {
+                                var tempspellId = behaviorBase.EnrageSkill;
+                                var tempspellBase = SpellBase.Get(tempspellId);
+
+                                if (tempspellBase.CastAnimationId != Guid.Empty)
+                                {
+                                    PacketSender.SendAnimationToProximity(tempspellBase.CastAnimationId, 1, Id, MapId, 0, 0, (sbyte)Dir);
+                                    //Target Type 1 will be global entity
+                                }
+
+                                PacketSender.SendEntityVitals(this);
+                                PacketSender.SendEntityCastTime(this, tempspellId);
+                                PacketSender.SendActionMsg(this, "ENRAGE", Color.Orange);
+
+                                // Set temptarget to current target, then set target to self for the enrage skill, cast it and restore target
+                                tempCastTarget = CastTarget;
+                                CastTarget = this;
+                                CastSpell(tempspellId, -1, -2);
+                                EnrageReceived = true;
+                                CastTarget = tempCastTarget;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (behaviorBase.BehaviorType == BehaviorTypes.Random)
+            {
+                // Pick a random spell
+                spellIndex = Randomization.Next(0, behaviorBase.SpellSequences.Count);
+            }
+
+            if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+            {
+                if (behaviorBase.SpellSequences.Count > 1)
+                {
+                    // Set the time between this and the next attack
+                    CustomTime = behaviorBase.SpellSequences[spellIndex].TimeBeforeNextPhase;
+                }
+                else
+                {
+                    spellIndex = 0;
+                }
+            }
+
+            if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+            {
+                // Chronological - If the counter goes higher than the count, reset to 0
+                if (SpellCounter > behaviorBase.SpellSequences.Count - 1)
+                {
+                    SpellCounter = 0;
+                    spellIndex = SpellCounter;
+                    newSpellIndex = SpellCounter;
+                }
+            }
+
+            if (behaviorBase.BehaviorType == BehaviorTypes.Pong)
+            {
+                // PingPong - todo...
+
+                // Pick a random spell
+                spellIndex = Randomization.Next(0, behaviorBase.SpellSequences.Count);
+            }
+
+            var spellId = behaviorBase.SpellSequences[spellIndex].Spell;
+            var spellBase = SpellBase.Get(spellId);
+
+            if (spellBase == null)
+            {
+                return;
+            }
+
+            var lvlStat = 0;
+            var maxStat = 0;
+            maxStat = GetMaxVital((int)behaviorBase.SpellSequences[spellIndex].Vital);
+            lvlStat = GetVital((int)behaviorBase.SpellSequences[spellIndex].Vital);
+
+            // Do the conditional checks, could be optimized, but it works...
+            switch (behaviorBase.SpellSequences[spellIndex].ConditionUnit)
+            {
+                case 0:
+                    switch (behaviorBase.SpellSequences[spellIndex].Comperator) //Comparator
+                    {
+                        case 0:
+                            if (lvlStat == (maxStat / 100) * behaviorBase.SpellSequences[spellIndex].ConditionValue)
+                            {
+                            }
+                            else
+                            {
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                                {
+                                    SpellCounter++;
+                                    newSpellIndex = SpellCounter;
+                                }
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                                {
+                                    if (behaviorBase.SpellSequences.Count > 1)
+                                    {
+                                        // Pick a custom set spellsequence
+                                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                                        newSpellIndex = spellIndex;
+                                    }
+                                    else
+                                    {
+                                        newSpellIndex = 0;
+                                    }
+                                }
+                                return;
+                            }
+
+                            break;
+                        case 1:
+                            if (lvlStat >= (maxStat / 100) * behaviorBase.SpellSequences[spellIndex].ConditionValue)
+                            {
+                            }
+                            else
+                            {
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                                {
+                                    SpellCounter++;
+                                    newSpellIndex = SpellCounter;
+                                }
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                                {
+                                    if (behaviorBase.SpellSequences.Count > 1)
+                                    {
+                                        // Pick a custom set spellsequence
+                                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                                        newSpellIndex = spellIndex;
+                                    }
+                                    else
+                                    {
+                                        newSpellIndex = 0;
+                                    }
+                                }
+                                return;
+                            }
+
+                            break;
+                        case 2:
+                            if (lvlStat <= (maxStat / 100) * behaviorBase.SpellSequences[spellIndex].ConditionValue)
+                            {
+                            }
+                            else
+                            {
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                                {
+                                    SpellCounter++;
+                                    newSpellIndex = SpellCounter;
+                                }
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                                {
+                                    if (behaviorBase.SpellSequences.Count > 1)
+                                    {
+                                        // Pick a custom set spellsequence
+                                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                                        newSpellIndex = spellIndex;
+                                    }
+                                    else
+                                    {
+                                        newSpellIndex = 0;
+                                    }
+                                }
+                                return;
+                            }
+
+                            break;
+                        case 3:
+                            if (lvlStat > (maxStat / 100) * behaviorBase.SpellSequences[spellIndex].ConditionValue)
+                            {
+                            }
+                            else
+                            {
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                                {
+                                    SpellCounter++;
+                                    newSpellIndex = SpellCounter;
+                                }
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                                {
+                                    if (behaviorBase.SpellSequences.Count > 1)
+                                    {
+                                        // Pick a custom set spellsequence
+                                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                                        newSpellIndex = spellIndex;
+                                    }
+                                    else
+                                    {
+                                        newSpellIndex = 0;
+                                    }
+                                }
+                                return;
+                            }
+
+                            break;
+                        case 4:
+                            if (lvlStat < (maxStat / 100) * behaviorBase.SpellSequences[spellIndex].ConditionValue)
+                            {
+                            }
+                            else
+                            {
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                                {
+                                    SpellCounter++;
+                                    newSpellIndex = SpellCounter;
+                                }
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                                {
+                                    if (behaviorBase.SpellSequences.Count > 1)
+                                    {
+                                        // Pick a custom set spellsequence
+                                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                                        newSpellIndex = spellIndex;
+                                    }
+                                    else
+                                    {
+                                        newSpellIndex = 0;
+                                    }
+                                }
+                                return;
+                            }
+
+                            break;
+                        case 5:
+                            if (lvlStat != behaviorBase.SpellSequences[spellIndex].ConditionValue)
+                            {
+                            }
+                            else
+                            {
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                                {
+                                    SpellCounter++;
+                                    newSpellIndex = SpellCounter;
+                                }
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                                {
+                                    if (behaviorBase.SpellSequences.Count > 1)
+                                    {
+                                        // Pick a custom set spellsequence
+                                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                                        newSpellIndex = spellIndex;
+                                    }
+                                    else
+                                    {
+                                        newSpellIndex = 0;
+                                    }
+                                }
+                                return;
+                            }
+
+                            break;
+                    }
+                    break;
+                case 1:
+                    switch (behaviorBase.SpellSequences[spellIndex].Comperator) //Comparator
+                    {
+                        case 0:
+                            if (lvlStat == behaviorBase.SpellSequences[spellIndex].ConditionValue)
+                            {
+                            }
+                            else
+                            {
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                                {
+                                    SpellCounter++;
+                                    newSpellIndex = SpellCounter;
+                                }
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                                {
+                                    if (behaviorBase.SpellSequences.Count > 1)
+                                    {
+                                        // Pick a custom set spellsequence
+                                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                                        newSpellIndex = spellIndex;
+                                    }
+                                    else
+                                    {
+                                        newSpellIndex = 0;
+                                    }
+                                }
+                                return;
+                            }
+
+                            break;
+                        case 1:
+                            if (lvlStat >= behaviorBase.SpellSequences[spellIndex].ConditionValue)
+                            {
+                            }
+                            else
+                            {
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                                {
+                                    SpellCounter++;
+                                    newSpellIndex = SpellCounter;
+                                }
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                                {
+                                    if (behaviorBase.SpellSequences.Count > 1)
+                                    {
+                                        // Pick a custom set spellsequence
+                                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                                        newSpellIndex = spellIndex;
+                                    }
+                                    else
+                                    {
+                                        newSpellIndex = 0;
+                                    }
+                                }
+                                return;
+                            }
+
+                            break;
+                        case 2:
+                            if (lvlStat <= behaviorBase.SpellSequences[spellIndex].ConditionValue)
+                            {
+                            }
+                            else
+                            {
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                                {
+                                    SpellCounter++;
+                                    newSpellIndex = SpellCounter;
+                                }
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                                {
+                                    if (behaviorBase.SpellSequences.Count > 1)
+                                    {
+                                        // Pick a custom set spellsequence
+                                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                                        newSpellIndex = spellIndex;
+                                    }
+                                    else
+                                    {
+                                        newSpellIndex = 0;
+                                    }
+                                }
+                                return;
+                            }
+
+                            break;
+                        case 3:
+                            if (lvlStat > behaviorBase.SpellSequences[spellIndex].ConditionValue)
+                            {
+                            }
+                            else
+                            {
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                                {
+                                    SpellCounter++;
+                                    newSpellIndex = SpellCounter;
+                                }
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                                {
+                                    if (behaviorBase.SpellSequences.Count > 1)
+                                    {
+                                        // Pick a custom set spellsequence
+                                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                                        newSpellIndex = spellIndex;
+                                    }
+                                    else
+                                    {
+                                        newSpellIndex = 0;
+                                    }
+                                }
+                                return;
+                            }
+
+                            break;
+                        case 4:
+                            if (lvlStat < behaviorBase.SpellSequences[spellIndex].ConditionValue)
+                            {
+                            }
+                            else
+                            {
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                                {
+                                    SpellCounter++;
+                                    newSpellIndex = SpellCounter;
+                                }
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                                {
+                                    if (behaviorBase.SpellSequences.Count > 1)
+                                    {
+                                        // Pick a custom set spellsequence
+                                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                                        newSpellIndex = spellIndex;
+                                    }
+                                    else
+                                    {
+                                        newSpellIndex = 0;
+                                    }
+                                }
+                                return;
+                            }
+
+                            break;
+                        case 5:
+                            if (lvlStat != behaviorBase.SpellSequences[spellIndex].ConditionValue)
+                            {
+                            }
+                            else
+                            {
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                                {
+                                    SpellCounter++;
+                                    newSpellIndex = SpellCounter;
+                                }
+                                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                                {
+                                    if (behaviorBase.SpellSequences.Count > 1)
+                                    {
+                                        // Pick a custom set spellsequence
+                                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                                        newSpellIndex = spellIndex;
+                                    }
+                                    else
+                                    {
+                                        newSpellIndex = 0;
+                                    }
+                                }
+                                return;
+                            }
+
+                            break;
+                    }
+                    break;
+            }
+
+            // Do conditional checks on the spell itself
+            if (!NpcConditions.MeetsConditionLists(spellBase.CastingRequirements, this, null))
+            {
+                if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+                {
+                    SpellCounter++;
+                    newSpellIndex = SpellCounter;
+                }
+                if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+                {
+                    if (behaviorBase.SpellSequences.Count > 1)
+                    {
+                        // Pick a custom set spellsequence
+                        spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                        newSpellIndex = spellIndex;
+                    }
+                    else
+                    {
+                        newSpellIndex = 0;
+                    }
+                }
+                return;
+            }
+
+            MovementType = behaviorBase.SpellSequences[spellIndex].MovementType;
+            var oldDistance = KeepDistance;
+            var tempDistance = GetDistanceTo(Target);
+            var tempRange = behaviorBase.SpellSequences[spellIndex].AttackRange;
+
+            // Hacky way of comparing the distance and the attack range
+            if (tempDistance < tempRange - 1 && errorCounter < 4)
+            {
+                //remove comments to enable auto attacks if in melee range (stops the spells though, so fix that first!)
+                /*if (GetDistanceTo(Target) <= 1)
+                {
+                    ChangeDir(DirToEnemy(Target));
+                    if (CanAttack(Target, null))
+                    {
+                        TryAttack(Target);
+                    }
+                }*/
+
+                KeepDistance = tempRange;
+                MovementType = -1;
+                errorCounter++;
+                return;
+            }
+
+            else if (tempDistance > tempRange + 1 && errorCounter < 4)
+            {
+                KeepDistance = tempRange;
+                MovementType = -1;
+                errorCounter++;
+                return;
+            }
+
+            else
+            {
+                KeepDistance = behaviorBase.SpellSequences[spellIndex].AttackRange;
+                MovementType = 3;
+            }
+
+            if (spellBase.Combat == null)
+            {
+                Log.Warn($"Combat data missing for {spellBase.Id}.");
+            }
+
+            var range = spellBase.Combat?.CastRange ?? 0;
+            var targetType = spellBase.Combat?.TargetType ?? SpellTargetTypes.Single;
+            var projectileBase = spellBase.Combat?.Projectile;
+
+            if (spellBase.SpellType == SpellTypes.CombatSpell &&
+                targetType == SpellTargetTypes.Projectile &&
+                projectileBase != null &&
+                InRangeOf(Target, projectileBase.Range))
+            {
+                range = projectileBase.Range;
+                var dirToEnemy = DirToEnemy(Target);
+                if (dirToEnemy != Dir)
+                {
+                    if (LastRandomMove >= Globals.Timing.TimeMs)
+                    {
+                        return;
+                    }
+
+                    //Face the target -- next frame fire -- then go on with life
+                    ChangeDir(dirToEnemy); // Gotta get dir to enemy
+                    LastRandomMove = Globals.Timing.TimeMs + Randomization.Next(1, 3000);
+
+                    return;
+                }
+            }
+
+            if (spellBase.VitalCost == null)
+            {
+                return;
+            }
+
+            if (spellBase.VitalCost[(int)Vitals.Mana] > GetVital(Vitals.Mana))
+            {
+                return;
+            }
+
+            if (spellBase.VitalCost[(int)Vitals.Health] > GetVital(Vitals.Health))
+            {
+                return;
+            }
+
+            var spell = SpellBase.Get(behaviorBase.SpellSequences[spellIndex].Spell);
+            if (spell == null)
+            {
+                return;
+            }
+
+            if (SpellCooldowns.ContainsKey(spell.Id) && SpellCooldowns[spell.Id] >= Globals.Timing.RealTimeMs)
+            {
+                return;
+            }
+            //needs testing!!
+            if (spellBase.SpellType == SpellTypes.CombatSpell &&
+                targetType == SpellTargetTypes.AoE)
+            {
+                range = spellBase.Combat?.HitRadius ?? 0;
+            }
+
+            if (!InRangeOf(Target, range))
+            {
+                // ReSharper disable once SwitchStatementMissingSomeCases
+                switch (targetType)
+                {
+                    case SpellTargetTypes.Self:
+                    case SpellTargetTypes.AoE:
+                        KeepDistance = tempRange;
+                        MovementType = -1;
+                        errorCounter++;
+                        return;
+                }
+            }
+
+            CastTime = Globals.Timing.TimeMs + spellBase.CastDuration;
+
+            if (spellBase.VitalCost[(int)Vitals.Mana] > 0)
+            {
+                SubVital(Vitals.Mana, spellBase.VitalCost[(int)Vitals.Mana]);
+            }
+            else
+            {
+                AddVital(Vitals.Mana, -spellBase.VitalCost[(int)Vitals.Mana]);
+            }
+
+            if (spellBase.VitalCost[(int)Vitals.Health] > 0)
+            {
+                SubVital(Vitals.Health, spellBase.VitalCost[(int)Vitals.Health]);
+            }
+            else
+            {
+                AddVital(Vitals.Health, -spellBase.VitalCost[(int)Vitals.Health]);
+            }
+
+            if ((spellBase.Combat?.Friendly ?? false) && spellBase.SpellType != SpellTypes.WarpTo)
+            {
+                CastTarget = this;
+            }
+            else
+            {
+                CastTarget = Target;
+            }
+            if (CustomTime > 0)
+            {
+                CastFreq = Globals.Timing.TimeMs + CustomTime;
+            }
+            else
+            {
+                switch (Base.SpellFrequency)
+                {
+                    case 0:
+                        CastFreq = Globals.Timing.TimeMs + 30000;
+
+                        break;
+
+                    case 1:
+                        CastFreq = Globals.Timing.TimeMs + 15000;
+
+                        break;
+
+                    case 2:
+                        CastFreq = Globals.Timing.TimeMs + 8000;
+
+                        break;
+
+                    case 3:
+                        CastFreq = Globals.Timing.TimeMs + 4000;
+
+                        break;
+
+                    case 4:
+                        CastFreq = Globals.Timing.TimeMs + 1;
+
+                        break;
+                }
+            }
+
+            SpellCastSlot = spellIndex;
+            SpellsType = 1;
+            Behavior = Base.Behavior;
+
+            if (spellBase.CastAnimationId != Guid.Empty)
+            {
+                PacketSender.SendAnimationToProximity(spellBase.CastAnimationId, 1, Id, MapId, 0, 0, (sbyte)Dir);
+
+                //Target Type 1 will be global entity
+            }
+
+            PacketSender.SendEntityVitals(this);
+            PacketSender.SendEntityCastTime(this, spellId);
+
+
+            if (behaviorBase.BehaviorType == BehaviorTypes.Chrono)
+            {
+                SpellCounter++;
+                newSpellIndex = SpellCounter;
+            }
+
+            if (behaviorBase.BehaviorType == BehaviorTypes.Custom)
+            {
+                if (behaviorBase.SpellSequences.Count > 1)
+                {
+                    // Pick a custom set spellsequence
+                    spellIndex = behaviorBase.SpellSequences[spellIndex].nextPhase;
+                    newSpellIndex = spellIndex;
+                }
+                else
+                {
+                    newSpellIndex = 0;
+                }
+            }
+            errorCounter = 0;
+        }
+
         // TODO: Improve NPC movement to be more fluid like a player
         //General Updating
         public override void Update(long timeMs)
@@ -934,14 +1678,212 @@ namespace Intersect.Server.Entities
 
                 if (mPathFinder.GetTarget() != null)
                 {
-                    if (Target != null)
+                    var tempmovement = false;
+                    var randSeq = 0;
+                    if (this.Base.Behavior != Guid.Empty)
                     {
-                        TryCastSpells();
+                        BossBehavior();
+                        keepDistance = KeepDistance;
+
+                        switch (MovementType)
+                        {
+                            case -1: //random
+                                tempmovement = GetDistanceTo(Target) < keepDistance;
+                                randSeq = 0;
+                                //randSeq = Randomization.Next(0, 5);
+                                break;
+                            case 0: //quirky
+                                tempmovement = IsXBlocksAway(
+                                    mPathFinder.GetTarget().TargetMapId, mPathFinder.GetTarget().TargetX,
+                                    mPathFinder.GetTarget().TargetY, keepDistance, mPathFinder.GetTarget().TargetZ
+                                );
+                                //randSeq = Randomization.Next(0, 2);
+                                randSeq = 0;
+                                break;
+                            case 1: //stoned
+                                tempmovement = GetDistanceTo(Target) < keepDistance;
+                                randSeq = 0;
+                                //randSeq = Randomization.Next(0, 1);
+                                break;
+                            case 2: //normal
+                                tempmovement = IsXBlocksAway(
+                                    mPathFinder.GetTarget().TargetMapId, mPathFinder.GetTarget().TargetX,
+                                    mPathFinder.GetTarget().TargetY, keepDistance, mPathFinder.GetTarget().TargetZ
+                                );
+                                randSeq = 0;
+                                break;
+                            default:
+                                var behaviorBase = BehaviorBase.Get(Base.Behavior);
+                                var spellIndex = SpellCastSlot;
+                                var spellId = behaviorBase.SpellSequences[spellIndex].Spell;
+                                var spellBase = SpellBase.Get(spellId);
+                                var projectileBase = spellBase.Combat?.Projectile;
+
+                                if (projectileBase != null)
+                                {
+                                    if (InRangeOf(Target, projectileBase.Range))
+                                    {
+                                        randSeq = 0;
+                                        if (IsXBlocksAway(
+                                                mPathFinder.GetTarget().TargetMapId, mPathFinder.GetTarget().TargetX,
+                                                mPathFinder.GetTarget().TargetY, GetDistanceTo(Target), mPathFinder.GetTarget().TargetZ
+                                            ))
+                                        {
+                                            return;
+                                        }
+                                        else
+                                        {
+                                            tempmovement = IsXBlocksAway(
+                                                mPathFinder.GetTarget().TargetMapId, mPathFinder.GetTarget().TargetX,
+                                                mPathFinder.GetTarget().TargetY, GetDistanceTo(Target), mPathFinder.GetTarget().TargetZ
+                                            );
+                                            var dir = DirToEnemy(Target);
+                                            switch (dir)
+                                            {
+                                                case 0:
+                                                    dir = 1;
+
+                                                    break;
+                                                case 1:
+                                                    dir = 0;
+
+                                                    break;
+                                                case 2:
+                                                    dir = 3;
+
+                                                    break;
+                                                case 3:
+                                                    dir = 2;
+
+                                                    break;
+                                                case 4:
+                                                    dir = 5;
+
+                                                    break;
+                                                case 5:
+                                                    dir = 4;
+
+                                                    break;
+                                                case 6:
+                                                    dir = 7;
+
+                                                    break;
+                                                case 7:
+                                                    dir = 6;
+
+                                                    break;
+                                            }
+
+                                            if (CanMove(dir) == -1 || CanMove(dir) == -4)
+                                            {
+                                                //check if NPC is snared or stunned
+                                                statuses = Statuses.Values.ToArray();
+                                                foreach (var status in statuses)
+                                                {
+                                                    if (status.Type == StatusTypes.Stun ||
+                                                        status.Type == StatusTypes.Snare ||
+                                                        status.Type == StatusTypes.Sleep ||
+                                                        status.Type == StatusTypes.Fear)
+                                                    {
+                                                        return;
+                                                    }
+                                                }
+
+                                                Move((byte)dir, null);
+                                            }
+                                            else
+                                            {
+                                                mPathFinder.PathFailed(timeMs);
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    return;
+                                }
+                                break;
+                        }
                     }
-                    if (!IsOneBlockAway(
-                        mPathFinder.GetTarget().TargetMapId, mPathFinder.GetTarget().TargetX,
-                        mPathFinder.GetTarget().TargetY, mPathFinder.GetTarget().TargetZ
-                    ))
+                    else
+                    {
+                        if (Target != null)
+                        {
+                            TryCastSpells();
+                        }
+                    }
+                    if (tempmovement)
+                    {
+                        var dir = DirToEnemy(Target);
+                        if (randSeq == 0)
+                        {
+                            switch (dir)
+                            {
+                                case 0:
+                                    dir = 1;
+
+                                    break;
+                                case 1:
+                                    dir = 0;
+
+                                    break;
+                                case 2:
+                                    dir = 3;
+
+                                    break;
+                                case 3:
+                                    dir = 2;
+
+                                    break;
+                                case 4:
+                                    dir = 5;
+
+                                    break;
+                                case 5:
+                                    dir = 4;
+
+                                    break;
+                                case 6:
+                                    dir = 7;
+
+                                    break;
+                                case 7:
+                                    dir = 6;
+
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            dir = (byte)Randomization.Next(0, 8);
+                        }
+
+
+                        if (CanMove(dir) == -1 || CanMove(dir) == -4)
+                        {
+                            //check if NPC is snared or stunned
+                            statuses = Statuses.Values.ToArray();
+                            foreach (var status in statuses)
+                            {
+                                if (status.Type == StatusTypes.Stun ||
+                                    status.Type == StatusTypes.Snare ||
+                                    status.Type == StatusTypes.Sleep ||
+                                    status.Type == StatusTypes.Fear)
+                                {
+                                    return;
+                                }
+                            }
+
+                            Move(dir, null);
+                        }
+                        else
+                        {
+                            dir = (byte)Randomization.Next(0, 8);
+                            Move(dir, null);
+                        }
+                    }
+
+                    else if (!tempmovement)
                     {
                         switch (mPathFinder.Update(timeMs))
                         {

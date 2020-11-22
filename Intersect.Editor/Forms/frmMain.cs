@@ -84,6 +84,8 @@ namespace Intersect.Editor.Forms
 
         private FrmTradeSkills mFrmTradeSkill;
 
+        private FrmNBehavior mFrmNBehavior;
+
         //General Editting Variables
         bool mTMouseDown;
 
@@ -1158,6 +1160,11 @@ namespace Intersect.Editor.Forms
             PacketSender.SendOpenEditor(GameObjectType.Tradeskill);
         }
 
+        private void BehaviorEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PacketSender.SendOpenEditor(GameObjectType.Behavior);
+        }
+
         private void spellEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PacketSender.SendOpenEditor(GameObjectType.Spell);
@@ -1638,6 +1645,14 @@ namespace Intersect.Editor.Forms
                             mFrmTradeSkill = new FrmTradeSkills();
                             mFrmTradeSkill.InitEditor();
                             mFrmTradeSkill.Show();
+                        }
+                        break;
+                    case GameObjectType.Behavior:
+                        if (mFrmNBehavior == null || mFrmNBehavior.Visible == false)
+                        {
+                            mFrmNBehavior = new FrmNBehavior();
+                            mFrmNBehavior.InitEditor();
+                            mFrmNBehavior.Show();
                         }
                         break;
                     default:

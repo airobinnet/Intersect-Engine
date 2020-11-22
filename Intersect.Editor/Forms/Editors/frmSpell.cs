@@ -338,6 +338,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudSpdPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.Speed];
 
                 chkFriendly.Checked = Convert.ToBoolean(mEditorItem.Combat.Friendly);
+                chkPassive.Checked = Convert.ToBoolean(mEditorItem.Combat.Passive);
                 cmbDamageType.SelectedIndex = mEditorItem.Combat.DamageType;
                 cmbScalingStat.SelectedIndex = mEditorItem.Combat.ScalingStat;
                 nudScaling.Value = mEditorItem.Combat.Scaling;
@@ -717,6 +718,11 @@ namespace Intersect.Editor.Forms.Editors
         private void chkFriendly_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem.Combat.Friendly = chkFriendly.Checked;
+        }
+
+        private void chkPassive_CheckedChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Combat.Passive = chkPassive.Checked;
         }
 
         private void cmbDamageType_SelectedIndexChanged(object sender, EventArgs e)

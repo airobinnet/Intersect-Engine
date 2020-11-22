@@ -209,6 +209,12 @@ namespace Intersect.Server.Entities
         [NotMapped, JsonIgnore]
         public int SpellCastSlot { get; set; } = 0;
 
+        [NotMapped, JsonIgnore]
+        public int SpellsType { get; set; } = 0;
+
+        [NotMapped, JsonIgnore]
+        public Guid Behavior { get; set; } = Guid.Empty;
+
         //Status effects
         [NotMapped, JsonIgnore, NotNull]
         public Dictionary<SpellBase, Status> Statuses { get; } = new Dictionary<SpellBase, Status>();
@@ -252,7 +258,14 @@ namespace Intersect.Server.Entities
             if (CastTime != 0 && CastTime < timeMs)
             {
                 CastTime = 0;
-                CastSpell(Spells[SpellCastSlot].SpellId, SpellCastSlot);
+                if (SpellsType == 0)
+                {
+                    CastSpell(Spells[SpellCastSlot].SpellId, SpellCastSlot, -1);
+                }
+                else
+                {
+                    CastSpell(BehaviorBase.Get(Behavior).SpellSequences[SpellCastSlot].Spell, -1, 1);
+                }
                 CastTarget = null;
             }
 
@@ -1671,7 +1684,7 @@ namespace Intersect.Server.Entities
                             spellBase,
                             spellBase.Combat.StatDiff[i] +
                             (int) ((target.Stat[i].BaseStat + target.StatPointAllocations[i]) *
-                                   (spellBase.Combat.PercentageStatDiff[i] / 100f)), spellBase.Combat.Duration
+                                   (spellBase.Combat.PercentageStatDiff[i] / 100f)), spellBase.Combat.Duration, spellBase.Combat.Passive
                         )
                     );
 
@@ -1754,7 +1767,7 @@ namespace Intersect.Server.Entities
                 if (!(onHitTrigger && spellBase.Combat.Effect == StatusTypes.OnHit))
                 {
                     new Status(
-                        target, spellBase, spellBase.Combat.Effect, spellBase.Combat.Duration,
+                        target, spellBase, spellBase.Combat.Effect, spellBase.Combat.Duration, spellBase.Combat.Passive,
                         spellBase.Combat.TransformSprite, spellBase.Combat.ExtraBuff
                     );
 
@@ -1785,7 +1798,7 @@ namespace Intersect.Server.Entities
             {
                 if (statBuffTime > -1)
                 {
-                    new Status(target, spellBase, spellBase.Combat.Effect, statBuffTime, "", spellBase.Combat.ExtraBuff);
+                    new Status(target, spellBase, spellBase.Combat.Effect, statBuffTime, spellBase.Combat.Passive, "", spellBase.Combat.ExtraBuff);
                 }
             }
 
@@ -2392,7 +2405,7 @@ namespace Intersect.Server.Entities
             return true;
         }
 
-        public virtual void CastSpell(Guid spellId, int spellSlot = -1)
+        public virtual void CastSpell(Guid spellId, int spellSlot = -1, int behavior = -1)
         {
             var spellBase = SpellBase.Get(spellId);
             if (spellBase == null)
@@ -2471,7 +2484,7 @@ namespace Intersect.Server.Entities
                             if (spellBase.Combat.Effect == StatusTypes.OnHit)
                             {
                                 new Status(
-                                    this, spellBase, StatusTypes.OnHit, spellBase.Combat.OnHitDuration,
+                                    this, spellBase, StatusTypes.OnHit, spellBase.Combat.OnHitDuration, spellBase.Combat.Passive,
                                     spellBase.Combat.TransformSprite, spellBase.Combat.ExtraBuff
                                 );
 
@@ -2530,7 +2543,7 @@ namespace Intersect.Server.Entities
                     break;
             }
 
-            if (spellSlot >= 0 && spellSlot < Options.MaxPlayerSkills)
+            if (spellSlot < Options.MaxPlayerSkills)
             {
                 decimal cooldownReduction = 1;
 
@@ -2539,22 +2552,37 @@ namespace Intersect.Server.Entities
                     cooldownReduction = 1 - (decimal) ((Player) this).GetCooldownReduction() / 100;
                 }
 
-                if (SpellCooldowns.ContainsKey(Spells[spellSlot].SpellId))
+                var tempspell = Guid.Empty;
+
+                switch (behavior)
                 {
-                    SpellCooldowns[Spells[spellSlot].SpellId] =
-                        Globals.Timing.RealTimeMs + (int) (spellBase.CooldownDuration * cooldownReduction);
+                    case -1:
+                        tempspell = Spells[spellSlot].SpellId;
+                        break;
+                    case -2:
+                        tempspell = spellId;
+                        return;
+                    default:
+                        tempspell = BehaviorBase.Get(Behavior).SpellSequences[SpellCastSlot].Spell;
+                        break;
+                }
+
+                if (SpellCooldowns.ContainsKey(tempspell))
+                {
+                    SpellCooldowns[tempspell] =
+                       Globals.Timing.RealTimeMs + (int) (spellBase.CooldownDuration * cooldownReduction);
                 }
                 else
                 {
                     SpellCooldowns.Add(
-                        Spells[spellSlot].SpellId,
+                        tempspell,
                         Globals.Timing.RealTimeMs + (int) (spellBase.CooldownDuration * cooldownReduction)
                     );
                 }
 
                 if (GetType() == typeof(Player))
                 {
-                    PacketSender.SendSpellCooldown((Player) this, Spells[spellSlot].SpellId);
+                    PacketSender.SendSpellCooldown((Player) this, tempspell);
                 }
             }
         }
@@ -2610,6 +2638,65 @@ namespace Intersect.Server.Entities
 
         //Check if the target is either up, down, left or right of the target on the correct Z dimension.
         protected bool IsOneBlockAway(Entity target)
+        {
+            var myTile = new TileHelper(MapId, X, Y);
+            var enemyTile = new TileHelper(target.MapId, target.X, target.Y);
+            if (Z == target.Z)
+            {
+                myTile.Translate(0, -1); // Target Up
+                if (myTile.Matches(enemyTile))
+                {
+                    return true;
+                }
+
+                myTile.Translate(0, 2); // Target Down
+                if (myTile.Matches(enemyTile))
+                {
+                    return true;
+                }
+
+                myTile.Translate(-1, -1); // Target Left
+                if (myTile.Matches(enemyTile))
+                {
+                    return true;
+                }
+
+                myTile.Translate(2, 0); // Target Right 
+                if (myTile.Matches(enemyTile))
+                {
+                    return true;
+                }
+
+                myTile.Translate(-2, -1); // Target UpLeft
+                if (myTile.Matches(enemyTile))
+                {
+                    return true;
+                }
+
+                myTile.Translate(2, 0); // Target UpRight
+                if (myTile.Matches(enemyTile))
+                {
+                    return true;
+                }
+
+                myTile.Translate(-2, 2); // Target DownLeft
+                if (myTile.Matches(enemyTile))
+                {
+                    return true;
+                }
+
+                myTile.Translate(2, 0); // Target DownRight
+                if (myTile.Matches(enemyTile))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        //Check if the target is either up, down, left or right of the target on the correct Z dimension.
+        protected bool IsXBlocksAway(Entity target, int range)
         {
             var myTile = new TileHelper(MapId, X, Y);
             var enemyTile = new TileHelper(target.MapId, target.X, target.Y);
@@ -2755,6 +2842,58 @@ namespace Intersect.Server.Entities
                 if (myTile.Matches(enemyTile) && Dir == (int)Directions.DownRight)
                 {
                     return true;
+                }
+            }
+
+            return false;
+        }
+
+        protected bool IsXBlocksAway(Guid mapId, int x, int y, int range, int z = 0)
+        {
+            //Calculate World Tile of Me
+            var x1 = X + MapInstance.Get(MapId).MapGridX * Options.MapWidth;
+            var y1 = Y + MapInstance.Get(MapId).MapGridY * Options.MapHeight;
+
+            //Calculate world tile of target
+            var x2 = x + MapInstance.Get(mapId).MapGridX * Options.MapWidth;
+            var y2 = y + MapInstance.Get(mapId).MapGridY * Options.MapHeight;
+            if (z == Z)
+            {
+                if (x1 - x2 == y1 - y2)
+                {
+                    return true;
+                }
+
+                if (y1 - range == y2 || y1 + range == y2)
+                {
+                    if (x1 == x2 - range)
+                    {
+                        return true;
+                    }
+                    else if (x1 == x2 + range)
+                    {
+                        return true;
+                    }
+                }
+
+                if (x1 - range == x2 || x1 + range == x2)
+                {
+                    if (y1 == y2 - range)
+                    {
+                        return true;
+                    }
+                    else if (y1 == y2 + range)
+                    {
+                        return true;
+                    }
+                }
+
+                if (x1 - range - 1 == x2 || x1 + range - 1 == x2)
+                {
+                    if (y1 - range - 1 == y2 || y1 + range - 1 == y2)
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -3111,7 +3250,7 @@ namespace Intersect.Server.Entities
 
                 statusPackets[i] = new StatusPacket(
                     status.Spell.Id, status.Type, status.Data, (int) (status.Duration - Globals.Timing.TimeMs),
-                    (int) (status.Duration - status.StartTime), vitalShields, status.ExtraBuff
+                    (int) (status.Duration - status.StartTime), status.Passive, vitalShields, status.ExtraBuff
                 );
             }
 

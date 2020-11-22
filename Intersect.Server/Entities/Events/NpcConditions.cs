@@ -12,17 +12,17 @@ using Intersect.Server.Maps;
 namespace Intersect.Server.Entities.Events
 {
 
-    public static class Conditions
+    public static class NpcConditions
     {
 
-        public static bool CanSpawnPage(EventPage page, Player player, Event activeInstance)
+        public static bool CanSpawnPage(EventPage page, Entity player, Event activeInstance)
         {
             return MeetsConditionLists(page.ConditionLists, player, activeInstance);
         }
 
         public static bool MeetsConditionLists(
             ConditionLists lists,
-            Player player,
+            Entity player,
             Event eventInstance,
             bool singleList = true,
             QuestBase questBase = null
@@ -43,7 +43,7 @@ namespace Intersect.Server.Entities.Events
             {
                 if (MeetsConditionList(lists.Lists[i], player, eventInstance, questBase))
 
-                    //Checks to see if all conditions in this list are met
+                //Checks to see if all conditions in this list are met
                 {
                     //If all conditions are met.. and we only need a single list to pass then return true
                     if (singleList)
@@ -68,14 +68,14 @@ namespace Intersect.Server.Entities.Events
 
         public static bool MeetsConditionList(
             ConditionList list,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
             for (var i = 0; i < list.Conditions.Count; i++)
             {
-                var meetsCondition = MeetsCondition((dynamic) list.Conditions[i], player, eventInstance, questBase);
+                var meetsCondition = MeetsCondition((dynamic)list.Conditions[i], player, eventInstance, questBase);
                 if (list.Conditions[i].Negated)
                 {
                     meetsCondition = !meetsCondition;
@@ -92,7 +92,7 @@ namespace Intersect.Server.Entities.Events
 
         public static bool MeetsCondition(
             VariableIsCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
@@ -100,7 +100,7 @@ namespace Intersect.Server.Entities.Events
             VariableValue value = null;
             if (condition.VariableType == VariableTypes.PlayerVariable)
             {
-                value = player.GetVariableValue(condition.VariableId);
+                return false;
             }
             else if (condition.VariableType == VariableTypes.ServerVariable)
             {
@@ -112,116 +112,63 @@ namespace Intersect.Server.Entities.Events
                 value = new VariableValue();
             }
 
-            return CheckVariableComparison(value, (dynamic) condition.Comparison, player, eventInstance);
+            return CheckVariableComparison(value, (dynamic)condition.Comparison, player, eventInstance);
         }
 
         public static bool MeetsCondition(
             HasItemCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
-            if (player.CountItems(condition.ItemId) >= condition.Quantity)
-            {
-                return true;
-            }
 
             return false;
         }
 
         public static bool MeetsCondition(
             HasItemWTagCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
-            // Get a list of all unique items the player has, filtering out the non-existant ones.
-            var playerItems = player.Items.Select(i => ItemBase.Get(i.ItemId))
-                .Where(item => item != null)
-                .Distinct().ToArray();
-
-            // Go through every unique item the player has, and see if we have enough tagged with our condition tag.
-            var tagItemCount = 0;
-            foreach (var item in playerItems)
-            {
-                // Does this item have the tag we are looking for?
-                if (item.Tags.Contains(condition.Tag))
-                {
-                    // Check if we can find an inventory slot the player has this item in.
-                    if (player.FindInventoryItemQuantity(item.Id) > -1)
-                    {
-                        // Increase our total item count by the actual amount of this item the player has.
-                        tagItemCount += player.CountItems(item.Id);
-
-                        // We've just increased our count, are we at the requirement?
-                        if (tagItemCount >= condition.Quantity)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-
             return false;
         }
 
         public static bool MeetsCondition(
             EquippedItemTagIsCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
-            // Go through each equipment slot we have and check if the item equipped has a tag matching our condition.
-            for (var i = 0; i < Options.EquipmentSlots.Count; i++)
-            {
-                if (player.Equipment[i] >= 0)
-                {
-                    if (ItemBase.Get(player.Items[player.Equipment[i]].ItemId).Tags.Contains(condition.Tag))
-                    {
-                        return true;
-                    }
-                }
-            }
-
             return false;
         }
 
         public static bool MeetsCondition(
             ClassIsCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
-            if (player.ClassId == condition.ClassId)
-            {
-                return true;
-            }
-
             return false;
         }
 
         public static bool MeetsCondition(
             KnowsSpellCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
-            if (player.KnowsSpell(condition.SpellId))
-            {
-                return true;
-            }
-
             return false;
         }
 
         public static bool MeetsCondition(
             LevelOrStatCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
@@ -233,11 +180,11 @@ namespace Intersect.Server.Entities.Events
             }
             else
             {
-                lvlStat = player.Stat[(int) condition.Stat].Value();
+                lvlStat = player.Stat[(int)condition.Stat].Value();
                 if (condition.IgnoreBuffs)
                 {
-                    lvlStat = player.Stat[(int) condition.Stat].BaseStat +
-                              player.StatPointAllocations[(int) condition.Stat];
+                    lvlStat = player.Stat[(int)condition.Stat].BaseStat +
+                              player.StatPointAllocations[(int)condition.Stat];
                 }
             }
 
@@ -292,7 +239,7 @@ namespace Intersect.Server.Entities.Events
 
         public static bool MeetsCondition(
             SelfSwitchCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
@@ -321,27 +268,17 @@ namespace Intersect.Server.Entities.Events
 
         public static bool MeetsCondition(
             AccessIsCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
-            var power = player.Power;
-            if (condition.Access == 0)
-            {
-                return power.Ban || power.Kick || power.Mute;
-            }
-            else if (condition.Access > 0)
-            {
-                return power.Editor;
-            }
-
             return false;
         }
 
         public static bool MeetsCondition(
             TimeBetweenCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
@@ -359,61 +296,37 @@ namespace Intersect.Server.Entities.Events
 
         public static bool MeetsCondition(
             CanStartQuestCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
-            var startQuest = QuestBase.Get(condition.QuestId);
-            if (startQuest == questBase)
-            {
-                //We cannot check and see if we meet quest requirements if we are already checking to see if we meet quest requirements :P
-                return true;
-            }
-
-            if (startQuest != null)
-            {
-                return player.CanStartQuestCondition(startQuest);
-            }
-
             return false;
         }
 
         public static bool MeetsCondition(
             QuestInProgressCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
-            var questInProgress = QuestBase.Get(condition.QuestId);
-            if (questInProgress != null)
-            {
-                return player.QuestInProgress(questInProgress, condition.Progress, condition.TaskId);
-            }
-
             return false;
         }
 
         public static bool MeetsCondition(
             QuestCompletedCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
-            var questCompleted = QuestBase.Get(condition.QuestId);
-            if (questCompleted != null)
-            {
-                return player.QuestCompleted(questCompleted);
-            }
-
             return false;
         }
 
         public static bool MeetsCondition(
             NoNpcsOnMapCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
@@ -443,7 +356,7 @@ namespace Intersect.Server.Entities.Events
 
         public static bool MeetsCondition(
             MapHasNPCWTag condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
@@ -478,17 +391,28 @@ namespace Intersect.Server.Entities.Events
 
         public static bool MeetsCondition(
             GenderIsCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
-            return player.Gender == condition.Gender;
+            return false;
         }
+        /*
+        public static bool MeetsCondition(
+            HasStatusEffectCondition condition,
+            Entity player,
+            Event eventInstance,
+            QuestBase questBase
+        )
+        {
+
+            return player.Statuses.ContainsKey(SpellBase.Get(condition.SpellId));
+        }*/
 
         public static bool MeetsCondition(
             MapIsCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
@@ -498,7 +422,7 @@ namespace Intersect.Server.Entities.Events
 
         public static bool MeetsCondition(
             MapHasTag condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
@@ -508,40 +432,21 @@ namespace Intersect.Server.Entities.Events
 
         public static bool MeetsCondition(
             IsItemEquippedCondition condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
-            for (var i = 0; i < Options.EquipmentSlots.Count; i++)
-            {
-                if (player.Equipment[i] >= 0)
-                {
-                    if (player.Items[player.Equipment[i]].ItemId == condition.ItemId)
-                    {
-                        return true;
-                    }
-                }
-            }
-
             return false;
         }
 
         public static bool MeetsCondition(
             HasFreeInventorySlots condition,
-            Player player,
+            Entity player,
             Event eventInstance,
             QuestBase questBase
         )
         {
-
-            // Check if the user has (or does not have when negated) the desired amount of inventory slots.
-            var slots = player.FindOpenInventorySlots().Count;
-            if ((!condition.Negated && slots >= condition.Quantity) || (condition.Negated && slots < condition.Quantity))
-            {
-                return true;
-            }
-
             return false;
         }
 
@@ -549,7 +454,7 @@ namespace Intersect.Server.Entities.Events
         public static bool CheckVariableComparison(
             VariableValue currentValue,
             VariableCompaison comparison,
-            Player player,
+            Entity player,
             Event instance
         )
         {
@@ -559,7 +464,7 @@ namespace Intersect.Server.Entities.Events
         public static bool CheckVariableComparison(
             VariableValue currentValue,
             BooleanVariableComparison comparison,
-            Player player,
+            Entity player,
             Event instance
         )
         {
@@ -568,7 +473,7 @@ namespace Intersect.Server.Entities.Events
             {
                 if (comparison.CompareVariableType == VariableTypes.PlayerVariable)
                 {
-                    compValue = player.GetVariableValue(comparison.CompareVariableId);
+                    return false;
                 }
                 else if (comparison.CompareVariableType == VariableTypes.ServerVariable)
                 {
@@ -609,7 +514,7 @@ namespace Intersect.Server.Entities.Events
         public static bool CheckVariableComparison(
             VariableValue currentValue,
             IntegerVariableComparison comparison,
-            Player player,
+            Entity player,
             Event instance
         )
         {
@@ -620,7 +525,7 @@ namespace Intersect.Server.Entities.Events
             {
                 if (comparison.CompareVariableType == VariableTypes.PlayerVariable)
                 {
-                    compValue = player.GetVariableValue(comparison.CompareVariableId);
+                    return false;
                 }
                 else if (comparison.CompareVariableType == VariableTypes.ServerVariable)
                 {
@@ -703,42 +608,20 @@ namespace Intersect.Server.Entities.Events
         public static bool CheckVariableComparison(
             VariableValue currentValue,
             StringVariableComparison comparison,
-            Player player,
+            Entity player,
             Event instance
         )
         {
-            var varVal = CommandProcessing.ParseEventText(currentValue.String ?? "", player, instance);
-            var compareAgainst = CommandProcessing.ParseEventText(comparison.Value ?? "", player, instance);
-
-            switch (comparison.Comparator)
-            {
-                case StringVariableComparators.Equal:
-                    return varVal == compareAgainst;
-                case StringVariableComparators.Contains:
-                    return varVal.Contains(compareAgainst);
-            }
-
             return false;
         }
 
         public static bool MeetsCondition(
-            TradeSkillHasLevelCondition condition,
-            Player player,
-            Event eventInstance,
-            QuestBase questBase
-        )
+             TradeSkillHasLevelCondition condition,
+             Player player,
+             Event eventInstance,
+             QuestBase questBase
+         )
         {
-            foreach (var tradeskill in player.TradeSkills)
-            {
-                if (tradeskill.TradeSkillId == condition.TradeSkill)
-                {
-                    if (tradeskill.CurrentLevel >= condition.TradeSkillLevel)
-                    {
-                        return true;
-                    }
-                }
-            }
-
             return false;
         }
 
@@ -750,23 +633,15 @@ namespace Intersect.Server.Entities.Events
             QuestBase questBase
         )
         {
-            foreach (var tradeskill in player.TradeSkills)
-            {
-                if (tradeskill.TradeSkillId == condition.TradeSkill)
-                {
-                    return true;
-                }
-            }
-
             return false;
         }
 
         public static bool MeetsCondition(
-             HporManaCondition condition,
-             Player player,
-             Event eventInstance,
-             QuestBase questBase
-         )
+            HporManaCondition condition,
+            Entity player,
+            Event eventInstance,
+            QuestBase questBase
+        )
         {
             var lvlStat = 0;
             lvlStat = player.GetVital((int)condition.Vital);

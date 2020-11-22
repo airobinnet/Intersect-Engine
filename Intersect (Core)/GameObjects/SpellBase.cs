@@ -189,6 +189,8 @@ namespace Intersect.GameObjects
 
         public int Duration { get; set; }
 
+        public bool Passive { get; set; } = false;
+
         public StatusTypes Effect { get; set; }
 
         public string TransformSprite { get; set; }

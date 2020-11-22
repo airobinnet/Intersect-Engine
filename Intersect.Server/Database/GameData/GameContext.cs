@@ -106,6 +106,9 @@ namespace Intersect.Server.Database.GameData
 
         //TradeSkills
         public DbSet<TradeSkillBase> TradeSkill { get; set; }
+        
+        //Behaviors
+        public DbSet<BehaviorBase> Behavior { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

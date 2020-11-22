@@ -51,6 +51,8 @@ namespace Intersect.GameObjects.Events
         HasTradeSkill,
 
         TradeSkillHasLevel,
+
+        HporMana,
     }
 
     public class Condition
@@ -325,6 +327,20 @@ namespace Intersect.GameObjects.Events
         public Guid TradeSkill { get; set; }
 
         public int TradeSkillLevel { get; set; }
+
+    }
+
+    public class HporManaCondition : Condition
+    {
+        public override ConditionTypes Type { get; } = ConditionTypes.HporMana;
+
+        public Vitals Vital { get; set; }
+
+        public VariableComparators Comparator { get; set; } = VariableComparators.Equal;
+
+        public int Value { get; set; }
+
+        public bool IgnoreBuffs { get; set; }
 
     }
 }

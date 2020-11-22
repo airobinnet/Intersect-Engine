@@ -2345,7 +2345,7 @@ namespace Intersect.Server.Entities
                             }
 
                             CastTarget = target;
-                            CastSpell(itemBase.SpellId);
+                            CastSpell(itemBase.SpellId,-1,-2);
                         }
                         else if (!TryTeachSpell(new Spell(itemBase.SpellId)))
                         {
@@ -2372,7 +2372,7 @@ namespace Intersect.Server.Entities
                             }
 
                             CastTarget = target;
-                            CastSpell(itemBase.SpellId);
+                            CastSpell(itemBase.SpellId,-1,-2);
                         }
                         else if (!TryTeachSpell(new Spell(itemBase.SpellId)))
                         {
@@ -5621,7 +5621,7 @@ namespace Intersect.Server.Entities
                     {
                         //Cast now!
                         CastTime = 0;
-                        CastSpell(Spells[SpellCastSlot].SpellId, SpellCastSlot);
+                        CastSpell(Spells[SpellCastSlot].SpellId, SpellCastSlot,-1);
                         CastTarget = null;
                     }
                     else
@@ -5641,7 +5641,7 @@ namespace Intersect.Server.Entities
             }
         }
 
-        public override void CastSpell(Guid spellId, int spellSlot = -1)
+        public override void CastSpell(Guid spellId, int spellSlot = -1, int behavior = -1)
         {
             var spellBase = SpellBase.Get(spellId);
             if (spellBase == null)
@@ -5659,12 +5659,12 @@ namespace Intersect.Server.Entities
                         StartCommonEvent(evt);
                     }
 
-                    base.CastSpell(spellId, spellSlot); //To get cooldown :P
+                    base.CastSpell(spellId, spellSlot, behavior); //To get cooldown :P
 
                     break;
                 }
                 default:
-                    base.CastSpell(spellId, spellSlot);
+                    base.CastSpell(spellId, spellSlot, behavior);
 
                     break;
             }

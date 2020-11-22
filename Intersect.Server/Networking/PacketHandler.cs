@@ -4100,6 +4100,10 @@ namespace Intersect.Server.Networking
                     obj = TradeSkillBase.Get(id);
 
                     break;
+                case GameObjectType.Behavior:
+                    obj = BehaviorBase.Get(id);
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -4218,6 +4222,9 @@ namespace Intersect.Server.Networking
                     break;
                 case GameObjectType.Tradeskill:
                     obj = TradeSkillBase.Get(id);
+                    break;
+                case GameObjectType.Behavior:
+                    obj = BehaviorBase.Get(id);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
