@@ -112,7 +112,10 @@ namespace Intersect.Editor.Forms.Editors
             this.chkHOTDOT = new DarkUI.Controls.DarkCheckBox();
             this.lblTick = new System.Windows.Forms.Label();
             this.grpEffect = new DarkUI.Controls.DarkGroupBox();
-            this.lblPercentage7 = new System.Windows.Forms.Label();
+            this.chkOnSelf = new DarkUI.Controls.DarkCheckBox();
+            this.lblToTrigger = new System.Windows.Forms.Label();
+            this.cmbPassiveSpell = new DarkUI.Controls.DarkComboBox();
+            this.lblPercentageEffect = new System.Windows.Forms.Label();
             this.lblEffect = new System.Windows.Forms.Label();
             this.nudExtraBuff = new DarkUI.Controls.DarkNumericUpDown();
             this.cmbExtraEffect = new DarkUI.Controls.DarkComboBox();
@@ -120,6 +123,7 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbTransform = new DarkUI.Controls.DarkComboBox();
             this.lblSprite = new System.Windows.Forms.Label();
             this.grpEffectDuration = new DarkUI.Controls.DarkGroupBox();
+            this.chkPassive = new DarkUI.Controls.DarkCheckBox();
             this.nudBuffDuration = new DarkUI.Controls.DarkNumericUpDown();
             this.lblBuffDuration = new System.Windows.Forms.Label();
             this.grpDamage = new DarkUI.Controls.DarkGroupBox();
@@ -174,7 +178,6 @@ namespace Intersect.Editor.Forms.Editors
             this.txtSearch = new DarkUI.Controls.DarkTextBox();
             this.lstSpells = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
-            this.chkPassive = new DarkUI.Controls.DarkCheckBox();
             this.pnlContainer.SuspendLayout();
             this.grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picSpell)).BeginInit();
@@ -1535,7 +1538,10 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpEffect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpEffect.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.grpEffect.Controls.Add(this.lblPercentage7);
+            this.grpEffect.Controls.Add(this.chkOnSelf);
+            this.grpEffect.Controls.Add(this.lblToTrigger);
+            this.grpEffect.Controls.Add(this.cmbPassiveSpell);
+            this.grpEffect.Controls.Add(this.lblPercentageEffect);
             this.grpEffect.Controls.Add(this.lblEffect);
             this.grpEffect.Controls.Add(this.nudExtraBuff);
             this.grpEffect.Controls.Add(this.cmbExtraEffect);
@@ -1552,14 +1558,72 @@ namespace Intersect.Editor.Forms.Editors
             this.grpEffect.TabStop = false;
             this.grpEffect.Text = "Effect";
             // 
-            // lblPercentage7
+            // chkOnSelf
             // 
-            this.lblPercentage7.AutoSize = true;
-            this.lblPercentage7.Location = new System.Drawing.Point(294, 51);
-            this.lblPercentage7.Name = "lblPercentage7";
-            this.lblPercentage7.Size = new System.Drawing.Size(23, 20);
-            this.lblPercentage7.TabIndex = 74;
-            this.lblPercentage7.Text = "%";
+            this.chkOnSelf.Location = new System.Drawing.Point(13, 203);
+            this.chkOnSelf.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkOnSelf.Name = "chkOnSelf";
+            this.chkOnSelf.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkOnSelf.Size = new System.Drawing.Size(255, 37);
+            this.chkOnSelf.TabIndex = 41;
+            this.chkOnSelf.Text = "On = Self | Off = Target";
+            this.chkOnSelf.CheckedChanged += new System.EventHandler(this.chkOnSelf_CheckedChanged);
+            // 
+            // lblToTrigger
+            // 
+            this.lblToTrigger.AutoSize = true;
+            this.lblToTrigger.Location = new System.Drawing.Point(16, 125);
+            this.lblToTrigger.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblToTrigger.Name = "lblToTrigger";
+            this.lblToTrigger.Size = new System.Drawing.Size(80, 20);
+            this.lblToTrigger.TabIndex = 76;
+            this.lblToTrigger.Text = "To trigger:";
+            // 
+            // cmbPassiveSpell
+            // 
+            this.cmbPassiveSpell.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbPassiveSpell.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbPassiveSpell.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbPassiveSpell.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbPassiveSpell.ButtonIcon = ((System.Drawing.Bitmap)(resources.GetObject("cmbPassiveSpell.ButtonIcon")));
+            this.cmbPassiveSpell.DrawDropdownHoverOutline = false;
+            this.cmbPassiveSpell.DrawFocusRectangle = false;
+            this.cmbPassiveSpell.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbPassiveSpell.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPassiveSpell.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbPassiveSpell.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbPassiveSpell.FormattingEnabled = true;
+            this.cmbPassiveSpell.Items.AddRange(new object[] {
+            "None",
+            "Silence",
+            "Stun",
+            "Snare",
+            "Blind",
+            "Stealth",
+            "Transform",
+            "Cleanse",
+            "Invulnerable",
+            "Shield",
+            "Sleep",
+            "On Hit",
+            "Taunt"});
+            this.cmbPassiveSpell.Location = new System.Drawing.Point(13, 159);
+            this.cmbPassiveSpell.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbPassiveSpell.Name = "cmbPassiveSpell";
+            this.cmbPassiveSpell.Size = new System.Drawing.Size(328, 27);
+            this.cmbPassiveSpell.TabIndex = 75;
+            this.cmbPassiveSpell.Text = "None";
+            this.cmbPassiveSpell.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbPassiveSpell.SelectedIndexChanged += new System.EventHandler(this.cmbPassiveSpell_SelectedIndexChanged);
+            // 
+            // lblPercentageEffect
+            // 
+            this.lblPercentageEffect.AutoSize = true;
+            this.lblPercentageEffect.Location = new System.Drawing.Point(84, 95);
+            this.lblPercentageEffect.Name = "lblPercentageEffect";
+            this.lblPercentageEffect.Size = new System.Drawing.Size(23, 20);
+            this.lblPercentageEffect.TabIndex = 74;
+            this.lblPercentageEffect.Text = "%";
             // 
             // lblEffect
             // 
@@ -1575,7 +1639,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.nudExtraBuff.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
             this.nudExtraBuff.ForeColor = System.Drawing.Color.Gainsboro;
-            this.nudExtraBuff.Location = new System.Drawing.Point(224, 48);
+            this.nudExtraBuff.Location = new System.Drawing.Point(13, 93);
             this.nudExtraBuff.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.nudExtraBuff.Maximum = new decimal(new int[] {
             1000,
@@ -1628,7 +1692,7 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbExtraEffect.Location = new System.Drawing.Point(8, 48);
             this.cmbExtraEffect.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbExtraEffect.Name = "cmbExtraEffect";
-            this.cmbExtraEffect.Size = new System.Drawing.Size(118, 27);
+            this.cmbExtraEffect.Size = new System.Drawing.Size(333, 27);
             this.cmbExtraEffect.TabIndex = 36;
             this.cmbExtraEffect.Text = "None";
             this.cmbExtraEffect.TextPadding = new System.Windows.Forms.Padding(2);
@@ -1638,10 +1702,10 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.picSprite.BackColor = System.Drawing.Color.Black;
             this.picSprite.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.picSprite.Location = new System.Drawing.Point(8, 94);
+            this.picSprite.Location = new System.Drawing.Point(8, 141);
             this.picSprite.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.picSprite.Name = "picSprite";
-            this.picSprite.Size = new System.Drawing.Size(333, 185);
+            this.picSprite.Size = new System.Drawing.Size(333, 138);
             this.picSprite.TabIndex = 43;
             this.picSprite.TabStop = false;
             // 
@@ -1661,7 +1725,7 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbTransform.FormattingEnabled = true;
             this.cmbTransform.Items.AddRange(new object[] {
             "None"});
-            this.cmbTransform.Location = new System.Drawing.Point(206, 48);
+            this.cmbTransform.Location = new System.Drawing.Point(223, 105);
             this.cmbTransform.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbTransform.Name = "cmbTransform";
             this.cmbTransform.Size = new System.Drawing.Size(118, 27);
@@ -1673,7 +1737,7 @@ namespace Intersect.Editor.Forms.Editors
             // lblSprite
             // 
             this.lblSprite.AutoSize = true;
-            this.lblSprite.Location = new System.Drawing.Point(201, 23);
+            this.lblSprite.Location = new System.Drawing.Point(158, 108);
             this.lblSprite.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSprite.Name = "lblSprite";
             this.lblSprite.Size = new System.Drawing.Size(55, 20);
@@ -1696,6 +1760,17 @@ namespace Intersect.Editor.Forms.Editors
             this.grpEffectDuration.TabIndex = 51;
             this.grpEffectDuration.TabStop = false;
             this.grpEffectDuration.Text = "Stat Boost/Effect Duration";
+            // 
+            // chkPassive
+            // 
+            this.chkPassive.Location = new System.Drawing.Point(12, 55);
+            this.chkPassive.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkPassive.Name = "chkPassive";
+            this.chkPassive.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkPassive.Size = new System.Drawing.Size(255, 37);
+            this.chkPassive.TabIndex = 40;
+            this.chkPassive.Text = "Passive effect? (No duration)";
+            this.chkPassive.CheckedChanged += new System.EventHandler(this.chkPassive_CheckedChanged);
             // 
             // nudBuffDuration
             // 
@@ -2478,17 +2553,6 @@ namespace Intersect.Editor.Forms.Editors
             this.imageList.Images.SetKeyName(0, "folder_Open_16xLG.png");
             this.imageList.Images.SetKeyName(1, "LegacyPackage_16x.png");
             // 
-            // chkPassive
-            // 
-            this.chkPassive.Location = new System.Drawing.Point(12, 50);
-            this.chkPassive.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.chkPassive.Name = "chkPassive";
-            this.chkPassive.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.chkPassive.Size = new System.Drawing.Size(255, 37);
-            this.chkPassive.TabIndex = 40;
-            this.chkPassive.Text = "Passive effect? (No duration)";
-            this.chkPassive.CheckedChanged += new System.EventHandler(this.chkPassive_CheckedChanged);
-            // 
             // FrmSpell
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -2720,8 +2784,11 @@ namespace Intersect.Editor.Forms.Editors
         private System.Windows.Forms.Label lblPlus6;
         private DarkNumericUpDown nudMS;
         private System.Windows.Forms.Label lblMS;
-        private System.Windows.Forms.Label lblPercentage7;
+        private System.Windows.Forms.Label lblPercentageEffect;
         private DarkNumericUpDown nudExtraBuff;
         private DarkCheckBox chkPassive;
+        private System.Windows.Forms.Label lblToTrigger;
+        private DarkComboBox cmbPassiveSpell;
+        private DarkCheckBox chkOnSelf;
     }
 }

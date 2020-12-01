@@ -263,6 +263,8 @@
 
         ItemChoiceWindow = 902,
 
+        RemoveStatus = 903,
+
     }
 
 }

@@ -408,7 +408,11 @@ namespace Intersect.Server.Localization
                     {17, @"TENACITY!"},
                     {18, @"LUCK!"},
                     {19, @"DRUNK!"},
-                    {20, @"FEARED!"}
+                    {20, @"FEARED!"},
+                    {21, @"Chance on hit!"},
+                    {22, @"Chance on spell hit!"},
+                    {23, @"Chance on melee hit!"},
+                    {24, @"Chance on taking damage!"},
                 }
             );
 

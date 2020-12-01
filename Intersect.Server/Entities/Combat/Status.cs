@@ -27,9 +27,13 @@ namespace Intersect.Server.Entities.Combat
 
         public int ExtraBuff;
 
+        public Guid PassiveSpell;
+
         public bool Passive;
 
-        public Status(Entity en, SpellBase spell, StatusTypes type, int duration, bool passive, string data, int extraBuff)
+        public bool OnSelf;
+
+        public Status(Entity en, SpellBase spell, StatusTypes type, int duration, bool passive, string data, int extraBuff, Guid passivespell, bool onself)
         {
             mEntity = en;
             Spell = spell;
@@ -39,6 +43,8 @@ namespace Intersect.Server.Entities.Combat
             Duration = Globals.Timing.TimeMs + duration;
             Data = data;
             ExtraBuff = extraBuff;
+            PassiveSpell = passivespell;
+            OnSelf = onself;
 
             if (en.GetType() == typeof(Player))
             {
@@ -60,6 +66,27 @@ namespace Intersect.Server.Entities.Combat
                 {
                     shield[i] = Math.Abs(spell.Combat.VitalDiff[i]) +
                                 (int) (spell.Combat.Scaling * en.Stat[spell.Combat.ScalingStat].BaseStat / 100f);
+                }
+            }
+
+            if ((type == StatusTypes.ChanceOnAnyHit ||
+                type == StatusTypes.ChanceOnMeleeHit ||
+                type == StatusTypes.ChanceOnSpellHit ||
+                type == StatusTypes.ChanceOnTakingDamage) &&
+                onself == true
+                )
+            {
+                if (duration <= 0)
+                {
+                    var statuses = en.Statuses.Values.ToArray();
+                    foreach (var status in statuses)
+                    {
+                        if (status.Spell == Spell)
+                        {
+                            RemoveStatus();
+                            return;
+                        }
+                    }
                 }
             }
 

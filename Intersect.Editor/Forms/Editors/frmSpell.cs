@@ -130,6 +130,10 @@ namespace Intersect.Editor.Forms.Editors
             nudCastDuration.Maximum = Int32.MaxValue;
             nudCooldownDuration.Maximum = Int32.MaxValue;
 
+            cmbPassiveSpell.Items.Clear();
+            cmbPassiveSpell.Items.Add(Strings.General.none);
+            cmbPassiveSpell.Items.AddRange(SpellBase.Names);
+
             InitLocalization();
             UpdateEditor();
         }
@@ -330,6 +334,8 @@ namespace Intersect.Editor.Forms.Editors
 
                 nudExtraBuff.Value = mEditorItem.Combat.ExtraBuff;
 
+                cmbPassiveSpell.SelectedIndex = SpellBase.ListIndex(mEditorItem.Combat.PassiveSkill) + 1;
+
                 nudStrPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.Attack];
                 nudDefPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.Defense];
                 nudMagPercentage.Value = mEditorItem.Combat.PercentageStatDiff[(int) Stats.AbilityPower];
@@ -350,6 +356,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudTick.Value = mEditorItem.Combat.HotDotInterval;
                 cmbExtraEffect.SelectedIndex = (int) mEditorItem.Combat.Effect;
                 cmbExtraEffect_SelectedIndexChanged(null, null);
+                chkOnSelf.Checked = Convert.ToBoolean(mEditorItem.Combat.OnSelf);
             }
             else if (cmbType.SelectedIndex == (int) SpellTypes.Warp)
             {
@@ -510,7 +517,10 @@ namespace Intersect.Editor.Forms.Editors
             cmbTransform.Visible = false;
             picSprite.Visible = false;
             nudExtraBuff.Visible = false;
-            lblPercentage7.Visible = false;
+            lblPercentageEffect.Visible = false;
+            lblToTrigger.Hide();
+            cmbPassiveSpell.Hide();
+            chkOnSelf.Hide();
 
             if (cmbExtraEffect.SelectedIndex == 6) //Transform
             {
@@ -545,12 +555,19 @@ namespace Intersect.Editor.Forms.Editors
             }
             if (cmbExtraEffect.SelectedIndex == 13 || cmbExtraEffect.SelectedIndex == 15 || 
                 cmbExtraEffect.SelectedIndex == 16 || cmbExtraEffect.SelectedIndex == 17 || 
-                cmbExtraEffect.SelectedIndex == 18 || cmbExtraEffect.SelectedIndex == 19 || 
-                cmbExtraEffect.SelectedIndex == 20) 
-                //Lifesteal, Exp, CdR, Tenacity, Luck, drunk or Fear
+                cmbExtraEffect.SelectedIndex == 18) 
+                //Lifesteal, Exp, CdR, Tenacity, Luck
             {
-                lblPercentage7.Visible = true;
+                lblPercentageEffect.Visible = true;
                 nudExtraBuff.Visible = true;
+            }
+            if (cmbExtraEffect.SelectedIndex == 21 || cmbExtraEffect.SelectedIndex == 22 || cmbExtraEffect.SelectedIndex == 23 || cmbExtraEffect.SelectedIndex == 24)
+            {
+                lblPercentageEffect.Visible = true;
+                nudExtraBuff.Visible = true;
+                cmbPassiveSpell.Show();
+                lblToTrigger.Show();
+                chkOnSelf.Show();
             }
         }
 
@@ -719,6 +736,11 @@ namespace Intersect.Editor.Forms.Editors
         {
             mEditorItem.Combat.Friendly = chkFriendly.Checked;
         }
+        
+        private void chkOnSelf_CheckedChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Combat.OnSelf = chkOnSelf.Checked;
+        }
 
         private void chkPassive_CheckedChanged(object sender, EventArgs e)
         {
@@ -733,6 +755,11 @@ namespace Intersect.Editor.Forms.Editors
         private void cmbScalingStat_SelectedIndexChanged(object sender, EventArgs e)
         {
             mEditorItem.Combat.ScalingStat = cmbScalingStat.SelectedIndex;
+        }
+
+        private void cmbPassiveSpell_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mEditorItem.Combat.PassiveSkill = SpellBase.IdFromList(cmbPassiveSpell.SelectedIndex-1);
         }
 
         private void btnDynamicRequirements_Click(object sender, EventArgs e)

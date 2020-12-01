@@ -53,6 +53,8 @@ namespace Intersect.GameObjects.Events
         TradeSkillHasLevel,
 
         HporMana,
+
+        HasStatusEffect,
     }
 
     public class Condition
@@ -341,6 +343,15 @@ namespace Intersect.GameObjects.Events
         public int Value { get; set; }
 
         public bool IgnoreBuffs { get; set; }
+
+    }
+
+    public class HasStatusEffectCondition : Condition
+    {
+
+        public override ConditionTypes Type { get; } = ConditionTypes.HasStatusEffect;
+
+        public Guid SpellId { get; set; }
 
     }
 }

@@ -197,6 +197,10 @@ namespace Intersect.GameObjects
 
         public int ExtraBuff { get; set; } = 0;
 
+        public Guid PassiveSkill { get; set; }
+
+        public bool OnSelf { get; set; }
+
         [Column("OnHit")]
         public int OnHitDuration { get; set; }
 

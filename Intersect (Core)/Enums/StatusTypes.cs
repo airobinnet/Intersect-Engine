@@ -46,6 +46,14 @@ namespace Intersect.Enums
 
         Fear = 20,
 
+        ChanceOnAnyHit = 21,
+
+        ChanceOnSpellHit = 22,
+
+        ChanceOnMeleeHit = 23,
+
+        ChanceOnTakingDamage = 24,
+
     }
 
 }

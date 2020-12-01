@@ -654,6 +654,18 @@ namespace Intersect.Server.Entities.Events
         }
 
 
+        //Remove Status Command
+        private static void ProcessCommand(
+            RemoveStatusCommand command,
+            Player player,
+            Event instance,
+            CommandInstance stackInfo,
+            Stack<CommandInstance> callStack
+        )
+        {
+            player.RemoveStatus(command.SpellId);
+        }
+
         //Take Items By tag Command
         private static void ProcessCommand(
             ChangeItemsByTag command,

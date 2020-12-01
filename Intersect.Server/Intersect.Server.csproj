@@ -601,6 +601,14 @@
     <Compile Include="Migrations\Game\20201122030025_PassiveSkills.designer.cs">
       <DependentUpon>20201122030025_PassiveSkills.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Game\20201123031048_PassiveBuffs.cs" />
+    <Compile Include="Migrations\Game\20201123031048_PassiveBuffs.designer.cs">
+      <DependentUpon>20201123031048_PassiveBuffs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20201201023120_PassiveAttacks.cs" />
+    <Compile Include="Migrations\Game\20201201023120_PassiveAttacks.designer.cs">
+      <DependentUpon>20201201023120_PassiveAttacks.cs</DependentUpon>
+    </Compile>
     <Compile Include="Networking\Client.cs" />
     <Compile Include="Entities\Npc.cs" />
     <Compile Include="Networking\Helpers\NetDebug.cs" />

@@ -673,6 +673,11 @@ namespace Intersect.Editor.Forms.Editors.Events
             return Strings.EventCommandList.showitemchoice;
         }
 
+        private static string GetCommandText(RemoveStatusCommand command, MapInstance map)
+        {
+            return Strings.EventCommandList.removestatus.ToString(SpellBase.GetName(command.SpellId));
+        }
+
         private static string GetCommandText(AddChatboxTextCommand command, MapInstance map)
         {
             var channel = "";

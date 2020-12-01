@@ -783,6 +783,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new ItemChoiceWindowCommand(CurrentPage.CommandLists);
 
                     break;
+                case EventCommandType.RemoveStatus:
+                    tmpCommand = new RemoveStatusCommand();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1408,6 +1412,10 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
                 case EventCommandType.ItemChoiceWindow:
                     cmdWindow = new EventCommandItemChoice((ItemChoiceWindowCommand)command, CurrentPage, this);
+
+                    break;
+                case EventCommandType.RemoveStatus:
+                    cmdWindow = new EventCommandRemoveStatus((RemoveStatusCommand)command, CurrentPage, this);
 
                     break;
                 default:

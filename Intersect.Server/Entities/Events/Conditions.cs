@@ -819,6 +819,18 @@ namespace Intersect.Server.Entities.Events
 
             return false;
         }
+
+
+        public static bool MeetsCondition(
+            HasStatusEffectCondition condition,
+            Player player,
+            Event eventInstance,
+            QuestBase questBase
+        )
+        {
+
+            return player.HasStatusEffect(condition.SpellId);
+        }
     }
 
 }

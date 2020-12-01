@@ -2812,6 +2812,16 @@ namespace Intersect.Server.Entities
             return count;
         }
 
+        public void RemoveStatus(Guid spellid)
+        {
+            var tempspell = SpellBase.Get(spellid);
+            if (Statuses.ContainsKey(tempspell))
+            {
+                Statuses.Remove(tempspell);
+                PacketSender.SendEntityVitals(this);
+            }
+        }
+
         public bool TryGiveTradeSkill(Guid tradeskillid)
         {
             

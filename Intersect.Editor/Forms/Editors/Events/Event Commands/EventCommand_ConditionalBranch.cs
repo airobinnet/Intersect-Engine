@@ -420,6 +420,14 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     cmbComperatorVitals.SelectedIndex = 0;
                     nudVitalsValue.Value = 0;
                     break;
+                case ConditionTypes.HasStatusEffect:
+                    Condition = new HasStatusEffectCondition();
+                    if (cmbStatusEffect.Items.Count > 0)
+                    {
+                        cmbStatusEffect.SelectedIndex = 0;
+                    }
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -446,6 +454,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             grpEquippedItemTag.Hide();
             grpTradeSkill.Hide();
             grpVitals.Hide();
+            grpStatusEffect.Hide();
 
             switch (type)
             {
@@ -582,6 +591,11 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                     break;
                 case ConditionTypes.HporMana:
                     grpVitals.Show();
+                    break;
+                case ConditionTypes.HasStatusEffect:
+                    grpStatusEffect.Show();
+                    cmbStatusEffect.Items.Clear();
+                    cmbStatusEffect.Items.AddRange(SpellBase.Names);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -1187,6 +1201,11 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             cmbEquippedItem.SelectedIndex = ItemBase.ListIndex(condition.ItemId);
         }
 
+        private void SetupFormValues(HasStatusEffectCondition condition)
+        {
+            cmbStatusEffect.SelectedIndex = SpellBase.ListIndex(condition.SpellId);
+        }
+
         private void SetupFormValues(HasFreeInventorySlots condition)
         {
             nudFreeInventorySlots.Value = condition.Quantity;
@@ -1350,6 +1369,11 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         private void SaveFormValues(IsItemEquippedCondition condition)
         {
             condition.ItemId = ItemBase.IdFromList(cmbEquippedItem.SelectedIndex);
+        }
+
+        private void SaveFormValues(HasStatusEffectCondition condition)
+        {
+            condition.SpellId = SpellBase.IdFromList(cmbStatusEffect.SelectedIndex);
         }
 
         private void SaveFormValues(HasFreeInventorySlots condition)

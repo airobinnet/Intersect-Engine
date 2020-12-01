@@ -1212,5 +1212,14 @@ namespace Intersect.GameObjects.Events.Commands
         public Guid ItemId { get; set; }
 
     }
-    
+
+    public class RemoveStatusCommand : EventCommand
+    {
+
+        public override EventCommandType Type { get; } = EventCommandType.RemoveStatus;
+
+        public Guid SpellId { get; set; }
+
+    }
+
 }

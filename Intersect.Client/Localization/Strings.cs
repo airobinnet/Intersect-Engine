@@ -109,6 +109,11 @@ namespace Intersect.Client.Localization
             return Strings.EventConditionDesc.hasitemequipped.ToString(ItemBase.GetName(condition.ItemId));
         }
 
+        public static string GetEventConditionalDesc(HasStatusEffectCondition condition)
+        {
+            return Strings.EventConditionDesc.hasstatuseffect.ToString(SpellBase.GetName(condition.SpellId));
+        }
+
         public static string GetEventConditionalDesc(EquippedItemTagIsCondition condition)
         {
             return Strings.EventConditionDesc.itemequippedtagis.ToString(condition.Tag ?? ItemBase.Deleted);
@@ -1949,6 +1954,10 @@ namespace Intersect.Client.Localization
                 {18, @"Luck"},
                 {19, @"Drunk"},
                 {20, @"Fear"},
+                {21, @"Chance on hit"},
+                {22, @"Chance on spell hit"},
+                {23, @"Chance on melee hit"},
+                {24, @"Chance on taking damage"},
             };
 
             public static LocalizedString effects = @"Effects:";
@@ -2140,6 +2149,8 @@ namespace Intersect.Client.Localization
             public static LocalizedString hasitem = @"Player has at least {00} of Item {01}";
 
             public static LocalizedString hasitemequipped = @"Player has Item {00} equipped";
+
+            public static LocalizedString hasstatuseffect = @"Player has status effect {00}";
 
             public static LocalizedString itemequippedtagis = @"Player equipped Item tag is {00} ";
 

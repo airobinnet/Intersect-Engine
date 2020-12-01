@@ -1761,36 +1761,71 @@ namespace Intersect.Server.Entities
                 );
             }
 
+            if ((spellBase.Combat.Effect == StatusTypes.ChanceOnAnyHit ||
+                spellBase.Combat.Effect == StatusTypes.ChanceOnMeleeHit ||
+                spellBase.Combat.Effect == StatusTypes.ChanceOnSpellHit) && spellBase.Combat.Passive == false
+                )
+            {
+                if (spellBase.Combat.PassiveSkill != Guid.Empty)
+                {
+                    var randomroll = Randomization.Next(0, 100);
+                    if (randomroll <= spellBase.Combat.ExtraBuff)
+                    {
+                        if (spellBase.Combat.OnSelf == false)
+                        {
+                            TryAttack(target, SpellBase.Get(spellBase.Combat.PassiveSkill));
+                        }
+                        else
+                        {
+                            var tempCastTarget = CastTarget;
+                            // Set temptarget to current target, then set target to self for the enrage skill, cast it and restore target
+                            CastTarget = this;
+                            CastSpell(spellBase.Combat.PassiveSkill, -1, -2);
+                            CastTarget = tempCastTarget;
+
+                        }
+                    }
+                }
+            }
+
             if (spellBase.Combat.Effect > 0) //Handle status effects
             {
                 //Check for onhit effect to avoid the onhit effect recycling.
                 if (!(onHitTrigger && spellBase.Combat.Effect == StatusTypes.OnHit))
                 {
-                    new Status(
-                        target, spellBase, spellBase.Combat.Effect, spellBase.Combat.Duration, spellBase.Combat.Passive,
-                        spellBase.Combat.TransformSprite, spellBase.Combat.ExtraBuff
-                    );
-
-                    PacketSender.SendActionMsg(
-                        target, Strings.Combat.status[(int) spellBase.Combat.Effect], CustomColors.Combat.Status
-                    );
-
-                    //Set the enemies target if a taunt spell
-                    if (spellBase.Combat.Effect == StatusTypes.Taunt)
+                    if ((spellBase.Combat.Effect != StatusTypes.ChanceOnAnyHit ||
+                        spellBase.Combat.Effect != StatusTypes.ChanceOnMeleeHit ||
+                        spellBase.Combat.Effect != StatusTypes.ChanceOnSpellHit ||
+                        spellBase.Combat.Effect != StatusTypes.ChanceOnTakingDamage) &&
+                        spellBase.Combat.Passive == true
+                        )
                     {
-                        target.Target = this;
-                        if (target is Player targetPlayer)
+                        new Status(
+                            target, spellBase, spellBase.Combat.Effect, spellBase.Combat.Duration, spellBase.Combat.Passive,
+                            spellBase.Combat.TransformSprite, spellBase.Combat.ExtraBuff, spellBase.Combat.PassiveSkill, spellBase.Combat.OnSelf
+                        );
+
+                        PacketSender.SendActionMsg(
+                            target, Strings.Combat.status[(int)spellBase.Combat.Effect], CustomColors.Combat.Status
+                        );
+
+                        //Set the enemies target if a taunt spell
+                        if (spellBase.Combat.Effect == StatusTypes.Taunt)
                         {
-                            PacketSender.SetPlayerTarget((Player) target, Id);
+                            target.Target = this;
+                            if (target is Player targetPlayer)
+                            {
+                                PacketSender.SetPlayerTarget((Player)target, Id);
+                            }
                         }
-                    }
 
-                    //If an onhit or shield status bail out as we don't want to do any damage.
-                    if (spellBase.Combat.Effect == StatusTypes.OnHit || spellBase.Combat.Effect == StatusTypes.Shield)
-                    {
-                        Animate(target, aliveAnimations);
+                        //If an onhit or shield status bail out as we don't want to do any damage.
+                        if (spellBase.Combat.Effect == StatusTypes.OnHit || spellBase.Combat.Effect == StatusTypes.Shield)
+                        {
+                            Animate(target, aliveAnimations);
 
-                        return;
+                            return;
+                        }
                     }
                 }
             }
@@ -1798,7 +1833,7 @@ namespace Intersect.Server.Entities
             {
                 if (statBuffTime > -1)
                 {
-                    new Status(target, spellBase, spellBase.Combat.Effect, statBuffTime, spellBase.Combat.Passive, "", spellBase.Combat.ExtraBuff);
+                    new Status(target, spellBase, spellBase.Combat.Effect, statBuffTime, spellBase.Combat.Passive, "", spellBase.Combat.ExtraBuff, spellBase.Combat.PassiveSkill, spellBase.Combat.OnSelf);
                 }
             }
 
@@ -2363,15 +2398,82 @@ namespace Intersect.Server.Entities
         {
             if (isAutoAttack) //Ignore spell damage.
             {
-                foreach (var status in this.Statuses.Values.ToArray())
+                foreach (var status in Statuses.Values.ToArray())
                 {
                     if (status.Type == StatusTypes.OnHit)
                     {
                         TryAttack(enemy, status.Spell, true);
                         status.RemoveStatus();
                     }
+                    if (status.Type == StatusTypes.ChanceOnMeleeHit)
+                    {
+                        var randomroll = Randomization.Next(0, 100);
+                        if (randomroll <= status.ExtraBuff)
+                        {
+                            var tempCastTarget = CastTarget;
+                            if (status.OnSelf)
+                            {
+                                // Set temptarget to current target, then set target to self for the enrage skill, cast it and restore target
+                                CastTarget = this;
+                            }
+                            CastSpell(status.PassiveSpell, -1, -2);
+                            if (status.OnSelf)
+                            {
+                                CastTarget = tempCastTarget;
+                            }
+                        }
+                    }
                 }
             }
+            else
+            {
+                if (CastTarget != this)
+                {
+                    foreach (var status in Statuses.Values.ToArray())
+                    {
+                        if (status.Type == StatusTypes.ChanceOnAnyHit || status.Type == StatusTypes.ChanceOnSpellHit)
+                        {
+                            var randomroll = Randomization.Next(0, 100);
+                            if (randomroll <= status.ExtraBuff)
+                            {
+                                var tempCastTarget = CastTarget;
+                                if (status.OnSelf)
+                                {
+                                    // Set temptarget to current target, then set target to self for the enrage skill, cast it and restore target
+                                    CastTarget = this;
+                                }
+                                CastSpell(status.PassiveSpell, -1, -2);
+                                if (status.OnSelf)
+                                {
+                                    CastTarget = tempCastTarget;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            foreach (var status in enemy.Statuses.Values.ToArray())
+            {
+                if (status.Type == StatusTypes.ChanceOnTakingDamage)
+                {
+                    var randomroll = Randomization.Next(0, 100);
+                    if (randomroll <= status.ExtraBuff)
+                    {
+                        var tempCastTarget = CastTarget;
+                        if (status.OnSelf)
+                        {
+                            // Set temptarget to current target, then set target to self for the enrage skill, cast it and restore target
+                            CastTarget = this;
+                        }
+                        CastSpell(status.PassiveSpell, -1, -2);
+                        if (status.OnSelf)
+                        {
+                            CastTarget = tempCastTarget;
+                        }
+                    }
+                }
+            }
+
         }
 
         public virtual void KilledEntity(Entity entity)
@@ -2405,6 +2507,9 @@ namespace Intersect.Server.Entities
             return true;
         }
 
+        /// <summary>
+        /// Spellslot -1 for no slot, behavior -1 = spellslot, -2 = spellid, others = behavior
+        /// </summary>
         public virtual void CastSpell(Guid spellId, int spellSlot = -1, int behavior = -1)
         {
             var spellBase = SpellBase.Get(spellId);
@@ -2485,7 +2590,7 @@ namespace Intersect.Server.Entities
                             {
                                 new Status(
                                     this, spellBase, StatusTypes.OnHit, spellBase.Combat.OnHitDuration, spellBase.Combat.Passive,
-                                    spellBase.Combat.TransformSprite, spellBase.Combat.ExtraBuff
+                                    spellBase.Combat.TransformSprite, spellBase.Combat.ExtraBuff, spellBase.Combat.PassiveSkill, spellBase.Combat.OnSelf
                                 );
 
                                 PacketSender.SendActionMsg(
@@ -3000,6 +3105,20 @@ namespace Intersect.Server.Entities
             {
                 return 0;
             }
+        }
+
+        public bool HasStatusEffect(Guid spellId)
+        {
+
+            foreach (KeyValuePair<SpellBase, Combat.Status> status in Statuses)
+            {
+                if (status.Key.Id == spellId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         // Outdated : Check if the target is either up, down, left or right of the target on the correct Z dimension.

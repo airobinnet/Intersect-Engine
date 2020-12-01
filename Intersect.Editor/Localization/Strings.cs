@@ -49,6 +49,11 @@ namespace Intersect.Editor.Localization
             return Strings.EventConditionDesc.hasitemequipped.ToString(ItemBase.GetName(condition.ItemId));
         }
 
+        public static string GetEventConditionalDesc(HasStatusEffectCondition condition)
+        {
+            return Strings.EventConditionDesc.hasstatuseffect.ToString(SpellBase.GetName(condition.SpellId));
+        }
+
         public static string GetEventConditionalDesc(EquippedItemTagIsCondition condition)
         {
             return Strings.EventConditionDesc.itemequippedtagis.ToString(condition.Tag ?? ItemBase.Deleted);
@@ -1931,6 +1936,8 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString showitemchoice = @"Show Item Choice Window:";
 
+            public static LocalizedString removestatus = @"Remove Status: {00}";
+
             public static LocalizedString variableinput = @"Input Variable: {00}";
 
             public static LocalizedString showpicture = @"Show Picture";
@@ -2079,6 +2086,7 @@ Tick timer saved in server config.json.";
                 {"givetradeskillexperience","Give Tradeskill Experience"},
                 {"changeclasswindow","Change Class Window"},
                 {"itemchoice","Item Choice Window"},
+                {"removestatus","Remove Status"},
             };
 
         }
@@ -2166,6 +2174,7 @@ Tick timer saved in server config.json.";
                 {23, @"Has Tradeskill..." },
                 {24, @"Has Tradeskill with level..." },
                 {25, @"Vital is.." },
+                {26, @"Has status effect..." },
             };
 
             public static LocalizedString endrange = @"End Range:";
@@ -2331,6 +2340,8 @@ Tick timer saved in server config.json.";
             public static LocalizedString hasitem = @"Player has at least {00} of Item {01}";
 
             public static LocalizedString hasitemequipped = @"Player has Item {00} equipped";
+
+            public static LocalizedString hasstatuseffect = @"Player has status effect {00}";
 
             public static LocalizedString itemequippedtagis = @"Player equipped Item tag is {00} ";
 
@@ -4750,6 +4761,10 @@ Tick timer saved in server config.json.";
                 {18, @"Luck"},
                 {19, @"Drunk"},
                 {20, @"Fear"},
+                {21, @"Chance On Any Hit"},
+                {22, @"Chance On Spell Hit"},
+                {23, @"Chance On Melee Hit"},
+                {24, @"Chance On Taking Damage"},
             };
 
             public static LocalizedString effectgroup = @"Effect";

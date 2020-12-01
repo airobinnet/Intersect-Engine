@@ -582,6 +582,11 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Luck:
                 case StatusTypes.Mount:
                 case StatusTypes.Tenacity:
+                case StatusTypes.ChanceOnAnyHit:
+                case StatusTypes.ChanceOnMeleeHit:
+                case StatusTypes.ChanceOnSpellHit:
+                case StatusTypes.ChanceOnTakingDamage:
+
                 case null:
                     return false;
 
@@ -617,6 +622,10 @@ namespace Intersect.Server.Entities
                 case StatusTypes.Luck:
                 case StatusTypes.Mount:
                 case StatusTypes.Tenacity:
+                case StatusTypes.ChanceOnAnyHit:
+                case StatusTypes.ChanceOnMeleeHit:
+                case StatusTypes.ChanceOnSpellHit:
+                case StatusTypes.ChanceOnTakingDamage:
                 case null:
                     return false;
 
