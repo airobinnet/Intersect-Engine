@@ -6,7 +6,14 @@
 
 [Robbie Lodico](https://github.com/lodicolo)
 
-# Maintainers
+
+# Intersect Contributors
+
+[A. I. Robin](https://github.com/alloin)
+
+[Dog from the Kash Shop](#)
+
+[Fernando Arzola Lagos](https://github.com/Arufonsu)
 
 [Jocelyn Cobb](https://github.com/Cheshire92)
 

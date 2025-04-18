@@ -87,7 +87,7 @@ If you are interested in contributing fixes or features to Intersect, please rea
 
 ## Source Code
 
-Getting started with Intersect couldn't be easier. Make sure you have Visual Studio 2019 Community installed.
+Getting started with Intersect couldn't be easier. Make sure you have Visual Studio 2019 Community installed. 
 
  * Clone the source: `git clone https://github.com/AscensionGameDev/Intersect-Engine.git`
  * Open Intersect.sln
